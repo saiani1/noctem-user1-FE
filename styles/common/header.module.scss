@@ -1,0 +1,29 @@
+@use '/src/styles/base/variable';
+
+.header-wrap {
+  height: 50px;
+  position: relative;
+  border-bottom: 1px solid variable.$LINE-002;
+
+  .header-back-arrow {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .header-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+  }
+
+  .header-logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

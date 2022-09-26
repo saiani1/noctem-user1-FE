@@ -1,0 +1,59 @@
+@use '/styles/base/variable';
+
+.login-wrap {
+  .logo-symbol {
+    margin-bottom: 20px;
+  }
+
+  .welcome {
+    margin-bottom: 4px;
+    font-size: variable.$FS-16;
+    font-weight: bold;
+    color: variable.$TXT-001;
+  }
+
+  .desc {
+    margin-bottom: 30px;
+    font-size: variable.$FS-11;
+    color: variable.$TXT-002;
+  }
+
+  .login-input {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: variable.$FS-11;
+    border: none;
+    border-bottom: 1px solid variable.$LINE-002;
+
+    &:focus {
+      border-bottom: 1px solid variable.$POINT;
+    }
+  }
+
+  .link-box {
+    text-align: center;
+    color: variable.$TXT-003;
+    font-size: variable.$FS-10;
+
+    &>a {
+      margin: 0 10px;
+      position: relative;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: -10px;
+        width: 1px;
+        height: 10px;
+        background-color: variable.$LINE-003;
+      }
+
+      &:first-child::after {
+        content: "";
+        display: none;
+      }
+    }
+  }
+}

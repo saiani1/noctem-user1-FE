@@ -1,0 +1,91 @@
+@use '/src/styles/base/variable';
+@use '/src/styles/mixins/position';
+
+.background {
+  @include position.absolute(0 0 0 0);
+  background-color: rgba(variable.$BG-006, 0.6);
+}
+
+.wrap {
+  @include position.absolute(50px 0 0 0);
+  background-color: variable.$BG-001;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  z-index: 9999;
+
+  &::after {
+    @include position.absolute(7.5px 50% auto 50%);
+    content: '';
+    display: inline-block;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 4px;
+    border-radius: 3.5px;
+    background-color: variable.$BG-004;
+  }
+
+  h2 {
+    margin: 30px 0 20px;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    color: variable.$TXT-001;
+  }
+
+  .input-wrap {
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+
+    li {
+      position: relative;
+
+      & ~ li {
+        margin-left: 10px;
+      }
+    }
+
+    input[type='radio'] {
+      @include position.absolute(4.5px auto auto 0);
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    label {
+      padding-left: 17px;
+      font-weight: bold;
+      color: variable.$TXT-001;
+
+      &:first-child {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .phone-num-wrap {
+    padding: 10px 20px 5px;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      color: variable.$TXT-002;
+      margin-bottom: 10px;
+    }
+
+    input[type='number'] {
+      margin-right: 5px;
+      border: none;
+      border-bottom: 1px solid variable.$LINE-003;
+      background-color: transparent;
+
+      &:focus {
+        border-bottom: 1px solid variable.$POINT;
+      }
+
+      &::placeholder {
+        color: variable.$TXT-003;
+      }
+    }
+  }
+}

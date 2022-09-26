@@ -1,0 +1,116 @@
+@use '/src/styles/base/variable';
+@use '/src/styles/mixins/position';
+
+.background {
+  @include position.absolute(0 0 0 0);
+  background-color: rgba(variable.$BG-006, 0.6);
+}
+
+.wrap {
+  @include position.absolute(50px 0 0 0);
+  padding: 30px 20px 20px;
+  background-color: variable.$BG-001;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  z-index: 9999;
+
+  &::after {
+    @include position.absolute(7.5px 50% auto 50%);
+    content: '';
+    display: inline-block;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 4px;
+    border-radius: 3.5px;
+    background-color: variable.$BG-004;
+  }
+
+  .img-wrap {
+    img {
+      width: 100%;
+    }
+  }
+
+  .tit-wrap {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid variable.$LINE-002;
+
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: variable.$POINT;
+    }
+
+    .tit-address-wrap {
+      display: flex;
+      column-gap: 40px;
+      align-items: baseline;
+
+      p {
+        font-size: 13px;
+        color: variable.$TXT-003;
+      }
+
+      .right-icon {
+        width: 20px;
+      }
+    }
+  }
+
+  .time-wrap {
+    padding-bottom: 10px;
+    border-bottom: 1px solid variable.$LINE-002;
+
+    .time-tit-wrap {
+      display: flex;
+      align-items: center;
+
+      .clock-icon {
+        margin-right: 10px;
+      }
+
+      p {
+        font-size: 13px;
+        color: variable.$TXT-006;
+      }
+    }
+
+    .time-sub-wrap {
+      display: flex;
+      align-items: center;
+      margin-left: 30px;
+
+      .down-line-icon {
+        margin-right: 8px;
+      }
+
+      span {
+        font-size: 13px;
+        color: variable.$TXT-003;
+
+        strong {
+          margin-right: 7px;
+          color: variable.$TXT-006;
+        }
+      }
+    }
+  }
+
+  .location-wrap {
+    margin: 10px 0;
+    font-size: 13px;
+
+    p {
+      margin-bottom: 3px;
+      font-weight: bold;
+      color: variable.$TXT-006;
+    }
+
+    span {
+      color: variable.$TXT-003;
+    }
+  }
+}

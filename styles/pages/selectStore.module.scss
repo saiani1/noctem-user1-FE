@@ -1,0 +1,78 @@
+@use '/src/styles//base/variable';
+@use '/src/styles/mixins/position';
+
+.wrap {
+  padding: 0 19px;
+
+  .title {
+    margin: 25px 0 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: variable.$TXT-001;
+  }
+  .search-input-wrap {
+    position: relative;
+
+    input[type='text'] {
+      width: 100%;
+      border: none;
+      padding: 5px 30px;
+      border-radius: 2px;
+      background-color: variable.$BG-008;
+
+      &::placeholder {
+        font-size: 13px;
+        color: variable.$TXT-004;
+      }
+    }
+    .search-icon {
+      @include position.absolute(9px auto auto 9px);
+      width: 13px;
+      height: 13px;
+    }
+  }
+  .filter-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin: 10px 0 20px;
+
+    button {
+      flex: 0 0 auto;
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 5px;
+      border: 1px solid variable.$LINE-003;
+      color: variable.$TXT-003;
+
+      ~ button {
+        margin-left: 10px;
+      }
+    }
+  }
+  .tab-wrap {
+    padding-bottom: 10px;
+    border-bottom: 1px solid variable.$LINE-002;
+
+    button {
+      font-size: 13px;
+      font-weight: 300;
+      color: variable.$TXT-003;
+      margin-right: 8px;
+
+      &:first-child::after {
+        margin-left: 8px;
+        display: inline-block;
+        content: ' ';
+        width: 1px;
+        height: 10px;
+        background-color: variable.$BG-007;
+      }
+
+      &.active {
+        color: variable.$TXT-002;
+        font-weight: bold;
+      }
+    }
+  }
+}

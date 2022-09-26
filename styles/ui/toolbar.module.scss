@@ -1,0 +1,104 @@
+@use '/src/styles/base/variable';
+
+.toolbar-list-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: variable.$TOOLBAR;
+  background: variable.$BG-003;
+  box-shadow: variable.$BOX-SHADOW-TOOLBAR;
+}
+
+.blank {
+  padding-top: 50px;
+}
+
+.toolbar-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .toolbar-item {
+    flex: 1;
+    position: relative;
+    text-align: center;
+
+    button {
+      width: 100%;
+      position: relative;
+      display: block;
+      height: 50px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .toolbar-icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .toolbar-txt {
+      display: block;
+      padding-top: 33px;
+      color: variable.$TXT-003;
+      font-size: 10px;
+    }
+
+    &:nth-child(n) {
+      .toolbar-icon::after {
+        content: "";
+        display: inline-block;
+        width: 23px;
+        height: 20px;
+        background-repeat: no-repeat;
+      }
+
+      .toolbar-txt.active {
+        color: variable.$POINT;
+      }
+    }
+
+    &:nth-child(1) {
+      .toolbar-icon::after {
+        background-image: url('../../assets/svg/toolbar/icon-home.svg');
+      }
+
+      .toolbar-icon.active::after {
+        background-image: url('../../assets/svg/toolbar/icon-home-active.svg');
+      }
+    }
+
+    &:nth-child(2) {
+      .toolbar-icon::after {
+        background-image: url('../../assets/svg/toolbar/icon-order.svg');
+      }
+
+      .toolbar-icon.active::after {
+        background-image: url('../../assets/svg/toolbar/icon-order-active.svg');
+      }
+    }
+
+    &:nth-child(3) {
+      .toolbar-icon::after {
+        background-image: url('../../assets/svg/toolbar/icon-pay.svg');
+      }
+
+      .toolbar-icon.active::after {
+        background-image: url('../../assets/svg/toolbar/icon-pay-active.svg');
+      }
+    }
+
+    &:nth-child(4) {
+      .toolbar-icon::after {
+        background-image: url('../../assets/svg/toolbar/icon-my.svg');
+      }
+
+      .toolbar-icon.active::after {
+        background-image: url('../../assets/svg/toolbar/icon-my-active.svg');
+      }
+    }
+  }
+}
