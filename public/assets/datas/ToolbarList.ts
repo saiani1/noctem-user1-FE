@@ -1,4 +1,4 @@
-import { IList } from '../../types/noctem.d';
+import { IList } from '../../../src/types/toolbar.d';
 
 export const TOOL_LIST: Array<IList> = [
   {
