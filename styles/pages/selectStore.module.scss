@@ -1,5 +1,5 @@
-@use '/src/styles//base/variable';
-@use '/src/styles/mixins/position';
+@use '/styles//base/variable';
+@use '/styles/mixins/position';
 
 .wrap {
   padding: 0 19px;
@@ -25,10 +25,10 @@
         color: variable.$TXT-004;
       }
     }
-    .search-icon {
-      @include position.absolute(9px auto auto 9px);
-      width: 13px;
-      height: 13px;
+    .img-wrap {
+      position: absolute !important;
+      top: 7px !important;
+      left: 9px !important;
     }
   }
   .filter-wrap {

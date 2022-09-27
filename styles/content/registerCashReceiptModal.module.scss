@@ -1,10 +1,11 @@
-@use '/src/styles/base/variable';
-@use '/src/styles/mixins/position';
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
 
 .background {
   @include position.absolute(0 0 0 0);
   background-color: rgba(variable.$BG-006, 0.6);
 }
+
 .wrap {
   @include position.absolute(50px 0 0 0);
   background-color: variable.$BG-001;
@@ -37,17 +38,33 @@
     align-items: center;
     margin: 15px 0;
 
+    li {
+      position: relative;
+
+      & ~ li {
+        margin-left: 10px;
+      }
+    }
+
     input[type='radio'] {
+      @include position.absolute(4.5px auto auto 0);
+      display: inline-block;
       margin-right: 5px;
     }
+
     label {
+      padding-left: 17px;
       font-weight: bold;
       color: variable.$TXT-001;
+
+      &:first-child {
+        margin-right: 10px;
+      }
     }
   }
-  .card-info-wrap {
-    padding: 30px 20px;
-    background-color: variable.$BG-003;
+
+  .phone-num-wrap {
+    padding: 10px 20px 5px;
     display: flex;
     flex-direction: column;
 
@@ -71,8 +88,7 @@
       }
     }
   }
-
-  .submit-btn {
+  .btn {
     @include position.absolute(auto 0 35px 0);
     display: block;
     margin: 0 19px;
