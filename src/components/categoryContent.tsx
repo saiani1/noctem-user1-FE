@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames/bind';
+import Image from 'next/image';
 import styles from '../../styles/pages/categoryPage.module.scss';
 
 const cx = classNames.bind(styles);
@@ -12,11 +13,24 @@ function categoryContent() {
         <div>푸드</div>
         <div className={cx('search-bar')}>
           <div />
-          <div className={cx('search-icon')}>{/* <SearchIcon /> */}</div>
+          <div className={cx('search-icon')}>
+            {/* <SearchIcon /> */}
+            <Image
+              src='/assets/svg/icon-search.svg'
+              alt='search'
+              width={24}
+              height={21}
+            />
+          </div>
         </div>
-        {/* <div>
-          <CartIcon />
-        </div> */}
+        <div>
+          <Image
+            src='/assets/svg/icon-cart.svg'
+            alt='cart'
+            width={24}
+            height={21}
+          />
+        </div>
       </div>
       <div className={cx('menu-category')}>
         <ul>
@@ -104,9 +118,14 @@ function categoryContent() {
       <div className={cx('choice-store')}>
         <div>
           <div>주문할 매장을 선택하세요</div>
-          {/* <div>
-            <BackArrowIcon />
-          </div> */}
+          <div>
+            <Image
+              src='/assets/svg/icon-down-arrow.svg'
+              alt='down-arrow'
+              width={24}
+              height={21}
+            />
+          </div>
         </div>
         <hr color='white' />
       </div>
