@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../../styles/main/main.module.scss';
-// import RecommendedMenu from './RecommendedMenu';
+import RecommendedMenu from './recommendedMenu';
 
 const cx = classNames.bind(styles);
 
@@ -72,7 +72,7 @@ function homeContent() {
       </div>
       <div className={cx('recommend-menu')}>
         <h2 className={cx('title')}>추천 메뉴</h2>
-        {/* <RecommendedMenu /> */}
+        <RecommendedMenu />
       </div>
     </>
   );

@@ -52,13 +52,6 @@ module.exports = {
         mjs: 'never',
       },
     ],
-    'react/function-component-definition': [
-      2,
-      {
-        namedComponents: 'arrow-function',
-        unnamedComponents: 'arrow-function',
-      },
-    ],
     // suppress errors for missing 'import React' in files
     'react/react-in-jsx-scope': 'off',
     'arrow-body-style': ['error', 'always'],

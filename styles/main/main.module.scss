@@ -1,4 +1,4 @@
-// @use '/src/styles/base/variable';
+@use '/styles/base/variable';
 
 .point-box {
 	margin: 24px;
@@ -32,17 +32,17 @@
 				width: 30%;
 				height: 6px;
 
-				// background: variable.$POINT;
+				background: variable.$POINT;
 				border-radius: 13.5px;
 			}
 		}
 
 		.my-score {
-			// color: variable.$POINT;
+			color: variable.$POINT;
 
 			span {
 				font-size: 22px;
-				// color: variable.$TXT-001;
+				color: variable.$TXT-001;
 			}
 		}
 	}
@@ -60,7 +60,7 @@
 		box-shadow: 0px 2px 4px rgba(98, 98, 98, 0.25);
 		border-radius: 5px;
 
-		// color: variable.$TXT-003;
+		color: variable.$TXT-003;
 		text-align: center;
 		padding: 50px 66px;
 	}
@@ -75,16 +75,16 @@
 
 		div {
 			.my-menu-title {
-				// color: variable.$TXT-001;
+				color: variable.$TXT-001;
 			}
 
 			.my-menu-kind {
-				// color: variable.$TXT-003;
+				color: variable.$TXT-003;
 				font-size: 12px;
 			}
 
 			.my-menu-detail {
-				// color: variable.$TXT-002;
+				color: variable.$TXT-002;
 				font-size: 12px;
 			}
 
@@ -97,8 +97,8 @@
 			}
 
 			.order-button {
-				// background-color: variable.$TXT-001;
-				// color: variable.$TXT-005;
+				background-color: variable.$TXT-001;
+				color: variable.$TXT-005;
 				border-radius: 13px;
 				text-align: center;
 				white-space: nowrap;
@@ -120,7 +120,7 @@
 		box-shadow: 0px 2px 4px rgba(98, 98, 98, 0.25);
 		border-radius: 5px;
 
-		// color: variable.$TXT-003;
+		color: variable.$TXT-003;
 		text-align: center;
 		padding: 8px;
 
@@ -134,11 +134,11 @@
 			text-align: left;
 
 			.store-name {
-				// color: variable.$TXT-001;
+				color: variable.$TXT-001;
 			}
 
 			.store-address {
-				// color: variable.$TXT-003;
+				color: variable.$TXT-003;
 				font-size: 12px;
 			}
 
@@ -150,13 +150,13 @@
 				margin-top: auto;
 
 				span {
-					// color: variable.$TXT-001;
+					color: variable.$TXT-001;
 					font-size: 22px;
 				}
 			}
 
 			:nth-child(2) {
-				// color: variable.$TXT-001;
+				color: variable.$TXT-001;
 			}
 		}
 	}
@@ -193,7 +193,7 @@
 		}
 
 		.recommended-menu-text {
-			// color: variable.$TXT-002;
+			color: variable.$TXT-002;
 			font-size: 12px;
 		}
 	}
