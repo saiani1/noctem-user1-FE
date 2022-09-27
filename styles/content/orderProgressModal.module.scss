@@ -1,0 +1,166 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.background {
+  @include position.absolute(0 0 0 0);
+  background-color: rgba(variable.$BG-006, 0.6);
+  z-index: variable.$MODAL-BACK;
+}
+
+.wrap {
+  @include position.absolute(50px 0 0 0);
+  background-color: variable.$BG-001;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  z-index: variable.$MODAL;
+
+  &::after {
+    @include position.absolute(7.5px 50% auto 50%);
+    content: '';
+    display: inline-block;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 4px;
+    border-radius: 3.5px;
+    background-color: variable.$BG-004;
+  }
+
+  .top-wrap {
+    margin-top: 40px;
+    padding: 19px;
+    .tit-wrap {
+      position: relative;
+
+      span {
+        font-size: 16px;
+        font-weight: 500;
+        color: variable.$POINT;
+      }
+      h2 {
+        margin-top: 2px;
+        font-size: 32px;
+        line-height: 1.3;
+        color: variable.$TXT-001;
+        word-break: keep-all;
+      }
+      .remain-time-wrap {
+        @include position.absolute(auto 0 65px auto);
+        width: 35%;
+        border-radius: 10px;
+        background-color: variable.$BG-004;
+        p {
+          line-height: 1.4;
+          text-align: center;
+          font-size: 12px;
+          font-weight: 300;
+          color: variable.$TXT-005;
+          strong {
+            font-weight: bold;
+            font-size: 14px;
+          }
+        }
+      }
+      .content {
+        font-size: 16px;
+        color: variable.$TXT-003;
+      }
+    }
+    .progress-bar-wrap {
+      margin-top: 15px;
+      .content-wrap {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 3px;
+
+        li {
+          font-size: 12px;
+          color: variable.$TXT-003;
+          &.active {
+            font-weight: bold;
+            color: variable.$TXT-001;
+          }
+        }
+      }
+
+      .bar-wrap {
+        position: relative;
+        .base-bar {
+          width: 100%;
+          height: 8px;
+          border-radius: 4px;
+          background-color: variable.$BG-003;
+        }
+        .progress-bar {
+          @include position.absolute(0 auto auto 0);
+          width: 33.3%;
+          height: 8px;
+          border-radius: 4px;
+          background-color: variable.$POINT;
+
+          &.prepare {
+            width: 66.6%;
+          }
+          &.done {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+  .bottom-wrap {
+    background-color: variable.$BG-003;
+    padding: 19px;
+    height: 100vh;
+    h3 {
+      margin-bottom: 10px;
+      font-size: 17px;
+    }
+    .take-out-option {
+      width: 100%;
+      padding: 5px 15px;
+      background-color: variable.$BG-007;
+      p {
+        font-size: 13px;
+        color: variable.$TXT-006;
+      }
+    }
+    .order-info-wrap {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+      .img-wrap {
+        display: inline-block;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      .order-contents-wrap {
+        margin-left: 20px;
+        .order-tit {
+          font-size: 17px;
+          font-weight: bold;
+          color: variable.$TXT-001;
+        }
+        .order-option {
+          font-size: 12px;
+          color: variable.$TXT-001;
+        }
+      }
+    }
+    .btn {
+      width: 100%;
+      padding: 8px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 300;
+      border-radius: 20px;
+      color: variable.$TXT-005;
+      background-color: variable.$TXT-004;
+
+      &.active {
+        background-color: variable.$POINT;
+      }
+    }
+  }
+}

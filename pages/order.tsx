@@ -7,8 +7,10 @@ import Header from '../src/components/common/header';
 import ChoicePaymentModal from '../src/components/content/choicePaymentModal';
 import RegisterCashReceiptModal from '../src/components/content/registerCashReceiptModal';
 import OrderPayingCompletionModal from '../src/components/content/orderPayingCompletionModal';
+import OrderProgressModal from '../src/components/content/orderProgressModal';
 
 function order() {
+  const [isClickOrderProgressBtn, setIsClickOrderProgressBtn] = useState(true);
   const [isClickPaymentBtn, setIsClickPaymentBtn] = useState(false);
   const [isClickCashReceiptBtn, setIsClickCashReceiptBtn] = useState(false);
   const [isClickSubmitBtn, setIsClickSubmitBtn] = useState(false);
@@ -35,6 +37,11 @@ function order() {
 
   return (
     <div className={cx('wrap')}>
+      {isClickOrderProgressBtn && (
+        <OrderProgressModal
+          setIsClickOrderProgressBtn={setIsClickOrderProgressBtn}
+        />
+      )}
       {isClickPaymentBtn && (
         <ChoicePaymentModal setIsClickPaymentBtn={setIsClickPaymentBtn} />
       )}

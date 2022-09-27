@@ -4,6 +4,7 @@
 .background {
   @include position.absolute(0 0 0 0);
   background-color: rgba(variable.$BG-006, 0.6);
+  z-index: variable.$MODAL-BACK;
 }
 
 .wrap {
@@ -12,7 +13,7 @@
   background-color: variable.$BG-001;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  z-index: 9999;
+  z-index: variable.$MODAL;
 
   &::after {
     @include position.absolute(7.5px 50% auto 50%);

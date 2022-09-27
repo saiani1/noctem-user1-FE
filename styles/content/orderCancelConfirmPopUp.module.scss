@@ -1,0 +1,45 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.background {
+  @include position.absolute(0 0 0 0);
+  background-color: rgba(variable.$BG-006, 0.6);
+  z-index: variable.$POPUP-BACK;
+}
+
+.wrap {
+  @include position.absolute(auto 0 0 0);
+  padding: 30px 20px;
+  height: 150px;
+  background-color: variable.$BG-001;
+  z-index: variable.$POPUP;
+
+  .tit {
+    font-size: 16px;
+    font-weight: 400;
+  }
+
+  .btn-wrap {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    background-color: variable.$BG-001;
+
+    button {
+      width: 48.5%;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 300;
+      border-radius: 20px;
+      color: variable.$TXT-005;
+      background-color: variable.$POINT;
+    }
+
+    .cancel-btn {
+      color: variable.$POINT;
+      background-color: variable.$BG-001;
+      border: 1px solid variable.$POINT;
+      box-sizing: border-box;
+    }
+  }
+}
