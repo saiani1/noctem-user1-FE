@@ -35,6 +35,7 @@
         overflow: auto;
         white-space: nowrap;
         background-color:variable.$BG-003;
+        color: variable.$TXT-003;
         li{
             padding: 12px;
         }
@@ -54,6 +55,19 @@
     }
     .menu-detail{
         padding-left: 24px;
+        .item-name{
+            font-size: variable.$FS-15;
+            color: variable.$TXT-001;
+        }
+        .item-english-name{
+            font-size: variable.$FS-12;
+            color: variable.$TXT-003;
+        }
+        .item-price{
+            font-size: variable.$FS-15;
+            font-weight: variable.$FW-003;
+            color: variable.$TXT-001;
+        }
     }
 }
 .choice-store{

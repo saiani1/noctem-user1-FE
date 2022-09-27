@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from '../../styles/pages/categoryPage.module.scss';
 
 const cx = classNames.bind(styles);
@@ -14,7 +15,6 @@ function categoryContent() {
         <div className={cx('search-bar')}>
           <div />
           <div className={cx('search-icon')}>
-            {/* <SearchIcon /> */}
             <Image
               src='/assets/svg/icon-search.svg'
               alt='search'
@@ -50,71 +50,94 @@ function categoryContent() {
           <li>병음료</li>
         </ul>
       </div>
-      <div className={cx('menu-item')}>
-        <div className={cx('menu-img')}>
-          <img
-            src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-            alt=''
-          />
-        </div>
-        <div className={cx('menu-detail')}>
-          <div>아이스 블랙 그레이즈드 라떼</div>
-          <div>Iced Black Grazed Latte</div>
-          <div>6,300원</div>
-        </div>
-      </div>
-      <div className={cx('menu-item')}>
-        <div className={cx('menu-img')}>
-          <img
-            src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-            alt=''
-          />
-        </div>
-        <div className={cx('menu-detail')}>
-          <div>아이스 블랙 그레이즈드 라떼</div>
-          <div>Iced Black Grazed Latte</div>
-          <div>6,300원</div>
-        </div>
-      </div>
-      <div className={cx('menu-item')}>
-        <div className={cx('menu-img')}>
-          <img
-            src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-            alt=''
-          />
-        </div>
-        <div className={cx('menu-detail')}>
-          <div>아이스 블랙 그레이즈드 라떼</div>
-          <div>Iced Black Grazed Latte</div>
-          <div>6,300원</div>
-        </div>
-      </div>
-      <div className={cx('menu-item')}>
-        <div className={cx('menu-img')}>
-          <img
-            src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-            alt=''
-          />
-        </div>
-        <div className={cx('menu-detail')}>
-          <div>아이스 블랙 그레이즈드 라떼</div>
-          <div>Iced Black Grazed Latte</div>
-          <div>6,300원</div>
-        </div>
-      </div>
-      <div className={cx('menu-item')}>
-        <div className={cx('menu-img')}>
-          <img
-            src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-            alt=''
-          />
-        </div>
-        <div className={cx('menu-detail')}>
-          <div>아이스 블랙 그레이즈드 라떼</div>
-          <div>Iced Black Grazed Latte</div>
-          <div>6,300원</div>
-        </div>
-      </div>
+      <ul>
+        <Link href='/product'>
+          <li className={cx('menu-item')}>
+            <div className={cx('menu-img')}>
+              <img
+                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
+                alt=''
+              />
+            </div>
+            <div className={cx('menu-detail')}>
+              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
+              <div className={cx('item-english-name')}>
+                Iced Black Grazed Latte
+              </div>
+              <div className={cx('item-price')}>6,300원</div>
+            </div>
+          </li>
+        </Link>
+        <Link href='/product'>
+          <li className={cx('menu-item')}>
+            <div className={cx('menu-img')}>
+              <img
+                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
+                alt=''
+              />
+            </div>
+            <div className={cx('menu-detail')}>
+              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
+              <div className={cx('item-english-name')}>
+                Iced Black Grazed Latte
+              </div>
+              <div className={cx('item-price')}>6,300원</div>
+            </div>
+          </li>
+        </Link>
+        <Link href='/product'>
+          <li className={cx('menu-item')}>
+            <div className={cx('menu-img')}>
+              <img
+                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
+                alt=''
+              />
+            </div>
+            <div className={cx('menu-detail')}>
+              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
+              <div className={cx('item-english-name')}>
+                Iced Black Grazed Latte
+              </div>
+              <div className={cx('item-price')}>6,300원</div>
+            </div>
+          </li>
+        </Link>
+        <Link href='/product'>
+          <li className={cx('menu-item')}>
+            <div className={cx('menu-img')}>
+              <img
+                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
+                alt=''
+              />
+            </div>
+            <div className={cx('menu-detail')}>
+              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
+              <div className={cx('item-english-name')}>
+                Iced Black Grazed Latte
+              </div>
+              <div className={cx('item-price')}>6,300원</div>
+            </div>
+          </li>
+        </Link>
+        <Link href='/product'>
+          <li className={cx('menu-item')}>
+            <div className={cx('menu-img')}>
+              <img
+                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
+                alt=''
+              />
+            </div>
+            <div className={cx('menu-detail')}>
+              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
+              <div className={cx('item-english-name')}>
+                Iced Black Grazed Latte
+              </div>
+              <div className={cx('item-price')}>6,300원</div>
+            </div>
+          </li>
+        </Link>
+      </ul>
+
       <div className={cx('choice-store')}>
         <div>
           <div>주문할 매장을 선택하세요</div>
@@ -127,7 +150,7 @@ function categoryContent() {
             />
           </div>
         </div>
-        <hr color='white' />
+        <hr />
       </div>
     </>
   );
