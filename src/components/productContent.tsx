@@ -8,7 +8,6 @@ const cx = classNames.bind(styles);
 function productContent() {
   const [orderOption, setOrderOption] = useState(false);
   const handleOrder = () => {
-    console.log('열려라 옵션');
     setOrderOption(!orderOption);
   };
   return (

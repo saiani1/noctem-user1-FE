@@ -3,6 +3,8 @@ import classNames from 'classnames/bind';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../../styles/pages/categoryPage.module.scss';
+import { categoryList } from '../../public/assets/datas/categoryList';
+import CategoryItem from './categoryItem';
 
 const cx = classNames.bind(styles);
 
@@ -48,6 +50,10 @@ function categoryContent() {
           <li>브루드 커피</li>
           <li>기타</li>
           <li>병음료</li>
+          {/* {categoryList &&
+            categoryList.map(item => {
+              return <CategoryItem key={item.id} list={item} />;
+            })} */}
         </ul>
       </div>
       <ul>
