@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
+import Image from 'next/image';
 import styles from '../../styles/main/main.module.scss';
 import RecommendedMenu from './recommendedMenu';
 
@@ -17,7 +18,12 @@ function homeContent() {
           <div>
             <div>
               18
-              {/* <PointMark /> */}
+              <Image
+                src='/assets/svg/icon-point.svg'
+                alt='point'
+                width={24}
+                height={21}
+              />
               until Cold Level
             </div>
             <div className={cx('progress-bar')} />
@@ -25,7 +31,12 @@ function homeContent() {
           </div>
           <div className={cx('my-score')}>
             <span>7</span>/25
-            {/* <PointMark /> */}
+            <Image
+              src='/assets/svg/icon-point.svg'
+              alt='point'
+              width={24}
+              height={21}
+            />
           </div>
         </div>
       </div>
