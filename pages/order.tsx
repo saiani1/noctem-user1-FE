@@ -3,9 +3,10 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 
 import styles from '../styles/pages/order.module.scss';
-import ChoicePaymentModal from '../src/components/content/ChoicePaymentModal';
-import RegisterCashReceiptModal from '../src/components/content/RegisterCashReceiptModal';
-import OrderPayingCompletionModal from '../src/components/content/OrderPayingCompletionModal';
+import Header from '../src/components/common/header';
+import ChoicePaymentModal from '../src/components/content/choicePaymentModal';
+import RegisterCashReceiptModal from '../src/components/content/registerCashReceiptModal';
+import OrderPayingCompletionModal from '../src/components/content/orderPayingCompletionModal';
 
 function order() {
   const [isClickPaymentBtn, setIsClickPaymentBtn] = useState(false);
@@ -45,8 +46,9 @@ function order() {
       {isClickSubmitBtn && (
         <OrderPayingCompletionModal setIsClickSubmitBtn={setIsClickSubmitBtn} />
       )}
-      <h2 className={cx('tit')}>결제하기</h2>
+      <Header />
       <form onSubmit={handleSubmit}>
+        <h2 className={cx('tit')}>결제하기</h2>
         <ul className={cx('list-wrap')}>
           <li className={cx('pay-method-wrap')}>
             <h3>결제 수단</h3>

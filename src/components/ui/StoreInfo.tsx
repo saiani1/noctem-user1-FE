@@ -5,11 +5,26 @@ import classNames from 'classnames/bind';
 // import { ParkIcon } from '../../assets/svg/index';
 import styles from '../../../styles/ui/storeInfo.module.scss';
 
-function storeInfo() {
+interface IProps {
+  setIsClickModalBtn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function storeInfo(props: IProps) {
+  const { setIsClickModalBtn } = props;
   const cx = classNames.bind(styles);
 
+  const handleClickStore = () => {
+    setIsClickModalBtn(prev => {
+      return !prev;
+    });
+  };
+
   return (
-    <button type='button' className={cx('store-wrap')}>
+    <button
+      type='button'
+      className={cx('store-wrap')}
+      onClick={handleClickStore}
+    >
       <div className={cx('img-wrap')}>
         <Image
           src='/assets/images/jpg/centomdreamworld.jpg'
@@ -26,7 +41,12 @@ function storeInfo() {
           </span>
         </div>
         <div className={cx('bottom-content-wrap')}>
-          {/* <ParkIcon className={cx('parkIcon')} /> */}
+          <Image
+            src='/assets/svg/icon-park.svg'
+            alt='park'
+            width={15}
+            height={15}
+          />
           <span className={cx('distance')}>151m</span>
         </div>
       </div>
