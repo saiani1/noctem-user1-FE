@@ -1,0 +1,10 @@
+@use '/styles/base/variable';
+
+.signup-wrap {
+  .welcome {
+    margin-bottom: 4px;
+    font-size: variable.$FS-16;
+    font-weight: bold;
+    color: variable.$TXT-001;
+  }
+}

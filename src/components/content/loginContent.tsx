@@ -28,16 +28,13 @@ function loginContent() {
       </div>
 
       <form>
-        <input type='text' placeholder='아이디' className={cx('login-input')} />
-        <input
-          type='password'
-          placeholder='비밀번호'
-          className={cx('login-input')}
-        />
+        <input type='text' placeholder='아이디' className={cx('input')} />
+        <input type='password' placeholder='비밀번호' className={cx('input')} />
         <div className={cx('link-box')}>
+          <Link href='/'>아이디</Link>
           <Link href='/'>아이디 찾기</Link>
           <Link href='/'>비밀번호 찾기</Link>
-          <Link href='/'>회원가입</Link>
+          <Link href='/signUp'>회원가입</Link>
         </div>
         <button type='submit' className={cx('btn', 'btn-bottom')}>
           로그인 하기
