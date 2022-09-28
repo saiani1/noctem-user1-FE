@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
 import { categoryList } from '../../public/assets/datas/categoryList';
+import { categoryNewData } from '../../public/assets/datas/categoryNewData';
 
 const cx = classNames.bind(styles);
 
 function categoryContent() {
   const [isClick, setIsClick] = useState(0);
+  const [menuList, setMenuList] = useState([]);
+
   return (
     <>
       <div className={cx('menu-bar')}>
@@ -51,74 +54,6 @@ function categoryContent() {
         </ul>
       </div>
       <ul>
-        <Link href='/product'>
-          <li className={cx('menu-item')}>
-            <div className={cx('menu-img')}>
-              <img
-                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-                alt=''
-              />
-            </div>
-            <div className={cx('menu-detail')}>
-              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
-              <div className={cx('item-english-name')}>
-                Iced Black Grazed Latte
-              </div>
-              <div className={cx('item-price')}>6,300원</div>
-            </div>
-          </li>
-        </Link>
-        <Link href='/product'>
-          <li className={cx('menu-item')}>
-            <div className={cx('menu-img')}>
-              <img
-                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-                alt=''
-              />
-            </div>
-            <div className={cx('menu-detail')}>
-              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
-              <div className={cx('item-english-name')}>
-                Iced Black Grazed Latte
-              </div>
-              <div className={cx('item-price')}>6,300원</div>
-            </div>
-          </li>
-        </Link>
-        <Link href='/product'>
-          <li className={cx('menu-item')}>
-            <div className={cx('menu-img')}>
-              <img
-                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-                alt=''
-              />
-            </div>
-            <div className={cx('menu-detail')}>
-              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
-              <div className={cx('item-english-name')}>
-                Iced Black Grazed Latte
-              </div>
-              <div className={cx('item-price')}>6,300원</div>
-            </div>
-          </li>
-        </Link>
-        <Link href='/product'>
-          <li className={cx('menu-item')}>
-            <div className={cx('menu-img')}>
-              <img
-                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-                alt=''
-              />
-            </div>
-            <div className={cx('menu-detail')}>
-              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
-              <div className={cx('item-english-name')}>
-                Iced Black Grazed Latte
-              </div>
-              <div className={cx('item-price')}>6,300원</div>
-            </div>
-          </li>
-        </Link>
         <Link href='/product'>
           <li className={cx('menu-item')}>
             <div className={cx('menu-img')}>

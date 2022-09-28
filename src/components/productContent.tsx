@@ -83,14 +83,20 @@ function productContent() {
       </button>
       {orderOption ? (
         <div className={cx('option-box')}>
-          <div className={cx('background')}>background</div>
+          <div
+            className={cx('background')}
+            role='presentation'
+            onClick={handleOrder}
+            onKeyDown={handleOrder}
+          />
           <div className={cx('option')}>
+            <div className={cx('top-bar')} />
             <div className={cx('menu-title')}>아이스 카페 아메리카노</div>
             <div>
               <div className={cx('option-title')}>사이즈</div>
               <div className={cx('cup-size')}>
                 <div className={cx('cup-card')}>
-                  <div>
+                  <div className={cx('cup-image-box')}>
                     <Image
                       src='/assets/svg/icon-cup-size.svg'
                       alt='cup-size'
@@ -114,7 +120,7 @@ function productContent() {
                   <div>473ml</div>
                 </div>
                 <div className={cx('cup-card')}>
-                  <div>
+                  <div className={cx('cup-image-box')}>
                     <Image
                       src='/assets/svg/icon-cup-size.svg'
                       alt='cup-size'
@@ -135,9 +141,9 @@ function productContent() {
                 <div>일회용 컵</div>
               </div>
             </div>
-            <div>
+            {/* <div>
               <div className={cx('option-title')}>퍼스널옵션</div>
-            </div>
+            </div> */}
             <div className={cx('bottom-order-bar')}>
               <hr />
               <div>
@@ -164,7 +170,14 @@ function productContent() {
                   <div className={cx('total-price')}>5,000원</div>
                 </div>
                 <div className={cx('order-select')}>
-                  <div className={cx('add-heart')}>하트</div>
+                  <div className={cx('add-heart')}>
+                    <Image
+                      src='/assets/svg/icon-heart.svg'
+                      alt='heart'
+                      width={30}
+                      height={30}
+                    />
+                  </div>
                   <div>
                     <div className={cx('go-cart')}>담기</div>
                     <div className={cx('go-order')}>주문하기</div>
