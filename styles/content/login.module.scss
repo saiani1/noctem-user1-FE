@@ -1,47 +1,45 @@
 @use '/styles/base/variable';
 @use '/styles/mixins/animation';
 
-.login-wrap {
-  .logo-symbol {
-    margin-bottom: 20px;
-  }
+.logo-wrap {
+  margin-bottom: 20px;
+}
 
-  .welcome {
-    margin-bottom: 4px;
-    font-size: variable.$FS-16;
-    font-weight: bold;
-    color: variable.$TXT-001;
-  }
+.welcome {
+  margin-bottom: 4px;
+  font-size: variable.$FS-16;
+  font-weight: bold;
+  color: variable.$TXT-001;
+}
 
-  .desc {
-    margin-bottom: 30px;
-    font-size: variable.$FS-11;
-    color: variable.$TXT-002;
-  }
+.desc {
+  margin-bottom: 30px;
+  font-size: variable.$FS-11;
+  color: variable.$TXT-002;
+}
 
-  .link-box {
-    text-align: center;
-    color: variable.$TXT-003;
-    font-size: variable.$FS-10;
+.link-box {
+  text-align: center;
+  color: variable.$TXT-003;
+  font-size: variable.$FS-10;
 
-    &>a {
-      margin: 0 10px;
-      position: relative;
+  &>a {
+    margin: 0 10px;
+    position: relative;
 
-      &::after {
-        content: "";
-        position: absolute;
-        top: 3px;
-        left: -10px;
-        width: 1px;
-        height: 10px;
-        background-color: variable.$LINE-003;
-      }
+    &::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: -10px;
+      width: 1px;
+      height: 10px;
+      background-color: variable.$LINE-003;
+    }
 
-      &:first-child::after {
-        content: "";
-        display: none;
-      }
+    &:first-child::after {
+      content: "";
+      display: none;
     }
   }
 }

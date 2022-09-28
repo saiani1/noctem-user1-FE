@@ -1,0 +1,26 @@
+@use '/styles/base/variable';
+
+.content-wrap {
+  .title {
+    font-size: variable.$FS-20;
+    margin-bottom: 20px;
+  }
+
+  .birt-wrap {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+
+    .bar {
+      padding: 18px 4px;
+      color: variable.$TXT-004;
+    }
+
+    .gender {
+      background-image: url('/assets/svg/icon-regi-masking.svg');
+      background-repeat: no-repeat;
+      background-position: 30px 12px;
+
+    }
+  }
+}

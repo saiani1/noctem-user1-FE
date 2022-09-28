@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames/bind';
+import Image from 'next/image';
 import styles from '../../../styles/common/agreement.module.scss';
 
 const cx = classNames.bind(styles);
 
-function agreement() {
+function agreementList() {
   return (
     <>
       <label htmlFor='allChk' className={cx('agree-label')}>
@@ -24,6 +25,14 @@ function agreement() {
           className={cx('agree-input')}
         />
         <span>이용약관 동의(필수)</span>
+        <div className={cx('more-wrap')}>
+          <Image
+            width={10}
+            height={10}
+            src='/assets/svg/icon-more.svg'
+            alt='more'
+          />
+        </div>
       </label>
       <label htmlFor='pesonalInfoChk' className={cx('agree-label')}>
         <input
@@ -33,6 +42,14 @@ function agreement() {
           className={cx('agree-input')}
         />
         <span>개인정보 수집 및 이용동의(필수)</span>
+        <div className={cx('more-wrap')}>
+          <Image
+            width={10}
+            height={10}
+            src='/assets/svg/icon-more.svg'
+            alt='more'
+          />
+        </div>
       </label>
       <label htmlFor='adChk' className={cx('agree-label')}>
         <input
@@ -47,4 +64,4 @@ function agreement() {
   );
 }
 
-export default agreement;
+export default agreementList;
