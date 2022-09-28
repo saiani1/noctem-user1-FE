@@ -53,14 +53,14 @@
       color: variable.$TXT-001;
 
       h3 {
-        font-size: 16px;
+        font-size: variable.$FS-16;
         font-weight: 700;
         color: variable.$POINT;
       }
 
       span {
         margin-left: 5px;
-        font-size: 10px;
+        font-size: variable.$FS-10;
         color: variable.$TXT-003;
       }
     }
@@ -72,7 +72,7 @@
 
       p {
         margin-top: 5px;
-        font-size: 12px;
+        font-size: variable.$FS-12;
         color: variable.$TXT-002;
       }
 
@@ -93,7 +93,7 @@
     padding: 15px;
 
     li {
-      font-size: 12px;
+      font-size: variable.$FS-12;
       color: variable.$TXT-003;
 
       & ~ li {
@@ -121,7 +121,7 @@
     }
 
     p {
-      font-size: 12px;
+      font-size: variable.$FS-12;
       line-height: 1.5;
       color: variable.$TXT-005;
     }
@@ -138,7 +138,7 @@
     button {
       width: 48.5%;
       padding: 8px;
-      font-size: 13px;
+      font-size: variable.$FS-13;
       font-weight: 300;
       border-radius: 20px;
       color: variable.$TXT-005;

@@ -7,7 +7,7 @@
 
   .tit {
     padding: 25px 0 15px;
-    font-size: 16px;
+    font-size: variable.$FS-16;
     font-weight: bold;
     color: variable.$TXT-001;
   }
@@ -41,7 +41,7 @@
               margin-left: 10px;
               p {
                 line-height: 0.9;
-                font-size: 15px;
+                font-size: variable.$FS-15;
                 font-weight: 700;
               }
             }
@@ -68,7 +68,7 @@
 
           p {
             margin-top: -1px;
-            font-size: 13px;
+            font-size: variable.$FS-13;
           }
         }
       }
@@ -84,7 +84,7 @@
 
           span {
             margin-top: -1px;
-            font-size: 12px;
+            font-size: variable.$FS-12;
             color: variable.$TXT-002;
           }
         }
@@ -118,7 +118,7 @@
 
               p {
                 color: variable.$TXT-002;
-                font-size: 11px;
+                font-size: variable.$FS-11;
               }
 
               span {
@@ -133,11 +133,11 @@
               color: variable.$TXT-003;
 
               p {
-                font-size: 11px;
+                font-size: variable.$FS-11;
               }
 
               span {
-                font-size: 12px;
+                font-size: variable.$FS-12;
               }
             }
           }
@@ -157,7 +157,7 @@
           }
 
           dd {
-            font-size: 18px;
+            font-size: variable.$FS-18;
             font-weight: bold;
           }
         }
@@ -166,11 +166,11 @@
           margin-top: 10px;
 
           dt {
-            font-size: 16px;
+            font-size: variable.$FS-16;
           }
 
           dd {
-            font-size: 24px;
+            font-size: variable.$FS-24;
           }
         }
       }
@@ -181,7 +181,7 @@
       margin: 0 19px;
       padding: 8px;
       text-align: center;
-      font-size: 13px;
+      font-size: variable.$FS-13;
       font-weight: 300;
       border-radius: 20px;
       color: variable.$TXT-005;

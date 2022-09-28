@@ -12,7 +12,7 @@ interface IProp {
 function orderProgressModal(props: IProp) {
   const [isCancelActive, setIsCancelActive] = useState(true);
   const [isConfirmPopUpActive, setIsConfirmPopUpActive] = useState(false);
-  const [orderProgress, setOrderProgress] = useState('주문 완료');
+  const [orderProgress, setOrderProgress] = useState('준비 중');
   const { setIsClickOrderProgressBtn } = props;
   const cx = classNames.bind(styles);
 
@@ -41,11 +41,13 @@ function orderProgressModal(props: IProp) {
               {orderProgress === '준비 완료' &&
                 '(A-04)님, 메뉴가 모두 준비되었어요.🤩'}
             </h2>
-            <div className={cx('remain-time-wrap')}>
-              <p>
-                예상 대기시간 <strong>20</strong>분
-              </p>
-            </div>
+            {(orderProgress === '주문 완료' || orderProgress === '준비 중') && (
+              <div className={cx('remain-time-wrap')}>
+                <p>
+                  예상 대기시간 <strong>20</strong>분
+                </p>
+              </div>
+            )}
             <p className={cx('content')}>
               주문 승인 즉시 메뉴 준비가 시작됩니다. 완성 후, 빠르게 픽업해
               주세요.

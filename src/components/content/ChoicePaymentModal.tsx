@@ -22,7 +22,7 @@ function choicePaymentModal(props: IProp) {
       <div className={cx('wrap')}>
         <h2>결제 수단</h2>
         <div className={cx('input-wrap')}>
-          <input type='radio' id='card' />
+          <input type='radio' id='card' defaultChecked />
           <label htmlFor='card'>신용카드</label>
         </div>
         <div className={cx('card-info-wrap')}>

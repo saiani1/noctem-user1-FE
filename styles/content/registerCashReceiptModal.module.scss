@@ -27,7 +27,7 @@
 
   h2 {
     margin: 30px 0 20px;
-    font-size: 16px;
+    font-size: variable.$FS-16;
     font-weight: 700;
     text-align: center;
     color: variable.$TXT-001;
@@ -95,7 +95,7 @@
     margin: 0 19px;
     padding: 8px;
     text-align: center;
-    font-size: 13px;
+    font-size: variable.$FS-13;
     font-weight: 300;
     border-radius: 20px;
     color: variable.$TXT-005;

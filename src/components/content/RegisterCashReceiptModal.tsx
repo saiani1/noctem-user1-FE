@@ -33,6 +33,7 @@ function registerCashReceiptModal(props: IProps) {
               id='personal'
               name='receipt'
               onChange={handleClickReceiptType}
+              defaultChecked
             />
             <label htmlFor='personal'>개인소득공제</label>
           </li>

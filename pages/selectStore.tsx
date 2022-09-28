@@ -3,7 +3,7 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 
 import styles from '../styles/pages/selectStore.module.scss';
-import StoreInfo from '../src/components/ui/StoreInfo';
+import StoreInfo from '../src/components/ui/storeInfo';
 import ChoiceStoreModal from '../src/components/content/choiceStoreModal';
 import Header from '../src/components/common/header';
 

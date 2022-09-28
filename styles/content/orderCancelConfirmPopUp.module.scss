@@ -15,7 +15,7 @@
   z-index: variable.$POPUP;
 
   .tit {
-    font-size: 16px;
+    font-size: variable.$FS-16;
     font-weight: 400;
   }
 
@@ -28,7 +28,7 @@
     button {
       width: 48.5%;
       padding: 8px;
-      font-size: 13px;
+      font-size: variable.$FS-13;
       font-weight: 300;
       border-radius: 20px;
       color: variable.$TXT-005;
