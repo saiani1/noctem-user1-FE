@@ -39,6 +39,10 @@
         li{
             padding: 12px;
         }
+        .active-menu{
+            color: variable.$TXT-002;
+            font-weight: variable.$FW-003;
+        }
     }
 }
 .menu-item{

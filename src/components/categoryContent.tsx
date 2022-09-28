@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../../styles/pages/categoryPage.module.scss';
-import { categoryList } from '../../public/assets/datas/categoryList';
 import CategoryItem from './categoryItem';
+import { categoryList } from '../../public/assets/datas/categoryList';
 
 const cx = classNames.bind(styles);
 
 function categoryContent() {
+  const [isClick, setIsClick] = useState(0);
   return (
     <>
       <div className={cx('menu-bar')}>
@@ -36,24 +37,17 @@ function categoryContent() {
       </div>
       <div className={cx('menu-category')}>
         <ul>
-          <li>new</li>
-          <li>추천</li>
-          <li>리프레셔</li>
-          <li>콜드브루</li>
-          <li>블론드</li>
-          <li>에스프레소</li>
-          <li>디카페인 커피</li>
-          <li>프라푸치노</li>
-          <li>블렌디드</li>
-          <li>피지오</li>
-          <li>티바나</li>
-          <li>브루드 커피</li>
-          <li>기타</li>
-          <li>병음료</li>
-          {/* {categoryList &&
+          {categoryList &&
             categoryList.map(item => {
-              return <CategoryItem key={item.id} list={item} />;
-            })} */}
+              return (
+                <CategoryItem
+                  key={item.id}
+                  list={item}
+                  setIsClick={setIsClick}
+                  isClick={isClick}
+                />
+              );
+            })}
         </ul>
       </div>
       <ul>
