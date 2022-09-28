@@ -12,3 +12,29 @@
     transform: rotate(359deg);
   }
 }
+
+@mixin animation($delay, $duration, $animationName, $direction: forward, $fillmode: fowards) {
+  animation-delay: $delay;
+  animation-duration: $duration;
+  animation-name: $animationName;
+  animation-fill-mode: $fillmode;
+  animation-direction: $direction;
+}
+
+@mixin keyframe($animation_name) {
+  @keyframes #{$animation_name} {
+    @content;
+  }
+}
+
+@include keyframe(animation-slide-in-left) {
+  0% {
+    transform: translate(-100%, 0);
+    border-bottom: 2px solid red;
+  }
+
+  100% {
+    transform: translate(0, 0);
+    border-bottom: 12px solid red;
+  }
+}

@@ -69,3 +69,28 @@ h3 {
   height: 1px;
   background-color: variable.$LINE-002;
 }
+
+// input
+.input {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: variable.$FS-11;
+  border: none;
+  border-bottom: 1px solid variable.$LINE-003;
+
+  &:focus {
+    border-bottom: 1px solid variable.$POINT;
+    // @include animation.animation(0, 0.5s, animation-slide-in-left, ease);
+  }
+
+  & + & {
+    margin-bottom: 20px;
+  }
+}
+
+.input-big {
+  padding: 18px 4px;
+  color: variable.$TXT-004;
+  font-size: variable.$FS-14;
+}

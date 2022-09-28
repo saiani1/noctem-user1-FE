@@ -29,12 +29,14 @@ function header() {
       <div className={cx('header-logo')}>
         <h1 className={cx('header-title')}>Cafe Noctem Order</h1>
         <Link href='/'>
-          <Image
-            width={93}
-            height={21}
-            alt='logo title image'
-            src='/assets/images/png/logo-title.png'
-          />
+          <a href='/'>
+            <Image
+              width={93}
+              height={21}
+              alt='logo title image'
+              src='/assets/images/png/logo-title.png'
+            />
+          </a>
         </Link>
       </div>
     </div>

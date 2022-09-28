@@ -1,0 +1,18 @@
+@use '/styles/base/variable';
+
+.agree-label {
+  display: block;
+}
+
+.agree-input {
+  width: 14px;
+  height: 14px;
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid variable.$POINT;
+  border-radius: 50%;
+
+  &:checked {
+    background-color: variable.$POINT;
+  }
+}
