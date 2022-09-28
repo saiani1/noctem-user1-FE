@@ -3,7 +3,39 @@
 .content-wrap {
   .title {
     font-size: variable.$FS-20;
+    margin-bottom: 10px;
+  }
+
+  .input-wrap {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
+
+    input {
+      margin-bottom: 4px;
+    }
+
+    .error {
+      padding-left: 10px;
+    }
+  }
+
+  .nickName-wrap,
+  .email-wrap {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+
+    .btn-dupl-chk {
+      width: 100px;
+      margin-left: 10px;
+      margin-bottom: 4px;
+      padding: 10px;
+      color: variable.$TXT-005;
+      border: 1px solid variable.$POINT;
+      border-radius: 10px;
+      background-color: variable.$POINT;
+    }
   }
 
   .birt-wrap {
@@ -17,10 +49,7 @@
     }
 
     .gender {
-      background-image: url('/assets/svg/icon-regi-masking.svg');
-      background-repeat: no-repeat;
-      background-position: 30px 12px;
-
+      background: url('/assets/svg/icon-regi-masking.svg') no-repeat center center;
     }
   }
 }
