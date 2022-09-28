@@ -81,6 +81,100 @@ function productContent() {
       >
         주문하기
       </button>
+      {orderOption ? (
+        <div className={cx('option-box')}>
+          <div className={cx('background')}>background</div>
+          <div className={cx('option')}>
+            <div className={cx('menu-title')}>아이스 카페 아메리카노</div>
+            <div>
+              <div className={cx('option-title')}>사이즈</div>
+              <div className={cx('cup-size')}>
+                <div className={cx('cup-card')}>
+                  <div>
+                    <Image
+                      src='/assets/svg/icon-cup-size.svg'
+                      alt='cup-size'
+                      width={26}
+                      height={26}
+                    />
+                  </div>
+                  <div>Tall</div>
+                  <div>335ml</div>
+                </div>
+                <div className={cx('cup-card')}>
+                  <div className={cx('cup-image-box')}>
+                    <Image
+                      src='/assets/svg/icon-cup-size.svg'
+                      alt='cup-size'
+                      width={36}
+                      height={36}
+                    />
+                  </div>
+                  <div>Grande</div>
+                  <div>473ml</div>
+                </div>
+                <div className={cx('cup-card')}>
+                  <div>
+                    <Image
+                      src='/assets/svg/icon-cup-size.svg'
+                      alt='cup-size'
+                      width={44}
+                      height={44}
+                    />
+                  </div>
+                  <div>Venti</div>
+                  <div>591ml</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={cx('option-title')}>컵 선택</div>
+              <div className={cx('cup-kind')}>
+                <div>매장컵</div>
+                <div>개인 컵</div>
+                <div>일회용 컵</div>
+              </div>
+            </div>
+            <div>
+              <div className={cx('option-title')}>퍼스널옵션</div>
+            </div>
+            <div className={cx('bottom-order-bar')}>
+              <hr />
+              <div>
+                <div className={cx('total-cost')}>
+                  <div className={cx('control-count')}>
+                    <div>
+                      <Image
+                        src='/assets/svg/icon-minus.svg'
+                        alt='minus'
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                    <div>1</div>
+                    <div>
+                      <Image
+                        src='/assets/svg/icon-plus.svg'
+                        alt='plus'
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                  </div>
+                  <div className={cx('total-price')}>5,000원</div>
+                </div>
+                <div className={cx('order-select')}>
+                  <div className={cx('add-heart')}>하트</div>
+                  <div>
+                    <div className={cx('go-cart')}>담기</div>
+                    <div className={cx('go-order')}>주문하기</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : undefined}
     </>
   );
 }
