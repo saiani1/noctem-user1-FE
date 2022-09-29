@@ -41,6 +41,7 @@ function signUpContent() {
       )}
       {step.step2 && (
         <Step2
+          agreeData={agreeData}
           inputData={inputData}
           setInputData={setInputData}
           setStep={setStep}
