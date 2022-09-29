@@ -22,6 +22,13 @@ function setting() {
             </div>
           </li>
           <li className={cx('setting-li')}>
+            <label htmlFor='push'>프로모션/이벤트 알림 수신</label>
+            <div className={cx('toggle-wrap')}>
+              <input type='checkbox' />
+              <div className={cx('toggle')} />
+            </div>
+          </li>
+          <li className={cx('setting-li')}>
             <label htmlFor='push'>위치 정보 서비스 이용약관 동의</label>
             <div className={cx('toggle-wrap')}>
               <input type='checkbox' />
