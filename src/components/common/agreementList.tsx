@@ -2,27 +2,39 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../../styles/common/agreement.module.scss';
+import { IAgreeData } from '../../types/signUp.d';
 
 const cx = classNames.bind(styles);
 
-function agreementList() {
+function agreementList({
+  agreeData,
+  handleCheckOption,
+}: {
+  agreeData: IAgreeData;
+  handleCheckOption: (e: React.FormEvent<HTMLInputElement>) => void;
+}) {
   return (
     <>
-      <label htmlFor='allChk' className={cx('agree-label')}>
+      <label htmlFor='all_agr' className={cx('agree-label')}>
         <input
           type='checkbox'
-          name='allChk'
-          id='allChk'
+          name='all_agr'
+          id='all_agr'
           className={cx('agree-input')}
+          onChange={handleCheckOption}
+          checked={agreeData.all_agr}
         />
         <span>약관 전체 동의</span>
       </label>
-      <label htmlFor='serviceChk' className={cx('agree-label')}>
+
+      <label htmlFor='agr1_use' className={cx('agree-label')}>
         <input
           type='checkbox'
-          name='serviceChk'
-          id='serviceChk'
+          name='agr1_use'
+          id='agr1_use'
           className={cx('agree-input')}
+          onChange={handleCheckOption}
+          checked={agreeData.agr1_use}
         />
         <span>이용약관 동의(필수)</span>
         <div className={cx('more-wrap')}>
@@ -34,12 +46,15 @@ function agreementList() {
           />
         </div>
       </label>
-      <label htmlFor='pesonalInfoChk' className={cx('agree-label')}>
+
+      <label htmlFor='agr2_info' className={cx('agree-label')}>
         <input
           type='checkbox'
-          name='pesonalInfoChk'
-          id='pesonalInfoChk'
+          name='agr2_info'
+          id='agr2_info'
           className={cx('agree-input')}
+          onChange={handleCheckOption}
+          checked={agreeData.agr2_info}
         />
         <span>개인정보 수집 및 이용동의(필수)</span>
         <div className={cx('more-wrap')}>
@@ -51,12 +66,15 @@ function agreementList() {
           />
         </div>
       </label>
-      <label htmlFor='adChk' className={cx('agree-label', 'ad-agree-label')}>
+
+      <label htmlFor='agr3_ad' className={cx('agree-label', 'ad-agree-label')}>
         <input
           type='checkbox'
-          name='adChk'
-          id='adChk'
+          name='agr3_ad'
+          id='agr3_ad'
           className={cx('agree-input')}
+          onChange={handleCheckOption}
+          checked={agreeData.agr3_ad}
         />
         <div className={cx('desc-wrap')}>
           <span>E-mail 및 SMS 광고성 정보 수신동의(선택)</span>
