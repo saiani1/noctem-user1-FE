@@ -2,10 +2,17 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../../../styles/content/signUp/signUpComplate.module.scss';
+import { IStep3Props } from '../../../types/signUp.d';
 
 const cx = classNames.bind(styles);
 
-function signUpComplate({ nickName }: { nickName: string }) {
+function signUpComplate({
+  nickName,
+  setStep,
+}: {
+  nickName: IStep3Props['nickName'];
+  setStep: IStep3Props['setStep'];
+}) {
   return (
     <div className={cx('wrap')}>
       <div className={cx('signUpCompalte-wrap')}>

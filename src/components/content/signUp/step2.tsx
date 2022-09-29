@@ -1,11 +1,20 @@
 import React, { useState, useRef } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../../../../styles/content/signUp/step2.module.scss';
-import { IError } from '../../../types/signUp.d';
+import { IError, IStep2Props } from '../../../types/signUp.d';
 
 const cx = classNames.bind(styles);
 
-function step2() {
+function step2({
+  inputData,
+  setInputData,
+  setStep,
+}: {
+  inputData: IStep2Props['inputData'];
+  setInputData: IStep2Props['setInputData'];
+  setStep: IStep2Props['setStep'];
+}) {
+  console.log(inputData);
   const nameRef = useRef<HTMLInputElement>(null);
   const nickNameRef = useRef<HTMLInputElement>(null);
   const birthRef = useRef<HTMLInputElement>(null);

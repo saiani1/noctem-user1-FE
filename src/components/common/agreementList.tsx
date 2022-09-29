@@ -40,7 +40,7 @@ function agreementList({
         <div className={cx('more-wrap')}>
           <Image
             width={10}
-            height={10}
+            height={12}
             src='/assets/svg/icon-more.svg'
             alt='more'
           />
@@ -60,7 +60,7 @@ function agreementList({
         <div className={cx('more-wrap')}>
           <Image
             width={10}
-            height={10}
+            height={12}
             src='/assets/svg/icon-more.svg'
             alt='more'
           />
