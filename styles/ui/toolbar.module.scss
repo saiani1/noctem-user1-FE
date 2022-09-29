@@ -1,4 +1,4 @@
-@use '/src/styles/base/variable';
+@use '/styles/base/variable';
 
 .toolbar-list-wrap {
   position: fixed;
@@ -63,41 +63,41 @@
 
     &:nth-child(1) {
       .toolbar-icon::after {
-        background-image: url('../../assets/svg/toolbar/icon-home.svg');
+        background-image: url('/assets/svg/toolbar/icon-home.svg');
       }
 
       .toolbar-icon.active::after {
-        background-image: url('../../assets/svg/toolbar/icon-home-active.svg');
+        background-image: url('/assets/svg/toolbar/icon-home-active.svg');
       }
     }
 
     &:nth-child(2) {
       .toolbar-icon::after {
-        background-image: url('../../assets/svg/toolbar/icon-order.svg');
+        background-image: url('/assets/svg/toolbar/icon-order.svg');
       }
 
       .toolbar-icon.active::after {
-        background-image: url('../../assets/svg/toolbar/icon-order-active.svg');
+        background-image: url('/assets/svg/toolbar/icon-order-active.svg');
       }
     }
 
     &:nth-child(3) {
       .toolbar-icon::after {
-        background-image: url('../../assets/svg/toolbar/icon-pay.svg');
+        background-image: url('/assets/svg/toolbar/icon-pay.svg');
       }
 
       .toolbar-icon.active::after {
-        background-image: url('../../assets/svg/toolbar/icon-pay-active.svg');
+        background-image: url('/assets/svg/toolbar/icon-pay-active.svg');
       }
     }
 
     &:nth-child(4) {
       .toolbar-icon::after {
-        background-image: url('../../assets/svg/toolbar/icon-my.svg');
+        background-image: url('/assets/svg/toolbar/icon-my.svg');
       }
 
       .toolbar-icon.active::after {
-        background-image: url('../../assets/svg/toolbar/icon-my-active.svg');
+        background-image: url('/assets/svg/toolbar/icon-my-active.svg');
       }
     }
   }

@@ -1,0 +1,110 @@
+@use '../base/variable';
+
+.menu-bar{
+    display: flex;
+    justify-content: space-between;
+    // position: fixed;
+    // top: 49px;
+    background-color: white;
+    width: 100vw;
+    div{
+        padding: 12px;
+    }
+    ul{
+        display: flex;
+        li{
+            padding: 12px;
+        }
+    }
+    .state-bar-drink{
+        position:absolute;
+        padding: 2px 25px;
+        margin-top: 46px;
+        transition: all 0.2s ease-in-out;
+        background-color: variable.$BG-005;
+    }
+    .state-bar-food{
+        position:absolute;
+        padding: 2px 25px;
+        margin-top: 46px;
+        margin-left: 50px;
+        transition: all 0.2s ease-in-out;
+        background-color: variable.$BG-005;
+    }
+    .search-bar{
+        width: 50%;
+        background-color: variable.$BG-003;
+        position: relative;
+        margin: 8px;
+        border-radius: 30px;
+        padding: 0;
+
+        .search-icon{
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 6px;
+        }
+    }
+}
+
+.menu-category{
+    // position: fixed;
+    // top: 94px;
+    ul{
+        display: flex;
+        overflow: auto;
+        white-space: nowrap;
+        background-color:variable.$BG-003;
+        color: variable.$TXT-003;
+        li{
+            padding: 12px;
+        }
+        .active-menu{
+            color: variable.$TXT-002;
+            font-weight: variable.$FW-003;
+        }
+    }
+}
+.menu-item{
+    display: flex;
+    margin: 24px;
+
+    .menu-img{
+        width: 68px;
+
+        img{
+            width: 100%;
+            border-radius: 50%;
+        }
+    }
+    .menu-detail{
+        padding-left: 24px;
+        .item-name{
+            font-size: variable.$FS-15;
+            color: variable.$TXT-001;
+        }
+        .item-english-name{
+            font-size: variable.$FS-12;
+            color: variable.$TXT-003;
+        }
+        .item-price{
+            font-size: variable.$FS-15;
+            font-weight: variable.$FW-003;
+            color: variable.$TXT-001;
+        }
+    }
+}
+.choice-store{
+    div{
+        display: flex;
+        justify-content: space-between;
+    }
+    background-color: variable.$BG-006;
+    color:variable.$TXT-005;
+    position: fixed;
+    bottom: 50px;
+    width: 100vw;
+    text-align: center;
+    padding: 12px;
+}
