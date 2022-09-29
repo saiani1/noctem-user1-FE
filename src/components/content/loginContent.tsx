@@ -8,14 +8,16 @@ const cx = classNames.bind(styles);
 
 function loginContent() {
   return (
-    <div className={cx('wrap', 'login-wrap')}>
+    <div className={cx('wrap')}>
       <h2>Login</h2>
-      <Image
-        src='/assets/images/png/logo-symbol.png'
-        alt='logo symbol'
-        width={80}
-        height={100}
-      />
+      <div className={cx('logo-wrap')}>
+        <Image
+          src='/assets/images/png/logo-symbol.png'
+          alt='logo symbol'
+          width={80}
+          height={100}
+        />
+      </div>
       <div>
         <div className={cx('welcome')}>
           안녕하세요.
@@ -28,11 +30,20 @@ function loginContent() {
       </div>
 
       <form>
-        <input type='text' placeholder='아이디' className={cx('input')} />
-        <input type='password' placeholder='비밀번호' className={cx('input')} />
+        <input
+          type='email'
+          name='email'
+          placeholder='이메일'
+          className={cx('input')}
+        />
+        <input
+          type='password'
+          name='password'
+          placeholder='비밀번호'
+          className={cx('input')}
+        />
         <div className={cx('link-box')}>
-          <Link href='/'>아이디</Link>
-          <Link href='/'>아이디 찾기</Link>
+          <Link href='/'>이메일 찾기</Link>
           <Link href='/'>비밀번호 찾기</Link>
           <Link href='/signUp'>회원가입</Link>
         </div>

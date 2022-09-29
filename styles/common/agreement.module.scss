@@ -1,18 +1,65 @@
 @use '/styles/base/variable';
 
 .agree-label {
-  display: block;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+
+  &:first-child::after {
+    content: '';
+    height: 1px;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    left: 0;
+    background-color: variable.$LINE-003;
+  }
+
+  .more-wrap {
+    position: absolute;
+    right: 4px;
+  }
+}
+
+.ad-agree-label {
+  align-items: flex-start;
+
+  .desc-wrap {
+    display: flex;
+    flex-direction: column;
+
+    .sub-desc {
+      font-size: variable.$FS-10;
+      color: variable.$TXT-002;
+    }
+  }
 }
 
 .agree-input {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  position: relative;
   appearance: none;
   background-color: transparent;
   border: 1px solid variable.$POINT;
   border-radius: 50%;
 
+  &[name='adChk'] {
+    margin-top: 2px;
+  }
+
   &:checked {
     background-color: variable.$POINT;
+
+    &:checked::after {
+      content: url('/assets/svg/icon-check.svg');
+      width: 10px;
+      height: 10px;
+      position: absolute;
+      top: -2px;
+      left: 4px;
+    }
   }
 }

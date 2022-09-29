@@ -1,0 +1,19 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.logo-wrap {
+  margin-bottom: 20px;
+}
+
+.welcome {
+  margin-bottom: 4px;
+  font-size: variable.$FS-20;
+  font-weight: bold;
+  color: variable.$TXT-001;
+}
+
+.agreement-wrap {
+  @include position.absolute(auto 0 72px 0);
+  padding: 0 18px;
+  background-color: #fff;
+}
