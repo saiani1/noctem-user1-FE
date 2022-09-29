@@ -1,4 +1,4 @@
-@use '/src/styles/base/variable';
+@use '/styles/base/variable';
 
 .point-box {
 	margin: 24px;
@@ -39,7 +39,6 @@
 
 		.my-score {
 			color: variable.$POINT;
-			;
 
 			span {
 				font-size: 22px;
@@ -164,11 +163,11 @@
 }
 
 .recommend-menu {
-	margin: 24px 0 24px 24px;
 	overflow: hidden;
 
 	.title {
 		font-weight: bold;
+		margin: 0 0 0 24px;
 	}
 
 	div {
@@ -181,7 +180,12 @@
 	width: 100vw;
 	overflow: auto;
 	white-space: nowrap;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 
+	&::-webkit-scrollbar{
+		display: none;
+	}
 	.recommended-menu {
 		margin: 8px;
 		text-align: center;
