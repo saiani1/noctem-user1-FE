@@ -45,13 +45,7 @@ export interface IInputData {
   passwordConfirm: string;
 }
 
-export interface IChkSuccess {
-  nickName: boolean;
-  email: boolean;
-  [key: string]: boolean;
-}
-
-export interface IError {
+export interface IValid {
   name: boolean;
   nickName: boolean;
   birth: boolean;
@@ -60,4 +54,20 @@ export interface IError {
   password: boolean;
   passwordConfirm: boolean;
   [key: string]: boolean;
+}
+
+export interface IDuplValid {
+  nickName: boolean;
+  email: boolean;
+}
+
+export interface IError {
+  name: string;
+  nickName: string;
+  birth: string;
+  gender: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  [key: string]: string;
 }
