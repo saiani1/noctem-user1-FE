@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import Router from 'next/router';
+import axios from 'axios';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 import Link from 'next/link';
@@ -7,6 +9,31 @@ import styles from '../../../styles/content/login.module.scss';
 const cx = classNames.bind(styles);
 
 function loginContent() {
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const passwordInputRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const emailValue = emailInputRef.current?.value;
+    const passwordValue = passwordInputRef.current?.value;
+
+    axios
+      .post('http://10.10.10.162:8000/api/user-service/login', {
+        email: emailValue,
+        password: passwordValue,
+      })
+      .then((res: any) => {
+        const rawToken = JSON.stringify(res.headers.authorization).split(
+          ' ',
+        )[1];
+        localStorage.setItem('token', JSON.stringify(rawToken));
+        Router.push('/');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className={cx('wrap')}>
       <h2>Login</h2>
@@ -29,18 +56,20 @@ function loginContent() {
         </div>
       </div>
 
-      <form>
+      <form onSubmit={handleSubmit} noValidate>
         <input
           type='email'
           name='email'
           placeholder='이메일'
           className={cx('input')}
+          ref={emailInputRef}
         />
         <input
           type='password'
           name='password'
           placeholder='비밀번호'
           className={cx('input')}
+          ref={passwordInputRef}
         />
         <div className={cx('link-box')}>
           <Link href='/'>이메일 찾기</Link>
