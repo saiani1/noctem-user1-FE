@@ -5,6 +5,7 @@ export interface IStep1Props {
 }
 
 export interface IStep2Props {
+  agreeData: IAgreeData;
   inputData: IInputData;
   setInputData: Dispatch<SetStateAction<boolean>>;
   setStep: Dispatch<SetStateAction<boolean>>;
@@ -44,13 +45,29 @@ export interface IInputData {
   passwordConfirm: string;
 }
 
-export interface IError {
-  name: false;
-  nickName: false;
-  birth: false;
-  gender: false;
-  email: false;
-  password: false;
-  passwordConfirm: false;
+export interface IValid {
+  name: boolean;
+  nickName: boolean;
+  birth: boolean;
+  gender: boolean;
+  email: boolean;
+  password: boolean;
+  passwordConfirm: boolean;
   [key: string]: boolean;
+}
+
+export interface IDuplValid {
+  nickName: boolean;
+  email: boolean;
+}
+
+export interface IError {
+  name: string;
+  nickName: string;
+  birth: string;
+  gender: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  [key: string]: string;
 }

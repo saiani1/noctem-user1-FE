@@ -17,6 +17,11 @@
 
     .error {
       padding-left: 10px;
+      color: variable.$TXT-ERROR;
+    }
+
+    .success {
+      color: variable.$TXT-SUCCESS;
     }
   }
 
