@@ -1,0 +1,48 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.wrap {
+  padding: 19px;
+  .setting-li-wrap {
+    margin-top: 40px;
+    .setting-li {
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+
+      & ~ .setting-li {
+        border-top: 1px solid variable.$LINE-003;
+      }
+
+      label {
+        font-size: variable.$FS-15;
+      }
+      .toggle-wrap {
+        position: relative;
+        input[type='checkbox'] {
+          -webkit-appearance: none;
+          width: 55px;
+          height: 30px;
+          background-color: variable.$BG-007;
+          border-radius: 20px;
+
+          &:checked {
+            background-color: variable.$POINT;
+            & ~ .toggle {
+              margin-left: 25px;
+            }
+          }
+        }
+        .toggle {
+          @include position.absolute(3px auto auto 3px);
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background-color: variable.$BG-001;
+          pointer-events: none;
+          transition: all 0.2s ease-in-out;
+        }
+      }
+    }
+  }
+}

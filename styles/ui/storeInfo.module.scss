@@ -1,7 +1,9 @@
-@use '/src/styles/base/variable';
+@use '/styles/base/variable';
 
 .store-wrap {
   display: flex;
+  width: 100%;
+  justify-content: space-around;
   margin: 20px 0;
 
   .img-wrap {
@@ -31,13 +33,13 @@
     .top-content-wrap {
       .store-name {
         margin-bottom: 2px;
-        font-size: 13px;
+        font-size: variable.$FS-13;
         font-weight: bold;
         color: variable.$TXT-002;
       }
       .store-address {
         display: inline-block;
-        font-size: 11px;
+        font-size: variable.$FS-11;
         font-weight: 300;
         color: variable.$TXT-003;
         line-height: 1.4;
@@ -55,7 +57,7 @@
       }
     }
     .distance {
-      font-size: 13px;
+      font-size: variable.$FS-13;
       font-weight: 500;
       color: variable.$TXT-002;
     }

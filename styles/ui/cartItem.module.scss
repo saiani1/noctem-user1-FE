@@ -1,0 +1,131 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.cart-item-wrap {
+  padding: 019px;
+  border-bottom: 1px solid variable.$LINE-003;
+
+  input[type='checkbox'] {
+    position: relative;
+    -webkit-appearance: none;
+    width: 17px;
+    height: 17px;
+    border: 1px solid variable.$POINT;
+    border-radius: 3px;
+    &:checked {
+      background-color: variable.$POINT;
+    }
+    &::after {
+      pointer-events: none;
+      content: url('/assets/svg/icon-check.svg');
+      @include position.absolute(-4px 4px auto auto);
+      width: 10px;
+    }
+  }
+  .first-wrap {
+    display: flex;
+    justify-content: space-between;
+    .close-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid variable.$LINE-003;
+    }
+  }
+  .second-wrap {
+    display: flex;
+    .img-wrap {
+      display: inline-block;
+      margin-right: 20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .content-wrap {
+      width: 100%;
+      .kor-name {
+        font-size: variable.$FS-14;
+        font-weight: 500;
+        color: variable.$TXT-001;
+      }
+      .eng-name {
+        font-size: variable.$FS-12;
+        font-weight: 300;
+        color: variable.$TXT-003;
+      }
+      .option-wrap {
+        display: flex;
+        justify-content: space-between;
+        margin: 7px 0;
+        font-size: variable.$FS-12;
+        font-weight: 300;
+        color: variable.$TXT-003;
+
+        .price {
+          font-weight: 500;
+        }
+      }
+      .option-change-btn {
+        font-size: variable.$FS-12;
+        font-weight: 300;
+        color: variable.$POINT;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .num-change-wrap {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+
+        .left {
+          display: flex;
+          button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid variable.$LINE-004;
+          }
+          .minus-btn {
+            &::after {
+              content: ' ';
+              width: 9px;
+              height: 1px;
+              background-color: variable.$LINE-004;
+            }
+          }
+          strong {
+            margin: 0 20px;
+          }
+          .plus-btn {
+            position: relative;
+            &::before {
+              @include position.absolute(4.5px auto auto 8px);
+              content: ' ';
+              width: 1px;
+              height: 9px;
+              background-color: variable.$LINE-004;
+            }
+            &::after {
+              content: ' ';
+              width: 9px;
+              height: 1px;
+              background-color: variable.$LINE-004;
+            }
+          }
+        }
+        span {
+          font-size: variable.$FS-14;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}

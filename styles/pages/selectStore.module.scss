@@ -1,12 +1,12 @@
-@use '/src/styles//base/variable';
-@use '/src/styles/mixins/position';
+@use '/styles//base/variable';
+@use '/styles/mixins/position';
 
 .wrap {
   padding: 0 19px;
 
   .title {
     margin: 25px 0 15px;
-    font-size: 16px;
+    font-size: variable.$FS-16;
     font-weight: bold;
     color: variable.$TXT-001;
   }
@@ -21,14 +21,14 @@
       background-color: variable.$BG-008;
 
       &::placeholder {
-        font-size: 13px;
+        font-size: variable.$FS-13;
         color: variable.$TXT-004;
       }
     }
-    .search-icon {
-      @include position.absolute(9px auto auto 9px);
-      width: 13px;
-      height: 13px;
+    .img-wrap {
+      position: absolute !important;
+      top: 7px !important;
+      left: 9px !important;
     }
   }
   .filter-wrap {
@@ -40,7 +40,7 @@
     button {
       flex: 0 0 auto;
       padding: 5px 10px;
-      font-size: 12px;
+      font-size: variable.$FS-12;
       border-radius: 5px;
       border: 1px solid variable.$LINE-003;
       color: variable.$TXT-003;
@@ -55,7 +55,7 @@
     border-bottom: 1px solid variable.$LINE-002;
 
     button {
-      font-size: 13px;
+      font-size: variable.$FS-13;
       font-weight: 300;
       color: variable.$TXT-003;
       margin-right: 8px;

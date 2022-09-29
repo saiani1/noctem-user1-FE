@@ -1,16 +1,17 @@
-@use '/src/styles/base/variable';
-@use '/src/styles/mixins/position';
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
 
 .background {
   @include position.absolute(0 0 0 0);
   background-color: rgba(variable.$BG-006, 0.6);
+  z-index: variable.$MODAL-BACK;
 }
 .wrap {
   @include position.absolute(50px 0 0 0);
   background-color: variable.$BG-001;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  z-index: 9999;
+  z-index: variable.$MODAL;
 
   &::after {
     @include position.absolute(7.5px 50% auto 50%);
@@ -25,7 +26,7 @@
 
   h2 {
     margin: 30px 0 20px;
-    font-size: 16px;
+    font-size: variable.$FS-16;
     font-weight: 700;
     text-align: center;
     color: variable.$TXT-001;
@@ -78,7 +79,7 @@
     margin: 0 19px;
     padding: 8px;
     text-align: center;
-    font-size: 13px;
+    font-size: variable.$FS-13;
     font-weight: 300;
     border-radius: 20px;
     color: variable.$TXT-005;
