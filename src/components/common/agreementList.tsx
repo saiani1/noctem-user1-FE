@@ -51,14 +51,19 @@ function agreementList() {
           />
         </div>
       </label>
-      <label htmlFor='adChk' className={cx('agree-label')}>
+      <label htmlFor='adChk' className={cx('agree-label', 'ad-agree-label')}>
         <input
           type='checkbox'
           name='adChk'
           id='adChk'
           className={cx('agree-input')}
         />
-        <span>E-mail 및 SMS 광고성 정보 수신동의(선택)</span>
+        <div className={cx('desc-wrap')}>
+          <span>E-mail 및 SMS 광고성 정보 수신동의(선택)</span>
+          <span className={cx('sub-desc')}>
+            다양한 프로모션 소식 및 신규 매장 정보를 보내드립니다.
+          </span>
+        </div>
       </label>
     </>
   );

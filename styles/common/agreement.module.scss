@@ -22,6 +22,20 @@
   }
 }
 
+.ad-agree-label {
+  align-items: flex-start;
+
+  .desc-wrap {
+    display: flex;
+    flex-direction: column;
+
+    .sub-desc {
+      font-size: variable.$FS-10;
+      color: variable.$TXT-002;
+    }
+  }
+}
+
 .agree-input {
   width: 20px;
   height: 20px;
@@ -31,6 +45,10 @@
   background-color: transparent;
   border: 1px solid variable.$POINT;
   border-radius: 50%;
+
+  &[name='adChk'] {
+    margin-top: 2px;
+  }
 
   &:checked {
     background-color: variable.$POINT;
