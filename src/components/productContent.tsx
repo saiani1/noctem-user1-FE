@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/pages/productPage.module.scss';
+import CategoryContent from './categoryContent';
+import CategoryItem from './categoryItem';
+import { categoryList } from '../../public/assets/datas/categoryList';
 
 const cx = classNames.bind(styles);
 
@@ -10,49 +13,11 @@ function productContent() {
   const handleOrder = () => {
     setOrderOption(!orderOption);
   };
+  const [isClick, setIsClick] = useState(0);
+  const [categoryName, setCategoryName] = useState('new');
   return (
     <>
-      <div className={cx('menu-bar')}>
-        <div>음료</div>
-        <div>푸드</div>
-        <div className={cx('search-bar')}>
-          <div />
-          <div className={cx('search-icon')}>
-            <Image
-              src='/assets/svg/icon-search.svg'
-              alt='search'
-              width={24}
-              height={21}
-            />
-          </div>
-        </div>
-        <div>
-          <Image
-            src='/assets/svg/icon-cart.svg'
-            alt='cart'
-            width={24}
-            height={21}
-          />
-        </div>
-      </div>
-      <div className={cx('menu-category')}>
-        <ul>
-          <li>new</li>
-          <li>추천</li>
-          <li>리프레셔</li>
-          <li>콜드브루</li>
-          <li>블론드</li>
-          <li>에스프레소</li>
-          <li>디카페인 커피</li>
-          <li>프라푸치노</li>
-          <li>블렌디드</li>
-          <li>피지오</li>
-          <li>티바나</li>
-          <li>브루드 커피</li>
-          <li>기타</li>
-          <li>병음료</li>
-        </ul>
-      </div>
+      <CategoryContent setCategoryName={setCategoryName} />
       <div className={cx('product-img')}>
         <img
           src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
@@ -74,13 +39,16 @@ function productContent() {
       </div>
 
       <hr className={cx('line')} />
-      <button
-        className={cx('order-button')}
-        type='button'
-        onClick={handleOrder}
-      >
-        주문하기
-      </button>
+      <div className={cx('button-box')}>
+        <button
+          className={cx('order-button')}
+          type='button'
+          onClick={handleOrder}
+        >
+          주문하기
+        </button>
+      </div>
+
       {orderOption ? (
         <div className={cx('option-box')}>
           <div
@@ -89,7 +57,7 @@ function productContent() {
             onClick={handleOrder}
             onKeyDown={handleOrder}
           />
-          <div className={cx('option')}>
+          <div className={cx('option', 'fadeIn')}>
             <div className={cx('top-bar')} />
             <div className={cx('menu-title')}>아이스 카페 아메리카노</div>
             <div>
@@ -141,9 +109,6 @@ function productContent() {
                 <div>일회용 컵</div>
               </div>
             </div>
-            {/* <div>
-              <div className={cx('option-title')}>퍼스널옵션</div>
-            </div> */}
             <div className={cx('bottom-order-bar')}>
               <hr />
               <div>

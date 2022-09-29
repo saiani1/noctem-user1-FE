@@ -1,23 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
-import Link from 'next/link';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
 import { categoryList } from '../../public/assets/datas/categoryList';
-import { categoryNewData } from '../../public/assets/datas/categoryNewData';
+import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
 
 const cx = classNames.bind(styles);
 
-function categoryContent() {
+function categoryContent({ setCategoryName }: { setCategoryName: any }) {
   const [isClick, setIsClick] = useState(0);
-  const [menuList, setMenuList] = useState([]);
-
+  const [categoryL, setCategoryL] = useState('drink');
+  const handleChangeCategory = (name: string) => {
+    console.log(name);
+    setCategoryL(name);
+  };
   return (
     <>
       <div className={cx('menu-bar')}>
-        <div>음료</div>
-        <div>푸드</div>
+        <div
+          className={
+            categoryL === 'drink' ? cx('state-bar-drink') : cx('state-bar-food')
+          }
+        />
+        <ul>
+          <li
+            role='menuitem'
+            onClick={() => {
+              handleChangeCategory('drink');
+            }}
+            onKeyDown={() => {
+              handleChangeCategory('drink');
+            }}
+          >
+            음료
+          </li>
+          <li
+            role='menuitem'
+            onClick={() => {
+              handleChangeCategory('food');
+            }}
+            onKeyDown={() => {
+              handleChangeCategory('food');
+            }}
+          >
+            푸드
+          </li>
+        </ul>
         <div className={cx('search-bar')}>
           <div />
           <div className={cx('search-icon')}>
@@ -39,53 +68,37 @@ function categoryContent() {
         </div>
       </div>
       <div className={cx('menu-category')}>
-        <ul>
-          {categoryList &&
-            categoryList.map(item => {
-              return (
-                <CategoryItem
-                  key={item.id}
-                  list={item}
-                  setIsClick={setIsClick}
-                  isClick={isClick}
-                />
-              );
-            })}
-        </ul>
-      </div>
-      <ul>
-        <Link href='/product'>
-          <li className={cx('menu-item')}>
-            <div className={cx('menu-img')}>
-              <img
-                src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-                alt=''
-              />
-            </div>
-            <div className={cx('menu-detail')}>
-              <div className={cx('item-name')}>아이스 블랙 그레이즈드 라떼</div>
-              <div className={cx('item-english-name')}>
-                Iced Black Grazed Latte
-              </div>
-              <div className={cx('item-price')}>6,300원</div>
-            </div>
-          </li>
-        </Link>
-      </ul>
-
-      <div className={cx('choice-store')}>
-        <div>
-          <div>주문할 매장을 선택하세요</div>
-          <div>
-            <Image
-              src='/assets/svg/icon-down-arrow.svg'
-              alt='down-arrow'
-              width={24}
-              height={21}
-            />
-          </div>
-        </div>
-        <hr />
+        {categoryL === 'drink' ? (
+          <ul>
+            {categoryList &&
+              categoryList.map(item => {
+                return (
+                  <CategoryItem
+                    key={item.id}
+                    list={item}
+                    setIsClick={setIsClick}
+                    isClick={isClick}
+                    setCategoryName={setCategoryName}
+                  />
+                );
+              })}
+          </ul>
+        ) : (
+          <ul>
+            {categoryFoodList &&
+              categoryFoodList.map(item => {
+                return (
+                  <CategoryItem
+                    key={item.id}
+                    list={item}
+                    setIsClick={setIsClick}
+                    isClick={isClick}
+                    setCategoryName={setCategoryName}
+                  />
+                );
+              })}
+          </ul>
+        )}
       </div>
     </>
   );

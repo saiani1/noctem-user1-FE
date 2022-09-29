@@ -10,6 +10,27 @@
     div{
         padding: 12px;
     }
+    ul{
+        display: flex;
+        li{
+            padding: 12px;
+        }
+    }
+    .state-bar-drink{
+        position:absolute;
+        padding: 2px 25px;
+        margin-top: 46px;
+        transition: all 0.2s ease-in-out;
+        background-color: variable.$BG-005;
+    }
+    .state-bar-food{
+        position:absolute;
+        padding: 2px 25px;
+        margin-top: 46px;
+        margin-left: 50px;
+        transition: all 0.2s ease-in-out;
+        background-color: variable.$BG-005;
+    }
     .search-bar{
         width: 50%;
         background-color: variable.$BG-003;
