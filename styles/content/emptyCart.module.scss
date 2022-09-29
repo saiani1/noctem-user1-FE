@@ -1,0 +1,23 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.cart-wrap {
+  padding: 19px;
+  h3 {
+    font-size: variable.$FS-18;
+  }
+  p {
+    margin: 5px 0;
+    font-size: variable.$FS-12;
+    color: variable.$TXT-003;
+  }
+  button {
+    margin-top: 5px;
+    padding: 5px 15px;
+    border-radius: 15px;
+    background-color: variable.$POINT;
+    font-size: variable.$FS-12;
+    font-weight: 300;
+    color: variable.$TXT-005;
+  }
+}

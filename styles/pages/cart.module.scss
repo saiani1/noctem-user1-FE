@@ -1,0 +1,185 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.wrap {
+  margin: 0;
+  padding: 0;
+
+  .top-wrap {
+    background-color: variable.$BG-005;
+    padding: 19px;
+
+    h2 {
+      font-size: variable.$FS-20;
+      color: variable.$TXT-005;
+    }
+    .select-store-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding-bottom: 8px;
+      border-bottom: 1px solid variable.$LINE-004;
+
+      .tit {
+        color: variable.$TXT-005;
+      }
+    }
+  }
+  .tab-wrap {
+    position: relative;
+    display: flex;
+    border-bottom: 3px solid variable.$LINE-003;
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      padding: 10px;
+
+      &.active {
+        margin-bottom: -3px;
+        border-bottom: 3px solid variable.$POINT;
+      }
+      .tit-wrap {
+        pointer-events: none;
+        position: relative;
+        font-size: variable.$FS-13;
+        font-weight: 500;
+        .cnt-wrap {
+          @include position.absolute(-2px -17px auto auto);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 15px;
+          height: 15px;
+          background-color: variable.$POINT;
+          border-radius: 50%;
+          font-size: variable.$FS-10;
+          font-weight: 300;
+          color: variable.$TXT-005;
+        }
+      }
+    }
+  }
+  .cart-wrap {
+    padding: 19px 19px 0;
+
+    input[type='checkbox'] {
+      position: relative;
+      -webkit-appearance: none;
+      width: 17px;
+      height: 17px;
+      border: 1px solid variable.$POINT;
+      border-radius: 3px;
+      &:checked {
+        background-color: variable.$POINT;
+      }
+      &::after {
+        pointer-events: none;
+        content: url('/assets/svg/icon-check.svg');
+        @include position.absolute(-4px 4px auto auto);
+        width: 10px;
+      }
+    }
+
+    .tit-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      h3 {
+        font-size: variable.$FS-16;
+      }
+      span {
+        font-size: variable.$FS-12;
+        color: variable.$TXT-003;
+        strong {
+          font-size: variable.$FS-14;
+          font-weight: bold;
+          color: variable.$POINT;
+        }
+      }
+    }
+    .check-option-wrap {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 8px solid variable.$LINE-002;
+
+      .all-check-wrap {
+        display: flex;
+        position: relative;
+
+        input[type='checkbox'] {
+          @include position.absolute(1px auto auto 0);
+        }
+        label {
+          margin-left: 25px;
+          font-size: variable.$FS-12;
+          font-weight: 300;
+          color: variable.$TXT-003;
+        }
+      }
+      .delete-btn-wrap {
+        button {
+          position: relative;
+          font-size: variable.$FS-12;
+          font-weight: 300;
+          color: variable.$TXT-003;
+
+          ~ button {
+            margin-left: 15px;
+          }
+
+          &:first-child::after {
+            @include position.absolute(4.5px -8px auto auto);
+            display: block;
+            content: ' ';
+            height: 10px;
+            width: 1px;
+            background-color: variable.$LINE-004;
+          }
+        }
+      }
+    }
+  }
+  .footer {
+    @include position.fixed(auto 0 0 0);
+    height: 130px;
+    padding: 24px 19px;
+    background-color: variable.$BG-001;
+    border-top: 1px solid variable.$LINE-002;
+    .price-wrap {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      .check-cnt {
+        font-size: variable.$FS-14;
+        font-weight: 500;
+        color: variable.$TXT-003;
+        strong {
+          font-size: variable.$FS-16;
+          color: variable.$POINT;
+        }
+      }
+      .total-price {
+        font-size: variable.$FS-18;
+        font-weight: 500;
+        color: variable.$TXT-001;
+      }
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      text-align: center;
+      font-size: variable.$FS-13;
+      font-weight: 300;
+      border-radius: 20px;
+      color: variable.$TXT-005;
+      background-color: variable.$POINT;
+    }
+  }
+}

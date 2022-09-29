@@ -18,15 +18,15 @@ function loginContent() {
     const passwordValue = passwordInputRef.current?.value;
 
     axios
-      .post('http://10.10.10.162:8000/api/user-service/login', {
+      .post('http://121.145.206.143:8000/api/user-service/login', {
         email: emailValue,
         password: passwordValue,
       })
       .then((res: any) => {
-        const rawToken = JSON.stringify(res.headers.authorization).split(
-          ' ',
-        )[1];
-        localStorage.setItem('token', JSON.stringify(rawToken));
+        localStorage.setItem(
+          'token',
+          JSON.stringify(res.headers.authorization),
+        );
         Router.push('/');
       })
       .catch(err => {
