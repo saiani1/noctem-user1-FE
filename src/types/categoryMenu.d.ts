@@ -4,5 +4,8 @@ export interface IProps {
 
 export interface IList {
   id: number;
+  imgUrl: string;
   title: string;
+  englishTitle: string;
+  price: number;
 }

@@ -1,106 +1,71 @@
 @use '../base/variable';
 
-.menu-bar{
+.product-img {
+  text-align: center;
+  height: 170px;
+  background-color: #1B3C35;
+
+  img {
+    height: 100%;
+  }
+}
+
+.product-detail {
+  padding: 16px;
+
+  .product-name {
+    color: variable.$TXT-001;
+    font-size: variable.$FS-16;
+    font-weight: variable.$FW-003;
+  }
+
+  .product-english-name {
+    color: variable.$TXT-003;
+    font-size: variable.$FS-10;
+  }
+
+  .product-content {}
+
+  .product-price {
+    color: variable.$TXT-001;
+    font-size: variable.$FS-16;
+    font-weight: variable.$FW-003;
+  }
+
+  .temp-button {
     display: flex;
-    justify-content: space-between;
-    // position: fixed;
-    // top: 49px;
-    background-color: white;
-    width: 100vw;
-    div{
-        padding: 12px;
-    }
-    .search-bar{
-        width: 50%;
-        background-color: variable.$BG-003;
-        position: relative;
-        margin: 8px;
-        border-radius: 30px;
-        padding: 0;
-
-        .search-icon{
-            position: absolute;
-            right: 0;
-            top: 0;
-            padding: 6px;
-        }
-    }
-}
-
-.menu-category{
-    // position: fixed;
-    // top: 94px;
-    ul{
-        display: flex;
-        overflow: auto;
-        white-space: nowrap;
-        background-color:variable.$BG-003;
-        color: variable.$TXT-003;
-        li{
-            padding: 12px;
-        }
-    }
-}
-.product-img{
+    width: 100%;
+    height: 30px;
     text-align: center;
-    height: 170px;
-    background-color: #1B3C35;
-    img{
-        height: 100%;
+    margin-top: 16px;
+
+    .hot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50px 0 0 50px;
+      border: 1px solid #eee;
+      width: 50%;
     }
+
+    .iced {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0 50px 50px 0;
+      background-color: #3D67FF;
+      width: 50%;
+      color: variable.$TXT-005;
+    }
+  }
 }
 
-.product-detail{
-    padding: 16px;
-
-    .product-name{
-        color: variable.$TXT-001;
-        font-size: variable.$FS-16;
-        font-weight: variable.$FW-003;
-    }
-    .product-english-name{
-        color:variable.$TXT-003;
-        font-size:variable.$FS-10;
-    }
-    .product-content{
-        
-    }
-    .product-price{
-        color: variable.$TXT-001;
-        font-size: variable.$FS-16;
-        font-weight: variable.$FW-003;
-    }
-    .temp-button{
-        display: flex;
-        width: 100%;
-        height: 30px;
-        text-align: center;
-        margin-top: 16px;
-        .hot{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50px 0 0 50px;
-            border: 1px solid #eee;
-            width: 50%;
-        }
-        .iced{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0 50px 50px 0;
-            background-color: #3D67FF;
-            width: 50%;
-            color: variable.$TXT-005;
-        }
-    }
+.line {
+  background-color: variable.$TXT-003;
 }
-
-.line{
-    background-color: variable.$TXT-003;
-}
-
-.order-button{
+.button-box{
+  padding: 16px;
+  .order-button {
     height: 30px;
     background-color: variable.$POINT;
     display: flex;
@@ -108,6 +73,152 @@
     justify-content: center;
     color: variable.$TXT-005;
     border-radius: 50px;
-    margin: 16px;
+    width: 100%;
+  }
+}
+
+
+.option-box {
+  .background {
     width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .menu-title {
+    color: variable.$TXT-001;
+    font-size: variable.$FS-18;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .option {
+    position: absolute;
+    z-index: 1001;
+    height: 90%;
+    width: 100vw;
+    background-color: white;
+    bottom: 0;
+
+    .top-bar {
+      margin: auto;
+      margin-top: 16px;
+      padding: 3px;
+      width: 20%;
+      background-color: variable.$BG-005;
+      border-radius: 50px;
+    }
+
+    .bottom-order-bar {
+      position: fixed;
+      bottom: 0;
+      background-color: white;
+      width: 100%;
+
+      &>div {
+        padding: 16px;
+
+        &>div {
+          display: flex;
+          justify-content: space-between;
+          font-size: variable.$FS-20;
+          align-items: center;
+        }
+
+        .total-cost {
+          padding: 10px 0;
+
+          .control-count {
+            display: flex;
+
+            div {
+              margin-right: 24px;
+            }
+          }
+
+          .total-price {
+            color: variable.$TXT-001;
+            font-size: variable.$FS-20;
+            font-weight: variable.$FW-003;
+          }
+        }
+
+        .order-select {
+          &>div {
+            display: flex;
+
+            div {
+              padding: 5px 30px;
+            }
+
+            .go-cart {
+              border: 1px solid black;
+              border-radius: 50px;
+            }
+
+            .go-order {
+              margin-left: 8px;
+              border-radius: 50px;
+              background-color: variable.$BG-006;
+              color: variable.$TXT-005;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  div {
+    .option-title {
+      color: variable.$TXT-001;
+      font-size: variable.$FS-16;
+      font-weight: variable.$FW-003;
+      margin: 16px;
+    }
+
+    .cup-size {
+      margin: 16px;
+      display: flex;
+      justify-content: space-between;
+
+      .cup-card {
+        padding: 20px 30px;
+        text-align: center;
+        border: 1px solid black;
+        border-radius: 10px;
+
+        .cup-image-box {
+          width: 50px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+
+    .cup-kind {
+      display: flex;
+      width: 100%;
+      margin: 16px;
+      text-align: center;
+
+      div {
+        border: 1px solid black;
+        width: 30%;
+        padding: 10px
+      }
+
+      :nth-child(1) {
+        border-radius: 50px 0 0 50px;
+      }
+
+      :nth-child(3) {
+        border-radius: 0 50px 50px 0;
+      }
+    }
+  }
 }
