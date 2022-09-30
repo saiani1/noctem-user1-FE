@@ -1,0 +1,30 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.signUpCompalte-wrap {
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+
+  .logo-wrap {
+    margin-bottom: 20px;
+  }
+
+  .welcome {
+    margin-bottom: 14px;
+    font-size: variable.$FS-24;
+    font-weight: bold;
+  }
+
+  .congratulations {
+    font-size: variable.$FS-18;
+    margin-bottom: 24px;
+
+    .nickname {
+      font-weight: bold;
+    }
+  }
+}

@@ -1,48 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
-import SignUpHeader from './signUp/signUpHeader';
+import Step1 from './signUp/step1';
+import Step2 from './signUp/step2';
+import SignUpComplate from './signUp/signUpComplate';
 import styles from '../../../styles/content/signUp.module.scss';
-import Agreement from '../common/agreement';
-import Certified from './signUp/certified';
+import { IData, IStep } from '../../types/signUp.d';
 
 const cx = classNames.bind(styles);
 
 function signUpContent() {
+  const [nickname, setNickname] = useState<string>('');
+  const [agreeData, setAgreeData] = useState<IData['agreeData']>({
+    all_agr: false,
+    agr1_use: false,
+    agr2_info: false,
+    agr3_ad: false,
+  });
+  const [step, setStep] = useState<IStep>({
+    step1: true,
+    step2: false,
+    step3: false,
+  });
+
   return (
     <div className={cx('wrap', 'signup-wrap')}>
-      <SignUpHeader />
-
-      <div style={{ display: 'none' }}>
-        <h2>Sign Up</h2>
-        <Image
-          src='/assets/images/png/logo-symbol.png'
-          alt='logo symbol'
-          width={80}
-          height={100}
+      {step.step1 && (
+        <Step1
+          agreeData={agreeData}
+          setAgreeData={setAgreeData}
+          setStep={setStep}
         />
-        <div className={cx('welcome')}>
-          고객님
-          <br />
-          환영합니다!
-        </div>
-
-        {/* 약관동의 */}
-        <Agreement />
-      </div>
-
-      {/* 본인 확인 */}
-      <Certified />
-
-      {/* 아이디 비번 입력 */}
-
-      {/* 이메일 입력 */}
-
-      {/* 닉네임 입력 */}
-
-      <button type='button' className={cx('btn')}>
-        다음
-      </button>
+      )}
+      {step.step2 && (
+        <Step2
+          agreeData={agreeData}
+          setNickname={setNickname}
+          setStep={setStep}
+        />
+      )}
+      {step.step3 && <SignUpComplate nickname={nickname} />}
     </div>
   );
 }

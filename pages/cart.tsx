@@ -23,7 +23,7 @@ function cart() {
 
   return (
     <div className={cx('wrap')}>
-      <Header />
+      <Header isClose={false} isBack />
       <div className={cx('top-wrap')}>
         <h2>장바구니</h2>
         <button

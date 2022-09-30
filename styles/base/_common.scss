@@ -2,10 +2,6 @@
 @use '../mixins/position';
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
-.notosanskr * {
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
 // font
 body,
 button,
@@ -56,11 +52,15 @@ h3 {
   @include position.absolute(auto 0 35px 0);
 }
 
+.btn-disable {
+  background-color: variable.$BG-004;
+  cursor: default;
+}
+
 // layout
 .wrap {
-  // display: block;
   margin-top: 20px;
-  margin-bottom: 50px;
+  margin-bottom: 75px;
   padding: 0 18px;
 }
 
@@ -75,22 +75,16 @@ h3 {
   width: 100%;
   margin-bottom: 20px;
   padding: 10px;
-  font-size: variable.$FS-11;
+  font-size: variable.$FS-14;
   border: none;
   border-bottom: 1px solid variable.$LINE-003;
+
+  &::placeholder {
+    color: variable.$TXT-004;
+  }
 
   &:focus {
     border-bottom: 1px solid variable.$POINT;
     // @include animation.animation(0, 0.5s, animation-slide-in-left, ease);
   }
-
-  & + & {
-    margin-bottom: 20px;
-  }
-}
-
-.input-big {
-  padding: 18px 4px;
-  color: variable.$TXT-004;
-  font-size: variable.$FS-14;
 }

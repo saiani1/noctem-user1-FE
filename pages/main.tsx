@@ -6,7 +6,7 @@ import ToolbarList from '../src/components/ui/toolbarList';
 function mainPage() {
   return (
     <>
-      <Header />
+      <Header isClose={false} isBack={false} />
       <HomeContent />
       <ToolbarList />
     </>

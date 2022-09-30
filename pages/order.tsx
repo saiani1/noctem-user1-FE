@@ -46,7 +46,7 @@ function order() {
       {isClickSubmitBtn && (
         <OrderPayingCompletionModal setIsClickSubmitBtn={setIsClickSubmitBtn} />
       )}
-      <Header />
+      <Header isClose={false} isBack />
       <form onSubmit={handleSubmit}>
         <h2 className={cx('tit')}>결제하기</h2>
         <ul className={cx('list-wrap')}>

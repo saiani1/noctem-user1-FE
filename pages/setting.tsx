@@ -10,7 +10,7 @@ function setting() {
 
   return (
     <>
-      <Header />
+      <Header isClose isBack={false} />
       <div className={cx('wrap')}>
         <h2>설정</h2>
         <ul className={cx('setting-li-wrap')}>

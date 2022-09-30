@@ -1,0 +1,40 @@
+<svg width="101" height="14" viewBox="0 0 101 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_352_200)">
+<path d="M94 14C97.866 14 101 10.866 101 7C101 3.13401 97.866 0 94 0C90.134 0 87 3.13401 87 7C87 10.866 90.134 14 94 14Z" fill="#DADADA"/>
+</g>
+<g clip-path="url(#clip1_352_200)">
+<path d="M7 14C10.866 14 14 10.866 14 7C14 3.13401 10.866 0 7 0C3.13401 0 0 3.13401 0 7C0 10.866 3.13401 14 7 14Z" fill="#DADADA"/>
+</g>
+<g clip-path="url(#clip2_352_200)">
+<path d="M24 14C27.866 14 31 10.866 31 7C31 3.13401 27.866 0 24 0C20.134 0 17 3.13401 17 7C17 10.866 20.134 14 24 14Z" fill="#DADADA"/>
+</g>
+<g clip-path="url(#clip3_352_200)">
+<path d="M42 14C45.866 14 49 10.866 49 7C49 3.13401 45.866 0 42 0C38.134 0 35 3.13401 35 7C35 10.866 38.134 14 42 14Z" fill="#DADADA"/>
+</g>
+<g clip-path="url(#clip4_352_200)">
+<path d="M59 14C62.866 14 66 10.866 66 7C66 3.13401 62.866 0 59 0C55.134 0 52 3.13401 52 7C52 10.866 55.134 14 59 14Z" fill="#DADADA"/>
+</g>
+<g clip-path="url(#clip5_352_200)">
+<path d="M76 14C79.866 14 83 10.866 83 7C83 3.13401 79.866 0 76 0C72.134 0 69 3.13401 69 7C69 10.866 72.134 14 76 14Z" fill="#DADADA"/>
+</g>
+<defs>
+<clipPath id="clip0_352_200">
+<rect width="14" height="14" fill="white" transform="translate(87)"/>
+</clipPath>
+<clipPath id="clip1_352_200">
+<rect width="14" height="14" fill="white"/>
+</clipPath>
+<clipPath id="clip2_352_200">
+<rect width="14" height="14" fill="white" transform="translate(17)"/>
+</clipPath>
+<clipPath id="clip3_352_200">
+<rect width="14" height="14" fill="white" transform="translate(35)"/>
+</clipPath>
+<clipPath id="clip4_352_200">
+<rect width="14" height="14" fill="white" transform="translate(52)"/>
+</clipPath>
+<clipPath id="clip5_352_200">
+<rect width="14" height="14" fill="white" transform="translate(69)"/>
+</clipPath>
+</defs>
+</svg>

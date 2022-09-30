@@ -14,7 +14,7 @@ function selectStore() {
 
   return (
     <>
-      <Header />
+      <Header isClose isBack={false} />
       <div className={cx('wrap')}>
         {isClickModalBtn && <ChoiceStoreModal />}
         <h1 className={cx('title')}>매장 설정</h1>
