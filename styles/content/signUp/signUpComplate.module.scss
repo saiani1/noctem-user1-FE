@@ -20,7 +20,11 @@
   }
 
   .congratulations {
-    font-size: variable.$FS-20;
+    font-size: variable.$FS-18;
     margin-bottom: 24px;
+
+    .nickname {
+      font-weight: bold;
+    }
   }
 }

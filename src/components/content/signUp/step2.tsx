@@ -44,9 +44,11 @@ function isPassword(value: string) {
 
 function step2({
   agreeData,
+  setNickname,
   setStep,
 }: {
   agreeData: IStep2Props['agreeData'];
+  setNickname: IStep2Props['setNickname'];
   setStep: IStep2Props['setStep'];
 }) {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -56,7 +58,6 @@ function step2({
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
-  const [nextStep, setNextStep] = useState<boolean>(false);
   const [valid, setValid] = useState<IValid>({
     name: false,
     nickname: false,
@@ -83,6 +84,7 @@ function step2({
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     let isError = false;
+    let isDuplChk = false;
     let errMsg = '';
 
     if (target.name === 'name') {
@@ -97,11 +99,8 @@ function step2({
     if (target.name === 'nickname') {
       if (!isNickName(target.value)) {
         isError = true;
+        isDuplChk = true;
         errMsg = '2~8자리의 한글을 입력해 주세요.';
-        setDuplValid({
-          ...duplValid,
-          nickname: false,
-        });
       } else {
         isError = false;
       }
@@ -128,18 +127,14 @@ function step2({
     if (target.name === 'email') {
       if (!isEmail(target.value)) {
         isError = true;
+        isDuplChk = true;
         errMsg = '이메일 형식이 옳지 않습니다.';
-        setDuplValid({
-          ...duplValid,
-          email: false,
-        });
       } else {
         isError = false;
       }
     }
 
     if (target.name === 'password') {
-      console.log('비번 변경');
       if (!isPassword(target.value)) {
         isError = true;
         errMsg = '8~40자리의 영문과 숫자를 입력해 주세요.';
@@ -158,6 +153,13 @@ function step2({
       } else {
         isError = false;
       }
+    }
+
+    if (isDuplChk) {
+      setDuplValid({
+        ...duplValid,
+        [target.name]: false,
+      });
     }
 
     if (isError) {
@@ -190,7 +192,6 @@ function step2({
   };
 
   const handleDuplChk = (name: string) => {
-    console.log('중복 체크', name);
     const value =
       name === 'email' ? emailRef.current?.value : nicknameRef.current?.value;
     const errMsg =
@@ -237,8 +238,6 @@ function step2({
             });
           }
         });
-    } else {
-      console.log('요청 X');
     }
   };
 
@@ -349,7 +348,30 @@ function step2({
       }
     }
 
-    console.log('서브밋');
+    setNickname(nicknameRef.current?.value);
+    axios
+      .post(`http://121.145.206.143:8000/api/user-service/signUp`, {
+        name: nameRef.current?.value,
+        nickname: nicknameRef.current?.value,
+        rrnFront: birthRef.current?.value,
+        rrnBackFirst: genderRef.current?.value,
+        email: emailRef.current?.value,
+        password: passwordRef.current?.value,
+        termsOfServiceAgreement: agreeData.agr1_use,
+        personalInfoAgreement: agreeData.agr2_info,
+        advertisementAgreement: agreeData.agr3_ad,
+      })
+      .then(res => {
+        console.log(res);
+        if (res.data.data) {
+          setStep({
+            step1: false,
+            step2: false,
+            step3: true,
+          });
+        }
+      })
+      .catch(e => console.log(e));
   };
 
   return (
@@ -429,7 +451,10 @@ function step2({
               onChange={handleInputChange}
             />
           </div>
-          <p className={cx('error')}>{error.birth}</p>
+          <p className={cx('error')}>
+            {error.birth}
+            {error.gender}
+          </p>
         </div>
 
         {/* 이메일 */}
@@ -488,10 +513,7 @@ function step2({
           <p className={cx('error')}>{error.passwordConfirm}</p>
         </div>
 
-        <button
-          type='submit'
-          className={cx('btn', nextStep ? '' : 'btn-disable')}
-        >
+        <button type='submit' className={cx('btn')}>
           가입하기
         </button>
       </form>

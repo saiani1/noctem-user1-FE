@@ -9,6 +9,7 @@ import { IData, IStep } from '../../types/signUp.d';
 const cx = classNames.bind(styles);
 
 function signUpContent() {
+  const [nickname, setNickname] = useState<string>('');
   const [agreeData, setAgreeData] = useState<IData['agreeData']>({
     all_agr: false,
     agr1_use: false,
@@ -30,8 +31,14 @@ function signUpContent() {
           setStep={setStep}
         />
       )}
-      {step.step2 && <Step2 agreeData={agreeData} setStep={setStep} />}
-      {step.step3 && <SignUpComplate nickname='OOO' setStep={setStep} />}
+      {step.step2 && (
+        <Step2
+          agreeData={agreeData}
+          setNickname={setNickname}
+          setStep={setStep}
+        />
+      )}
+      {step.step3 && <SignUpComplate nickname={nickname} />}
     </div>
   );
 }

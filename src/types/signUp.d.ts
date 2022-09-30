@@ -6,11 +6,7 @@ export interface IStep1Props {
 
 export interface IStep2Props {
   agreeData: IAgreeData;
-  setStep: Dispatch<SetStateAction<boolean>>;
-}
-
-export interface IStep3Props {
-  nickname: string;
+  setNickname: Dispatch<SetStateAction<boolean>>;
   setStep: Dispatch<SetStateAction<boolean>>;
 }
 
