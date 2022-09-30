@@ -1,18 +1,19 @@
 export interface IProps {
   list: IList;
-  active: boolean;
-  onClick: (link: string, txt: string) => void;
+  active: IActive;
+  setIsActive: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface IList {
   link: string;
+  linkTxt: string;
   txt: string;
 }
 
 export interface IActive {
   Home: boolean;
-  Order: boolean;
+  Category: boolean;
   Pay: boolean;
-  My: boolean;
+  MyPage: boolean;
   [key: string]: boolean;
 }

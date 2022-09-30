@@ -202,10 +202,6 @@ function step2({
         : '사용 가능한 닉네임입니다.';
 
     if (value && (name === 'email' ? isEmail(value) : isNickName(value))) {
-      console.log('요청 O');
-      console.log(
-        `http://121.145.206.143:8000/api/user-service/duplicationCheck/${name}/${value}`,
-      );
       axios
         .get(
           `http://121.145.206.143:8000/api/user-service/duplicationCheck/${name}/${value}`,
@@ -362,7 +358,6 @@ function step2({
         advertisementAgreement: agreeData.agr3_ad,
       })
       .then(res => {
-        console.log(res);
         if (res.data.data) {
           setStep({
             step1: false,

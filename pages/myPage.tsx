@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 
 import styles from '../styles/pages/myPage.module.scss';
 import Header from '../src/components/common/header';
+import ToolbarList from '../src/components/ui/toolbarList';
 
 function myPage() {
   const cx = classNames.bind(styles);
@@ -114,6 +115,7 @@ function myPage() {
           로그아웃
         </button>
       </div>
+      <ToolbarList />
     </>
   );
 }

@@ -1,36 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../../../styles/ui/toolbar.module.scss';
 import { TOOL_LIST } from '../../../public/assets/datas/ToolbarList';
 import ToolbarItem from './toolbarItem';
 import { IActive } from '../../types/toolbar.d';
+import { useRouter } from 'next/router';
 
 const cx = classNames.bind(styles);
 
 const toolbarList = () => {
-  const [isActive, setActive] = useState<IActive>({
-    Home: true,
-    Order: false,
+  const router = useRouter();
+  const [isActive, setIsActive] = useState<IActive>({
+    Home: false,
+    Category: false,
     Pay: false,
-    My: false,
+    MyPage: false,
   });
 
-  const handleSelected = (menu: string) => {
-    const newState: IActive = {
-      Home: true,
-      Order: false,
+  useEffect(() => {
+    const idx =
+      router.pathname === '/'
+        ? 'Home'
+        : router.pathname
+            .slice(1)
+            .replace(/^[a-z]/, char => char.toUpperCase());
+    const copyObj: IActive = {
+      Home: false,
+      Category: false,
       Pay: false,
-      My: false,
+      MyPage: false,
     };
-    Object.keys(isActive).forEach(key => {
-      if (key === menu) {
-        newState[key] = true;
-      } else {
-        newState[key] = false;
-      }
-    });
-    setActive(newState);
-  };
+    copyObj[idx] = true;
+    setIsActive(copyObj);
+  }, [router.pathname]);
 
   return (
     <>
@@ -41,9 +43,9 @@ const toolbarList = () => {
               return (
                 <ToolbarItem
                   key={v.txt}
-                  isActive={isActive[v.txt]}
+                  isActive={isActive}
+                  setIsActive={setIsActive}
                   list={v}
-                  handleSelected={handleSelected}
                 />
               );
             })}
