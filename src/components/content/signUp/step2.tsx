@@ -11,14 +11,6 @@ import {
 
 const cx = classNames.bind(styles);
 
-const ifFunc = (
-  condition: boolean,
-  then: JSX.Element,
-  otherwise: JSX.Element,
-) => {
-  return condition ? then : otherwise;
-};
-
 function isName(value: string) {
   const regExp = /^[가-힣]{2,}$/;
   return regExp.test(value);
@@ -45,28 +37,20 @@ function isEmail(value: string) {
   return regExp.test(value);
 }
 
-// function isPassword(value: string) {
-//   const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,40}$/;
-//   return regExp.test(value);
-// }
+function isPassword(value: string) {
+  const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,40}$/;
+  return regExp.test(value);
+}
 
 function step2({
   agreeData,
-  inputData,
-  setInputData,
   setStep,
 }: {
   agreeData: IStep2Props['agreeData'];
-  inputData: IStep2Props['inputData'];
-  setInputData: IStep2Props['setInputData'];
   setStep: IStep2Props['setStep'];
 }) {
-  // console.log(agreeData);
-  // console.log(inputData);
-  // console.log(setInputData);
-  // console.log(setStep);
   const nameRef = useRef<HTMLInputElement>(null);
-  const nickNameRef = useRef<HTMLInputElement>(null);
+  const nicknameRef = useRef<HTMLInputElement>(null);
   const birthRef = useRef<HTMLInputElement>(null);
   const genderRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -75,7 +59,7 @@ function step2({
   const [nextStep, setNextStep] = useState<boolean>(false);
   const [valid, setValid] = useState<IValid>({
     name: false,
-    nickName: false,
+    nickname: false,
     birth: false,
     gender: false,
     email: false,
@@ -83,12 +67,12 @@ function step2({
     passwordConfirm: false,
   });
   const [duplValid, setDuplValid] = useState<IDuplValid>({
-    nickName: false,
+    nickname: false,
     email: false,
   });
   const [error, setError] = useState<IError>({
     name: '',
-    nickName: '',
+    nickname: '',
     birth: '',
     gender: '',
     email: '',
@@ -100,7 +84,6 @@ function step2({
     const target = e.target as HTMLInputElement;
     let isError = false;
     let errMsg = '';
-    console.log(target.name);
 
     if (target.name === 'name') {
       if (!isName(target.value)) {
@@ -111,10 +94,14 @@ function step2({
       }
     }
 
-    if (target.name === 'nickName') {
+    if (target.name === 'nickname') {
       if (!isNickName(target.value)) {
         isError = true;
         errMsg = '2~8자리의 한글을 입력해 주세요.';
+        setDuplValid({
+          ...duplValid,
+          nickname: false,
+        });
       } else {
         isError = false;
       }
@@ -138,8 +125,40 @@ function step2({
       }
     }
 
-    // 비밀번호 유효성
-    // 비밀번호 확인 유효성
+    if (target.name === 'email') {
+      if (!isEmail(target.value)) {
+        isError = true;
+        errMsg = '이메일 형식이 옳지 않습니다.';
+        setDuplValid({
+          ...duplValid,
+          email: false,
+        });
+      } else {
+        isError = false;
+      }
+    }
+
+    if (target.name === 'password') {
+      console.log('비번 변경');
+      if (!isPassword(target.value)) {
+        isError = true;
+        errMsg = '8~40자리의 영문과 숫자를 입력해 주세요.';
+      } else {
+        isError = false;
+      }
+    }
+
+    if (target.name === 'passwordConfirm') {
+      if (
+        passwordConfirmRef.current?.value.length !== 0 &&
+        passwordConfirmRef.current?.value !== passwordRef.current?.value
+      ) {
+        isError = true;
+        errMsg = '비밀번호가 일치하지 않습니다.';
+      } else {
+        isError = false;
+      }
+    }
 
     if (isError) {
       setValid({
@@ -172,10 +191,8 @@ function step2({
 
   const handleDuplChk = (name: string) => {
     console.log('중복 체크', name);
-    const type = name === 'email' ? 'email' : 'nickName';
     const value =
-      name === 'email' ? emailRef.current?.value : nickNameRef.current?.value;
-    console.log(type, value);
+      name === 'email' ? emailRef.current?.value : nicknameRef.current?.value;
     const errMsg =
       name === 'email' ? '중복된 이메일입니다.' : '중복된 닉네임입니다.';
     const successMsg =
@@ -186,37 +203,37 @@ function step2({
     if (value && (name === 'email' ? isEmail(value) : isNickName(value))) {
       console.log('요청 O');
       console.log(
-        `http://121.145.206.143:8000/api/user-service/duplicationCheck/${type}/${value}`,
+        `http://121.145.206.143:8000/api/user-service/duplicationCheck/${name}/${value}`,
       );
       axios
         .get(
-          `http://121.145.206.143:8000/api/user-service/duplicationCheck/${type}/${value}`,
+          `http://121.145.206.143:8000/api/user-service/duplicationCheck/${name}/${value}`,
         )
         .then(res => {
           if (res.data.data) {
             // 중복임
             setDuplValid({
               ...duplValid,
-              [type]: false,
+              [name]: false,
             });
             setError({
               ...error,
-              [type]: errMsg,
+              [name]: errMsg,
             });
-            if (type === 'email') {
+            if (name === 'email') {
               emailRef.current?.focus();
             } else {
-              nickNameRef.current?.focus();
+              nicknameRef.current?.focus();
             }
           } else {
             // 중복 아님
             setDuplValid({
               ...duplValid,
-              [type]: true,
+              [name]: true,
             });
             setError({
               ...error,
-              [type]: successMsg,
+              [name]: successMsg,
             });
           }
         });
@@ -227,10 +244,6 @@ function step2({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const pwVal = passwordRef.current?.value;
-    const pwCfmVal = passwordConfirmRef.current?.value;
-
     if (
       nameRef.current?.value.length === 0 ||
       (nameRef.current && !isName(nameRef.current?.value))
@@ -243,21 +256,21 @@ function step2({
       return;
     }
 
-    if (nickNameRef.current?.value.length === 0) {
+    if (nicknameRef.current?.value.length === 0) {
       setError({
         ...error,
-        nickName: '값을 입력해 주세요.',
+        nickname: '값을 입력해 주세요.',
       });
-      nickNameRef.current?.focus();
+      nicknameRef.current?.focus();
       return;
     }
 
-    if (!duplValid.nickName) {
+    if (!duplValid.nickname) {
       setError({
         ...error,
-        nickName: '중복 확인이 필요합니다.',
+        nickname: '중복 확인이 필요합니다.',
       });
-      nickNameRef.current?.focus();
+      nicknameRef.current?.focus();
       return;
     }
 
@@ -285,8 +298,56 @@ function step2({
       return;
     }
 
-    // 비밀번호 유효성
-    // 비밀번호 확인 유효성
+    if (
+      emailRef.current?.value.length === 0 ||
+      (emailRef.current && !isEmail(emailRef.current?.value))
+    ) {
+      setError({
+        ...error,
+        email: '값을 입력해 주세요.',
+      });
+      emailRef.current?.focus();
+      return;
+    }
+
+    if (!duplValid.email) {
+      setError({
+        ...error,
+        email: '중복 확인이 필요합니다.',
+      });
+      emailRef.current?.focus();
+      return;
+    }
+
+    if (
+      passwordRef.current?.value.length === 0 ||
+      (passwordRef.current && !isPassword(passwordRef.current?.value))
+    ) {
+      setError({
+        ...error,
+        password: '값을 입력해 주세요.',
+      });
+      passwordRef.current?.focus();
+      return;
+    }
+
+    if (passwordConfirmRef.current?.value.length === 0) {
+      setError({
+        ...error,
+        passwordConfirm: '값을 입력해 주세요.',
+      });
+      passwordConfirmRef.current?.focus();
+      return;
+    } else {
+      if (passwordConfirmRef.current?.value !== passwordRef.current?.value) {
+        setError({
+          ...error,
+          passwordConfirm: '비밀번호가 일치하지 않습니다.',
+        });
+        passwordConfirmRef.current?.focus();
+        return;
+      }
+    }
 
     console.log('서브밋');
   };
@@ -316,30 +377,30 @@ function step2({
 
         {/* 닉네임 */}
         <div className={cx('input-wrap')}>
-          <div className={cx('nickName-wrap')}>
+          <div className={cx('nickname-wrap')}>
             <input
               type='text'
-              name='nickName'
-              id='nickName'
-              className={cx('input', 'nickName')}
+              name='nickname'
+              id='nickname'
+              className={cx('input', 'nickname')}
               placeholder='닉네임 (한글 8자리 이내)'
               minLength={2}
               maxLength={8}
-              ref={nickNameRef}
+              ref={nicknameRef}
               onChange={handleInputChange}
             />
             <button
               type='button'
               onClick={() => {
-                handleDuplChk('nickName');
+                handleDuplChk('nickname');
               }}
               className={cx('btn-dupl-chk')}
             >
               중복확인
             </button>
           </div>
-          <p className={cx('error', duplValid.nickName && 'success')}>
-            {error.nickName}
+          <p className={cx('error', duplValid.nickname && 'success')}>
+            {error.nickname}
           </p>
         </div>
 

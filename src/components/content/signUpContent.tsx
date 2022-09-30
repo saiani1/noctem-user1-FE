@@ -15,15 +15,6 @@ function signUpContent() {
     agr2_info: false,
     agr3_ad: false,
   });
-  const [inputData, setInputData] = useState<IData['inputData']>({
-    name: '',
-    nickName: '',
-    birth: '',
-    gender: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
-  });
   const [step, setStep] = useState<IStep>({
     step1: true,
     step2: false,
@@ -39,15 +30,8 @@ function signUpContent() {
           setStep={setStep}
         />
       )}
-      {step.step2 && (
-        <Step2
-          agreeData={agreeData}
-          inputData={inputData}
-          setInputData={setInputData}
-          setStep={setStep}
-        />
-      )}
-      {step.step3 && <SignUpComplate nickName='OOO' setStep={setStep} />}
+      {step.step2 && <Step2 agreeData={agreeData} setStep={setStep} />}
+      {step.step3 && <SignUpComplate nickname='OOO' setStep={setStep} />}
     </div>
   );
 }

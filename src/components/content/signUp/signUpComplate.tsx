@@ -7,10 +7,10 @@ import { IStep3Props } from '../../../types/signUp.d';
 const cx = classNames.bind(styles);
 
 function signUpComplate({
-  nickName,
+  nickname,
   setStep,
 }: {
-  nickName: IStep3Props['nickName'];
+  nickname: IStep3Props['nickname'];
   setStep: IStep3Props['setStep'];
 }) {
   return (
@@ -26,7 +26,7 @@ function signUpComplate({
         </div>
         <p className={cx('welcome')}>환영합니다.</p>
         <p className={cx('congratulations')}>
-          {nickName} 님 가입을 축하드립니다.
+          {nickname} 님 가입을 축하드립니다.
         </p>
       </div>
 
