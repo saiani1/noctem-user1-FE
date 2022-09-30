@@ -3,49 +3,85 @@ import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
-import { categoryList } from '../../public/assets/datas/categoryList';
-import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
+// import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
+import axios from 'axios';
 
 const cx = classNames.bind(styles);
 
+interface ICategory {
+  id: number;
+  categoryLName: string;
+}
+interface IDrinkCategory {
+  categorySImg: string;
+  categorySName: string;
+}
+
 function categoryContent({ setCategoryName }: { setCategoryName: any }) {
-  const [isClick, setIsClick] = useState(0);
-  const [categoryL, setCategoryL] = useState('drink');
-  const handleChangeCategory = (name: string) => {
+  const [isClick, setIsClick] = useState('NEW');
+  const [categoryL, setCategoryL] = useState<ICategory[]>([]);
+  const [categoryLName, setCategoryLName] = useState('음료');
+  const [categoryLId, setCategoryLId] = useState(1);
+  const [categoryDrinkList, setCategoryDrinkList] = useState<IDrinkCategory[]>(
+    [],
+  );
+  const [categoryFoodList, setCategoryFoodList] = useState<IDrinkCategory[]>(
+    [],
+  );
+  const handleChangeCategory = (name: string, id: number) => {
     console.log(name);
-    setCategoryL(name);
+    setCategoryLName(name);
+    console.log(id);
+    axios
+      .get(`http://10.10.10.185:53639/api/menu-service/${id}/categoryS`)
+      .then(res => {
+        setCategoryDrinkList(res.data.data);
+        setCategoryFoodList(res.data.data);
+
+        console.log(categoryDrinkList);
+        console.log(categoryFoodList);
+      });
   };
+  useEffect(() => {
+    axios
+      .get(`http://10.10.10.185:53639/api/menu-service/categoryL`)
+      .then(res => {
+        setCategoryL(res.data.data);
+      });
+    axios
+      .get(
+        `http://10.10.10.185:53639/api/menu-service/${categoryLId}/categoryS`,
+      )
+      .then(res => {
+        setCategoryDrinkList(res.data.data);
+      });
+  }, []);
   return (
     <>
       <div className={cx('menu-bar')}>
         <div
           className={
-            categoryL === 'drink' ? cx('state-bar-drink') : cx('state-bar-food')
+            categoryLName === '음료'
+              ? cx('state-bar-drink')
+              : cx('state-bar-food')
           }
         />
         <ul>
-          <li
-            role='menuitem'
-            onClick={() => {
-              handleChangeCategory('drink');
-            }}
-            onKeyDown={() => {
-              handleChangeCategory('drink');
-            }}
-          >
-            음료
-          </li>
-          <li
-            role='menuitem'
-            onClick={() => {
-              handleChangeCategory('food');
-            }}
-            onKeyDown={() => {
-              handleChangeCategory('food');
-            }}
-          >
-            푸드
-          </li>
+          {categoryL &&
+            categoryL.map(item => (
+              <li
+                key={item.id}
+                role='menuitem'
+                onClick={() => {
+                  handleChangeCategory(item.categoryLName, item.id);
+                }}
+                onKeyDown={() => {
+                  handleChangeCategory(item.categoryLName, item.id);
+                }}
+              >
+                {item.categoryLName}
+              </li>
+            ))}
         </ul>
         <div className={cx('search-bar')}>
           <div />
@@ -68,13 +104,13 @@ function categoryContent({ setCategoryName }: { setCategoryName: any }) {
         </div>
       </div>
       <div className={cx('menu-category')}>
-        {categoryL === 'drink' ? (
+        {categoryLName === '음료' ? (
           <ul>
-            {categoryList &&
-              categoryList.map(item => {
+            {categoryDrinkList &&
+              categoryDrinkList.map(item => {
                 return (
                   <CategoryItem
-                    key={item.id}
+                    key={item.categorySName}
                     list={item}
                     setIsClick={setIsClick}
                     isClick={isClick}
@@ -89,7 +125,7 @@ function categoryContent({ setCategoryName }: { setCategoryName: any }) {
               categoryFoodList.map(item => {
                 return (
                   <CategoryItem
-                    key={item.id}
+                    key={item.categorySName}
                     list={item}
                     setIsClick={setIsClick}
                     isClick={isClick}
