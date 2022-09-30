@@ -14,22 +14,22 @@ function categoryItem({
 }: {
   list: IProps['list'];
   setIsClick: any;
-  isClick: number;
+  isClick: string;
   setCategoryName: any;
 }) {
   const handleChoice = () => {
     Router.push('/category');
-    setIsClick(list.id);
-    setCategoryName(list.title);
+    setIsClick(list.categorySName);
+    setCategoryName(list.categorySName);
   };
   return (
     <li
-      className={isClick === list.id ? cx('active-menu') : undefined}
+      className={isClick === list.categorySName ? cx('active-menu') : undefined}
       role='menuitem'
       onClick={handleChoice}
       onKeyDown={handleChoice}
     >
-      {list.title}
+      {list.categorySName}
     </li>
   );
 }
