@@ -30,7 +30,7 @@ function userInfo() {
 
   return (
     <>
-      <Header isClose />
+      <Header isClose isBack={false} />
       <div className={cx('wrap')}>
         <h2>개인정보 관리</h2>
         {/* <ul className={cx('user-info-wrap')}>

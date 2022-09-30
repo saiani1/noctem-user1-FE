@@ -7,32 +7,29 @@ import styles from '../../../styles/common/header.module.scss';
 
 const cx = classNames.bind(styles);
 
-function header({ isClose }: { isClose: boolean }) {
+function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
   const router = useRouter();
 
   const handleBack = () => {
     router.back();
   };
 
-  const handleClose = () => {
-    router.push('/login');
-  };
-
   return (
     <div className={cx('header-wrap')}>
       <button
         type='button'
-        onClick={isClose ? handleClose : handleBack}
+        onClick={handleBack}
         className={cx('header-back-arrow')}
       >
-        {isClose ? (
+        {isClose && (
           <Image
             width={19}
             height={19}
             alt='back button icon'
             src='/assets/svg/icon-close.svg'
           />
-        ) : (
+        )}
+        {isBack && (
           <Image
             width={11}
             height={19}

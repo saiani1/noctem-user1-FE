@@ -6,7 +6,7 @@ import ToolbarList from '../src/components/ui/toolbarList';
 function product() {
   return (
     <>
-      <Header />
+      <Header isClose={false} isBack />
       <ProductContent />
       <ToolbarList />
     </>

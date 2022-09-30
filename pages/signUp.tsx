@@ -5,7 +5,7 @@ import SignUpContent from '../src/components/content/signUpContent';
 function index() {
   return (
     <>
-      <Header isClose />
+      <Header isClose isBack={false} />
       <SignUpContent />
     </>
   );

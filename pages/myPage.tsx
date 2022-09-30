@@ -12,7 +12,7 @@ function myPage() {
 
   return (
     <>
-      <Header />
+      <Header isClose={false} isBack />
       <div className={cx('wrap')}>
         <h2>My Page</h2>
         <p className={cx('welcome-msg')}>
