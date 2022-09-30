@@ -172,7 +172,7 @@ function step2({
 
   const handleDuplChk = (name: string) => {
     console.log('중복 체크', name);
-    const type = name === 'email' ? 'email' : 'nickName';
+    const type = name === 'email' ? 'email' : 'nickname';
     const value =
       name === 'email' ? emailRef.current?.value : nickNameRef.current?.value;
     console.log(type, value);
