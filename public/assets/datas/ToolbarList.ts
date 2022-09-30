@@ -3,18 +3,22 @@ import { IList } from '../../../src/types/toolbar.d';
 export const TOOL_LIST: Array<IList> = [
   {
     link: '/',
-    txt: 'Home',
+    linkTxt: 'Home',
+    txt: 'Home'
   },
   {
-    link: '/order',
+    link: '/category',
+    linkTxt: 'Category',
     txt: 'Order',
   },
   {
     link: '/pay',
+    linkTxt: 'Pay',
     txt: 'Pay',
   },
   {
-    link: '/my',
+    link: '/myPage',
+    linkTxt: 'MyPage',
     txt: 'My',
   },
 ];

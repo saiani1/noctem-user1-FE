@@ -1,16 +1,15 @@
 import React from 'react';
 import Header from '../src/components/common/header';
-import MyPageContent from '../src/components/content/myPageContent';
 import ToolbarList from '../src/components/ui/toolbarList';
 
-function myPage() {
+function pay() {
   return (
     <>
-      <Header isClose={false} isBack={false} />
-      <MyPageContent />
+      <Header isClose={false} isBack />
+      <h1>Pay</h1>
       <ToolbarList />
     </>
   );
 }
 
-export default myPage;
+export default pay;

@@ -102,6 +102,8 @@ function myPageContent() {
           </Link>
         </li>
       </ul>
+
+      <Link href='/login'>임시 로그인</Link>
       <button type='button' className={cx('logout-btn')}>
         로그아웃
       </button>

@@ -5,6 +5,7 @@ import ChoicePaymentModal from '../src/components/content/choicePaymentModal';
 import RegisterCashReceiptModal from '../src/components/content/registerCashReceiptModal';
 import OrderPayingCompletionModal from '../src/components/content/orderPayingCompletionModal';
 import OrderContent from '../src/components/content/orderContent';
+import ToolbarList from '../src/components/ui/toolbarList';
 
 function order() {
   const [isClickPaymentBtn, setIsClickPaymentBtn] = useState(false);
@@ -30,6 +31,7 @@ function order() {
         setIsClickCashReceiptBtn={setIsClickCashReceiptBtn}
         setIsClickSubmitBtn={setIsClickSubmitBtn}
       />
+      <ToolbarList />
     </>
   );
 }
