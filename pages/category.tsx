@@ -8,7 +8,7 @@ function category() {
   const [categoryName, setCategoryName] = useState('');
   return (
     <>
-      <Header isClose />
+      <Header isClose={false} isBack />
       <CategoryListContent
         categoryName={categoryName}
         setCategoryName={setCategoryName}

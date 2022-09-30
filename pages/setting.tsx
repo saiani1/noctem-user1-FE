@@ -6,7 +6,7 @@ import SettingContent from '../src/components/content/settingContent';
 function setting() {
   return (
     <>
-      <Header isClose={false} />
+      <Header isClose={false} isBack />
       <SettingContent />
     </>
   );

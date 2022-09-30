@@ -6,13 +6,7 @@ export interface IStep1Props {
 
 export interface IStep2Props {
   agreeData: IAgreeData;
-  inputData: IInputData;
-  setInputData: Dispatch<SetStateAction<boolean>>;
-  setStep: Dispatch<SetStateAction<boolean>>;
-}
-
-export interface IStep3Props {
-  nickName: string;
+  setNickname: Dispatch<SetStateAction<boolean>>;
   setStep: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -37,7 +31,7 @@ export interface IAgreeData {
 
 export interface IInputData {
   name: string;
-  nickName: string;
+  nickname: string;
   birth: string;
   gender: string;
   email: string;
@@ -47,7 +41,7 @@ export interface IInputData {
 
 export interface IValid {
   name: boolean;
-  nickName: boolean;
+  nickname: boolean;
   birth: boolean;
   gender: boolean;
   email: boolean;
@@ -57,13 +51,13 @@ export interface IValid {
 }
 
 export interface IDuplValid {
-  nickName: boolean;
+  nickname: boolean;
   email: boolean;
 }
 
 export interface IError {
   name: string;
-  nickName: string;
+  nickname: string;
   birth: string;
   gender: string;
   email: string;

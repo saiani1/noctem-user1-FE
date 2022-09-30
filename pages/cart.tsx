@@ -6,7 +6,7 @@ import CartContent from '../src/components/content/cartContent';
 function cart() {
   return (
     <>
-      <Header isClose={false} />
+      <Header isClose={false} isBack />
       <CartContent />
     </>
   );

@@ -5,7 +5,7 @@ import LoginContent from '../src/components/content/loginContent';
 function login() {
   return (
     <>
-      <Header isClose={false} />
+      <Header isClose={false} isBack />
       <LoginContent />
     </>
   );

@@ -6,7 +6,7 @@ import SelectStoreContent from '../src/components/content/selectStoreContent';
 function selectStore() {
   return (
     <>
-      <Header isClose={false} />
+      <Header isClose={false} isBack />
       <SelectStoreContent />
     </>
   );

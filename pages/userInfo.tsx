@@ -6,7 +6,7 @@ import UserInfoContent from '../src/components/content/userInfoContent';
 function userInfo() {
   return (
     <>
-      <Header isClose={false} />
+      <Header isClose={false} isBack />
       <UserInfoContent />
     </>
   );

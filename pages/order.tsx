@@ -24,7 +24,7 @@ function order() {
       {isClickSubmitBtn && (
         <OrderPayingCompletionModal setIsClickSubmitBtn={setIsClickSubmitBtn} />
       )}
-      <Header isClose={false} />
+      <Header isClose={false} isBack />
       <OrderContent
         setIsClickPaymentBtn={setIsClickPaymentBtn}
         setIsClickCashReceiptBtn={setIsClickCashReceiptBtn}
