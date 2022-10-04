@@ -204,7 +204,7 @@ function step2({
     if (value && (name === 'email' ? isEmail(value) : isNickName(value))) {
       axios
         .get(
-          `http://121.145.206.143:8000/api/user-service/duplicationCheck/${name}/${value}`,
+          `${process.env.NEXT_PUBLIC_USER_BASE_URL}/duplicationCheck/${name}/${value}`,
         )
         .then(res => {
           if (res.data.data) {
@@ -346,7 +346,7 @@ function step2({
 
     setNickname(nicknameRef.current?.value);
     axios
-      .post(`http://121.145.206.143:8000/api/user-service/signUp`, {
+      .post(`${process.env.NEXT_PUBLIC_USER_BASE_URL}/signUp`, {
         name: nameRef.current?.value,
         nickname: nicknameRef.current?.value,
         rrnFront: birthRef.current?.value,

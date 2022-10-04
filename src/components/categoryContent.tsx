@@ -33,7 +33,7 @@ function categoryContent({ setCategoryName }: { setCategoryName: any }) {
     setCategoryLName(name);
     console.log(id);
     axios
-      .get(`http://121.145.206.143:8000/api/menu-service/${id}/categoryS`)
+      .get(`${process.env.NEXT_PUBLIC_MENU_BASE_URL}/${id}/categoryS`)
       .then(res => {
         setCategoryDrinkList(res.data.data);
         setCategoryFoodList(res.data.data);
@@ -44,14 +44,12 @@ function categoryContent({ setCategoryName }: { setCategoryName: any }) {
   };
   useEffect(() => {
     axios
-      .get(`http://121.145.206.143:8000/api/menu-service/categoryL`)
+      .get(`${process.env.NEXT_PUBLIC_MENU_BASE_URL}/categoryL`)
       .then(res => {
         setCategoryL(res.data.data);
       });
     axios
-      .get(
-        `http://121.145.206.143:8000/api/menu-service/${categoryLId}/categoryS`,
-      )
+      .get(`${process.env.NEXT_PUBLIC_MENU_BASE_URL}/${categoryLId}/categoryS`)
       .then(res => {
         setCategoryDrinkList(res.data.data);
       });

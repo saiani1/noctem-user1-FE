@@ -26,7 +26,7 @@ function userInfoContent() {
     const token = localStorage.getItem('token');
     if (token !== null) {
       axios
-        .get('http://121.145.206.143:8000/api/user-service/userAccount', {
+        .get('${process.env.NEXT_PUBLIC_USER_BASE_URL}/userAccount', {
           headers: {
             Authorization: JSON.parse(token),
           },
@@ -54,7 +54,7 @@ function userInfoContent() {
       console.log(1);
       axios
         .get(
-          `http://121.145.206.143:8000/api/user-service/duplicationCheck/nickname/${nickValue}`,
+          `${process.env.NEXT_PUBLIC_USER_BASE_URL}/duplicationCheck/nickname/${nickValue}`,
         )
         .then(res => {
           console.log(res);
@@ -85,7 +85,7 @@ function userInfoContent() {
     if (isValid && token) {
       axios
         .patch(
-          'http://121.145.206.143:8000/api/user-service/userAccount/nickname',
+          '${process.env.NEXT_PUBLIC_USER_BASE_URL}/userAccount/nickname',
           {
             nickname: nickValue,
           },

@@ -18,7 +18,7 @@ function loginContent() {
     const passwordValue = passwordInputRef.current?.value;
 
     axios
-      .post('http://121.145.206.143:8000/api/user-service/login', {
+      .post('${process.env.NEXT_PUBLIC_USER_BASE_URL}/login', {
         email: emailValue,
         password: passwordValue,
       })

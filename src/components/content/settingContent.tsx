@@ -23,7 +23,7 @@ function settingContent() {
 
     if (info === undefined && token) {
       axios
-        .get('http://121.145.206.143:8000/api/user-service/optionalInfo', {
+        .get('${process.env.NEXT_PUBLIC_USER_BASE_URL}/optionalInfo', {
           headers: {
             Authorization: JSON.parse(token),
           },
