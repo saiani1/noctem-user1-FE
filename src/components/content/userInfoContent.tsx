@@ -1,8 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
-import axios from 'axios';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/userInfoContent.module.scss';
+import { getToken } from '../../store/utils/token';
+import { getUserInfo } from './../../../pages/api/user';
+import {
+  getDuplicationCheck,
+  patchNickname,
+} from './../../../pages/api/signUp';
 
 interface IInfo {
   email: string;
@@ -17,27 +22,28 @@ interface IInfo {
 
 function userInfoContent() {
   const nicknameInputRef = useRef<HTMLInputElement>(null);
-  const [info, setInfo] = useState<IInfo>();
+  const [info, setInfo] = useState<IInfo>({
+    email: '',
+    name: '',
+    sex: '',
+    birthdayYear: '',
+    birthdayMonth: '',
+    birthdayDay: '',
+    phoneNumber: '',
+    nickname: '',
+  });
   const [isValid, setIsValid] = useState(false);
   const [error, setError] = useState('');
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token !== null) {
-      axios
-        .get('http://121.145.206.143:8000/api/user-service/userAccount', {
-          headers: {
-            Authorization: JSON.parse(token),
-          },
-        })
-        .then((res: any) => {
-          setInfo(res.data.data);
-          console.log(res.data.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    const token = getToken();
+
+    if (token !== '{}') {
+      getUserInfo().then(res => {
+        console.log(res);
+        setInfo(res.data.data);
+      });
     }
   }, []);
 
@@ -52,21 +58,18 @@ function userInfoContent() {
     console.log(info?.nickname, nickValue);
     if (nickValue && info?.nickname !== nickValue && isNickName(nickValue)) {
       console.log(1);
-      axios
-        .get(
-          `http://121.145.206.143:8000/api/user-service/duplicationCheck/nickname/${nickValue}`,
-        )
-        .then(res => {
-          console.log(res);
-          if (res.data.data) {
-            setIsValid(false);
-            setError('중복된 닉네임입니다.');
-            nicknameInputRef.current?.focus();
-          } else {
-            setIsValid(true);
-            setError('사용 가능한 닉네임입니다.');
-          }
-        });
+
+      getDuplicationCheck('nickname', nickValue).then(res => {
+        console.log(res);
+        if (res.data.data) {
+          setIsValid(false);
+          setError('중복된 닉네임입니다.');
+          nicknameInputRef.current?.focus();
+        } else {
+          setIsValid(true);
+          setError('사용 가능한 닉네임입니다.');
+        }
+      });
     } else if (nickValue && !isNickName(nickValue)) {
       setIsValid(false);
       setError('2~8자리의 한글을 입력해 주세요.');
@@ -79,28 +82,23 @@ function userInfoContent() {
   };
 
   const handleSubmit = () => {
-    const nickValue = nicknameInputRef.current?.value;
-    const token = localStorage.getItem('token');
+    console.log('서브밋');
 
-    if (isValid && token) {
-      axios
-        .patch(
-          'http://121.145.206.143:8000/api/user-service/userAccount/nickname',
-          {
+    const nickValue = nicknameInputRef.current?.value || '';
+    const token = getToken();
+
+    if (isValid && token !== '{}') {
+      patchNickname(nickValue).then(res => {
+        if (res.data.data) {
+          setInfo({
+            ...info,
             nickname: nickValue,
-          },
-          {
-            headers: {
-              Authorization: JSON.parse(token),
-            },
-          },
-        )
-        .then((res: any) => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+          });
+          alert('닉네임이 변경되었습니다.');
+        } else {
+          alert('닉네임 변경에 실패하였습니다.');
+        }
+      });
     } else if (!isValid) setError('닉네임 중복확인을 진행해주세요.');
   };
 

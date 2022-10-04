@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import axios from 'axios';
 import classNames from 'classnames/bind';
 import styles from '../../../../styles/content/signUp/step2.module.scss';
 import {
@@ -8,6 +7,7 @@ import {
   IError,
   IDuplValid,
 } from '../../../types/signUp.d';
+import { addUser, getDuplicationCheck } from '../../../../pages/api/signUp';
 
 const cx = classNames.bind(styles);
 
@@ -202,38 +202,34 @@ function step2({
         : '사용 가능한 닉네임입니다.';
 
     if (value && (name === 'email' ? isEmail(value) : isNickName(value))) {
-      axios
-        .get(
-          `http://121.145.206.143:8000/api/user-service/duplicationCheck/${name}/${value}`,
-        )
-        .then(res => {
-          if (res.data.data) {
-            // 중복임
-            setDuplValid({
-              ...duplValid,
-              [name]: false,
-            });
-            setError({
-              ...error,
-              [name]: errMsg,
-            });
-            if (name === 'email') {
-              emailRef.current?.focus();
-            } else {
-              nicknameRef.current?.focus();
-            }
+      getDuplicationCheck(name, value).then(res => {
+        if (res.data.data) {
+          // 중복임
+          setDuplValid({
+            ...duplValid,
+            [name]: false,
+          });
+          setError({
+            ...error,
+            [name]: errMsg,
+          });
+          if (name === 'email') {
+            emailRef.current?.focus();
           } else {
-            // 중복 아님
-            setDuplValid({
-              ...duplValid,
-              [name]: true,
-            });
-            setError({
-              ...error,
-              [name]: successMsg,
-            });
+            nicknameRef.current?.focus();
           }
-        });
+        } else {
+          // 중복 아님
+          setDuplValid({
+            ...duplValid,
+            [name]: true,
+          });
+          setError({
+            ...error,
+            [name]: successMsg,
+          });
+        }
+      });
     }
   };
 
@@ -345,28 +341,28 @@ function step2({
     }
 
     setNickname(nicknameRef.current?.value);
-    axios
-      .post(`http://121.145.206.143:8000/api/user-service/signUp`, {
-        name: nameRef.current?.value,
-        nickname: nicknameRef.current?.value,
-        rrnFront: birthRef.current?.value,
-        rrnBackFirst: genderRef.current?.value,
-        email: emailRef.current?.value,
-        password: passwordRef.current?.value,
-        termsOfServiceAgreement: agreeData.agr1_use,
-        personalInfoAgreement: agreeData.agr2_info,
-        advertisementAgreement: agreeData.agr3_ad,
-      })
-      .then(res => {
-        if (res.data.data) {
-          setStep({
-            step1: false,
-            step2: false,
-            step3: true,
-          });
-        }
-      })
-      .catch(e => console.log(e));
+
+    const datas = {
+      name: nameRef.current?.value || '',
+      nickname: nicknameRef.current?.value || '',
+      rrnFront: birthRef.current?.value || '',
+      rrnBackFirst: genderRef.current?.value || '',
+      email: emailRef.current?.value || '',
+      password: passwordRef.current?.value || '',
+      termsOfServiceAgreement: agreeData.agr1_use || false,
+      personalInfoAgreement: agreeData.agr2_info || false,
+      advertisementAgreement: agreeData.agr3_ad || false,
+    };
+
+    addUser(datas).then(res => {
+      if (res.data.data) {
+        setStep({
+          step1: false,
+          step2: false,
+          step3: true,
+        });
+      }
+    });
   };
 
   return (

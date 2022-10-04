@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
 // import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
-import axios from 'axios';
+import { getLageCategory, getSmallCategory } from '../../pages/api/category';
 
 const cx = classNames.bind(styles);
 
@@ -30,31 +30,22 @@ function categoryContent({ setCategoryName }: { setCategoryName: any }) {
   );
   const handleChangeCategory = (name: string, id: number) => {
     console.log(name);
-    setCategoryLName(name);
     console.log(id);
-    axios
-      .get(`http://121.145.206.143:8000/api/menu-service/${id}/categoryS`)
-      .then(res => {
-        setCategoryDrinkList(res.data.data);
-        setCategoryFoodList(res.data.data);
+    setCategoryLName(name);
 
-        console.log(categoryDrinkList);
-        console.log(categoryFoodList);
-      });
+    getSmallCategory(id).then(res => {
+      setCategoryDrinkList(res.data.data);
+      setCategoryFoodList(res.data.data);
+    });
   };
   useEffect(() => {
-    axios
-      .get(`http://121.145.206.143:8000/api/menu-service/categoryL`)
-      .then(res => {
-        setCategoryL(res.data.data);
-      });
-    axios
-      .get(
-        `http://121.145.206.143:8000/api/menu-service/${categoryLId}/categoryS`,
-      )
-      .then(res => {
-        setCategoryDrinkList(res.data.data);
-      });
+    getLageCategory().then(res => {
+      setCategoryL(res.data.data);
+    });
+
+    getSmallCategory(categoryLId).then(res => {
+      setCategoryDrinkList(res.data.data);
+    });
   }, []);
   return (
     <>

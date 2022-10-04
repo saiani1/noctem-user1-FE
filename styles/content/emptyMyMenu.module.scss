@@ -1,0 +1,21 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.content-wrap {
+  padding: 19px;
+  .empty-tit {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    color: variable.$TXT-006;
+  }
+  .empty-content {
+    font-size: 12.5px;
+    color: variable.$TXT-003;
+  }
+  .img-wrap {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+  }
+}
