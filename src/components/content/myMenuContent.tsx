@@ -16,11 +16,11 @@ function myMenuContent() {
       <div className={cx('option-wrap')}>
         <div className={cx('input-wrap')}>
           <label>HOME에서 바로 주문</label>
-          <ToggleCheckbox
+          {/* <ToggleCheckbox
             // defaultChecked={defaultChecked}
             // onChange={onChange}
             value=''
-          />
+          /> */}
         </div>
         <button type='button' className={cx('sort-btn')}>
           <Image src='/assets/svg/icon-sort-arrow.svg' width={13} height={13} />

@@ -7,22 +7,28 @@ import styles from '../../../styles/content/settingContent.module.scss';
 import ToggleCheckbox from '../ui/toggleCheckbox';
 
 interface IInfo {
-  isDarkmode?: boolean;
-  pushNotificationAgreement?: boolean;
-  advertisementAgreement?: boolean;
-  useLocationInfoAgreement?: boolean;
-  shakeToPay?: boolean;
+  isDarkmode: boolean;
+  pushNotificationAgreement: boolean;
+  advertisementAgreement: boolean;
+  useLocationInfoAgreement: boolean;
+  shakeToPay: boolean;
 }
 
 function settingContent() {
-  const [info, setInfo] = useState<IInfo>();
+  const [info, setInfo] = useState<IInfo>({
+    isDarkmode: false,
+    pushNotificationAgreement: false,
+    advertisementAgreement: false,
+    useLocationInfoAgreement: false,
+    shakeToPay: false,
+  });
   const [isFetching, setIsFetching] = useState(false);
   const cx = classNames.bind(styles);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    if (info === undefined && token) {
+    if (token) {
       axios
         .get('https://noctem.click/api/user-service/optionalInfo', {
           headers: {
