@@ -4,6 +4,7 @@ import axios from 'axios';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/settingContent.module.scss';
+import ToggleCheckbox from '../ui/toggleCheckbox';
 
 interface IInfo {
   isDarkmode?: boolean;
@@ -23,7 +24,7 @@ function settingContent() {
 
     if (info === undefined && token) {
       axios
-        .get('http://121.145.206.143:8000/api/user-service/optionalInfo', {
+        .get('https://noctem.click/api/user-service/optionalInfo', {
           headers: {
             Authorization: JSON.parse(token),
           },
@@ -46,7 +47,7 @@ function settingContent() {
     if (token) {
       axios
         .patch(
-          `http://121.145.206.143:8000/api/user-service/optionalInfo/${value}`,
+          `https://noctem.click/api/user-service/optionalInfo/${value}`,
           null,
           {
             headers: {
@@ -71,63 +72,43 @@ function settingContent() {
         <ul className={cx('setting-li-wrap')}>
           <li className={cx('setting-li')}>
             <label htmlFor='push'>푸쉬 알림</label>
-            <div className={cx('toggle-wrap')}>
-              <input
-                type='checkbox'
-                defaultChecked={info?.pushNotificationAgreement}
-                onChange={handleChangeOption}
-                value='pushNotification'
-              />
-              <div className={cx('toggle')} />
-            </div>
+            <ToggleCheckbox
+              defaultChecked={info?.pushNotificationAgreement}
+              onChange={handleChangeOption}
+              value='pushNotification'
+            />
           </li>
           <li className={cx('setting-li')}>
             <label htmlFor='push'>프로모션/이벤트 알림 수신</label>
-            <div className={cx('toggle-wrap')}>
-              <input
-                type='checkbox'
-                defaultChecked={info?.advertisementAgreement}
-                onChange={handleChangeOption}
-                value='advertisement'
-              />
-              <div className={cx('toggle')} />
-            </div>
+            <ToggleCheckbox
+              defaultChecked={info?.advertisementAgreement}
+              onChange={handleChangeOption}
+              value='advertisement'
+            />
           </li>
           <li className={cx('setting-li')}>
             <label htmlFor='push'>위치 정보 서비스 이용약관 동의</label>
-            <div className={cx('toggle-wrap')}>
-              <input
-                type='checkbox'
-                defaultChecked={info?.useLocationInfoAgreement}
-                onChange={handleChangeOption}
-                value='location'
-              />
-              <div className={cx('toggle')} />
-            </div>
+            <ToggleCheckbox
+              defaultChecked={info?.useLocationInfoAgreement}
+              onChange={handleChangeOption}
+              value='location'
+            />
           </li>
           <li className={cx('setting-li')}>
             <label htmlFor='push'>Shake to pay 설정</label>
-            <div className={cx('toggle-wrap')}>
-              <input
-                type='checkbox'
-                defaultChecked={info?.shakeToPay}
-                onChange={handleChangeOption}
-                value='shakeToPay'
-              />
-              <div className={cx('toggle')} />
-            </div>
+            <ToggleCheckbox
+              defaultChecked={info?.shakeToPay}
+              onChange={handleChangeOption}
+              value='shakeToPay'
+            />
           </li>
           <li className={cx('setting-li')}>
             <label htmlFor='push'>다크모드</label>
-            <div className={cx('toggle-wrap')}>
-              <input
-                type='checkbox'
-                defaultChecked={info?.isDarkmode}
-                onChange={handleChangeOption}
-                value='darkmode'
-              />
-              <div className={cx('toggle')} />
-            </div>
+            <ToggleCheckbox
+              defaultChecked={info?.isDarkmode}
+              onChange={handleChangeOption}
+              value='darkmode'
+            />
           </li>
         </ul>
       )}

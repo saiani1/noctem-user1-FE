@@ -1,0 +1,32 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.toggle-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input[type='checkbox'] {
+    -webkit-appearance: none;
+    width: 45px;
+    height: 25px;
+    background-color: variable.$BG-007;
+    border-radius: 20px;
+
+    &:checked {
+      background-color: variable.$POINT;
+      & ~ .toggle {
+        margin-left: 20px;
+      }
+    }
+  }
+  .toggle {
+    @include position.absolute(3px auto auto 3px);
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background-color: variable.$BG-001;
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+  }
+}
