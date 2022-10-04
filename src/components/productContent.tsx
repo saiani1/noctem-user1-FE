@@ -4,7 +4,6 @@ import Image from 'next/image';
 import styles from '../../styles/pages/productPage.module.scss';
 import CategoryContent from './categoryContent';
 import CategoryItem from './categoryItem';
-import { categoryList } from '../../public/assets/datas/categoryList';
 
 const cx = classNames.bind(styles);
 

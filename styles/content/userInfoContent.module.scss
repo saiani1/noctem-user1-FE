@@ -41,6 +41,7 @@
     }
     .nickname-wrap {
       border-bottom: none;
+      margin-bottom: 20px;
       .input-wrap {
         display: flex;
         justify-content: space-between;
@@ -56,9 +57,19 @@
           color: variable.$TXT-005;
         }
       }
+      .msg {
+        display: inline-block;
+        margin-top: 5px;
+        font-size: variable.$FS-12;
+        color: variable.$TXT-SUCCESS;
+
+        &.err {
+          color: variable.$TXT-ERROR;
+        }
+      }
     }
     .withdrawal {
-      @include position.absolute(auto 0 45px 0);
+      @include position.absolute(auto 0 30px 0);
       font-size: variable.$FS-12;
       color: variable.$TXT-003;
       text-decoration: underline;

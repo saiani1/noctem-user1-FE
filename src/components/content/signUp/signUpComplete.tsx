@@ -1,11 +1,13 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
-import styles from '../../../../styles/content/signUp/signUpComplate.module.scss';
+import styles from '../../../../styles/content/signUp/signUpComplete.module.scss';
+import { useRouter } from 'next/router';
 
 const cx = classNames.bind(styles);
 
-function signUpComplate({ nickname }: { nickname: string }) {
+function signUpComplete({ nickname }: { nickname: string }) {
+  const router = useRouter();
   return (
     <div className={cx('wrap')}>
       <div className={cx('signUpCompalte-wrap')}>
@@ -27,7 +29,9 @@ function signUpComplate({ nickname }: { nickname: string }) {
       <button
         type='button'
         className={cx('btn', 'btn-bottom')}
-        onClick={() => {}}
+        onClick={() => {
+          router.push('/category');
+        }}
       >
         주문하러 가기
       </button>
@@ -35,4 +39,4 @@ function signUpComplate({ nickname }: { nickname: string }) {
   );
 }
 
-export default signUpComplate;
+export default signUpComplete;

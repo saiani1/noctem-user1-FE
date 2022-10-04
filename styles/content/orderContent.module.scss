@@ -175,17 +175,5 @@
         }
       }
     }
-    .btn {
-      @include position.absolute(auto 0 35px 0);
-      display: block;
-      margin: 0 19px;
-      padding: 8px;
-      text-align: center;
-      font-size: variable.$FS-13;
-      font-weight: 300;
-      border-radius: 20px;
-      color: variable.$TXT-005;
-      background-color: variable.$POINT;
-    }
   }
 }

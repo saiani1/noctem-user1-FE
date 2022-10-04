@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import Step1 from './signUp/step1';
 import Step2 from './signUp/step2';
-import SignUpComplate from './signUp/signUpComplate';
+import SignUpComplete from './signUp/signUpComplete';
 import styles from '../../../styles/content/signUp.module.scss';
 import { IData, IStep } from '../../types/signUp.d';
 
@@ -38,7 +38,7 @@ function signUpContent() {
           setStep={setStep}
         />
       )}
-      {step.step3 && <SignUpComplate nickname={nickname} />}
+      {step.step3 && <SignUpComplete nickname={nickname} />}
     </div>
   );
 }
