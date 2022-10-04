@@ -21,3 +21,8 @@ export const checkToken = () => {
   }
   return false;
 };
+
+// 토큰 저장하기
+export const setToken = (token: string) => {
+  localStorage.setItem('token', JSON.stringify(token));
+};

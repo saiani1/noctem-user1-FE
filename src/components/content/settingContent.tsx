@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/settingContent.module.scss';
+import { getUserOptions } from '../../../pages/api/user';
+import { useRouter } from 'next/router';
+import { getToken } from './../../store/utils/token';
 
 interface IInfo {
   value: string;
@@ -17,23 +19,19 @@ interface IInfo {
 function settingContent() {
   const [info, setInfo] = useState<IInfo>();
   const cx = classNames.bind(styles);
+  const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
+    const token = getToken();
 
-    if (info === undefined && token) {
-      axios
-        .get('${process.env.NEXT_PUBLIC_USER_BASE_URL}/optionalInfo', {
-          headers: {
-            Authorization: JSON.parse(token),
-          },
-        })
-        .then((res: any) => {
-          console.log(res.data.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    if (info === undefined && token !== '{}') {
+      getUserOptions().then(res => {
+        console.log(res);
+      });
+    } else {
+      alert('로그인이 필요한 서비스입니다.');
+      router.push('/login');
     }
   }, []);
 

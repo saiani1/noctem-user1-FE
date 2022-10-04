@@ -65,3 +65,15 @@ export interface IError {
   passwordConfirm: string;
   [key: string]: string;
 }
+
+export interface IParams {
+  name: string;
+  nickname: string;
+  rrnFront: string;
+  rrnBackFirst: string;
+  email: string;
+  password: string;
+  termsOfServiceAgreement: boolean;
+  personalInfoAgreement: boolean;
+  advertisementAgreement: boolean;
+}
