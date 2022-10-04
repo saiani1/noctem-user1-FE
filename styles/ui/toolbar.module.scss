@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1001;
+  z-index: variable.$TOOLBAR;
   background: variable.$BG-003;
   box-shadow: variable.$BOX-SHADOW-TOOLBAR;
 }
