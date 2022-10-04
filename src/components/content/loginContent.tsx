@@ -1,14 +1,16 @@
 import React, { useRef } from 'react';
-import Router from 'next/router';
-import axios from 'axios';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 import Link from 'next/link';
 import styles from '../../../styles/content/login.module.scss';
+import { login } from '../../../pages/api/login';
+import { setToken } from '../../store/utils/token';
 
 const cx = classNames.bind(styles);
 
 function loginContent() {
+  const router = useRouter();
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
@@ -17,21 +19,10 @@ function loginContent() {
     const emailValue = emailInputRef.current?.value;
     const passwordValue = passwordInputRef.current?.value;
 
-    axios
-      .post('http://121.145.206.143:8000/api/user-service/login', {
-        email: emailValue,
-        password: passwordValue,
-      })
-      .then((res: any) => {
-        localStorage.setItem(
-          'token',
-          JSON.stringify(res.headers.authorization),
-        );
-        Router.push('/');
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    login(emailValue, passwordValue).then(res => {
+      setToken(res.headers.authorization);
+      router.push('/');
+    });
   };
 
   return (
