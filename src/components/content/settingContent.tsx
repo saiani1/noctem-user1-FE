@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/settingContent.module.scss';
-import { getUserOptions } from '../../../pages/api/user';
+import { getUserOptions, patchUserOptions } from '../../../pages/api/user';
 import { useRouter } from 'next/router';
 import { getToken } from './../../store/utils/token';
+import ToggleCheckbox from '../ui/toggleCheckbox';
 
 interface IInfo {
-  value: string;
   isDarkmode: boolean;
   pushNotificationAgreement: boolean;
   advertisementAgreement: boolean;
@@ -17,17 +17,26 @@ interface IInfo {
 }
 
 function settingContent() {
-  const [info, setInfo] = useState<IInfo>();
+  const [info, setInfo] = useState<IInfo>({
+    isDarkmode: false,
+    pushNotificationAgreement: false,
+    advertisementAgreement: false,
+    useLocationInfoAgreement: false,
+    shakeToPay: false,
+  });
+  const [isFetching, setIsFetching] = useState(false);
   const cx = classNames.bind(styles);
   const router = useRouter();
 
   useEffect(() => {
-    // const token = localStorage.getItem('token');
     const token = getToken();
+    console.log(token);
 
-    if (info === undefined && token !== '{}') {
+    if (info !== undefined && token !== '{}') {
       getUserOptions().then(res => {
-        console.log(res);
+        console.log('res : ', res);
+        setInfo(res.data.data);
+        setIsFetching(true);
       });
     } else {
       alert('로그인이 필요한 서비스입니다.');
@@ -35,81 +44,65 @@ function settingContent() {
     }
   }, []);
 
-  // const handleChangePush = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (info?.pushNotificationAgreement !== e.target.checked) {
-  //     axios.patch()
-  //   }
-  // };
-  // const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {};
-  // const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) => {};
-  // const handleChangeShake = (e: React.ChangeEvent<HTMLInputElement>) => {};
-  // const handleChangeDark = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const check = e.target.checked;
+    const token = getToken();
+
+    if (token !== '{}') {
+      patchUserOptions(value).then(() => {
+        setInfo({ ...info, [value]: check });
+      });
+    }
+  };
 
   return (
     <div className={cx('wrap')}>
       <h2>설정</h2>
-      <ul className={cx('setting-li-wrap')}>
-        <li className={cx('setting-li')}>
-          <label htmlFor='push'>푸쉬 알림</label>
-          <div className={cx('toggle-wrap')}>
-            <input
-              type='checkbox'
-              checked={info?.pushNotificationAgreement}
-              // onChange={handleChangePush}
-              value='pushNotificationAgreement'
+      {isFetching && (
+        <ul className={cx('setting-li-wrap')}>
+          <li className={cx('setting-li')}>
+            <label htmlFor='push'>푸쉬 알림</label>
+            <ToggleCheckbox
+              defaultChecked={info?.pushNotificationAgreement}
+              onChange={handleChangeOption}
+              value='pushNotification'
             />
-            <div className={cx('toggle')} />
-          </div>
-        </li>
-        <li className={cx('setting-li')}>
-          <label htmlFor='push'>프로모션/이벤트 알림 수신</label>
-          <div className={cx('toggle-wrap')}>
-            <input
-              type='checkbox'
-              checked={info?.advertisementAgreement}
-              // onChange={handleChangeEvent}
-              value='advertisementAgreement'
+          </li>
+          <li className={cx('setting-li')}>
+            <label htmlFor='push'>프로모션/이벤트 알림 수신</label>
+            <ToggleCheckbox
+              defaultChecked={info?.advertisementAgreement}
+              onChange={handleChangeOption}
+              value='advertisement'
             />
-            <div className={cx('toggle')} />
-          </div>
-        </li>
-        <li className={cx('setting-li')}>
-          <label htmlFor='push'>위치 정보 서비스 이용약관 동의</label>
-          <div className={cx('toggle-wrap')}>
-            <input
-              type='checkbox'
-              checked={info?.useLocationInfoAgreement}
-              // onChange={handleChangeLocation}
-              value='useLocationInfoAgreement'
+          </li>
+          <li className={cx('setting-li')}>
+            <label htmlFor='push'>위치 정보 서비스 이용약관 동의</label>
+            <ToggleCheckbox
+              defaultChecked={info?.useLocationInfoAgreement}
+              onChange={handleChangeOption}
+              value='location'
             />
-            <div className={cx('toggle')} />
-          </div>
-        </li>
-        <li className={cx('setting-li')}>
-          <label htmlFor='push'>Shake to pay 설정</label>
-          <div className={cx('toggle-wrap')}>
-            <input
-              type='checkbox'
-              checked={info?.shakeToPay}
-              // onChange={handleChangeShake}
+          </li>
+          <li className={cx('setting-li')}>
+            <label htmlFor='push'>Shake to pay 설정</label>
+            <ToggleCheckbox
+              defaultChecked={info?.shakeToPay}
+              onChange={handleChangeOption}
               value='shakeToPay'
             />
-            <div className={cx('toggle')} />
-          </div>
-        </li>
-        <li className={cx('setting-li')}>
-          <label htmlFor='push'>다크모드</label>
-          <div className={cx('toggle-wrap')}>
-            <input
-              type='checkbox'
-              checked={info?.isDarkmode}
-              // onChange={handleChangeDark}
-              value='isDarkmode'
+          </li>
+          <li className={cx('setting-li')}>
+            <label htmlFor='push'>다크모드</label>
+            <ToggleCheckbox
+              defaultChecked={info?.isDarkmode}
+              onChange={handleChangeOption}
+              value='darkmode'
             />
-            <div className={cx('toggle')} />
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      )}
     </div>
   );
 }

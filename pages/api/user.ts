@@ -12,3 +12,7 @@ export const getUserOptions = async () => {
   return res;
 }
 
+export const patchUserOptions = async (value: string) => {
+  const res = await userRequest.patch(`${SERVICE}/optionalInfo/${value}`);
+  return res;
+}

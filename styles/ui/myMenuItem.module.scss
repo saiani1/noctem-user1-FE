@@ -1,0 +1,78 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.content-wrap {
+  padding: 19px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid variable.$LINE-003;
+
+  .img-wrap {
+    flex-shrink: 0;
+    margin-right: 15px;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .right {
+    .menu-contents-wrap {
+      padding-top: 15px;
+      position: relative;
+      .close-btn {
+        @include position.absolute(0 0 auto auto);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 18px;
+        height: 18px;
+        border: 1px solid variable.$LINE-003;
+        border-radius: 50%;
+      }
+      .menu-tit-wrap {
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+        .menu-tit {
+          color: variable.$TXT-001;
+        }
+        .edit-nickname-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 15px;
+          height: 15px;
+        }
+      }
+      .menu-option {
+        display: inline-block;
+        margin: 10px 0 5px;
+        font-size: 11px;
+        color: variable.$TXT-003;
+      }
+      .price {
+        display: inline-block;
+        font-weight: 600;
+        color: variable.$TXT-001;
+      }
+    }
+    .btn-wrap {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      column-gap: 10px;
+      button {
+        padding: 5px 20px;
+        font-weight: 400;
+        border-radius: 20px;
+        background-color: variable.$POINT;
+        color: variable.$TXT-005;
+      }
+      .cart-btn {
+        border: 1px solid variable.$POINT;
+        background-color: variable.$BG-001;
+        color: variable.$POINT;
+      }
+    }
+  }
+}
