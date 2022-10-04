@@ -30,7 +30,7 @@ function settingContent() {
 
     if (token) {
       axios
-        .get('https://noctem.click/api/user-service/optionalInfo', {
+        .get('${process.env.NEXT_PUBLIC_USER_BASE_URL}/optionalInfo', {
           headers: {
             Authorization: JSON.parse(token),
           },
