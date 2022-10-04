@@ -8,7 +8,7 @@ function product() {
     <>
       <Header isClose={false} isBack />
       <ProductContent />
-      <ToolbarList />
+      {/* <ToolbarList /> */}
     </>
   );
 }
