@@ -94,9 +94,11 @@ function productContent() {
                 className={
                   item.temperature === 'hot'
                     ? temperatureChoice === item.index
-                      ? cx('hot')
-                      : cx('hot-unclicked')
-                    : cx('iced')
+                      ? cx('iced')
+                      : cx('iced-unclicked')
+                    : temperatureChoice === item.index
+                    ? cx('hot')
+                    : cx('hot-unclicked')
                 }
                 onClick={() => handleTempChoice(item.index)}
                 onKeyDown={() => handleTempChoice(item.index)}

@@ -57,7 +57,7 @@
       background-color: variable.$TXT-SUCCESS;
       color: variable.$TXT-005;
     }
-    .hot {
+    .hot-unclicked {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -65,16 +65,25 @@
       border: 1px solid #eee;
       width: 50%;
     }
-    .hot-unclicked{
+    .hot{
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50px 0 0 50px;
       background-color: variable.$TXT-ERROR;
       width: 50%;
+      color: variable.$TXT-005;
     }
 
-    .iced {
+    .iced-unclicked {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0 50px 50px 0;
+      border: 1px solid #eee;
+      width: 50%;
+    }
+    .iced{
       display: flex;
       align-items: center;
       justify-content: center;
