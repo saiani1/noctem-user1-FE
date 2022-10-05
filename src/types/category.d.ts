@@ -3,6 +3,8 @@ export interface IProps {
 }
 
 export interface IList {
+  index: number;
+  categorySId: number;
   categorySImg: string;
   categorySName: string;
 }

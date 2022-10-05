@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/pages/productPage.module.scss';
@@ -10,29 +10,45 @@ import ToolbarList from './ui/toolbarList';
 import { sizeDatas } from '../../public/assets/datas/sizeDatas';
 import CupSizeItem from './cupSizeItem';
 import { cupDatas } from '../../public/assets/datas/cupDatas';
+import { useRouter } from 'next/router';
+import { getSize, getTemperature } from '../../pages/api/category';
 
 const cx = classNames.bind(styles);
 
 function productContent() {
+  const router = useRouter();
+  const id = router.query.id ? +router.query.id : 1;
+  console.log(id);
   const [orderOption, setOrderOption] = useState(false);
   const handleOrder = () => {
     setOrderOption(!orderOption);
   };
-  const [isClick, setIsClick] = useState(0);
   const [categoryName, setCategoryName] = useState('new');
+  const [categorySId, setCategorySId] = useState(0);
   const sheetRef = useRef<BottomSheetRef>;
   const [open, setOpen] = useState(false);
   const [sizeChoice, setSizeChoice] = useState('');
   const [cupChoice, setCupChoice] = useState('');
+  const [temperatureChoice, setTemperatureChoice] = useState('');
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
   };
   function onDismiss() {
     setOpen(false);
   }
+  useEffect(() => {
+    getTemperature(id).then(res => {
+      console.log(res.data.data);
+      setTemperatureChoice(res.data.data);
+    });
+  }, []);
+
   return (
     <>
-      <CategoryContent setCategoryName={setCategoryName} />
+      <CategoryContent
+        setCategoryName={setCategoryName}
+        setCategorySId={setCategorySId}
+      />
       <div className={cx('product-img')}>
         <img
           src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
@@ -104,9 +120,6 @@ function productContent() {
                         {item.name}
                       </div>
                     ))}
-                  {/* <div>매장컵</div>
-                  <div>개인 컵</div>
-                  <div>일회용 컵</div> */}
                 </div>
               </div>
               <div className={cx('bottom-order-bar')}>
