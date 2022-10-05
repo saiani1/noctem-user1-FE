@@ -24,8 +24,6 @@
     font-size: variable.$FS-10;
   }
 
-  .product-content {}
-
   .product-price {
     color: variable.$TXT-001;
     font-size: variable.$FS-16;
@@ -216,6 +214,7 @@
 
       div {
         border: 1px solid variable.$TXT-006;
+        border-right: 0;
         width: 30%;
         padding: 10px
       }
@@ -226,6 +225,7 @@
 
       :nth-child(3) {
         border-radius: 0 50px 50px 0;
+        border-right: 1px solid variable.$TXT-006;
       }
 
       .click-cup {

@@ -14,22 +14,23 @@ import { cupDatas } from '../../public/assets/datas/cupDatas';
 const cx = classNames.bind(styles);
 
 function productContent() {
-  const [orderOption, setOrderOption] = useState(false);
-  const handleOrder = () => {
-    setOrderOption(!orderOption);
-  };
   const [isClick, setIsClick] = useState(0);
   const [categoryName, setCategoryName] = useState('new');
   const sheetRef = useRef<BottomSheetRef>;
   const [open, setOpen] = useState(false);
   const [sizeChoice, setSizeChoice] = useState('');
   const [cupChoice, setCupChoice] = useState('');
+
+  const handleOrder = () => {};
+
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
   };
+
   function onDismiss() {
     setOpen(false);
   }
+
   return (
     <>
       <CategoryContent setCategoryName={setCategoryName} />

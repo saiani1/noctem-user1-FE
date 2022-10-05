@@ -5,12 +5,11 @@ import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/choiceStoreModal.module.scss';
 
-function choiceStoreModal() {
-  const cx = classNames.bind(styles);
+const cx = classNames.bind(styles);
 
+function choiceStoreModal() {
   return (
     <>
-      <div className={cx('background')} />
       <div className={cx('wrap')}>
         <div className={cx('img-wrap')}>
           <Image

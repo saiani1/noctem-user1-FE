@@ -3,10 +3,10 @@
 
 .wrap {
   position: relative;
-  height: 100vh;
+  padding-bottom: 50px;
 
   .tit {
-    padding: 25px 0 15px;
+    padding-top: 20px;
     font-size: variable.$FS-16;
     font-weight: bold;
     color: variable.$TXT-001;
@@ -14,6 +14,7 @@
 
   form {
     padding: 0 19px;
+
     .list-wrap {
       li {
         padding: 15px 0;
@@ -39,6 +40,7 @@
 
             .txt-wrap {
               margin-left: 10px;
+
               p {
                 line-height: 0.9;
                 font-size: variable.$FS-15;
@@ -91,6 +93,8 @@
       }
 
       .order-info-wrap {
+        position: relative;
+
         h3 {
           margin-bottom: 20px;
         }
@@ -142,6 +146,16 @@
             }
           }
         }
+
+        .wide-bg {
+          width: calc(100% + 38px);
+          height: 100%;
+          position: absolute;
+          left: -19px;
+          top: 0;
+          background-color: variable.$BG-002;
+          z-index: -1;
+        }
       }
 
       .price-info-wrap {
@@ -152,7 +166,7 @@
           align-items: center;
 
           dt {
-            color: variable.$TXT-002;
+            color: variable.$TXT-001;
             font-weight: bold;
           }
 
