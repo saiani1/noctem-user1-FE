@@ -64,7 +64,7 @@ function productContent() {
       </div>
       <BottomSheet open={open} onDismiss={onDismiss}>
         <SheetContent>
-          <div style={{ height: '90vh' }} />
+          <div style={{ height: '85vh' }} />
 
           <div className={cx('option-box')}>
             <div className={cx('option', 'fadeIn')}>
@@ -104,9 +104,6 @@ function productContent() {
                         {item.name}
                       </div>
                     ))}
-                  {/* <div>매장컵</div>
-                  <div>개인 컵</div>
-                  <div>일회용 컵</div> */}
                 </div>
               </div>
               <div className={cx('bottom-order-bar')}>

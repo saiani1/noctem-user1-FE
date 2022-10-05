@@ -96,20 +96,12 @@
   .option {
     overflow: auto;
     position: absolute;
+    padding-bottom: 126px;
     z-index: 1001;
     height: 90%;
     width: 100vw;
     background-color: variable.$BG-001;
     bottom: 0;
-
-    .top-bar {
-      margin: auto;
-      margin-top: 16px;
-      padding: 3px;
-      width: 20%;
-      background-color: variable.$BG-005;
-      border-radius: 50px;
-    }
 
     .bottom-order-bar {
       position: fixed;
