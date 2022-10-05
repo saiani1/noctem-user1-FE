@@ -15,21 +15,26 @@ import { getSize, getTemperature } from '../../pages/api/category';
 
 const cx = classNames.bind(styles);
 
+interface ITemperature {
+  index: number;
+  temperatureId: number;
+  temperature: string;
+}
+
 function productContent() {
   const router = useRouter();
   const id = router.query.id ? +router.query.id : 1;
-  console.log(id);
-  const [orderOption, setOrderOption] = useState(false);
-  const handleOrder = () => {
-    setOrderOption(!orderOption);
-  };
   const [categoryName, setCategoryName] = useState('new');
   const [categorySId, setCategorySId] = useState(0);
   const sheetRef = useRef<BottomSheetRef>;
   const [open, setOpen] = useState(false);
   const [sizeChoice, setSizeChoice] = useState('');
   const [cupChoice, setCupChoice] = useState('');
-  const [temperatureChoice, setTemperatureChoice] = useState('');
+  const [temperatureList, setTemperatureList] = useState<ITemperature[]>([]);
+  const [temperatureChoice, setTemperatureChoice] = useState(0);
+  const handleTempChoice = (e: number) => {
+    setTemperatureChoice(e);
+  };
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
   };
@@ -39,7 +44,8 @@ function productContent() {
   useEffect(() => {
     getTemperature(id).then(res => {
       console.log(res.data.data);
-      setTemperatureChoice(res.data.data);
+      setTemperatureList(res.data.data);
+      console.log(temperatureList);
     });
   }, []);
 
@@ -63,9 +69,42 @@ function productContent() {
           강렬한 에스프레소를 가장 부드럽고 시원하게 즐길 수 있는 커피
         </div>
         <div className={cx('product-price')}>4,500원</div>
+
         <div className={cx('temp-button')}>
-          <div className={cx('hot')}>HOT</div>
-          <div className={cx('iced')}>ICED</div>
+          {temperatureList && temperatureList.length < 2 ? (
+            <div
+              className={
+                temperatureList[0] && temperatureList[0].temperature === 'hot'
+                  ? cx('only-hot')
+                  : cx('only-ice')
+              }
+            >
+              {temperatureList[0] &&
+              temperatureList[0].temperature === 'hot' ? (
+                <div>HOT ONLY</div>
+              ) : (
+                <div>ICED ONLY</div>
+              )}
+            </div>
+          ) : (
+            temperatureList &&
+            temperatureList.map(item => (
+              <div
+                key={item.index}
+                className={
+                  item.temperature === 'hot'
+                    ? temperatureChoice === item.index
+                      ? cx('hot')
+                      : cx('hot-unclicked')
+                    : cx('iced')
+                }
+                onClick={() => handleTempChoice(item.index)}
+                onKeyDown={() => handleTempChoice(item.index)}
+              >
+                {item.temperature === 'hot' ? 'ICED' : 'HOT'}
+              </div>
+            ))
+          )}
         </div>
       </div>
       <hr className={cx('line')} />

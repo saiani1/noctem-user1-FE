@@ -39,7 +39,24 @@
     height: 30px;
     text-align: center;
     margin-top: 16px;
-
+    .only-hot{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border-radius: 50px;
+      background-color: variable.$TXT-ERROR;
+      color: variable.$TXT-005;
+    }
+    .only-ice{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border-radius: 50px;
+      background-color: variable.$TXT-SUCCESS;
+      color: variable.$TXT-005;
+    }
     .hot {
       display: flex;
       align-items: center;
@@ -48,13 +65,21 @@
       border: 1px solid #eee;
       width: 50%;
     }
+    .hot-unclicked{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50px 0 0 50px;
+      background-color: variable.$TXT-ERROR;
+      width: 50%;
+    }
 
     .iced {
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 0 50px 50px 0;
-      background-color: #3D67FF;
+      background-color: variable.$TXT-SUCCESS;
       width: 50%;
       color: variable.$TXT-005;
     }
