@@ -1,0 +1,58 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.content-wrap {
+  .sub-tit {
+    display: inline-block;
+    padding: 25px 0 0 19px;
+    font-size: variable.$FS-11;
+    font-weight: 300;
+    color: variable.$TXT-003;
+  }
+  .level-wrap {
+    padding: 19px 19px 25px 19px;
+    border-bottom: 1px solid variable.$LINE-003;
+
+    &.first {
+      padding-top: 0;
+    }
+    .level-tit-wrap {
+      display: flex;
+      align-items: center;
+
+      .level-tit {
+        margin: 0 10px 10px 0;
+        font-size: variable.$FS-21;
+        color: variable.$RANK-001;
+        &.e {
+          color: variable.$RANK-002;
+        }
+        &.pe {
+          color: variable.$RANK-003;
+        }
+      }
+      .level-icon-wrap {
+        margin-top: -4px;
+      }
+    }
+    .level-content-wrap {
+      display: flex;
+      align-items: center;
+      column-gap: 15px;
+      width: 100%;
+      padding: 10px 20px;
+      border-radius: 3px;
+      background-color: variable.$BG-003;
+      ~ .level-content-wrap {
+        margin-top: 8px;
+      }
+      .img-wrap {
+        margin-top: 2px;
+      }
+      .content {
+        font-size: variable.$FS-12;
+        color: variable.$TXT-003;
+      }
+    }
+  }
+}

@@ -17,14 +17,16 @@ function myPageContent() {
       </p>
       <ul className={cx('menu-btn-li-wrap')}>
         <li className={cx('menu-btn-li')}>
-          <button type='button'>
-            <Image
-              src='/assets/svg/icon-moon-and-stars.svg'
-              width={35}
-              height={35}
-            />
-            <span>등급 히스토리</span>
-          </button>
+          <Link href='/rewards'>
+            <a className={cx('button')}>
+              <Image
+                src='/assets/svg/icon-my-reward.svg'
+                width={35}
+                height={35}
+              />
+              <span>My Reward</span>
+            </a>
+          </Link>
         </li>
         <li className={cx('menu-btn-li')}>
           <button type='button'>
@@ -33,10 +35,12 @@ function myPageContent() {
           </button>
         </li>
         <li className={cx('menu-btn-li')}>
-          <button type='button'>
-            <Image src='/assets/svg/icon-mug.svg' width={35} height={35} />
-            <span>나만의 메뉴</span>
-          </button>
+          <Link href='/myMenu'>
+            <a className={cx('button')}>
+              <Image src='/assets/svg/icon-mug.svg' width={35} height={35} />
+              <span>나만의 메뉴</span>
+            </a>
+          </Link>
         </li>
         <li className={cx('menu-btn-li')}>
           <Link href='/userInfo'>
