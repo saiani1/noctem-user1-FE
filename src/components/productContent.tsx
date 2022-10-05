@@ -110,7 +110,7 @@ function productContent() {
                 </div>
               </div>
               <div className={cx('bottom-order-bar')}>
-                <hr />
+                <hr className={cx('line')} />
                 <div>
                   <div className={cx('total-cost')}>
                     <div className={cx('control-count')}>
@@ -145,7 +145,9 @@ function productContent() {
                     </div>
                     <div>
                       <div className={cx('go-cart')}>담기</div>
-                      <div className={cx('go-order')}>주문하기</div>
+                      <div className={cx('go-order')} onClick={handleOrder}>
+                        주문하기
+                      </div>
                     </div>
                   </div>
                 </div>
