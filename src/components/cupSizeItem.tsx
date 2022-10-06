@@ -30,10 +30,14 @@ function cupSizeItem({
       >
         <div className={cx('cup-image-box')}>
           <Image
-            src='/assets/svg/icon-cup-size.svg'
+            src={
+              sizeChoice === list.name
+                ? '/assets/svg/icon-cup-click.svg'
+                : '/assets/svg/icon-cup.svg'
+            }
             alt='cup-size'
-            width={26}
-            height={26}
+            width={list.size / 10}
+            height={list.size / 10}
           />
         </div>
         <div>{list.name}</div>

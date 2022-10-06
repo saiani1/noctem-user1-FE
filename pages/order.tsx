@@ -6,6 +6,9 @@ import RegisterCashReceiptModal from '../src/components/content/registerCashRece
 import OrderPayingCompletionModal from '../src/components/content/orderPayingCompletionModal';
 import OrderContent from '../src/components/content/orderContent';
 import ToolbarList from '../src/components/ui/toolbarList';
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import SheetContent from '../src/components/common/sheetContent';
+import 'react-spring-bottom-sheet/dist/style.css';
 
 function order() {
   const [isClickPaymentBtn, setIsClickPaymentBtn] = useState(false);
@@ -14,24 +17,19 @@ function order() {
 
   return (
     <>
-      {isClickPaymentBtn && (
-        <ChoicePaymentModal setIsClickPaymentBtn={setIsClickPaymentBtn} />
-      )}
-      {isClickCashReceiptBtn && (
-        <RegisterCashReceiptModal
-          setIsClickCashReceiptBtn={setIsClickCashReceiptBtn}
-        />
-      )}
-      {isClickSubmitBtn && (
-        <OrderPayingCompletionModal setIsClickSubmitBtn={setIsClickSubmitBtn} />
-      )}
       <Header isClose={false} isBack />
       <OrderContent
+        isClickPaymentBtn={isClickPaymentBtn}
+        isClickCashReceiptBtn={isClickCashReceiptBtn}
+        isClickSubmitBtn={isClickSubmitBtn}
         setIsClickPaymentBtn={setIsClickPaymentBtn}
         setIsClickCashReceiptBtn={setIsClickCashReceiptBtn}
         setIsClickSubmitBtn={setIsClickSubmitBtn}
       />
-      <ToolbarList />
+
+      {!isClickPaymentBtn && !isClickCashReceiptBtn && !isClickSubmitBtn && (
+        <ToolbarList />
+      )}
     </>
   );
 }

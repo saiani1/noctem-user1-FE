@@ -6,15 +6,15 @@ import classNames from 'classnames/bind';
 import styles from '../../../styles/ui/storeInfo.module.scss';
 
 interface IProps {
-  setIsClickModalBtn: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function storeInfo(props: IProps) {
-  const { setIsClickModalBtn } = props;
+  const { setOpen } = props;
   const cx = classNames.bind(styles);
 
   const handleClickStore = () => {
-    setIsClickModalBtn(prev => {
+    setOpen(prev => {
       return !prev;
     });
   };
