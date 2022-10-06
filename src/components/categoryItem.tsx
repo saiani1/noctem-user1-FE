@@ -11,16 +11,19 @@ function categoryItem({
   setIsClick,
   isClick,
   setCategoryName,
+  setCategorySId,
 }: {
   list: IProps['list'];
   setIsClick: any;
   isClick: string;
   setCategoryName: any;
+  setCategorySId: any;
 }) {
   const handleChoice = () => {
     Router.push('/category');
     setIsClick(list.categorySName);
     setCategoryName(list.categorySName);
+    setCategorySId(list.categorySId);
   };
   return (
     <li

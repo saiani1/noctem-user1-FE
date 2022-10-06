@@ -13,11 +13,19 @@ interface ICategory {
   categoryLName: string;
 }
 interface IDrinkCategory {
+  index: number;
+  categorySId: number;
   categorySImg: string;
   categorySName: string;
 }
 
-function categoryContent({ setCategoryName }: { setCategoryName: any }) {
+function categoryContent({
+  setCategoryName,
+  setCategorySId,
+}: {
+  setCategoryName: any;
+  setCategorySId: any;
+}) {
   const [isClick, setIsClick] = useState('NEW');
   const [categoryL, setCategoryL] = useState<ICategory[]>([]);
   const [categoryLName, setCategoryLName] = useState('음료');
@@ -106,6 +114,7 @@ function categoryContent({ setCategoryName }: { setCategoryName: any }) {
                     setIsClick={setIsClick}
                     isClick={isClick}
                     setCategoryName={setCategoryName}
+                    setCategorySId={setCategorySId}
                   />
                 );
               })}
@@ -121,6 +130,7 @@ function categoryContent({ setCategoryName }: { setCategoryName: any }) {
                     setIsClick={setIsClick}
                     isClick={isClick}
                     setCategoryName={setCategoryName}
+                    setCategorySId={setCategorySId}
                   />
                 );
               })}
