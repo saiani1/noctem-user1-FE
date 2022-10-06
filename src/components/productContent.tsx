@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/pages/productPage.module.scss';
@@ -10,29 +10,56 @@ import ToolbarList from './ui/toolbarList';
 import { sizeDatas } from '../../public/assets/datas/sizeDatas';
 import CupSizeItem from './cupSizeItem';
 import { cupDatas } from '../../public/assets/datas/cupDatas';
+import { useRouter } from 'next/router';
+import { getSize, getTemperature } from '../../pages/api/category';
 
 const cx = classNames.bind(styles);
 
+interface ITemperature {
+  index: number;
+  temperatureId: number;
+  temperature: string;
+}
+
 function productContent() {
-  const [orderOption, setOrderOption] = useState(false);
-  const handleOrder = () => {
-    setOrderOption(!orderOption);
-  };
-  const [isClick, setIsClick] = useState(0);
+  const router = useRouter();
+  const id = router.query.id ? +router.query.id : 1;
   const [categoryName, setCategoryName] = useState('new');
+  const [categorySId, setCategorySId] = useState(0);
   const sheetRef = useRef<BottomSheetRef>;
   const [open, setOpen] = useState(false);
   const [sizeChoice, setSizeChoice] = useState('');
   const [cupChoice, setCupChoice] = useState('');
+  const [temperatureList, setTemperatureList] = useState<ITemperature[]>([]);
+  const [temperatureChoice, setTemperatureChoice] = useState(0);
+  const handleTempChoice = (e: number) => {
+    setTemperatureChoice(e);
+  };
+
+  const handleOrder = () => {};
+
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
   };
+
   function onDismiss() {
     setOpen(false);
   }
+
+  useEffect(() => {
+    getTemperature(id).then(res => {
+      console.log(res.data.data);
+      setTemperatureList(res.data.data);
+      console.log(temperatureList);
+    });
+  }, []);
+
   return (
     <>
-      <CategoryContent setCategoryName={setCategoryName} />
+      <CategoryContent
+        setCategoryName={setCategoryName}
+        setCategorySId={setCategorySId}
+      />
       <div className={cx('product-img')}>
         <img
           src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
@@ -47,9 +74,44 @@ function productContent() {
           강렬한 에스프레소를 가장 부드럽고 시원하게 즐길 수 있는 커피
         </div>
         <div className={cx('product-price')}>4,500원</div>
+
         <div className={cx('temp-button')}>
-          <div className={cx('hot')}>HOT</div>
-          <div className={cx('iced')}>ICED</div>
+          {temperatureList && temperatureList.length < 2 ? (
+            <div
+              className={
+                temperatureList[0] && temperatureList[0].temperature === 'hot'
+                  ? cx('only-hot')
+                  : cx('only-ice')
+              }
+            >
+              {temperatureList[0] &&
+              temperatureList[0].temperature === 'hot' ? (
+                <div>HOT ONLY</div>
+              ) : (
+                <div>ICED ONLY</div>
+              )}
+            </div>
+          ) : (
+            temperatureList &&
+            temperatureList.map(item => (
+              <div
+                key={item.index}
+                className={
+                  item.temperature === 'hot'
+                    ? temperatureChoice === item.index
+                      ? cx('iced')
+                      : cx('iced-unclicked')
+                    : temperatureChoice === item.index
+                    ? cx('hot')
+                    : cx('hot-unclicked')
+                }
+                onClick={() => handleTempChoice(item.index)}
+                onKeyDown={() => handleTempChoice(item.index)}
+              >
+                {item.temperature === 'hot' ? 'ICED' : 'HOT'}
+              </div>
+            ))
+          )}
         </div>
       </div>
       <hr className={cx('line')} />
@@ -64,7 +126,7 @@ function productContent() {
       </div>
       <BottomSheet open={open} onDismiss={onDismiss}>
         <SheetContent>
-          <div style={{ height: '90vh' }} />
+          <div style={{ height: '85vh' }} />
 
           <div className={cx('option-box')}>
             <div className={cx('option', 'fadeIn')}>
@@ -104,13 +166,10 @@ function productContent() {
                         {item.name}
                       </div>
                     ))}
-                  {/* <div>매장컵</div>
-                  <div>개인 컵</div>
-                  <div>일회용 컵</div> */}
                 </div>
               </div>
               <div className={cx('bottom-order-bar')}>
-                <hr />
+                <hr className={cx('line')} />
                 <div>
                   <div className={cx('total-cost')}>
                     <div className={cx('control-count')}>
@@ -145,7 +204,9 @@ function productContent() {
                     </div>
                     <div>
                       <div className={cx('go-cart')}>담기</div>
-                      <div className={cx('go-order')}>주문하기</div>
+                      <div className={cx('go-order')} onClick={handleOrder}>
+                        주문하기
+                      </div>
                     </div>
                   </div>
                 </div>

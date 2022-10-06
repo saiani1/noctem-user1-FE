@@ -1,0 +1,103 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.content-wrap {
+  .level-wrap {
+    padding: 19px;
+    .sub-tit {
+      font-size: variable.$FS-11;
+      font-weight: 300;
+      color: variable.$TXT-003;
+    }
+    .level-tit-wrap {
+      display: flex;
+      align-items: center;
+
+      .level-tit {
+        margin: 0 10px 10px 0;
+        font-size: variable.$FS-21;
+        color: variable.$RANK-001;
+      }
+      .level-icon-wrap {
+        margin-top: -4px;
+      }
+    }
+    .hp-info-wrap {
+      .hp-info-content {
+        font-size: variable.$FS-12;
+        font-weight: 200;
+        color: variable.$TXT-004;
+        .current-hp {
+          margin-right: 3px;
+          font-size: variable.$FS-21;
+          font-weight: 500;
+          color: variable.$TXT-001;
+        }
+        .max-hp {
+          margin: 0 5px;
+          font-size: variable.$FS-14;
+          font-weight: 400;
+          color: variable.$POINT;
+        }
+      }
+    }
+    .progress-bar-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 98.5%;
+      height: 12px;
+      border: 2px solid variable.$LINE-003;
+      border-radius: 2.5px;
+
+      &::after {
+        @include position.absolute(1px -4.5px auto auto);
+        content: ' ';
+        width: 1.5px;
+        height: 7px;
+        background-color: variable.$LINE-003;
+      }
+      .progress-bar {
+        width: 5%;
+        height: 6px;
+        margin: 0 1px;
+        background-color: variable.$POINT;
+        border-radius: 0.5px;
+      }
+    }
+  }
+  .level-info-wrap {
+    width: 100%;
+    padding: 10px 0 10px 19px;
+    background-color: variable.$BG-003;
+    p {
+      font-size: variable.$FS-11;
+      color: variable.$TXT-002;
+    }
+  }
+  .favorite-wrap {
+    padding: 19px;
+
+    span {
+      display: block;
+      font-size: variable.$FS-14;
+      color: variable.$TXT-003;
+      strong {
+        font-weight: bold;
+      }
+    }
+    h3 {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 1px 12px;
+      background-color: variable.$BG-003;
+      font-size: 22px;
+      color: variable.$TXT-002;
+    }
+    .img-wrap {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
