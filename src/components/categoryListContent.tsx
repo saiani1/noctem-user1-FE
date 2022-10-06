@@ -9,7 +9,6 @@ import { useRecoilState } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
 
 const cx = classNames.bind(styles);
-
 interface IDrinkList {
   index: number;
   menuId: number;
@@ -22,6 +21,7 @@ interface IDrinkList {
 interface ITemp {
   query: number;
 }
+
 function categoryListContent({
   categoryName,
   setCategoryName,
@@ -36,7 +36,9 @@ function categoryListContent({
       console.log(res);
       setMenuList(res.data.data);
     });
+    console.log(categorySId);
   }, [categorySId]);
+
   return (
     <>
       <CategoryContent
@@ -50,6 +52,7 @@ function categoryListContent({
               href={{
                 pathname: `/product/${item.menuId}`,
               }}
+              key={item.index}
             >
               <a>
                 <li key={item.menuTemperatureId} className={cx('menu-item')}>

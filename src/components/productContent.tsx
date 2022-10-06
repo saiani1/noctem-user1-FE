@@ -13,7 +13,7 @@ import { cupDatas } from '../../public/assets/datas/cupDatas';
 import { useRouter } from 'next/router';
 import { getSize, getTemperature } from '../../pages/api/category';
 import { useRecoilState } from 'recoil';
-import { categoryLState } from '../store/atom/categoryState';
+import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 
 const cx = classNames.bind(styles);
 
@@ -33,7 +33,7 @@ function productContent() {
   const router = useRouter();
   const id = router.query.id ? +router.query.id : 1;
   const [categoryName, setCategoryName] = useRecoilState(categoryLState);
-  const [categorySId, setCategorySId] = useState(0);
+  const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const sheetRef = useRef<BottomSheetRef>;
   const [open, setOpen] = useState(false);
   const [sizeChoice, setSizeChoice] = useState('');
