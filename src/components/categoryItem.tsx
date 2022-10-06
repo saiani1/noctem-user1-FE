@@ -20,10 +20,10 @@ function categoryItem({
   setCategorySId: any;
 }) {
   const handleChoice = () => {
-    Router.push('/category');
     setIsClick(list.categorySName);
     setCategoryName(list.categorySName);
     setCategorySId(list.categorySId);
+    Router.push('/category');
   };
   return (
     <li
