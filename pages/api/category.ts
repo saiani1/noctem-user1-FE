@@ -23,6 +23,6 @@ export const getTemperature = async (menuId: number) => {
 };
 
 export const getSize = async (temperatureId: number) => {
-  const res = await basicRequest.get(`${SERVICE}/${temperatureId},size`);
+  const res = await basicRequest.get(`${SERVICE}/${temperatureId}/size`);
   return res;
 };
