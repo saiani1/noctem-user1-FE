@@ -39,6 +39,9 @@ function productContent() {
       alert('컵을 선택하세요.');
     } else {
       console.log('카트 넣자');
+      addCart().then(res => {
+        console.log(res);
+      });
     }
 
     console.log(sizeChoice);
@@ -47,11 +50,7 @@ function productContent() {
     console.log(count);
   };
 
-  const handleOrder = () => {
-    addCart().then(res => {
-      console.log(res);
-    });
-  };
+  const handleOrder = () => {};
 
   const handleMinus = () => {
     if (count > 1) {
@@ -208,7 +207,11 @@ function productContent() {
                     <div className={cx('control-count')}>
                       <div onClick={handleMinus}>
                         <Image
-                          src='/assets/svg/icon-minus.svg'
+                          src={
+                            count > 1
+                              ? '/assets/svg/icon-minus-active.svg'
+                              : '/assets/svg/icon-minus.svg'
+                          }
                           alt='minus'
                           width={20}
                           height={20}
