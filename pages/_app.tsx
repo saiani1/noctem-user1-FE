@@ -1,8 +1,13 @@
 import type { AppProps } from 'next/app';
 import '../styles/index.scss';
+import { RecoilRoot } from 'recoil';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  return <Component {...pageProps} />;
+  return (
+    <RecoilRoot>
+      <Component {...pageProps} />;
+    </RecoilRoot>
+  );
 };
 
 export default MyApp;
