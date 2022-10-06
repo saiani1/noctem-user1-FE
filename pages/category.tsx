@@ -6,6 +6,7 @@ import ToolbarList from '../src/components/ui/toolbarList';
 
 function category() {
   const [categoryName, setCategoryName] = useState('');
+
   return (
     <>
       <Header isClose={false} isBack />
