@@ -7,7 +7,6 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from './common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
 import ToolbarList from './ui/toolbarList';
-import { sizeDatas } from '../../public/assets/datas/sizeDatas';
 import CupSizeItem from './cupSizeItem';
 import { cupDatas } from '../../public/assets/datas/cupDatas';
 import { useRouter } from 'next/router';
@@ -214,15 +213,6 @@ function productContent() {
                         setData={setData}
                       />
                     ))}
-                  {/* {sizeDatas &&
-                    sizeDatas.map(item => (
-                      <CupSizeItem
-                        key={item.id}
-                        list={item}
-                        sizeChoice={sizeChoice}
-                        setSizeChoice={setSizeChoice}
-                      />
-                    ))} */}
                 </div>
               </div>
               <div>
