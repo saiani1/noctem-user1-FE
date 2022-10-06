@@ -5,6 +5,10 @@
   margin: 0;
   padding: 0;
 
+  .item-wrap {
+    padding-bottom: 130px;
+  }
+
   .top-wrap {
     background-color: rgba(variable.$BG-006, 0.8);
     padding: 19px;
@@ -13,6 +17,7 @@
       font-size: variable.$FS-20;
       color: variable.$TXT-005;
     }
+
     .select-store-wrap {
       display: flex;
       justify-content: space-between;
@@ -26,6 +31,7 @@
       }
     }
   }
+
   .tab-wrap {
     position: relative;
     display: flex;
@@ -42,11 +48,13 @@
         margin-bottom: -3px;
         border-bottom: 3px solid variable.$POINT;
       }
+
       .tit-wrap {
         pointer-events: none;
         position: relative;
         font-size: variable.$FS-13;
         font-weight: 500;
+
         .cnt-wrap {
           @include position.absolute(-2px -17px auto auto);
           display: flex;
@@ -63,8 +71,10 @@
       }
     }
   }
+
   .cart-wrap {
-    padding: 19px 19px 0;
+    padding: 19px;
+    position: relative;
 
     input[type='checkbox'] {
       position: relative;
@@ -73,9 +83,11 @@
       height: 17px;
       border: 1px solid variable.$POINT;
       border-radius: 3px;
+
       &:checked {
         background-color: variable.$POINT;
       }
+
       &::after {
         pointer-events: none;
         content: url('/assets/svg/icon-check.svg');
@@ -89,12 +101,15 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+
       h3 {
         font-size: variable.$FS-16;
       }
+
       span {
         font-size: variable.$FS-12;
         color: variable.$TXT-003;
+
         strong {
           font-size: variable.$FS-14;
           font-weight: bold;
@@ -102,11 +117,11 @@
         }
       }
     }
+
     .check-option-wrap {
       display: flex;
       justify-content: space-between;
       padding-bottom: 10px;
-      border-bottom: 8px solid variable.$LINE-002;
 
       .all-check-wrap {
         display: flex;
@@ -115,6 +130,7 @@
         input[type='checkbox'] {
           @include position.absolute(1px auto auto 0);
         }
+
         label {
           margin-left: 25px;
           font-size: variable.$FS-12;
@@ -122,6 +138,7 @@
           color: variable.$TXT-003;
         }
       }
+
       .delete-btn-wrap {
         button {
           position: relative;
@@ -129,7 +146,7 @@
           font-weight: 300;
           color: variable.$TXT-003;
 
-          ~ button {
+          ~button {
             margin-left: 15px;
           }
 
@@ -144,32 +161,48 @@
         }
       }
     }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 8px;
+      background-color: variable.$BG-003;
+    }
   }
+
   .footer {
     @include position.fixed(auto 0 0 0);
     height: 130px;
     padding: 24px 19px;
     background-color: variable.$BG-001;
     border-top: 1px solid variable.$LINE-002;
+
     .price-wrap {
       display: flex;
       justify-content: space-between;
       margin-bottom: 15px;
+
       .check-cnt {
         font-size: variable.$FS-14;
         font-weight: 500;
         color: variable.$TXT-003;
+
         strong {
           font-size: variable.$FS-16;
           color: variable.$POINT;
         }
       }
+
       .total-price {
         font-size: variable.$FS-18;
         font-weight: 500;
         color: variable.$TXT-001;
       }
     }
+
     .btn {
       display: block;
       width: 100%;
