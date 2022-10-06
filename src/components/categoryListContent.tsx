@@ -5,6 +5,8 @@ import Image from 'next/image';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryContent from './categoryContent';
 import { getMenuCategory } from '../../pages/api/category';
+import { useRecoilState } from 'recoil';
+import { categorySIdState } from '../store/atom/categoryState';
 
 const cx = classNames.bind(styles);
 
@@ -27,7 +29,7 @@ function categoryListContent({
   categoryName: string;
   setCategoryName: any;
 }) {
-  const [categorySId, setCategorySId] = useState(0);
+  const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
   useEffect(() => {
     getMenuCategory(categorySId).then(res => {

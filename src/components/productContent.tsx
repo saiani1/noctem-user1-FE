@@ -12,6 +12,8 @@ import CupSizeItem from './cupSizeItem';
 import { cupDatas } from '../../public/assets/datas/cupDatas';
 import { useRouter } from 'next/router';
 import { getSize, getTemperature } from '../../pages/api/category';
+import { useRecoilState } from 'recoil';
+import { categoryLState } from '../store/atom/categoryState';
 
 const cx = classNames.bind(styles);
 
@@ -24,12 +26,13 @@ interface IDetail {
   description: string;
   menuImg: string;
   temperature: string;
+  price: number;
 }
 
 function productContent() {
   const router = useRouter();
   const id = router.query.id ? +router.query.id : 1;
-  const [categoryName, setCategoryName] = useState('new');
+  const [categoryName, setCategoryName] = useRecoilState(categoryLState);
   const [categorySId, setCategorySId] = useState(0);
   const sheetRef = useRef<BottomSheetRef>;
   const [open, setOpen] = useState(false);
@@ -65,10 +68,7 @@ function productContent() {
         setCategorySId={setCategorySId}
       />
       <div className={cx('product-img')}>
-        <img
-          src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-          alt=''
-        />
+        <img src={detailList[0] && detailList[0].menuImg} alt='' />
       </div>
       <div className={cx('product-detail')}>
         <div className={cx('product-name')}>
@@ -81,7 +81,7 @@ function productContent() {
           {detailList[0] && detailList[0].description}
         </div>
         <div className={cx('product-price')}>
-          진기님한테 가격도 넣어달라고 하기
+          {detailList[0] && detailList[0].price}
         </div>
 
         <div className={cx('temp-button')}>
