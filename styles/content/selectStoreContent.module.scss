@@ -10,6 +10,7 @@
     font-weight: bold;
     color: variable.$TXT-001;
   }
+
   .search-input-wrap {
     position: relative;
 
@@ -25,12 +26,14 @@
         color: variable.$TXT-004;
       }
     }
+
     .img-wrap {
       position: absolute !important;
       top: 7px !important;
       left: 9px !important;
     }
   }
+
   .filter-wrap {
     display: flex;
     flex-wrap: nowrap;
@@ -45,11 +48,12 @@
       border: 1px solid variable.$LINE-003;
       color: variable.$TXT-003;
 
-      ~ button {
+      ~button {
         margin-left: 10px;
       }
     }
   }
+
   .tab-wrap {
     padding-bottom: 10px;
     border-bottom: 1px solid variable.$LINE-002;
@@ -75,4 +79,15 @@
       }
     }
   }
+}
+
+.modal-wrap {
+  overflow: auto;
+  position: absolute;
+  padding-bottom: 126px;
+  z-index: 1001;
+  height: 90%;
+  width: 100vw;
+  background-color: variable.$BG-001;
+  bottom: 0;
 }

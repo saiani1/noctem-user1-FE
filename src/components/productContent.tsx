@@ -35,12 +35,17 @@ function productContent() {
   const handleTempChoice = (e: number) => {
     setTemperatureChoice(e);
   };
+
+  const handleOrder = () => {};
+
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
   };
+
   function onDismiss() {
     setOpen(false);
   }
+
   useEffect(() => {
     getTemperature(id).then(res => {
       console.log(res.data.data);
@@ -121,7 +126,7 @@ function productContent() {
       </div>
       <BottomSheet open={open} onDismiss={onDismiss}>
         <SheetContent>
-          <div style={{ height: '90vh' }} />
+          <div style={{ height: '85vh' }} />
 
           <div className={cx('option-box')}>
             <div className={cx('option', 'fadeIn')}>
@@ -164,7 +169,7 @@ function productContent() {
                 </div>
               </div>
               <div className={cx('bottom-order-bar')}>
-                <hr />
+                <hr className={cx('line')} />
                 <div>
                   <div className={cx('total-cost')}>
                     <div className={cx('control-count')}>
@@ -199,7 +204,9 @@ function productContent() {
                     </div>
                     <div>
                       <div className={cx('go-cart')}>담기</div>
-                      <div className={cx('go-order')}>주문하기</div>
+                      <div className={cx('go-order')} onClick={handleOrder}>
+                        주문하기
+                      </div>
                     </div>
                   </div>
                 </div>
