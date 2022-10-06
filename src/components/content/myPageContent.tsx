@@ -1,20 +1,74 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/myPageContent.module.scss';
+import { removeToken } from '../../store/utils/token';
+import { useRouter } from 'next/router';
+import { isExistToken } from './../../store/utils/token';
+import { useRecoilState } from 'recoil';
+import { usernameState } from '../../store/atom/userStates';
+import { getUserInfo } from '../../../pages/api/user';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
+  const router = useRouter();
+  const [username, setUsername] = useRecoilState(usernameState);
+
+  useEffect(() => {
+    if (isExistToken()) {
+      getUserInfo().then(res => {
+        setUsername(res.data.data.nickname);
+      });
+    } else {
+      setUsername('User');
+    }
+  }, []);
+
+  const handleLogout = () => {
+    if (isExistToken()) {
+      removeToken();
+      setUsername('User');
+      alert('로그아웃 되셨습니다.');
+      router.push('/');
+    }
+  };
 
   return (
     <div className={cx('wrap')}>
       <h2>My Page</h2>
-      <p className={cx('welcome-msg')}>
-        <strong>녹템</strong>님<br />
-        환영합니다! 🙌
-      </p>
+      {isExistToken() ? (
+        <p className={cx('welcome-msg')}>
+          <strong>{username}</strong> 님<br />
+          환영합니다! 🙌
+        </p>
+      ) : (
+        <div className={cx('info-wrap')}>
+          <div className={cx('info')}>
+            로그인 하여 모든 서비스를 이용해 보세요!
+          </div>
+          <div className={cx('btn-box')}>
+            <button
+              className={cx('btn', 'signUp-btn')}
+              onClick={() => {
+                router.push('/signUp');
+              }}
+            >
+              회원가입
+            </button>
+            <button
+              className={cx('btn', 'login-btn')}
+              onClick={() => {
+                router.push('/login');
+              }}
+            >
+              <Link href='/login'>로그인</Link>
+            </button>
+          </div>
+        </div>
+      )}
+
       <ul className={cx('menu-btn-li-wrap')}>
         <li className={cx('menu-btn-li')}>
           <Link href='/rewards'>
@@ -24,7 +78,7 @@ function myPageContent() {
                 width={35}
                 height={35}
               />
-              <span>My Reward</span>
+              <span>등급 조회</span>
             </a>
           </Link>
         </li>
@@ -107,8 +161,7 @@ function myPageContent() {
         </li>
       </ul>
 
-      <Link href='/login'>임시 로그인</Link>
-      <button type='button' className={cx('logout-btn')}>
+      <button type='button' className={cx('logout-btn')} onClick={handleLogout}>
         로그아웃
       </button>
     </div>

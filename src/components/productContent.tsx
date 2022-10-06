@@ -1,42 +1,107 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/pages/productPage.module.scss';
 import CategoryContent from './categoryContent';
-import { BottomSheet, BottomSheetRef } from 'react-spring-bottom-sheet';
+import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from './common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
 import ToolbarList from './ui/toolbarList';
-import { sizeDatas } from '../../public/assets/datas/sizeDatas';
 import CupSizeItem from './cupSizeItem';
 import { cupDatas } from '../../public/assets/datas/cupDatas';
 import { useRouter } from 'next/router';
 import { getSize, getTemperature } from '../../pages/api/category';
+import { addCart } from '../../pages/api/cart';
+import { useRecoilState } from 'recoil';
+import { categoryLState, categorySIdState } from '../store/atom/categoryState';
+import { ISize } from '../types/size';
 
 const cx = classNames.bind(styles);
 
-interface ITemperature {
+interface IDetail {
   index: number;
   temperatureId: number;
+  menuId: number;
+  menuName: string;
+  menuEngName: string;
+  description: string;
+  menuImg: string;
   temperature: string;
+  price: number;
+}
+
+interface IData {
+  sizeId: number;
+  quantity: number;
+  personalOptionList?: IPersonalOption[];
+}
+
+interface IPersonalOption {
+  optionId: number;
+  amount: string;
 }
 
 function productContent() {
   const router = useRouter();
   const id = router.query.id ? +router.query.id : 1;
-  const [categoryName, setCategoryName] = useState('new');
-  const [categorySId, setCategorySId] = useState(0);
-  const sheetRef = useRef<BottomSheetRef>;
+  const [categoryName, setCategoryName] = useRecoilState(categoryLState);
+  const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const [open, setOpen] = useState(false);
-  const [sizeChoice, setSizeChoice] = useState('');
+  const [data, setData] = useState<IData>();
+  const [sizeOpt, setSizeOpt] = useState<ISize[]>();
+  const [sizeChoice, setSizeChoice] = useState();
   const [cupChoice, setCupChoice] = useState('');
-  const [temperatureList, setTemperatureList] = useState<ITemperature[]>([]);
-  const [temperatureChoice, setTemperatureChoice] = useState(0);
-  const handleTempChoice = (e: number) => {
-    setTemperatureChoice(e);
+  const [count, setCount] = useState(1);
+  const [detailList, setdetailList] = useState<IDetail[]>([]);
+  const [temperatureChoice, setTemperatureChoice] = useState('ice');
+
+  useEffect(() => {
+    console.log('선택한 사이즈 : ', sizeChoice);
+  }, [sizeChoice]);
+
+  const handleOptionOpen = () => {
+    setOpen(true);
+    getSize(detailList[0].menuId).then(res => {
+      console.log(res);
+      setSizeOpt(res.data.data);
+      setSizeChoice(res.data.data[0].size);
+    });
+  };
+
+  const handleAddCart = () => {
+    if (cupChoice === '') {
+      alert('컵을 선택하세요.');
+    } else {
+      console.log('카트 넣자');
+      addCart().then(res => {
+        console.log(res);
+      });
+    }
+
+    console.log(sizeChoice);
+    console.log(cupChoice);
+    console.log(count);
   };
 
   const handleOrder = () => {};
+
+  const handleMinus = () => {
+    if (count > 1) {
+      setCount(prev => {
+        return --prev;
+      });
+    }
+  };
+
+  const handlePlus = () => {
+    setCount(prev => {
+      return ++prev;
+    });
+  };
+
+  const handleTempChoice = (e: string) => {
+    setTemperatureChoice(e);
+  };
 
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
@@ -49,8 +114,7 @@ function productContent() {
   useEffect(() => {
     getTemperature(id).then(res => {
       console.log(res.data.data);
-      setTemperatureList(res.data.data);
-      console.log(temperatureList);
+      setdetailList(res.data.data);
     });
   }, []);
 
@@ -61,56 +125,60 @@ function productContent() {
         setCategorySId={setCategorySId}
       />
       <div className={cx('product-img')}>
-        <img
-          src='https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000000479]_20210426091843897.jpg'
-          alt=''
-        />
+        <img src={detailList[0] && detailList[0].menuImg} alt='' />
       </div>
       <div className={cx('product-detail')}>
-        <div className={cx('product-name')}>아이스 카페 아메리카노</div>
-        <div className={cx('product-english-name')}>Iced Caffe Americano</div>
-        <div className={cx('product-content')}>
-          진한 에스프레소에 시원한 정수물과 얼음을 더하여 스타벅스의 깔끔하고
-          강렬한 에스프레소를 가장 부드럽고 시원하게 즐길 수 있는 커피
+        <div className={cx('product-name')}>
+          {detailList[0] && detailList[0].menuName}
         </div>
-        <div className={cx('product-price')}>4,500원</div>
+        <div className={cx('product-english-name')}>
+          {detailList[0] && detailList[0].menuEngName}
+        </div>
+        <div className={cx('product-content')}>
+          {detailList[0] && detailList[0].description}
+        </div>
+        <div className={cx('product-price')}>
+          {detailList[0] && detailList[0].price}
+        </div>
 
         <div className={cx('temp-button')}>
-          {temperatureList && temperatureList.length < 2 ? (
+          {detailList && detailList.length < 2 ? (
             <div
               className={
-                temperatureList[0] && temperatureList[0].temperature === 'hot'
+                detailList[0] && detailList[0].temperature === 'hot'
                   ? cx('only-hot')
                   : cx('only-ice')
               }
             >
-              {temperatureList[0] &&
-              temperatureList[0].temperature === 'hot' ? (
+              {detailList[0] && detailList[0].temperature === 'hot' ? (
                 <div>HOT ONLY</div>
               ) : (
                 <div>ICED ONLY</div>
               )}
             </div>
           ) : (
-            temperatureList &&
-            temperatureList.map(item => (
+            <>
               <div
-                key={item.index}
                 className={
-                  item.temperature === 'hot'
-                    ? temperatureChoice === item.index
-                      ? cx('iced')
-                      : cx('iced-unclicked')
-                    : temperatureChoice === item.index
-                    ? cx('hot')
-                    : cx('hot-unclicked')
+                  temperatureChoice === 'hot' ? cx('hot') : cx('hot-unclicked')
                 }
-                onClick={() => handleTempChoice(item.index)}
-                onKeyDown={() => handleTempChoice(item.index)}
+                onClick={() => handleTempChoice('hot')}
+                onKeyDown={() => handleTempChoice('hot')}
               >
-                {item.temperature === 'hot' ? 'ICED' : 'HOT'}
+                HOT
               </div>
-            ))
+              <div
+                className={
+                  temperatureChoice === 'ice'
+                    ? cx('iced')
+                    : cx('iced-unclicked')
+                }
+                onClick={() => handleTempChoice('ice')}
+                onKeyDown={() => handleTempChoice('ice')}
+              >
+                ICED
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -119,7 +187,7 @@ function productContent() {
         <button
           className={cx('order-button')}
           type='button'
-          onClick={() => setOpen(true)}
+          onClick={handleOptionOpen}
         >
           주문하기
         </button>
@@ -135,13 +203,14 @@ function productContent() {
                 <div className={cx('option-title')}>사이즈</div>
                 <div className={cx('cup-size')}>
                   {/* cup size seledt */}
-                  {sizeDatas &&
-                    sizeDatas.map(item => (
+                  {sizeOpt &&
+                    sizeOpt.map(item => (
                       <CupSizeItem
-                        key={item.id}
+                        key={item.index}
                         list={item}
                         sizeChoice={sizeChoice}
                         setSizeChoice={setSizeChoice}
+                        setData={setData}
                       />
                     ))}
                 </div>
@@ -173,16 +242,20 @@ function productContent() {
                 <div>
                   <div className={cx('total-cost')}>
                     <div className={cx('control-count')}>
-                      <div>
+                      <div onClick={handleMinus}>
                         <Image
-                          src='/assets/svg/icon-minus.svg'
+                          src={
+                            count > 1
+                              ? '/assets/svg/icon-minus-active.svg'
+                              : '/assets/svg/icon-minus.svg'
+                          }
                           alt='minus'
                           width={20}
                           height={20}
                         />
                       </div>
-                      <div>1</div>
-                      <div>
+                      <div>{count}</div>
+                      <div onClick={handlePlus}>
                         <Image
                           src='/assets/svg/icon-plus.svg'
                           alt='plus'
@@ -203,7 +276,9 @@ function productContent() {
                       />
                     </div>
                     <div>
-                      <div className={cx('go-cart')}>담기</div>
+                      <div className={cx('go-cart')} onClick={handleAddCart}>
+                        담기
+                      </div>
                       <div className={cx('go-order')} onClick={handleOrder}>
                         주문하기
                       </div>

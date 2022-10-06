@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/main/main.module.scss';
 import RecommendedMenu from './recommendedMenu';
+import { useRecoilState } from 'recoil';
+import { usernameState } from '../store/atom/userStates';
+import { isExistToken } from './../store/utils/token';
+import { getUserInfo } from './../../pages/api/user';
 
 const cx = classNames.bind(styles);
 
 function homeContent() {
   const [myMenu, SetMyMenu] = useState<boolean>(true);
+  const [username, setUsername] = useRecoilState(usernameState);
+
+  useEffect(() => {
+    if (isExistToken()) {
+      getUserInfo().then(res => {
+        setUsername(res.data.data.nickname);
+      });
+    } else {
+      setUsername('User');
+    }
+  }, []);
+
   return (
     <>
       <div className={cx('point-box')}>
         <div className={cx('title')}>
-          <span>녹템</span>님, 반갑습니다.
+          <span>{username}</span> 님, 반갑습니다.
         </div>
         <div className={cx('point-bar')}>
           <div>

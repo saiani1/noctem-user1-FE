@@ -26,3 +26,8 @@ export const checkToken = () => {
 export const setToken = (token: string) => {
   localStorage.setItem('token', JSON.stringify(token));
 };
+
+// 토큰 제거하기
+export const removeToken = () => {
+  localStorage.removeItem('token');
+};

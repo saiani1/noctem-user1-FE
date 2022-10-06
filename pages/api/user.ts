@@ -1,18 +1,24 @@
-import { userRequest } from "./base";
+import { getToken } from "../../src/store/utils/token";
+import { basicRequest } from "./base";
 
 const SERVICE = '/user-service';
+const HEADERS = {
+  headers: {
+    Authorization: JSON.parse(getToken())
+  }
+}
 
 export const getUserInfo = async () => {
-  const res = await userRequest.get(`${SERVICE}/userAccount`);
+  const res = await basicRequest.get(`${SERVICE}/userAccount`, HEADERS);
   return res;
 }
 
 export const getUserOptions = async () => {
-  const res = await userRequest.get(`${SERVICE}/optionalInfo`);
+  const res = await basicRequest.get(`${SERVICE}/optionalInfo`, HEADERS);
   return res;
 }
 
 export const patchUserOptions = async (value: string) => {
-  const res = await userRequest.patch(`${SERVICE}/optionalInfo/${value}`);
+  const res = await basicRequest.patch(`${SERVICE}/optionalInfo/${value}`, {}, HEADERS);
   return res;
 }

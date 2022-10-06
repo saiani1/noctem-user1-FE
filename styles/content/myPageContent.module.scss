@@ -3,7 +3,44 @@
 .wrap {
   padding: 19px;
   background-color: variable.$BG-002;
-  overflow: auto;
+
+  .info-wrap {
+    padding: 15px 15px 20px;
+    margin-bottom: 15px;
+    background-color: variable.$BG-001;
+    box-shadow: 1px 1px 5px rgba(variable.$BG-004, 0.3);
+    border-radius: 10px;
+
+    .info {
+      margin-bottom: 10px;
+      font-size: variable.$FS-16;
+      font-weight: bold;
+    }
+
+    .btn-box {
+      text-align: right;
+
+      .btn {
+        margin: 0 4px;
+        padding: 4px 10px;
+        text-align: center;
+        font-size: variable.$FS-14;
+        font-weight: 400;
+        background-color: red;
+        border-radius: 20px;
+        color: variable.$TXT-005;
+        background-color: variable.$POINT;
+      }
+
+      .signUp-btn {}
+
+      .login-btn {
+        border: 1px solid variable.$POINT;
+        color: variable.$POINT;
+        background-color: variable.$BG-001
+      }
+    }
+  }
 
   .welcome-msg {
     font-size: variable.$FS-24;

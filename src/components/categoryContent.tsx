@@ -5,6 +5,8 @@ import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
 // import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
 import { getLageCategory, getSmallCategory } from '../../pages/api/category';
+import { useRecoilState } from 'recoil';
+import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 
 const cx = classNames.bind(styles);
 
@@ -26,7 +28,7 @@ function categoryContent({
   setCategoryName: any;
   setCategorySId: any;
 }) {
-  const [isClick, setIsClick] = useState('NEW');
+  const [isClick, setIsClick] = useRecoilState(categoryLState);
   const [categoryL, setCategoryL] = useState<ICategory[]>([]);
   const [categoryLName, setCategoryLName] = useState('음료');
   const [categoryLId, setCategoryLId] = useState(1);
@@ -40,6 +42,7 @@ function categoryContent({
     console.log(name);
     console.log(id);
     setCategoryLName(name);
+    setCategorySId(id);
 
     getSmallCategory(id).then(res => {
       setCategoryDrinkList(res.data.data);

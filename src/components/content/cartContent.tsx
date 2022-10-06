@@ -80,10 +80,12 @@ function cartContent() {
           </div>
         </div>
       </div>
-      <CartItem />
-      <CartItem />
-      <CartItem />
-      <CartItem />
+      <div className={cx('item-wrap')}>
+        <CartItem />
+        <CartItem />
+        <CartItem />
+        <CartItem />
+      </div>
       <div className={cx('footer')}>
         <div className={cx('price-wrap')}>
           <span className={cx('check-cnt')}>
