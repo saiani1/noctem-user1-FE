@@ -1,5 +1,4 @@
 import { basicRequest } from "./base";
-import { checkToken } from './../../src/store/utils/token';
 
 const SERVICE = '/user-service';
 
