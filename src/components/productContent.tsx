@@ -15,7 +15,7 @@ import { addCart } from '../../pages/api/cart';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 import { addMyMenu } from '../../pages/api/myMenu';
-import { IData, IDetail, ISize } from '../types/productDetail';
+import { ICartData, IDetail, ISize } from '../types/productDetail';
 
 const cx = classNames.bind(styles);
 
@@ -25,7 +25,7 @@ function productContent() {
   const [categoryName, setCategoryName] = useRecoilState(categoryLState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState<IData>({
+  const [data, setData] = useState<ICartData>({
     // 사이즈, 개수, 컵 종류, 온도
     sizeId: 1,
     quantity: 1,
@@ -92,7 +92,6 @@ function productContent() {
 
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
-    console.log(e);
   };
 
   function onDismiss() {

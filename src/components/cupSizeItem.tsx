@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames/bind';
-import { IProps } from '../types/size.d';
 import Image from 'next/image';
 import styles from '../../styles/pages/productPage.module.scss';
+import { ISizeProps } from '../types/productDetail';
 
 const cx = classNames.bind(styles);
 
@@ -13,11 +13,11 @@ function cupSizeItem({
   data,
   setData,
 }: {
-  list: IProps['list'];
-  sizeChoice: IProps['sizeChoice'];
-  setSizeChoice: IProps['setSizeChoice'];
-  data: IProps['data'];
-  setData: IProps['setData'];
+  list: ISizeProps['list'];
+  sizeChoice: ISizeProps['sizeChoice'];
+  setSizeChoice: ISizeProps['setSizeChoice'];
+  data: ISizeProps['data'];
+  setData: ISizeProps['setData'];
 }) {
   const handleChoice = () => {
     setSizeChoice(list.size);
