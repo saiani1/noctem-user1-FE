@@ -9,16 +9,28 @@ const HEADERS = {
 }
 
 export const getUserInfo = async () => {
-  const res = await basicRequest.get(`${SERVICE}/userAccount`, HEADERS);
+  const res = await basicRequest.get(`${SERVICE}/userAccount`, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 }
 
 export const getUserOptions = async () => {
-  const res = await basicRequest.get(`${SERVICE}/optionalInfo`, HEADERS);
+  const res = await basicRequest.get(`${SERVICE}/optionalInfo`, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 }
 
 export const patchUserOptions = async (value: string) => {
-  const res = await basicRequest.patch(`${SERVICE}/optionalInfo/${value}`, {}, HEADERS);
+  const res = await basicRequest.patch(`${SERVICE}/optionalInfo/${value}`, {}, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 }

@@ -10,12 +10,20 @@ const HEADERS = {
 };
 
 export const getMyMenu = async () => {
-  const res = await basicRequest.get(`${SERVICE}/myMenu`, HEADERS);
+  const res = await basicRequest.get(`${SERVICE}/myMenu`, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 };
 
 export const addMyMenu = async (value: IParams) => {
-  const res = await basicRequest.post(`${SERVICE}/myMenu`, value, HEADERS);
+  const res = await basicRequest.post(`${SERVICE}/myMenu`, value, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 };
 
@@ -25,7 +33,11 @@ export const changeMyMenuOrder = async (value: number[]) => {
     {
       myMenuIdOrderList: value,
     },
-    HEADERS,
+    {
+      headers: {
+        Authorization: JSON.parse(getToken())
+      }
+    },
   );
   return res;
 };
@@ -36,12 +48,20 @@ export const changeMyMenuNickName = async (id: number, value: string) => {
     {
       alias: value,
     },
-    HEADERS,
+    {
+      headers: {
+        Authorization: JSON.parse(getToken())
+      }
+    },
   );
   return res;
 };
 
 export const deleteMyMenu = async (id: number) => {
-  const res = await basicRequest.delete(`${SERVICE}/myMenu/${id}`, HEADERS);
+  const res = await basicRequest.delete(`${SERVICE}/myMenu/${id}`, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 };

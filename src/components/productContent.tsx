@@ -16,6 +16,7 @@ import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 import { addMyMenu } from '../../pages/api/myMenu';
 import { ICartData, IDetail, ISize } from '../types/productDetail';
+import { isExistToken } from './../store/utils/token';
 
 const cx = classNames.bind(styles);
 
@@ -43,18 +44,26 @@ function productContent() {
   };
 
   const handleAddCart = () => {
-    if (cupChoice === '') {
-      alert('컵을 선택하세요.');
+    console.log(localStorage.getItem('token'));
+    if (localStorage.getItem('token') === null) {
+      console.log('로그인 NO');
+      alert('로그인이 필요한 서비스입니다.');
+      router.push('/login');
     } else {
-      addCart(data).then(res => {
-        console.log(res);
-        if (res.data.data) {
-          setOpen(false);
-          alert('장바구니에 담겼습니다!');
-        } else {
-          alert('담기 실패');
-        }
-      });
+      console.log('로그인 OK');
+      if (cupChoice === '') {
+        alert('컵을 선택하세요.');
+      } else {
+        addCart(data).then(res => {
+          console.log(res);
+          if (res.data.data) {
+            setOpen(false);
+            alert('장바구니에 담겼습니다!');
+          } else {
+            alert('담기 실패');
+          }
+        });
+      }
     }
   };
 
@@ -192,22 +201,14 @@ function productContent() {
               ) : (
                 <>
                   <div
-                    className={
-                      detailList[0] && detailList[0].temperature === 'hot'
-                        ? cx('hot')
-                        : cx('hot-unclicked')
-                    }
+                    className={cx('hot-unclicked')}
                     onClick={() => handleTempChoice('hot')}
                     onKeyDown={() => handleTempChoice('hot')}
                   >
                     HOT
                   </div>
                   <div
-                    className={
-                      temperatureChoice === 'ice'
-                        ? cx('iced')
-                        : cx('iced-unclicked')
-                    }
+                    className={cx('iced')}
                     onClick={() => handleTempChoice('ice')}
                     onKeyDown={() => handleTempChoice('ice')}
                   >
@@ -255,11 +256,7 @@ function productContent() {
               ) : (
                 <>
                   <div
-                    className={
-                      temperatureChoice === 'hot'
-                        ? cx('hot')
-                        : cx('hot-unclicked')
-                    }
+                    className={cx('hot')}
                     onClick={() => handleTempChoice('hot')}
                     onKeyDown={() => handleTempChoice('hot')}
                   >
