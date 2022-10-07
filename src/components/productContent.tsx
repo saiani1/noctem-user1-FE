@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { getSize, getTemperature } from '../../pages/api/category';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
+import { addMyMenu } from '../../pages/api/myMenu';
 
 const cx = classNames.bind(styles);
 
@@ -48,11 +49,40 @@ function productContent() {
 
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
+    console.log(e);
   };
 
   function onDismiss() {
     setOpen(false);
   }
+
+  const handleAddMyMenu = (e: any) => {
+    if (sizeChoice === '' || cupChoice === '') {
+      alert('사이즈와 컵을 선택해주세요');
+      return;
+    }
+    // const datas = {
+    //   name: nameRef.current?.value || '',
+    //   nickname: nicknameRef.current?.value || '',
+    //   rrnFront: birthRef.current?.value || '',
+    //   rrnBackFirst: genderRef.current?.value || '',
+    //   email: emailRef.current?.value || '',
+    //   password: passwordRef.current?.value || '',
+    //   termsOfServiceAgreement: agreeData.agr1_use || false,
+    //   personalInfoAgreement: agreeData.agr2_info || false,
+    //   advertisementAgreement: agreeData.agr3_ad || false,
+    // };
+
+    // addUser(datas).then(res => {
+    //   if (res.data.data) {
+    //     setStep({
+    //       step1: false,
+    //       step2: false,
+    //       step3: true,
+    //     });
+    //   }
+    // });
+  };
 
   useEffect(() => {
     getTemperature(id).then(res => {
@@ -141,7 +171,9 @@ function productContent() {
 
           <div className={cx('option-box')}>
             <div className={cx('option', 'fadeIn')}>
-              <div className={cx('menu-title')}>아이스 카페 아메리카노</div>
+              <div className={cx('menu-title')}>
+                {detailList[0] && detailList[0].menuName}
+              </div>
               <div>
                 <div className={cx('option-title')}>사이즈</div>
                 <div className={cx('cup-size')}>
@@ -205,14 +237,20 @@ function productContent() {
                     <div className={cx('total-price')}>5,000원</div>
                   </div>
                   <div className={cx('order-select')}>
-                    <div className={cx('add-heart')}>
-                      <Image
-                        src='/assets/svg/icon-heart.svg'
-                        alt='heart'
-                        width={30}
-                        height={30}
-                      />
-                    </div>
+                    <button
+                      type='button'
+                      className={cx('add-heart')}
+                      onClick={handleAddMyMenu}
+                    >
+                      <span>
+                        <Image
+                          src='/assets/svg/icon-heart.svg'
+                          alt='heart'
+                          width={30}
+                          height={30}
+                        />
+                      </span>
+                    </button>
                     <div>
                       <div className={cx('go-cart')}>담기</div>
                       <div className={cx('go-order')} onClick={handleOrder}>

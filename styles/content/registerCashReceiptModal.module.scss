@@ -27,18 +27,19 @@
     li {
       position: relative;
 
-      &~li {
-        margin-left: 10px;
+      & ~ li {
+        margin-left: 17px;
       }
     }
 
     input[type='radio'] {
+      @include position.absolute(4px auto auto 0);
       display: inline-block;
       margin-right: 5px;
     }
 
     label {
-      padding-left: 17px;
+      padding-left: 18px;
       font-weight: bold;
       color: variable.$TXT-001;
 

@@ -17,6 +17,7 @@ function cupSizeItem({
 }) {
   const handleChoice = () => {
     setSizeChoice(list.name);
+    console.log(list.name);
   };
   return (
     <>
