@@ -10,16 +10,21 @@ function cupSizeItem({
   list,
   sizeChoice,
   setSizeChoice,
+  data,
   setData,
 }: {
   list: IProps['list'];
   sizeChoice: IProps['sizeChoice'];
   setSizeChoice: IProps['setSizeChoice'];
+  data: IProps['data'];
   setData: IProps['setData'];
 }) {
   const handleChoice = () => {
     setSizeChoice(list.size);
-    setData(list.sizeId);
+    setData({
+      ...data,
+      sizeId: list.sizeId,
+    });
   };
   return (
     <>
@@ -40,8 +45,8 @@ function cupSizeItem({
                   : '/assets/svg/icon-cup.svg'
               }
               alt='cup-size'
-              width={list.sizeId === 1 ? 26 : list.sizeId * 16}
-              height={list.sizeId === 1 ? 26 : list.sizeId * 16}
+              width={(list.index + 5) * 6}
+              height={(list.index + 5) * 6}
             />
           </div>
           <div>{list.size}</div>

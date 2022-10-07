@@ -211,12 +211,14 @@
       margin: 16px;
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
 
       .cup-card-click {
         padding: 20px 30px;
         text-align: center;
         border: 1px solid variable.$TXT-006;
         border-radius: 10px;
+        margin-bottom: 10px;
 
         .cup-image-box {
           width: 50px;
@@ -233,6 +235,7 @@
         text-align: center;
         border: 1px solid variable.$TXT-004;
         border-radius: 10px;
+        margin-bottom: 10px;
 
         .cup-image-box {
           width: 50px;
@@ -252,7 +255,7 @@
 
       div {
         border: 1px solid variable.$TXT-006;
-        border-right: 0;
+        border-right: none;
         width: 30%;
         padding: 10px
       }

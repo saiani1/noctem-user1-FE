@@ -15,6 +15,7 @@ import { addCart } from '../../pages/api/cart';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 import { ISize } from '../types/size';
+import { IParams } from '../types/cart';
 
 const cx = classNames.bind(styles);
 
@@ -30,24 +31,18 @@ interface IDetail {
   price: number;
 }
 
-interface IData {
-  sizeId: number;
-  quantity: number;
-  personalOptionList?: IPersonalOption[];
-}
-
-interface IPersonalOption {
-  optionId: number;
-  amount: string;
-}
-
 function productContent() {
   const router = useRouter();
   const id = router.query.id ? +router.query.id : 1;
   const [categoryName, setCategoryName] = useRecoilState(categoryLState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState<IData>();
+  const [data, setData] = useState<IParams>({
+    // 사이즈, 개수, 컵 종류, 온도
+    sizeId: 1,
+    quantity: 1,
+    personalOptionList: [],
+  });
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
   const [sizeChoice, setSizeChoice] = useState();
   const [cupChoice, setCupChoice] = useState('');
@@ -55,32 +50,24 @@ function productContent() {
   const [detailList, setdetailList] = useState<IDetail[]>([]);
   const [temperatureChoice, setTemperatureChoice] = useState('ice');
 
-  useEffect(() => {
-    console.log('선택한 사이즈 : ', sizeChoice);
-  }, [sizeChoice]);
-
   const handleOptionOpen = () => {
     setOpen(true);
-    getSize(detailList[0].menuId).then(res => {
-      console.log(res);
-      setSizeOpt(res.data.data);
-      setSizeChoice(res.data.data[0].size);
-    });
   };
 
   const handleAddCart = () => {
     if (cupChoice === '') {
       alert('컵을 선택하세요.');
     } else {
-      console.log('카트 넣자');
-      addCart().then(res => {
+      addCart(data).then(res => {
         console.log(res);
+        if (res.data.data) {
+          setOpen(false);
+          alert('장바구니에 담겼습니다!');
+        } else {
+          alert('담기 실패');
+        }
       });
     }
-
-    console.log(sizeChoice);
-    console.log(cupChoice);
-    console.log(count);
   };
 
   const handleOrder = () => {};
@@ -90,6 +77,12 @@ function productContent() {
       setCount(prev => {
         return --prev;
       });
+      setData(prev => {
+        return {
+          ...prev,
+          quantity: --prev.quantity,
+        };
+      });
     }
   };
 
@@ -97,6 +90,19 @@ function productContent() {
     setCount(prev => {
       return ++prev;
     });
+    setData(prev => {
+      return {
+        ...prev,
+        quantity: ++prev.quantity,
+      };
+    });
+  };
+
+  const handleWish = () => {
+    const data = {
+      // 상품 이름,
+      // dhseh
+    };
   };
 
   const handleTempChoice = (e: string) => {
@@ -113,10 +119,26 @@ function productContent() {
 
   useEffect(() => {
     getTemperature(id).then(res => {
-      console.log(res.data.data);
       setdetailList(res.data.data);
     });
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    if (detailList.length !== 0) {
+      console.log(detailList);
+      getSize(detailList[0].menuId).then(res => {
+        console.log(res);
+        if (res.data.data.length !== 0) {
+          setSizeOpt(res.data.data);
+          setSizeChoice(res.data.data[0].size);
+          setData({
+            ...data,
+            sizeId: res.data.data[0].sizeId,
+          });
+        }
+      });
+    }
+  }, [detailList]);
 
   return (
     <>
@@ -210,6 +232,7 @@ function productContent() {
                         list={item}
                         sizeChoice={sizeChoice}
                         setSizeChoice={setSizeChoice}
+                        data={data}
                         setData={setData}
                       />
                     ))}
@@ -267,9 +290,9 @@ function productContent() {
                     <div className={cx('total-price')}>5,000원</div>
                   </div>
                   <div className={cx('order-select')}>
-                    <div className={cx('add-heart')}>
+                    <div className={cx('add-heart')} onClick={handleWish}>
                       <Image
-                        src='/assets/svg/icon-heart.svg'
+                        src={'/assets/svg/icon-heart.svg'}
                         alt='heart'
                         width={30}
                         height={30}
