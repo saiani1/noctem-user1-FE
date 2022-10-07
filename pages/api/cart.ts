@@ -1,5 +1,5 @@
 import { getToken } from '../../src/store/utils/token';
-import { IParams } from '../../src/types/cart';
+import { ICartData } from '../../src/types/productDetail';
 import { basicRequest } from './base';
 
 const SERVICE = '/user-service';
@@ -9,7 +9,7 @@ const HEADERS = {
   }
 }
 
-export const addCart = async (data: IParams) => {
+export const addCart = async (data: ICartData) => {
   const res = await basicRequest.post(`${SERVICE}/carts`, data, HEADERS);
   return res;
 };
