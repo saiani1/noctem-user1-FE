@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
@@ -9,11 +9,22 @@ import { useRouter } from 'next/router';
 import { isExistToken } from './../../store/utils/token';
 import { useRecoilState } from 'recoil';
 import { usernameState } from '../../store/atom/userStates';
+import { getUserInfo } from '../../../pages/api/user';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
   const router = useRouter();
   const [username, setUsername] = useRecoilState(usernameState);
+
+  useEffect(() => {
+    if (isExistToken()) {
+      getUserInfo().then(res => {
+        setUsername(res.data.data.nickname);
+      });
+    } else {
+      setUsername('User');
+    }
+  }, []);
 
   const handleLogout = () => {
     if (isExistToken()) {

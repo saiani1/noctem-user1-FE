@@ -1,20 +1,21 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/pages/productPage.module.scss';
 import CategoryContent from './categoryContent';
-import { BottomSheet, BottomSheetRef } from 'react-spring-bottom-sheet';
+import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from './common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
 import ToolbarList from './ui/toolbarList';
-import { sizeDatas } from '../../public/assets/datas/sizeDatas';
 import CupSizeItem from './cupSizeItem';
 import { cupDatas } from '../../public/assets/datas/cupDatas';
 import { useRouter } from 'next/router';
 import { getSize, getTemperature } from '../../pages/api/category';
+import { addCart } from '../../pages/api/cart';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 import { addMyMenu } from '../../pages/api/myMenu';
+import { ISize } from '../types/size';
 
 const cx = classNames.bind(styles);
 
@@ -30,22 +31,78 @@ interface IDetail {
   price: number;
 }
 
+interface IData {
+  sizeId: number;
+  quantity: number;
+  personalOptionList?: IPersonalOption[];
+}
+
+interface IPersonalOption {
+  optionId: number;
+  amount: string;
+}
+
 function productContent() {
   const router = useRouter();
   const id = router.query.id ? +router.query.id : 1;
   const [categoryName, setCategoryName] = useRecoilState(categoryLState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
-  const sheetRef = useRef<BottomSheetRef>;
   const [open, setOpen] = useState(false);
-  const [sizeChoice, setSizeChoice] = useState('');
+  const [data, setData] = useState<IData>();
+  const [sizeOpt, setSizeOpt] = useState<ISize[]>();
+  const [sizeChoice, setSizeChoice] = useState();
   const [cupChoice, setCupChoice] = useState('');
+  const [count, setCount] = useState(1);
   const [detailList, setdetailList] = useState<IDetail[]>([]);
   const [temperatureChoice, setTemperatureChoice] = useState('ice');
-  const handleTempChoice = (e: string) => {
-    setTemperatureChoice(e);
+
+  useEffect(() => {
+    console.log('선택한 사이즈 : ', sizeChoice);
+  }, [sizeChoice]);
+
+  const handleOptionOpen = () => {
+    setOpen(true);
+    getSize(detailList[0].menuId).then(res => {
+      console.log(res);
+      setSizeOpt(res.data.data);
+      setSizeChoice(res.data.data[0].size);
+    });
+  };
+
+  const handleAddCart = () => {
+    if (cupChoice === '') {
+      alert('컵을 선택하세요.');
+    } else {
+      console.log('카트 넣자');
+      addCart().then(res => {
+        console.log(res);
+      });
+    }
+
+    console.log(sizeChoice);
+    console.log(cupChoice);
+    console.log(count);
   };
 
   const handleOrder = () => {};
+
+  const handleMinus = () => {
+    if (count > 1) {
+      setCount(prev => {
+        return --prev;
+      });
+    }
+  };
+
+  const handlePlus = () => {
+    setCount(prev => {
+      return ++prev;
+    });
+  };
+
+  const handleTempChoice = (e: string) => {
+    setTemperatureChoice(e);
+  };
 
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
@@ -160,7 +217,7 @@ function productContent() {
         <button
           className={cx('order-button')}
           type='button'
-          onClick={() => setOpen(true)}
+          onClick={handleOptionOpen}
         >
           주문하기
         </button>
@@ -178,13 +235,14 @@ function productContent() {
                 <div className={cx('option-title')}>사이즈</div>
                 <div className={cx('cup-size')}>
                   {/* cup size seledt */}
-                  {sizeDatas &&
-                    sizeDatas.map(item => (
+                  {sizeOpt &&
+                    sizeOpt.map(item => (
                       <CupSizeItem
-                        key={item.id}
+                        key={item.index}
                         list={item}
                         sizeChoice={sizeChoice}
                         setSizeChoice={setSizeChoice}
+                        setData={setData}
                       />
                     ))}
                 </div>
@@ -216,16 +274,20 @@ function productContent() {
                 <div>
                   <div className={cx('total-cost')}>
                     <div className={cx('control-count')}>
-                      <div>
+                      <div onClick={handleMinus}>
                         <Image
-                          src='/assets/svg/icon-minus.svg'
+                          src={
+                            count > 1
+                              ? '/assets/svg/icon-minus-active.svg'
+                              : '/assets/svg/icon-minus.svg'
+                          }
                           alt='minus'
                           width={20}
                           height={20}
                         />
                       </div>
-                      <div>1</div>
-                      <div>
+                      <div>{count}</div>
+                      <div onClick={handlePlus}>
                         <Image
                           src='/assets/svg/icon-plus.svg'
                           alt='plus'
@@ -252,7 +314,9 @@ function productContent() {
                       </span>
                     </button>
                     <div>
-                      <div className={cx('go-cart')}>담기</div>
+                      <div className={cx('go-cart')} onClick={handleAddCart}>
+                        담기
+                      </div>
                       <div className={cx('go-order')} onClick={handleOrder}>
                         주문하기
                       </div>

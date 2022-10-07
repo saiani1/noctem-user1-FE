@@ -1,8 +1,12 @@
 export interface IProps {
-  list: IList;
+  list: ISize;
+  sizeChoice: string | undefined;
+  setSizeChoice: Dispatch<SetStateAction<boolean>>;
+  setData: Dispatch<SetStateAction<boolean>>;
 }
-export interface IList {
-  id: number;
-  name: string;
-  size: number;
+export interface ISize {
+  index: number;
+  sizeId: number;
+  size: string;
+  extraCost: number;
 }
