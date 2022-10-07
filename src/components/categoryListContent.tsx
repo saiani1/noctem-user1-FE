@@ -45,7 +45,7 @@ function categoryListContent({
         setCategoryName={setCategoryName}
         setCategorySId={setCategorySId}
       />
-      <ul>
+      <ul className={cx('product-list')}>
         {menuList &&
           menuList.map(item => (
             <Link

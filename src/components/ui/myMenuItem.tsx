@@ -3,30 +3,49 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/ui/myMenuItem.module.scss';
+import { IMenu } from '../../../src/types/myMenu.d';
 
-function myMenuItem() {
+interface Props {
+  item: IMenu;
+}
+
+function myMenuItem({ item }: Props) {
+  const {
+    alias,
+    menuImg,
+    menuName,
+    totalPrice,
+    size,
+    temperature,
+    // handleDeleteMenu,
+  } = item;
   const cx = classNames.bind(styles);
 
   return (
-    <div className={cx('content-wrap')}>
-      <span className={cx('img-wrap')}>
-        <Image src='/assets/images/jpg/menu.jpg' width={100} height={100} />
-      </span>
+    <li className={cx('content-wrap')}>
+      <img src={menuImg} alt={menuName} className={cx('img-wrap')} />
       <div className={cx('right')}>
         <div className={cx('menu-contents-wrap')}>
-          <button type='button' className={cx('close-btn')}>
+          <button
+            type='button'
+            className={cx('close-btn')}
+            // onClick={handleDeleteMenu}
+          >
             <Image src='/assets/svg/icon-x-mark.svg' width={8} height={8} />
           </button>
           <div className={cx('menu-tit-wrap')}>
-            <h3 className={cx('menu-tit')}>아이스 디카페인 카라멜 마키아또</h3>
+            <h3 className={cx('menu-tit')}>{alias}</h3>
             <button type='button' className={cx('edit-nickname-btn')}>
               <Image src='/assets/svg/icon-pencil.svg' width={10} height={10} />
             </button>
           </div>
+          <span className={cx('sub-tit')}>{menuName}</span>
+          <strong className={cx('price')}>
+            {totalPrice.toLocaleString()}원
+          </strong>
           <span className={cx('menu-option')}>
-            ICED | Tall | 일회용컵 | 카라멜 드리즐 많이
+            {temperature} | {size}
           </span>
-          <strong className={cx('price')}>6,200원</strong>
         </div>
         <div className={cx('btn-wrap')}>
           <button type='button' className={cx('cart-btn')}>
@@ -37,7 +56,7 @@ function myMenuItem() {
           </button>
         </div>
       </div>
-    </div>
+    </li>
   );
 }
 

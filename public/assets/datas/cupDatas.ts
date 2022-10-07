@@ -1,6 +1,6 @@
-import { IList } from '../../../src/types/cup.d';
+import { ICup } from "../../../src/types/productDetail";
 
-export const cupDatas: Array<IList> = [
+export const cupDatas: Array<ICup> = [
   {
     id: 1,
     name: '매장 컵',
