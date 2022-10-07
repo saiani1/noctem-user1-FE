@@ -7,6 +7,7 @@ import CategoryItem from './categoryItem';
 import { getLageCategory, getSmallCategory } from '../../pages/api/category';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
+import Link from 'next/link';
 
 const cx = classNames.bind(styles);
 
@@ -97,12 +98,14 @@ function categoryContent({
           </div>
         </div>
         <div>
-          <Image
-            src='/assets/svg/icon-cart.svg'
-            alt='cart'
-            width={24}
-            height={21}
-          />
+          <Link href='/cart'>
+            <Image
+              src='/assets/svg/icon-cart.svg'
+              alt='cart'
+              width={24}
+              height={21}
+            />
+          </Link>
         </div>
       </div>
       <div className={cx('menu-category')}>

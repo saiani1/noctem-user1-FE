@@ -10,6 +10,10 @@ const HEADERS = {
 }
 
 export const addCart = async (data: ICartData) => {
-  const res = await basicRequest.post(`${SERVICE}/carts`, data, HEADERS);
+  const res = await basicRequest.post(`${SERVICE}/carts`, data, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 };
