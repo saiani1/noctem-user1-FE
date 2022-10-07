@@ -44,13 +44,10 @@ function productContent() {
   };
 
   const handleAddCart = () => {
-    console.log(localStorage.getItem('token'));
     if (localStorage.getItem('token') === null) {
-      console.log('로그인 NO');
       alert('로그인이 필요한 서비스입니다.');
       router.push('/login');
     } else {
-      console.log('로그인 OK');
       if (cupChoice === '') {
         alert('컵을 선택하세요.');
       } else {
