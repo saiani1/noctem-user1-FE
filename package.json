@@ -12,6 +12,7 @@
     "axios": "^0.27.2",
     "classnames": "^2.3.2",
     "next": "12.3.1",
+    "next-auth": "^4.12.3",
     "next-compose-plugins": "^2.2.1",
     "next-pwa": "^5.6.0",
     "postcss-custom-properties-fallback": "^1.0.2",
@@ -22,6 +23,7 @@
     "recoil": "^0.7.5"
   },
   "devDependencies": {
+    "@types/next-auth": "^3.15.0",
     "@types/node": "18.7.21",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
