@@ -136,6 +136,7 @@
     z-index: 1001;
     height: 90%;
     width: 100vw;
+    overflow: auto;
     background-color: variable.$BG-001;
     bottom: 0;
 
@@ -250,14 +251,17 @@
     .cup-kind {
       display: flex;
       width: 100%;
-      margin: 16px;
+      padding: 0 16px;
       text-align: center;
 
       div {
         border: 1px solid variable.$TXT-006;
         border-right: none;
-        width: 30%;
         padding: 10px
+      }
+
+      :nth-child(n) {
+        flex: 1;
       }
 
       :nth-child(1) {
