@@ -7,6 +7,7 @@
   position: absolute;
   z-index: variable.$MODAL;
   bottom: 0;
+  overflow: auto;
   background-color: variable.$BG-001;
 
   h2 {
@@ -26,7 +27,7 @@
     li {
       position: relative;
 
-      & ~ li {
+      &~li {
         margin-left: 17px;
       }
     }

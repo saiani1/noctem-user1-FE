@@ -7,10 +7,12 @@ import { useRecoilState } from 'recoil';
 import { nicknameState } from '../store/atom/userStates';
 import { isExistToken } from './../store/utils/token';
 import { getUserInfo } from './../../pages/api/user';
+import { useRouter } from 'next/router';
 
 const cx = classNames.bind(styles);
 
 function homeContent() {
+  const router = useRouter();
   const [myMenu, SetMyMenu] = useState<boolean>(true);
   const [nickname, setUsername] = useRecoilState(nicknameState);
 
@@ -72,7 +74,14 @@ function homeContent() {
             </div>
             <div>
               <div className={cx('img')}>img</div>
-              <div className={cx('order-button')}>주문하기</div>
+              <div
+                className={cx('order-button')}
+                onClick={() => {
+                  router.push('/order');
+                }}
+              >
+                주문하기
+              </div>
             </div>
           </div>
         ) : (

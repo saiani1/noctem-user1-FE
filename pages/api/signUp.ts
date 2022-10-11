@@ -19,7 +19,11 @@ export const patchNickname = async (value: string | undefined) => {
   console.log(`${SERVICE}/userAccount/nickname`);
   const res = await basicRequest.patch(`${SERVICE}/userAccount/nickname`, {
     nickname: value
-  }, HEADERS);
+  }, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 }
 
