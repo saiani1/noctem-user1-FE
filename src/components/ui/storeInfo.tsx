@@ -12,7 +12,7 @@ interface IProps {
 }
 
 function storeInfo({ setClickStoreId, setOpen, item }: IProps) {
-  const { name, mainImg, address, distance, isOpen, storeId } = item;
+  const { name, mainImg, address, distance, isOpen, storeId, isParking } = item;
   const cx = classNames.bind(styles);
 
   const handleClickStore = () => {
@@ -46,12 +46,16 @@ function storeInfo({ setClickStoreId, setOpen, item }: IProps) {
             <span className={cx('store-address')}>{address}</span>
           </div>
           <div className={cx('bottom-content-wrap')}>
-            <Image
-              src='/assets/svg/icon-park.svg'
-              alt='park'
-              width={15}
-              height={15}
-            />
+            {isParking ? (
+              <Image
+                src='/assets/svg/icon-park.svg'
+                alt='park'
+                width={15}
+                height={15}
+              />
+            ) : (
+              <span />
+            )}
             <span className={cx('distance')}>{distance}</span>
           </div>
         </div>
