@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/pages/categoryPage.module.scss';
@@ -29,6 +30,7 @@ function categoryListContent({
   categoryName: string;
   setCategoryName: any;
 }) {
+  const router = useRouter();
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
   useEffect(() => {
@@ -38,6 +40,10 @@ function categoryListContent({
     });
     console.log(categorySId);
   }, [categorySId]);
+
+  const handleClickSelectStore = () => {
+    router.push('/selectStore');
+  };
 
   return (
     <>
@@ -71,7 +77,11 @@ function categoryListContent({
             </Link>
           ))}
       </ul>
-      <div className={cx('choice-store')}>
+      <button
+        type='button'
+        className={cx('choice-store')}
+        onClick={handleClickSelectStore}
+      >
         <div>
           <div>주문할 매장을 선택하세요</div>
           <div>
@@ -84,7 +94,7 @@ function categoryListContent({
           </div>
         </div>
         <hr />
-      </div>
+      </button>
     </>
   );
 }

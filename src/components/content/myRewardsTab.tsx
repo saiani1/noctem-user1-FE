@@ -12,7 +12,6 @@ function myRewardTab() {
       <div className={cx('level-wrap')}>
         <span className={cx('sub-tit')}>멤버십 등급</span>
         <div className={cx('level-tit-wrap')}>
-          <h3 className={cx('level-tit')}>Potion Level</h3>
           <span className={cx('level-icon-wrap')}>
             <Image
               src='/assets/svg/icon-potion-level.svg'
@@ -20,6 +19,7 @@ function myRewardTab() {
               height={20}
             />
           </span>
+          <h3 className={cx('level-tit')}>Potion</h3>
         </div>
         <div className={cx('hp-info-wrap')}>
           <span className={cx('hp-info-content')}>
