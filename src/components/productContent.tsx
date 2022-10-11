@@ -38,29 +38,23 @@ function productContent() {
   const [count, setCount] = useState(1);
   const [detailList, setdetailList] = useState<IDetail[]>([]);
   const [temperatureChoice, setTemperatureChoice] = useState('ice');
+  const sessionIndex = sessionStorage.length;
 
   const handleOptionOpen = () => {
     setOpen(true);
   };
 
   const handleAddCart = () => {
-    if (localStorage.getItem('token') === null) {
-      alert('로그인이 필요한 서비스입니다.');
-      router.push('/login');
+    if (cupChoice === '') {
+      alert('컵을 선택하세요.');
     } else {
-      if (cupChoice === '') {
-        alert('컵을 선택하세요.');
+      if (localStorage.getItem('token') === null) {
+        sessionStorage.setItem(sessionIndex + '', JSON.stringify(data));
       } else {
-        addCart(data).then(res => {
-          console.log(res);
-          if (res.data.data) {
-            setOpen(false);
-            alert('장바구니에 담겼습니다!');
-          } else {
-            alert('담기 실패');
-          }
-        });
+        addCart(data);
       }
+      setOpen(false);
+      alert('장바구니에 담겼습니다!');
     }
   };
 
