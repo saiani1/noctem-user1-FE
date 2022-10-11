@@ -9,7 +9,7 @@ export interface IOption {
   amount: string;
 }
 
-interface IMenu {
+export interface IMenu {
   index: number;
   alias: string;
   menuImg: string;
