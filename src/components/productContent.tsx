@@ -10,13 +10,14 @@ import ToolbarList from './ui/toolbarList';
 import CupSizeItem from './cupSizeItem';
 import { cupDatas } from '../../public/assets/datas/cupDatas';
 import { useRouter } from 'next/router';
-import { getSize, getTemperature } from '../../pages/api/category';
+import { getSize, getNutrition, getProduct } from '../../pages/api/category';
 import { addCart } from '../../pages/api/cart';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 import { addMyMenu } from '../../pages/api/myMenu';
-import { ICartData, IDetail, ISize } from '../types/productDetail';
+import { ICartData, IDetail, ISize, INutrition } from '../types/productDetail';
 import { isExistToken } from './../store/utils/token';
+import ProductNurtitionInfo from './productNutritionInfo';
 
 const cx = classNames.bind(styles);
 
@@ -26,6 +27,7 @@ function productContent() {
   const [categoryName, setCategoryName] = useRecoilState(categoryLState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const [open, setOpen] = useState(false);
+  const [nutritionOpen, setNutritionOpen] = useState(false);
   const [data, setData] = useState<ICartData>({
     // 사이즈, 개수, 컵 종류, 온도
     sizeId: 1,
@@ -33,14 +35,22 @@ function productContent() {
     personalOptionList: [],
   });
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
-  const [sizeChoice, setSizeChoice] = useState();
+  const [sizeChoice, setSizeChoice] = useState('');
   const [cupChoice, setCupChoice] = useState('');
   const [count, setCount] = useState(1);
-  const [detailList, setdetailList] = useState<IDetail[]>([]);
+  const [detailList, setdetailList] = useState<IDetail>();
   const [temperatureChoice, setTemperatureChoice] = useState('ice');
+  const [nutritionInfo, setNutritionInfo] = useState<INutrition>();
+  const [nutritionSize, setNutritionSize] = useState('Tall');
 
   const handleOptionOpen = () => {
     setOpen(true);
+  };
+  const handleNutritionOpen = () => {
+    setNutritionOpen(true);
+  };
+  const handleNutritionSize = (name: string) => {
+    setNutritionSize(name);
   };
 
   const handleAddCart = () => {
@@ -102,6 +112,7 @@ function productContent() {
 
   function onDismiss() {
     setOpen(false);
+    setNutritionOpen(false);
   }
 
   const handleAddMyMenu = (e: any) => {
@@ -109,48 +120,27 @@ function productContent() {
       alert('사이즈와 컵을 선택해주세요');
       return;
     }
-    // const datas = {
-    //   name: nameRef.current?.value || '',
-    //   nickname: nicknameRef.current?.value || '',
-    //   rrnFront: birthRef.current?.value || '',
-    //   rrnBackFirst: genderRef.current?.value || '',
-    //   email: emailRef.current?.value || '',
-    //   password: passwordRef.current?.value || '',
-    //   termsOfServiceAgreement: agreeData.agr1_use || false,
-    //   personalInfoAgreement: agreeData.agr2_info || false,
-    //   advertisementAgreement: agreeData.agr3_ad || false,
-    // };
-
-    // addUser(datas).then(res => {
-    //   if (res.data.data) {
-    //     setStep({
-    //       step1: false,
-    //       step2: false,
-    //       step3: true,
-    //     });
-    //   }
-    // });
   };
 
   useEffect(() => {
-    getTemperature(id).then(res => {
+    getProduct(id).then(res => {
       setdetailList(res.data.data);
+    });
+    getNutrition(id).then(res => {
+      setNutritionInfo(res.data.data);
     });
   }, [id]);
 
   useEffect(() => {
-    if (detailList.length !== 0) {
-      console.log(detailList);
-      getSize(detailList[0].menuId).then(res => {
+    if (detailList && detailList.temperatureList.length !== 0) {
+      getSize(detailList.temperatureList[0].temperatureId).then(res => {
         console.log(res);
-        if (res.data.data.length !== 0) {
-          setSizeOpt(res.data.data);
-          setSizeChoice(res.data.data[0].size);
-          setData({
-            ...data,
-            sizeId: res.data.data[0].sizeId,
-          });
-        }
+        setSizeOpt(res.data.data);
+        setSizeChoice(detailList.temperatureList[0].sizeList.size);
+        setData({
+          ...data,
+          sizeId: detailList.temperatureList[0].sizeList.id,
+        });
       });
     }
   }, [detailList]);
@@ -164,32 +154,37 @@ function productContent() {
       {temperatureChoice === 'ice' ? (
         <>
           <div className={cx('product-img')}>
-            <img src={detailList[0] && detailList[0].menuImg} alt='' />
+            <img
+              src={detailList && detailList.temperatureList[0].menuImg}
+              alt=''
+            />
           </div>
           <div className={cx('product-detail')}>
             <div className={cx('product-name')}>
-              {detailList[0] && detailList[0].menuName}
+              {detailList && detailList.temperatureList[0].menuName}
             </div>
             <div className={cx('product-english-name')}>
-              {detailList[0] && detailList[0].menuEngName}
+              {detailList && detailList.temperatureList[0].menuEngName}
             </div>
             <div className={cx('product-content')}>
-              {detailList[0] && detailList[0].description}
+              {detailList && detailList.temperatureList[0].description}
             </div>
             <div className={cx('product-price')}>
-              {detailList[0] && detailList[0].price}
+              {detailList && detailList.price}
             </div>
 
             <div className={cx('temp-button')}>
-              {detailList && detailList.length < 2 ? (
+              {detailList && detailList.temperatureList.length < 2 ? (
                 <div
                   className={
-                    detailList[0] && detailList[0].temperature === 'hot'
+                    detailList &&
+                    detailList.temperatureList[0].temperature === 'hot'
                       ? cx('only-hot')
                       : cx('only-ice')
                   }
                 >
-                  {detailList[0] && detailList[0].temperature === 'hot' ? (
+                  {detailList &&
+                  detailList.temperatureList[0].temperature === 'hot' ? (
                     <div>HOT ONLY</div>
                   ) : (
                     <div>ICED ONLY</div>
@@ -219,32 +214,37 @@ function productContent() {
       ) : (
         <>
           <div className={cx('product-img')}>
-            <img src={detailList[1] && detailList[1].menuImg} alt='' />
+            <img
+              src={detailList && detailList.temperatureList[1].menuImg}
+              alt=''
+            />
           </div>
           <div className={cx('product-detail')}>
             <div className={cx('product-name')}>
-              {detailList[1] && detailList[1].menuName}
+              {detailList && detailList.temperatureList[1].menuName}
             </div>
             <div className={cx('product-english-name')}>
-              {detailList[1] && detailList[1].menuEngName}
+              {detailList && detailList.temperatureList[1].menuEngName}
             </div>
             <div className={cx('product-content')}>
-              {detailList[1] && detailList[1].description}
+              {detailList && detailList.temperatureList[1].description}
             </div>
             <div className={cx('product-price')}>
-              {detailList[1] && detailList[1].price}
+              {detailList && detailList.price}
             </div>
 
             <div className={cx('temp-button')}>
-              {detailList && detailList.length < 2 ? (
+              {detailList && detailList.temperatureList.length < 2 ? (
                 <div
                   className={
-                    detailList[1] && detailList[1].temperature === 'hot'
+                    detailList &&
+                    detailList.temperatureList[1].temperature === 'hot'
                       ? cx('only-hot')
                       : cx('only-ice')
                   }
                 >
-                  {detailList[1] && detailList[1].temperature === 'hot' ? (
+                  {detailList &&
+                  detailList.temperatureList[1].temperature === 'hot' ? (
                     <div>HOT ONLY</div>
                   ) : (
                     <div>ICED ONLY</div>
@@ -278,6 +278,12 @@ function productContent() {
       )}
 
       <hr className={cx('line')} />
+      <div className={cx('product-nutrition')} onClick={handleNutritionOpen}>
+        <p>제품영양정보</p>
+        <Image src='/assets/svg/icon-more.svg' width={20} height={20} />
+      </div>
+
+      <hr className={cx('line')} />
       <div className={cx('button-box')}>
         <button
           className={cx('order-button')}
@@ -294,7 +300,7 @@ function productContent() {
           <div className={cx('option-box')}>
             <div className={cx('option', 'fadeIn')}>
               <div className={cx('menu-title')}>
-                {detailList[0] && detailList[0].menuName}
+                {detailList && detailList.temperatureList[0].menuName}
               </div>
               <div>
                 <div className={cx('option-title')}>사이즈</div>
@@ -395,6 +401,33 @@ function productContent() {
         </SheetContent>
       </BottomSheet>
       {open ? undefined : <ToolbarList />}
+      <BottomSheet open={nutritionOpen} onDismiss={onDismiss}>
+        <SheetContent>
+          <div className={cx('nutrition-sheet')}>
+            <div className={cx('title')}>제품 영양 정보</div>
+            <div>
+              <ul className={cx('cupsize')}>
+                <li onClick={() => handleNutritionSize('Tall')}>Tall</li>
+                <li onClick={() => handleNutritionSize('Grande')}>Grande</li>
+                <li onClick={() => handleNutritionSize('Venti')}>Venti</li>
+              </ul>
+              <div
+                className={
+                  nutritionSize === 'Tall'
+                    ? cx('state-bar-tall')
+                    : nutritionSize === 'Grande'
+                    ? cx('state-bar-grande')
+                    : cx('state-bar-venti')
+                }
+              />
+              <ProductNurtitionInfo
+                nutritionInfo={nutritionInfo}
+                nutritionSize={nutritionSize}
+              />
+            </div>
+          </div>
+        </SheetContent>
+      </BottomSheet>
     </>
   );
 }

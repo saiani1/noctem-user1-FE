@@ -1,13 +1,42 @@
 export interface IDetail {
+  menuId: number;
+  price: number;
+  allergy: string;
+  nutritionList: INutritionList;
+  temperatureList: ITemperatureList[];
+}
+
+export interface INutritionList {
+  id: number;
+  kcal: number;
+  carbohydrates: number;
+  sugars: number;
+  sodium: number;
+  protein: number;
+  fat: number;
+  cholesterol: number;
+  transFat: number;
+  caffeine: number;
+  saturatedFat: number;
+}
+
+export interface ITemperatureList {
   index: number;
   temperatureId: number;
-  menuId: number;
   menuName: string;
   menuEngName: string;
   description: string;
   menuImg: string;
   temperature: string;
-  price: number;
+  sizeList: ISizeList;
+  [key: string]: number;
+}
+
+export interface ISizeList {
+  index: number;
+  id: number;
+  size: string;
+  extraCost: number;
 }
 
 export interface ICartData {
@@ -39,4 +68,18 @@ export interface ISizeProps {
   setSizeChoice: Dispatch<SetStateAction<boolean>>;
   data: IData;
   setData: Dispatch<SetStateAction<boolean>>;
+}
+
+export interface INutrition {
+  id: number;
+  kcal: number;
+  carbohydrates: number;
+  sugars: number;
+  sodium: number;
+  protein: number;
+  fat: number;
+  cholesterol: number;
+  transFat: number;
+  caffeine: number;
+  saturatedFat: number;
 }
