@@ -7,17 +7,24 @@ import { useRecoilState } from 'recoil';
 import { usernameState } from '../store/atom/userStates';
 import { isExistToken } from './../store/utils/token';
 import { getUserInfo } from './../../pages/api/user';
+import { getUserLevel } from './../../pages/api/level';
+import { ILevel } from '../types/level';
 
 const cx = classNames.bind(styles);
 
 function homeContent() {
   const [myMenu, SetMyMenu] = useState<boolean>(true);
   const [username, setUsername] = useRecoilState(usernameState);
+  const [userLevel, setUserLevel] = useState<ILevel>();
 
   useEffect(() => {
     if (isExistToken()) {
       getUserInfo().then(res => {
         setUsername(res.data.data.nickname);
+      });
+      getUserLevel().then(res => {
+        setUserLevel(res.data);
+        console.log(userLevel);
       });
     } else {
       setUsername('User');
@@ -31,19 +38,20 @@ function homeContent() {
           <span>{username}</span> 님, 반갑습니다.
         </div>
         <div className={cx('point-bar')}>
-          <div>
+          <div className={cx('progress-bar-space')}>
             <div>
-              18
+              {userLevel.requiredExpToNextGrade}
               <Image
                 src='/assets/svg/icon-point.svg'
                 alt='point'
                 width={24}
                 height={21}
               />
-              until Cold Level
+              until {userLevel.nextGrade} Level
             </div>
-            <div className={cx('progress-bar')} />
-            <div className={cx('my-progress-bar')} />
+            <div className={cx('progress-bar-wrap')}>
+              <div className={cx('progress-bar')} />
+            </div>
           </div>
           <div className={cx('my-score')}>
             <span>7</span>/25
