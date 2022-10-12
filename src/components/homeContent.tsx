@@ -8,9 +8,14 @@ import { usernameState } from '../store/atom/userStates';
 import { isExistToken } from './../store/utils/token';
 import { getUserInfo } from './../../pages/api/user';
 import { getUserLevel } from './../../pages/api/level';
-import { ILevel } from '../types/level';
 
 const cx = classNames.bind(styles);
+interface ILevel {
+  userGrade: string;
+  userExp: number;
+  nextGrade: string;
+  requiredExpToNextGrade: number;
+}
 
 function homeContent() {
   const [myMenu, SetMyMenu] = useState<boolean>(true);
@@ -23,14 +28,14 @@ function homeContent() {
         setUsername(res.data.data.nickname);
       });
       getUserLevel().then(res => {
-        setUserLevel(res.data);
+        setUserLevel(res.data.data);
         console.log(userLevel);
       });
     } else {
       setUsername('User');
     }
   }, []);
-
+  console.log(userLevel);
   return (
     <>
       <div className={cx('point-box')}>
@@ -40,14 +45,14 @@ function homeContent() {
         <div className={cx('point-bar')}>
           <div className={cx('progress-bar-space')}>
             <div>
-              {userLevel.requiredExpToNextGrade}
+              {userLevel && userLevel.requiredExpToNextGrade}
               <Image
-                src='/assets/svg/icon-point.svg'
-                alt='point'
+                src='/assets/svg/icon-charge-battery.svg'
+                alt='charge-battery'
                 width={24}
                 height={21}
               />
-              until {userLevel.nextGrade} Level
+              until {userLevel && userLevel.nextGrade} Level
             </div>
             <div className={cx('progress-bar-wrap')}>
               <div className={cx('progress-bar')} />
@@ -56,8 +61,8 @@ function homeContent() {
           <div className={cx('my-score')}>
             <span>7</span>/25
             <Image
-              src='/assets/svg/icon-point.svg'
-              alt='point'
+              src='/assets/svg/icon-potion-level.svg'
+              alt='potion-level'
               width={24}
               height={21}
             />
