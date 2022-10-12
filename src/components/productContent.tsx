@@ -11,13 +11,18 @@ import CupSizeItem from './cupSizeItem';
 import { cupDatas } from '../../public/assets/datas/cupDatas';
 import { useRouter } from 'next/router';
 import { getSize, getNutrition, getProduct } from '../../pages/api/category';
-import { addCart } from '../../pages/api/cart';
+import { addCart, getCount } from '../../pages/api/cart';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
-import { addMyMenu } from '../../pages/api/myMenu';
-import { ICartData, IDetail, ISize, INutrition } from '../types/productDetail';
-import { isExistToken } from './../store/utils/token';
+import {
+  ICartData,
+  ICartNonMemberData,
+  IDetail,
+  ISize,
+  INutrition,
+} from '../types/productDetail';
 import ProductNurtitionInfo from './productNutritionInfo';
+import { cartCnt } from '../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
@@ -26,6 +31,7 @@ function productContent() {
   const id = router.query.id ? +router.query.id : 1;
   const [categoryName, setCategoryName] = useRecoilState(categoryLState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
+  const [cartCount, setCartCount] = useRecoilState(cartCnt);
   const [open, setOpen] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [data, setData] = useState<ICartData>({
@@ -34,12 +40,25 @@ function productContent() {
     quantity: 1,
     personalOptionList: [],
   });
+  const [nonMemberData, setNonMemberData] = useState<ICartNonMemberData>({
+    options: {
+      sizeId: 1,
+      quantity: 1,
+      personalOptionList: [],
+    },
+    menuImg: '',
+    menuName: '',
+    menuEngName: '',
+    temperature: '',
+    totalMenuPrice: '',
+  });
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
-  const [sizeChoice, setSizeChoice] = useState('');
+  const [selecteSizeTxt, setSelecteSizeTxt] = useState('');
   const [cupChoice, setCupChoice] = useState('');
   const [count, setCount] = useState(1);
   const [detailList, setdetailList] = useState<IDetail>();
-  const [temperatureChoice, setTemperatureChoice] = useState('ice');
+  const [chioceTempId, setChioceTempId] = useState<number>();
+  const [temperatureChoice, setTemperatureChoice] = useState('hot');
   const [nutritionInfo, setNutritionInfo] = useState<INutrition>();
   const [nutritionSize, setNutritionSize] = useState('Tall');
 
@@ -54,23 +73,27 @@ function productContent() {
   };
 
   const handleAddCart = () => {
-    if (localStorage.getItem('token') === null) {
-      alert('로그인이 필요한 서비스입니다.');
-      router.push('/login');
+    console.log(detailList);
+    if (cupChoice === '') {
+      alert('컵을 선택하세요.');
     } else {
-      if (cupChoice === '') {
-        alert('컵을 선택하세요.');
-      } else {
-        addCart(data).then(res => {
-          console.log(res);
-          if (res.data.data) {
-            setOpen(false);
-            alert('장바구니에 담겼습니다!');
-          } else {
-            alert('담기 실패');
-          }
-        });
+      const sum = cartCount + count;
+      if (sum > 20) {
+        alert('총 20개까지 담을 수 있습니다.');
+        return;
       }
+
+      if (localStorage.getItem('token') === null) {
+        // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
+        sessionStorage.setItem(
+          sessionStorage.length + '',
+          JSON.stringify(data),
+        );
+      } else {
+        addCart(data);
+      }
+      setOpen(false);
+      alert('장바구니에 담겼습니다!');
     }
   };
 
@@ -91,15 +114,17 @@ function productContent() {
   };
 
   const handlePlus = () => {
-    setCount(prev => {
-      return ++prev;
-    });
-    setData(prev => {
-      return {
-        ...prev,
-        quantity: ++prev.quantity,
-      };
-    });
+    if (count < 20) {
+      setCount(prev => {
+        return ++prev;
+      });
+      setData(prev => {
+        return {
+          ...prev,
+          quantity: ++prev.quantity,
+        };
+      });
+    }
   };
 
   const handleTempChoice = (e: string) => {
@@ -116,7 +141,7 @@ function productContent() {
   }
 
   const handleAddMyMenu = (e: any) => {
-    if (sizeChoice === '' || cupChoice === '') {
+    if (selecteSizeTxt === '' || cupChoice === '') {
       alert('사이즈와 컵을 선택해주세요');
       return;
     }
@@ -129,17 +154,23 @@ function productContent() {
     getNutrition(id).then(res => {
       setNutritionInfo(res.data.data);
     });
-  }, [id]);
+
+    getCount().then(res => {
+      setCartCount(res.data.data);
+    });
+  }, [id, open]);
 
   useEffect(() => {
     if (detailList && detailList.temperatureList.length !== 0) {
+      console.log(temperatureChoice);
+      console.log(detailList.temperatureList[0].temperatureId);
       getSize(detailList.temperatureList[0].temperatureId).then(res => {
-        console.log(res);
+        console.log('온도', res);
         setSizeOpt(res.data.data);
-        setSizeChoice(detailList.temperatureList[0].sizeList.size);
+        setSelecteSizeTxt(res.data.data[0].size);
         setData({
           ...data,
-          sizeId: detailList.temperatureList[0].sizeList.id,
+          sizeId: res.data.data[0].sizeId,
         });
       });
     }
@@ -150,6 +181,7 @@ function productContent() {
       <CategoryContent
         setCategoryName={setCategoryName}
         setCategorySId={setCategorySId}
+        cartCount={cartCount}
       />
       {temperatureChoice === 'ice' ? (
         <>
@@ -311,8 +343,8 @@ function productContent() {
                       <CupSizeItem
                         key={item.index}
                         list={item}
-                        sizeChoice={sizeChoice}
-                        setSizeChoice={setSizeChoice}
+                        selecteSizeTxt={selecteSizeTxt}
+                        setSelecteSizeTxt={setSelecteSizeTxt}
                         data={data}
                         setData={setData}
                       />
@@ -349,11 +381,11 @@ function productContent() {
                       <div onClick={handleMinus}>
                         <Image
                           src={
-                            count > 1
-                              ? '/assets/svg/icon-minus-active.svg'
-                              : '/assets/svg/icon-minus.svg'
+                            count === 1
+                              ? '/assets/svg/icon-minus.svg'
+                              : '/assets/svg/icon-minus-active.svg'
                           }
-                          alt='minus'
+                          alt='minus icon'
                           width={20}
                           height={20}
                         />
@@ -361,8 +393,12 @@ function productContent() {
                       <div>{count}</div>
                       <div onClick={handlePlus}>
                         <Image
-                          src='/assets/svg/icon-plus.svg'
-                          alt='plus'
+                          src={
+                            count === 20
+                              ? '/assets/svg/icon-plus.svg'
+                              : '/assets/svg/icon-plus-active.svg'
+                          }
+                          alt='plus icon'
                           width={20}
                           height={20}
                         />

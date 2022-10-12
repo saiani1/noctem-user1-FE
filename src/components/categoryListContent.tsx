@@ -7,6 +7,8 @@ import CategoryContent from './categoryContent';
 import { getMenuCategory } from '../../pages/api/category';
 import { useRecoilState } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
+import { getCount } from '../../pages/api/cart';
+import { cartCnt } from '../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 interface IDrinkList {
@@ -30,6 +32,7 @@ function categoryListContent({
   setCategoryName: any;
 }) {
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
+  const [cartCount, setCartCount] = useRecoilState(cartCnt);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
   useEffect(() => {
     getMenuCategory(categorySId).then(res => {
@@ -37,6 +40,10 @@ function categoryListContent({
       setMenuList(res.data.data);
     });
     console.log(categorySId);
+
+    getCount().then(res => {
+      setCartCount(res.data.data);
+    });
   }, [categorySId]);
 
   return (
@@ -44,6 +51,7 @@ function categoryListContent({
       <CategoryContent
         setCategoryName={setCategoryName}
         setCategorySId={setCategorySId}
+        cartCount={cartCount}
       />
       <ul className={cx('product-list')}>
         {menuList &&

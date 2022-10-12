@@ -3,14 +3,18 @@
 
 .cart-wrap {
   padding: 19px;
+  margin-bottom: 130px;
+
   h3 {
     font-size: variable.$FS-18;
   }
+
   p {
     margin: 5px 0;
     font-size: variable.$FS-12;
     color: variable.$TXT-003;
   }
+
   button {
     margin-top: 5px;
     padding: 5px 15px;

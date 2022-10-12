@@ -45,11 +45,21 @@ export interface ICartData {
   personalOptionList?: IPersonalOption[];
 }
 
+export interface ICartNonMemberData {
+  options: ICartData,
+  menuImg: string,
+  menuName: string,
+  menuEngName: string,
+  temperature: string,
+  totalMenuPrice: string,
+}
+
 export interface ISize {
   index: number;
   sizeId: number;
   size: string;
   extraCost: number;
+  capacity: number;
 }
 
 export interface ICup {
@@ -64,8 +74,8 @@ interface IPersonalOption {
 
 export interface ISizeProps {
   list: ISize;
-  sizeChoice: string | undefined;
-  setSizeChoice: Dispatch<SetStateAction<boolean>>;
+  selecteSizeTxt: string | undefined;
+  setSelecteSizeTxt: Dispatch<SetStateAction<boolean>>;
   data: IData;
   setData: Dispatch<SetStateAction<boolean>>;
 }

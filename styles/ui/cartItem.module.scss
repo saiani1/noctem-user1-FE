@@ -81,13 +81,13 @@
         }
       }
 
-      .option-change-btn {
-        font-size: variable.$FS-12;
-        font-weight: 300;
-        color: variable.$POINT;
-        cursor: pointer;
-        text-decoration: underline;
-      }
+      // .option-change-btn {
+      //   font-size: variable.$FS-12;
+      //   font-weight: 300;
+      //   color: variable.$POINT;
+      //   cursor: pointer;
+      //   text-decoration: underline;
+      // }
 
       .num-change-wrap {
         display: flex;
@@ -97,46 +97,12 @@
         .left {
           display: flex;
 
-          button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 1px solid variable.$LINE-004;
-          }
-
-          .minus-btn {
-            &::after {
-              content: ' ';
-              width: 9px;
-              height: 1px;
-              background-color: variable.$LINE-004;
-            }
-          }
-
           strong {
             margin: 0 20px;
           }
 
-          .plus-btn {
-            position: relative;
-
-            &::before {
-              @include position.absolute(4.5px auto auto 8px);
-              content: ' ';
-              width: 1px;
-              height: 9px;
-              background-color: variable.$LINE-004;
-            }
-
-            &::after {
-              content: ' ';
-              width: 9px;
-              height: 1px;
-              background-color: variable.$LINE-004;
-            }
+          .icon-btn {
+            cursor: pointer;
           }
         }
 
