@@ -3,43 +3,64 @@ import classNames from 'classnames/bind';
 import Image from 'next/image';
 
 import styles from '../../../styles/ui/cartItem.module.scss';
-import { IProps } from '../../types/cart';
-import { deleteItem } from '../../../pages/api/cart';
+import { IData } from '../../types/cart';
+import { changeItemCount, deleteItem } from '../../../pages/api/cart';
 
 const cx = classNames.bind(styles);
 
 function cartItem({
   data,
-  handleMinus,
-  // handleDelete,
-  isDelete,
-  setIsDelete,
+  count,
+  isChange,
+  setIsChange,
 }: {
-  data: IProps['data'];
-  handleMinus: (id: number, qty: number) => void;
-  // handleDelete: (id: number) => void;
-  isDelete: boolean;
-  setIsDelete: React.Dispatch<React.SetStateAction<boolean>>;
+  data: IData;
+  count: number;
+  isChange: boolean;
+  setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     // index,
+    cartId,
+    // sizeId,
+    menuName,
     menuEngName,
     menuImg,
-    menuName,
-    myPersonalOptionList,
-    qty,
-    size,
-    sizeId,
     temperature,
+    size,
     totalMenuPrice,
+    qty,
+    myPersonalOptionList,
   } = data;
 
-  const handlePlus = () => {};
+  const handleCountChange = (type: string, id: number, qty: number) => {
+    let isSuccess = false;
+
+    if (type === 'add') {
+      if (count < 20) {
+        qty++;
+        isSuccess = true;
+      }
+    } else {
+      if (qty > 1) {
+        qty--;
+        isSuccess = true;
+      }
+    }
+
+    if (isSuccess) {
+      changeItemCount(id, qty).then(res => {
+        if (res.data.data) {
+          setIsChange(!isChange);
+        }
+      });
+    }
+  };
 
   const handleDelete = (id: number) => {
     deleteItem(id).then(res => {
       console.log(res);
-      setIsDelete(!isDelete);
+      setIsChange(!isChange);
     });
   };
 
@@ -51,7 +72,7 @@ function cartItem({
           type='button'
           className={cx('close-btn')}
           onClick={() => {
-            handleDelete(sizeId);
+            handleDelete(cartId);
           }}
         >
           <Image src='/assets/svg/icon-x-mark.svg' width={8} height={8} />
@@ -78,7 +99,7 @@ function cartItem({
               <div
                 className={cx('icon-btn')}
                 onClick={() => {
-                  handleMinus(sizeId, qty);
+                  handleCountChange('sub', cartId, qty);
                 }}
               >
                 <Image
@@ -93,9 +114,14 @@ function cartItem({
                 />
               </div>
               <strong>{qty}</strong>
-              <div className={cx('icon-btn')} onClick={handlePlus}>
+              <div
+                className={cx('icon-btn')}
+                onClick={() => {
+                  handleCountChange('add', cartId, qty);
+                }}
+              >
                 <Image
-                  src='/assets/svg/icon-plus.svg'
+                  src='/assets/svg/icon-plus-active.svg'
                   alt='plus icon'
                   width={20}
                   height={20}
