@@ -35,7 +35,7 @@ function productContent() {
     personalOptionList: [],
   });
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
-  const [sizeChoice, setSizeChoice] = useState();
+  const [sizeChoice, setSizeChoice] = useState('');
   const [cupChoice, setCupChoice] = useState('');
   const [count, setCount] = useState(1);
   const [detailList, setdetailList] = useState<IDetail>();
@@ -48,10 +48,6 @@ function productContent() {
   };
   const handleNutritionOpen = () => {
     setNutritionOpen(true);
-    getNutrition(detailList?.menuId).then(res => {
-      setNutritionInfo(res.data.data);
-    });
-    console.log(nutritionInfo);
   };
   const handleNutritionSize = (name: string) => {
     setNutritionSize(name);
@@ -124,49 +120,27 @@ function productContent() {
       alert('사이즈와 컵을 선택해주세요');
       return;
     }
-    // const datas = {
-    //   name: nameRef.current?.value || '',
-    //   nickname: nicknameRef.current?.value || '',
-    //   rrnFront: birthRef.current?.value || '',
-    //   rrnBackFirst: genderRef.current?.value || '',
-    //   email: emailRef.current?.value || '',
-    //   password: passwordRef.current?.value || '',
-    //   termsOfServiceAgreement: agreeData.agr1_use || false,
-    //   personalInfoAgreement: agreeData.agr2_info || false,
-    //   advertisementAgreement: agreeData.agr3_ad || false,
-    // };
-
-    // addUser(datas).then(res => {
-    //   if (res.data.data) {
-    //     setStep({
-    //       step1: false,
-    //       step2: false,
-    //       step3: true,
-    //     });
-    //   }
-    // });
   };
 
   useEffect(() => {
     getProduct(id).then(res => {
       setdetailList(res.data.data);
     });
-    console.log(detailList);
+    getNutrition(id).then(res => {
+      setNutritionInfo(res.data.data);
+    });
   }, [id]);
 
   useEffect(() => {
-    if (detailList?.temperatureList.length !== 0) {
-      console.log(detailList);
-      getSize(detailList?.temperatureList?.temperatureId).then(res => {
+    if (detailList && detailList.temperatureList.length !== 0) {
+      getSize(detailList.temperatureList[0].temperatureId).then(res => {
         console.log(res);
-        if (res.data.data.length !== 0) {
-          setSizeOpt(res.data.data);
-          setSizeChoice(res.data.data.temperatureList[0].sizeList.size);
-          setData({
-            ...data,
-            sizeId: res.data.data.temperatureList[0].sizeList.id,
-          });
-        }
+        setSizeOpt(res.data.data);
+        setSizeChoice(detailList.temperatureList[0].sizeList.size);
+        setData({
+          ...data,
+          sizeId: detailList.temperatureList[0].sizeList.id,
+        });
       });
     }
   }, [detailList]);
