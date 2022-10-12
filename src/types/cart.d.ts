@@ -1,5 +1,6 @@
 export interface IData {
   index: number;
+  cartId: number;
   sizeId: number;
   menuName: string;
   menuEngName: string;
@@ -16,6 +17,17 @@ export interface IPersonalOptions {
   amount: string;
 }
 
-export interface IProps {
-  data: IData
+export interface IStore {
+  index: number;
+  storeId: number;
+  name: string;
+  mainImg: string;
+  address: string;
+  businessOpenHours: string;
+  businessCloseHours: string;
+  isOpen: boolean;
+  isParking: boolean;
+  isEcoStore: boolean;
+  isDriveThrough: boolean;
+  distance: string;
 }

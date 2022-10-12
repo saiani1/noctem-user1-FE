@@ -25,9 +25,11 @@ interface IDrinkCategory {
 function categoryContent({
   setCategoryName,
   setCategorySId,
+  cartCount,
 }: {
   setCategoryName: any;
   setCategorySId: any;
+  cartCount: number;
 }) {
   const [isClick, setIsClick] = useRecoilState(categoryLState);
   const [categoryL, setCategoryL] = useState<ICategory[]>([]);
@@ -97,7 +99,8 @@ function categoryContent({
             />
           </div>
         </div>
-        <div>
+        <div className={cx('cart-cnt-wrap')}>
+          <div className={cx('cnt')}>{cartCount}</div>
           <Link href='/cart'>
             <Image
               src='/assets/svg/icon-cart.svg'

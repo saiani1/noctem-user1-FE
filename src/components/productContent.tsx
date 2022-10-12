@@ -11,7 +11,7 @@ import CupSizeItem from './cupSizeItem';
 import { cupDatas } from '../../public/assets/datas/cupDatas';
 import { useRouter } from 'next/router';
 import { getSize, getTemperature } from '../../pages/api/category';
-import { addCart } from '../../pages/api/cart';
+import { addCart, getCount } from '../../pages/api/cart';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 import { addMyMenu } from '../../pages/api/myMenu';
@@ -22,6 +22,7 @@ import {
   ISize,
 } from '../types/productDetail';
 import { isExistToken } from './../store/utils/token';
+import { cartCnt } from '../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
@@ -30,6 +31,7 @@ function productContent() {
   const id = router.query.id ? +router.query.id : 1;
   const [categoryName, setCategoryName] = useRecoilState(categoryLState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
+  const [cartCount, setCartCount] = useRecoilState(cartCnt);
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<ICartData>({
     // 사이즈, 개수, 컵 종류, 온도
@@ -55,7 +57,6 @@ function productContent() {
   const [count, setCount] = useState(1);
   const [detailList, setdetailList] = useState<IDetail[]>([]);
   const [temperatureChoice, setTemperatureChoice] = useState('ice');
-  const sessionIndex = sessionStorage.length;
 
   const handleOptionOpen = () => {
     setOpen(true);
@@ -66,9 +67,18 @@ function productContent() {
     if (cupChoice === '') {
       alert('컵을 선택하세요.');
     } else {
+      const sum = cartCount + count;
+      if (sum > 20) {
+        alert('총 20개까지 담을 수 있습니다.');
+        return;
+      }
+
       if (localStorage.getItem('token') === null) {
         // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
-        sessionStorage.setItem(sessionIndex + '', JSON.stringify(data));
+        sessionStorage.setItem(
+          sessionStorage.length + '',
+          JSON.stringify(data),
+        );
       } else {
         addCart(data);
       }
@@ -94,15 +104,17 @@ function productContent() {
   };
 
   const handlePlus = () => {
-    setCount(prev => {
-      return ++prev;
-    });
-    setData(prev => {
-      return {
-        ...prev,
-        quantity: ++prev.quantity,
-      };
-    });
+    if (count < 20) {
+      setCount(prev => {
+        return ++prev;
+      });
+      setData(prev => {
+        return {
+          ...prev,
+          quantity: ++prev.quantity,
+        };
+      });
+    }
   };
 
   const handleTempChoice = (e: string) => {
@@ -149,7 +161,11 @@ function productContent() {
     getTemperature(id).then(res => {
       setdetailList(res.data.data);
     });
-  }, [id]);
+
+    getCount().then(res => {
+      setCartCount(res.data.data);
+    });
+  }, [id, open]);
 
   useEffect(() => {
     if (detailList.length !== 0) {
@@ -173,6 +189,7 @@ function productContent() {
       <CategoryContent
         setCategoryName={setCategoryName}
         setCategorySId={setCategorySId}
+        cartCount={cartCount}
       />
       {temperatureChoice === 'ice' ? (
         <>
@@ -356,9 +373,9 @@ function productContent() {
                       <div onClick={handleMinus}>
                         <Image
                           src={
-                            count > 1
-                              ? '/assets/svg/icon-minus-active.svg'
-                              : '/assets/svg/icon-minus.svg'
+                            count === 1
+                              ? '/assets/svg/icon-minus.svg'
+                              : '/assets/svg/icon-minus-active.svg'
                           }
                           alt='minus icon'
                           width={20}
@@ -368,7 +385,11 @@ function productContent() {
                       <div>{count}</div>
                       <div onClick={handlePlus}>
                         <Image
-                          src='/assets/svg/icon-plus.svg'
+                          src={
+                            count === 20
+                              ? '/assets/svg/icon-plus.svg'
+                              : '/assets/svg/icon-plus-active.svg'
+                          }
                           alt='plus icon'
                           width={20}
                           height={20}
