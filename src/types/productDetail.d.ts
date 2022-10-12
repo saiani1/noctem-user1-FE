@@ -74,10 +74,10 @@ interface IPersonalOption {
 
 export interface ISizeProps {
   list: ISize;
-  selecteSizeTxt: string | undefined;
-  setSelecteSizeTxt: Dispatch<SetStateAction<boolean>>;
-  data: IData;
-  setData: Dispatch<SetStateAction<boolean>>;
+  selectedSizeTxt: string | undefined;
+  setSelectedSizeTxt: Dispatch<SetStateAction<boolean>>;
+  cartData: ICartData;
+  setCartData: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface INutrition {

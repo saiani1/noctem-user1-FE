@@ -8,35 +8,34 @@ const cx = classNames.bind(styles);
 
 function cupSizeItem({
   list,
-  selecteSizeTxt,
-  setSelecteSizeTxt,
-  data,
-  setData,
+  selectedSizeTxt,
+  setSelectedSizeTxt,
+  cartData,
+  setCartData,
 }: {
   list: ISizeProps['list'];
-  selecteSizeTxt: ISizeProps['selecteSizeTxt'];
-  setSelecteSizeTxt: ISizeProps['setSelecteSizeTxt'];
-  data: ISizeProps['data'];
-  setData: ISizeProps['setData'];
+  selectedSizeTxt: ISizeProps['selectedSizeTxt'];
+  setSelectedSizeTxt: ISizeProps['setSelectedSizeTxt'];
+  cartData: ISizeProps['cartData'];
+  setCartData: ISizeProps['setCartData'];
 }) {
   const handleChoice = () => {
-    setSelecteSizeTxt(list.size);
-    setData({
-      ...data,
+    console.log(list.sizeId);
+    setSelectedSizeTxt(list.size);
+    setCartData({
+      ...cartData,
       sizeId: list.sizeId,
     });
   };
-
-  useEffect(() => {
-    console.log(list);
-  }, []);
 
   return (
     <>
       {list && (
         <div
           className={
-            selecteSizeTxt === list.size ? cx('cup-card-click') : cx('cup-card')
+            selectedSizeTxt === list.size
+              ? cx('cup-card-click')
+              : cx('cup-card')
           }
           role='sizeitem'
           onClick={handleChoice}
@@ -45,7 +44,7 @@ function cupSizeItem({
           <div className={cx('cup-image-box')}>
             <Image
               src={
-                selecteSizeTxt === list.size
+                selectedSizeTxt === list.size
                   ? '/assets/svg/icon-cup-click.svg'
                   : '/assets/svg/icon-cup.svg'
               }
