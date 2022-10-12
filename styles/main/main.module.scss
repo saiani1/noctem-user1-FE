@@ -1,6 +1,7 @@
 @use '/styles/base/variable';
 @use '/styles/mixins/position';
 
+
 .point-box {
   margin: 24px;
 
@@ -19,28 +20,6 @@
     .progress-bar-space{
       width: 80%;
     }
-
-    // & {
-    //   .progress-bar {
-    //     position: absolute;
-    //     width: 70%;
-    //     height: 6px;
-
-    //     /* line002 */
-
-    //     background: #eeeeee;
-    //     border-radius: 13.5px;
-    //   }
-
-    //   .my-progress-bar {
-    //     position: absolute;
-    //     width: 30%;
-    //     height: 6px;
-
-    //     background: variable.$POINT;
-    //     border-radius: 13.5px;
-    //   }
-    // }
 
     .my-score {
       color: variable.$POINT;

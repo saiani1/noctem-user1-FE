@@ -21,6 +21,11 @@ function homeContent() {
   const [myMenu, SetMyMenu] = useState<boolean>(true);
   const [username, setUsername] = useRecoilState(usernameState);
   const [userLevel, setUserLevel] = useState<ILevel>();
+  const styles: { [key: string]: React.CSSProperties } = {
+    container: {
+      width: 255,
+    },
+  };
 
   useEffect(() => {
     if (isExistToken()) {
@@ -55,11 +60,18 @@ function homeContent() {
               until {userLevel && userLevel.nextGrade} Level
             </div>
             <div className={cx('progress-bar-wrap')}>
-              <div className={cx('progress-bar')} />
+              <div
+                className={cx('progress-bar')}
+                role='progressbar'
+                aria-valuemin={0}
+                aria-valuemax={100}
+                style={styles.container}
+              />
             </div>
           </div>
           <div className={cx('my-score')}>
-            <span>7</span>/25
+            <span>{userLevel && userLevel.userExp}</span>/
+            {userLevel && userLevel.userExp + userLevel.requiredExpToNextGrade}
             <Image
               src='/assets/svg/icon-potion-level.svg'
               alt='potion-level'
