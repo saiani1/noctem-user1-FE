@@ -16,6 +16,15 @@ export interface ICartData {
   personalOptionList?: IPersonalOption[];
 }
 
+export interface ICartNonMemberData {
+  options: ICartData,
+  menuImg: string,
+  menuName: string,
+  menuEngName: string,
+  temperature: string,
+  totalMenuPrice: string,
+}
+
 export interface ISize {
   index: number;
   sizeId: number;

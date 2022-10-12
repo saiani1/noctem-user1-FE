@@ -15,7 +15,12 @@ import { addCart } from '../../pages/api/cart';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 import { addMyMenu } from '../../pages/api/myMenu';
-import { ICartData, IDetail, ISize } from '../types/productDetail';
+import {
+  ICartData,
+  ICartNonMemberData,
+  IDetail,
+  ISize,
+} from '../types/productDetail';
 import { isExistToken } from './../store/utils/token';
 
 const cx = classNames.bind(styles);
@@ -32,6 +37,18 @@ function productContent() {
     quantity: 1,
     personalOptionList: [],
   });
+  const [nonMemberData, setNonMemberData] = useState<ICartNonMemberData>({
+    options: {
+      sizeId: 1,
+      quantity: 1,
+      personalOptionList: [],
+    },
+    menuImg: '',
+    menuName: '',
+    menuEngName: '',
+    temperature: '',
+    totalMenuPrice: '',
+  });
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
   const [sizeChoice, setSizeChoice] = useState();
   const [cupChoice, setCupChoice] = useState('');
@@ -45,10 +62,12 @@ function productContent() {
   };
 
   const handleAddCart = () => {
+    console.log(detailList);
     if (cupChoice === '') {
       alert('컵을 선택하세요.');
     } else {
       if (localStorage.getItem('token') === null) {
+        // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
         sessionStorage.setItem(sessionIndex + '', JSON.stringify(data));
       } else {
         addCart(data);
@@ -341,7 +360,7 @@ function productContent() {
                               ? '/assets/svg/icon-minus-active.svg'
                               : '/assets/svg/icon-minus.svg'
                           }
-                          alt='minus'
+                          alt='minus icon'
                           width={20}
                           height={20}
                         />
@@ -350,7 +369,7 @@ function productContent() {
                       <div onClick={handlePlus}>
                         <Image
                           src='/assets/svg/icon-plus.svg'
-                          alt='plus'
+                          alt='plus icon'
                           width={20}
                           height={20}
                         />
