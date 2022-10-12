@@ -30,9 +30,8 @@ function settingContent() {
 
   useEffect(() => {
     const token = getToken();
-    console.log(token);
 
-    if (info !== undefined && token !== '{}') {
+    if (token !== '{}') {
       getUserOptions().then(res => {
         console.log('res : ', res);
         setInfo(res.data.data);
@@ -47,13 +46,10 @@ function settingContent() {
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const check = e.target.checked;
-    const token = getToken();
 
-    if (token !== '{}') {
-      patchUserOptions(value).then(() => {
-        setInfo({ ...info, [value]: check });
-      });
-    }
+    patchUserOptions(value).then(() => {
+      setInfo({ ...info, [value]: check });
+    });
   };
 
   return (

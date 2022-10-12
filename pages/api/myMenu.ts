@@ -12,8 +12,8 @@ const HEADERS = {
 export const getMyMenu = async () => {
   const res = await basicRequest.get(`${SERVICE}/myMenu`, {
     headers: {
-      Authorization: JSON.parse(getToken())
-    }
+      Authorization: JSON.parse(getToken()),
+    },
   });
   return res;
 };
@@ -21,8 +21,8 @@ export const getMyMenu = async () => {
 export const addMyMenu = async (value: IParams) => {
   const res = await basicRequest.post(`${SERVICE}/myMenu`, value, {
     headers: {
-      Authorization: JSON.parse(getToken())
-    }
+      Authorization: JSON.parse(getToken()),
+    },
   });
   return res;
 };
@@ -35,8 +35,8 @@ export const changeMyMenuOrder = async (value: number[]) => {
     },
     {
       headers: {
-        Authorization: JSON.parse(getToken())
-      }
+        Authorization: JSON.parse(getToken()),
+      },
     },
   );
   return res;
@@ -50,18 +50,40 @@ export const changeMyMenuNickName = async (id: number, value: string) => {
     },
     {
       headers: {
-        Authorization: JSON.parse(getToken())
-      }
+        Authorization: JSON.parse(getToken()),
+      },
     },
   );
   return res;
 };
 
-export const deleteMyMenu = async (id: number) => {
+export const deleteMyMenu = async (id: string) => {
   const res = await basicRequest.delete(`${SERVICE}/myMenu/${id}`, {
     headers: {
-      Authorization: JSON.parse(getToken())
-    }
+      Authorization: JSON.parse(getToken()),
+    },
   });
+  return res;
+};
+
+export const getShowMainMyMenu = async () => {
+  const res = await basicRequest.get(`${SERVICE}/optionalInfo/orderHome`, {
+    headers: {
+      Authorization: JSON.parse(getToken()),
+    },
+  });
+  return res;
+};
+
+export const changeShowMainMyMenu = async () => {
+  const res = await basicRequest.patch(
+    `${SERVICE}/optionalInfo/orderHome`,
+    {},
+    {
+      headers: {
+        Authorization: JSON.parse(getToken()),
+      },
+    },
+  );
   return res;
 };

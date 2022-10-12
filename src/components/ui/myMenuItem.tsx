@@ -7,17 +7,18 @@ import { IMenu } from '../../../src/types/myMenu.d';
 
 interface Props {
   item: IMenu;
+  handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-function myMenuItem({ item }: Props) {
+function myMenuItem({ item, handleDeleteMenu }: Props) {
   const {
     alias,
     menuImg,
     menuName,
-    totalPrice,
+    totalMenuPrice,
+    myMenuId,
     size,
     temperature,
-    // handleDeleteMenu,
   } = item;
   const cx = classNames.bind(styles);
 
@@ -29,9 +30,10 @@ function myMenuItem({ item }: Props) {
           <button
             type='button'
             className={cx('close-btn')}
-            // onClick={handleDeleteMenu}
+            name={myMenuId}
+            onClick={handleDeleteMenu}
           >
-            <Image src='/assets/svg/icon-x-mark.svg' width={8} height={8} />
+            <img src='/assets/svg/icon-x-mark.svg' alt='삭제버튼' />
           </button>
           <div className={cx('menu-tit-wrap')}>
             <h3 className={cx('menu-tit')}>{alias}</h3>
@@ -41,7 +43,7 @@ function myMenuItem({ item }: Props) {
           </div>
           <span className={cx('sub-tit')}>{menuName}</span>
           <strong className={cx('price')}>
-            {totalPrice.toLocaleString()}원
+            {totalMenuPrice.toLocaleString()}원
           </strong>
           <span className={cx('menu-option')}>
             {temperature} | {size}
