@@ -7,6 +7,9 @@ import CategoryContent from './categoryContent';
 import { getMenuCategory } from '../../pages/api/category';
 import { useRecoilState } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
+import { getCount } from '../../pages/api/cart';
+import { cartCnt } from '../store/atom/userStates';
+import { addComma } from '../store/utils/function';
 
 const cx = classNames.bind(styles);
 interface IDrinkList {
@@ -30,6 +33,7 @@ function categoryListContent({
   setCategoryName: any;
 }) {
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
+  const [cartCount, setCartCount] = useRecoilState(cartCnt);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
   useEffect(() => {
     getMenuCategory(categorySId).then(res => {
@@ -37,6 +41,10 @@ function categoryListContent({
       setMenuList(res.data.data);
     });
     console.log(categorySId);
+
+    getCount().then(res => {
+      setCartCount(res.data.data);
+    });
   }, [categorySId]);
 
   return (
@@ -44,6 +52,7 @@ function categoryListContent({
       <CategoryContent
         setCategoryName={setCategoryName}
         setCategorySId={setCategorySId}
+        cartCount={cartCount}
       />
       <ul className={cx('product-list')}>
         {menuList &&
@@ -64,7 +73,9 @@ function categoryListContent({
                     <div className={cx('item-english-name')}>
                       {item.menuEngName}
                     </div>
-                    <div className={cx('item-price')}>{item.price}원</div>
+                    <div className={cx('item-price')}>
+                      {addComma(item.price)}원
+                    </div>
                   </div>
                 </li>
               </a>

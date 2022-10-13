@@ -4,6 +4,24 @@
 .wrap {
   margin: 0;
   padding: 0;
+  position: relative;
+
+  .store-header {
+    width: 100%;
+    position: absolute;
+    background-color: variable.$BG-001;
+    top: -75px;
+    left: 0;
+
+    .header-back-arrow {
+      height: 19px;
+      position: absolute;
+      left: 24px;
+      top: 50%;
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+  }
 
   .item-wrap {
     padding-bottom: 130px;
