@@ -9,19 +9,23 @@ import styles from '../../../styles/content/cartContent.module.scss';
 import CartItem from '../ui/cartItem';
 import EmptyCart from './emptyCart';
 import { useEffect } from 'react';
-import { getCart, getCount } from '../../../pages/api/cart';
+import {
+  getCartMenuData,
+  getCartList,
+  getCount,
+} from '../../../pages/api/cart';
 import { getToken } from '../../store/utils/token';
-import { IData, IMenuList } from '../../types/cart';
+import { ICartList, IData, IMenuList } from '../../types/cart';
 import { useRecoilState } from 'recoil';
 import { cartCnt } from '../../store/atom/userStates';
 import { addComma } from '../../store/utils/function';
-import selectStore from './../../../pages/selectStore';
 import { IStore } from '../../types/store';
 
 function cartContent() {
   const cx = classNames.bind(styles);
   const [clickTab, setClickTab] = useState('food');
   const isUser = getToken() !== null && getToken() !== '{}';
+  const [cartList, setCartList] = useState<ICartList[]>();
   const [datas, setDatas] = useState<IData[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [count, setCount] = useRecoilState(cartCnt);
@@ -67,8 +71,8 @@ function cartContent() {
     if (getToken() !== null && getToken() !== '{}') {
       // 회원 조회
       console.log('회원 조회');
-      getCart().then(res => {
-        setDatas(res.data.data);
+      getCartList().then(res => {
+        setCartList(res.data.data);
       });
       getCount().then(res => {
         setCount(res.data.data);
@@ -83,6 +87,40 @@ function cartContent() {
       });
     }
   }, [isChange]);
+
+  useEffect(() => {
+    if (cartList) {
+      let tempDatas: IData[] = [];
+      cartList.forEach(item => {
+        getCartMenuData(item.sizeId, item.cartId).then(res => {
+          const resData = res.data.data;
+          tempDatas.push({
+            sizeId: item.sizeId,
+            cartId: item.cartId,
+            qty: item.qty,
+            menuName: resData.menuName,
+            menuEngName: resData.menuEngName,
+            menuImg: resData.menuImg,
+            temperature: resData.temperature,
+            size: resData.size,
+            totalMenuPrice: resData.totalMenuPrice,
+          });
+
+          const newData = [...tempDatas, ...datas].filter((data, idx, arr) => {
+            return arr.findIndex(item => item.cartId === data.cartId) === idx;
+          });
+
+          const idx = datas.findIndex(d => d.cartId === item.cartId);
+          // setDatas([...datas, datas[idx].qty:item.qty]);
+          console.log('인덱스', idx);
+          console.log('tempD', ...tempDatas);
+          console.log('data', ...datas);
+          console.log('newD', newData);
+          setDatas(newData);
+        });
+      });
+    }
+  }, [cartList]);
 
   return (
     <div className={cx('wrap')}>
@@ -176,7 +214,7 @@ function cartContent() {
                 {datas &&
                   datas.map(data => (
                     <CartItem
-                      key={data.index}
+                      key={data.cartId}
                       data={data}
                       count={count}
                       isChange={isChange}
@@ -184,29 +222,33 @@ function cartContent() {
                     />
                   ))}
               </div>
+              <div className={cx('footer')}>
+                <div className={cx('price-wrap')}>
+                  <span className={cx('check-cnt')}>
+                    총 <strong>{count}</strong>개 / 20개
+                  </span>
+                  <strong className={cx('total-price')}>
+                    {datas &&
+                      addComma(
+                        datas.reduce(function (accu: number, curr: IData) {
+                          return accu + curr.qty * curr.totalMenuPrice;
+                        }, 0),
+                      )}
+                    원
+                  </strong>
+                </div>
+                <button
+                  type='button'
+                  className={cx('btn')}
+                  onClick={handleOrder}
+                >
+                  주문하기
+                </button>
+              </div>
             </>
           ) : (
             <EmptyCart title={clickTab === 'food' ? '음료/푸드' : '상품'} />
           )}
-          <div className={cx('footer')}>
-            <div className={cx('price-wrap')}>
-              <span className={cx('check-cnt')}>
-                총 <strong>{count}</strong>개 / 20개
-              </span>
-              <strong className={cx('total-price')}>
-                {datas &&
-                  addComma(
-                    datas.reduce(function (accu: number, curr: IData) {
-                      return accu + curr.qty * curr.totalMenuPrice;
-                    }, 0),
-                  )}
-                원
-              </strong>
-            </div>
-            <button type='button' className={cx('btn')} onClick={handleOrder}>
-              주문하기
-            </button>
-          </div>
         </>
       )}
     </div>

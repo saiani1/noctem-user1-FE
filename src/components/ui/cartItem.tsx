@@ -89,7 +89,7 @@ function cartItem({
           <div className={cx('option-wrap')}>
             <span
               className={cx('option')}
-            >{`${temperature} | ${size} | ${myPersonalOptionList}`}</span>
+            >{`${temperature} | ${size} | 매장 컵`}</span>
             <span className={cx('price')}>{addComma(totalMenuPrice)}원</span>
           </div>
           {/* <button type='button' className={cx('option-change-btn')}>

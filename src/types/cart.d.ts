@@ -1,15 +1,22 @@
-export interface IData {
+export interface ICartList {
   index: number;
   cartId: number;
   sizeId: number;
+  qty: number;
+  myPersonalOptionList: IPersonalOptions;
+}
+
+export interface IData {
+  sizeId: number;
+  cartId: number;
+  qty: number;
   menuName: string;
   menuEngName: string;
   menuImg: string;
   temperature: string;
   size: string;
   totalMenuPrice: number;
-  qty: number;
-  myPersonalOptionList: IPersonalOptions[];
+  myPersonalOptionList?: IPersonalOptions[];
 }
 
 export interface IPersonalOptions {
