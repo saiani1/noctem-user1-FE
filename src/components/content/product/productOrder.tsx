@@ -8,7 +8,7 @@ import styles from '../../../../styles/pages/productPage.module.scss';
 import CupSizeItem from '../../cupSizeItem';
 import { cupDatas } from '../../../../public/assets/datas/cupDatas';
 import { addComma } from '../../../store/utils/function';
-import { ISize, IDetail } from '../../../types/productDetail';
+import { ISize, IDetail, ICartData } from '../../../types/productDetail';
 
 const cx = classNames.bind(styles);
 
@@ -25,19 +25,25 @@ function productOrder({
   handleOrder,
   count,
   setCount,
+  selectedSizeTxt,
+  setSelectedSizeTxt,
+  cartData,
 }: {
   open: boolean;
   onDismiss: any;
-  detailList: IDetail;
-  sizeOpt: ISize;
-  setCupChoice: any;
-  cupChoice: any;
-  setCartData: any;
-  handleAddMyMenu: any;
-  handleAddCart: any;
-  handleOrder: any;
+  detailList: IDetail | undefined;
+  sizeOpt: ISize[] | undefined;
+  setCupChoice: React.Dispatch<React.SetStateAction<string>>;
+  cupChoice: string;
+  setCartData: React.Dispatch<React.SetStateAction<ICartData>>;
+  handleAddMyMenu: (e: any) => void;
+  handleAddCart: () => void;
+  handleOrder: () => void;
   count: number;
-  setCount: any;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
+  selectedSizeTxt: string;
+  setSelectedSizeTxt: React.Dispatch<React.SetStateAction<string>>;
+  cartData: ICartData;
 }) {
   //   const [count, setCount] = useState(1);
   const handleChoiceCup = (e: string) => {

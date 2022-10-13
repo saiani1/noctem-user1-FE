@@ -46,12 +46,12 @@ export interface ICartData {
 }
 
 export interface ICartNonMemberData {
-  options: ICartData,
-  menuImg: string,
-  menuName: string,
-  menuEngName: string,
-  temperature: string,
-  totalMenuPrice: string,
+  options: ICartData;
+  menuImg: string;
+  menuName: string;
+  menuEngName: string;
+  temperature: string;
+  totalMenuPrice: string;
 }
 
 export interface ISize {

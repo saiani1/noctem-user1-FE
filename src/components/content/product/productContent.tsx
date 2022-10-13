@@ -391,7 +391,7 @@ function productContent() {
           주문하기
         </button>
       </div>
-      {/* <ProductOrder
+      <ProductOrder
         open={open}
         onDismiss={onDismiss}
         detailList={detailList}
@@ -404,7 +404,10 @@ function productContent() {
         handleOrder={handleOrder}
         count={count}
         setCount={setCount}
-      /> */}
+        selectedSizeTxt={selectedSizeTxt}
+        setSelectedSizeTxt={setSelectedSizeTxt}
+        cartData={cartData}
+      />
       {!open && <ToolbarList />}
       <ProductNutritionSheet
         nutritionOpen={nutritionOpen}
