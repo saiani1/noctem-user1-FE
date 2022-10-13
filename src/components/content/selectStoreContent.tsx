@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
+import useGeolocation from 'react-hook-geolocation';
 
 import styles from '../../../styles/content/selectStoreContent.module.scss';
 import StoreInfo from '../ui/storeInfo';
@@ -8,49 +9,39 @@ import ChoiceStoreModal from './choiceStoreModal';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
-import { getCloseStore } from '../../../pages/api/store';
+import { ISelecetStoreProps } from '../../types/cart';
+import { getStoreList } from '../../../pages/api/store';
 import { IStore } from '../../../src/types/store.d';
 
-function selectStoreContent() {
-  const cx = classNames.bind(styles);
+const cx = classNames.bind(styles);
 
+function selectStoreContent() {
+  const geolocation = useGeolocation();
   const [open, setOpen] = useState(false);
-  const [info, setInfo] = useState<IStore[]>([
-    {
-      index: 0,
-      storeId: 0,
-      name: '',
-      mainImg: '',
-      address: '',
-      businessOpenHours: '',
-      businessCloseHours: '',
-      isOpen: false,
-      isParking: false,
-      isEcoStore: false,
-      isDriveThrough: false,
-      distance: '',
-    },
-  ]);
+  const [storeList, setStoreList] = useState<IStore[]>();
   const [clickStoreId, setClickStoreId] = useState(0);
   const [clickStoreInfo, setClickStoreInfo] = useState<IStore>();
-  const [isFetching, setIsFetching] = useState(false);
 
   function onDismiss() {
     setOpen(false);
   }
 
   useEffect(() => {
-    if (info !== undefined) {
-      getCloseStore().then(res => {
-        setInfo(res.data.data);
-        setIsFetching(true);
+    if (geolocation.latitude && geolocation.longitude) {
+      getStoreList(geolocation.latitude, geolocation.longitude).then(res => {
+        console.log(res.data.data);
+        setStoreList(res.data.data);
       });
     }
-  }, []);
+  }, [geolocation]);
 
   useEffect(() => {
-    const clickStore = info.find(store => store.storeId === clickStoreId);
-    setClickStoreInfo(clickStore);
+    if (storeList) {
+      const clickStore = storeList.find(
+        store => store.storeId === clickStoreId,
+      );
+      setClickStoreInfo(clickStore);
+    }
   }, [clickStoreId]);
 
   return (
@@ -82,17 +73,19 @@ function selectStoreContent() {
           <button type='button'>자주 가는 매장</button>
         </div>
         <ul>
-          {isFetching &&
-            info &&
-            info.map((item: IStore) => (
+          {storeList &&
+            storeList.map((item: IStore) => (
               <StoreInfo
                 key={item.index}
                 setOpen={setOpen}
-                item={item}
+                data={item}
                 setClickStoreId={setClickStoreId}
               />
             ))}
         </ul>
+        {/* <StoreInfo setOpen={setOpen} />
+        <StoreInfo setOpen={setOpen} />
+        <StoreInfo setOpen={setOpen} /> */}
       </div>
       <BottomSheet open={open} onDismiss={onDismiss}>
         <SheetContent>

@@ -35,16 +35,19 @@
       .top-content-wrap {
         .store-name-wrap {
           display: flex;
+
           .store-name {
             margin-bottom: 2px;
             font-size: variable.$FS-13;
             font-weight: bold;
             color: variable.$TXT-002;
           }
+
           .is-open {
             margin-left: 3px;
           }
         }
+
         .store-address {
           display: inline-block;
           font-size: variable.$FS-11;
@@ -59,11 +62,21 @@
         justify-content: space-between;
         align-items: center;
 
-        .parkIcon {
-          width: 14px;
-          height: 14px;
+        .icon-wrap {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .icon {
+            margin-right: 10px;
+          }
+
+          .icon-top {
+            margin-top: 3px;
+          }
         }
       }
+
       .distance {
         font-size: variable.$FS-13;
         font-weight: 500;

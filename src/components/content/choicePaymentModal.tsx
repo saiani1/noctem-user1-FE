@@ -16,33 +16,35 @@ function choicePaymentModal({
   isOpen: boolean;
 }) {
   return (
-    <BottomSheet open={isOpen} onDismiss={onDismiss}>
-      <SheetContent>
-        <div style={{ height: '85vh' }} />
+    <div className={cx('test')}>
+      <BottomSheet open={isOpen} onDismiss={onDismiss}>
+        <SheetContent>
+          <div style={{ height: '85vh' }} />
 
-        <div className={cx('wrap')}>
-          <h2>결제 수단</h2>
-          <div className={cx('input-wrap')}>
-            <input type='radio' id='card' defaultChecked />
-            <label htmlFor='card'>신용카드</label>
+          <div className={cx('wrap')}>
+            <h2>결제 수단</h2>
+            <div className={cx('input-wrap')}>
+              <input type='radio' id='card' defaultChecked />
+              <label htmlFor='card'>신용카드</label>
+            </div>
+            <div className={cx('card-info-wrap')}>
+              <label htmlFor='cardnum'>신용카드 번호</label>
+              <input
+                type='number'
+                maxLength={16}
+                placeholder='ex) 0000 0000 0000 0000'
+                id='cardnum'
+              />
+            </div>
+            <div className={cx('btn-wrap')}>
+              <button type='button' className={cx('btn')} onClick={onDismiss}>
+                선택하기
+              </button>
+            </div>
           </div>
-          <div className={cx('card-info-wrap')}>
-            <label htmlFor='cardnum'>신용카드 번호</label>
-            <input
-              type='number'
-              maxLength={16}
-              placeholder='ex) 0000 0000 0000 0000'
-              id='cardnum'
-            />
-          </div>
-          <div className={cx('btn-wrap')}>
-            <button type='button' className={cx('btn')} onClick={onDismiss}>
-              선택하기
-            </button>
-          </div>
-        </div>
-      </SheetContent>
-    </BottomSheet>
+        </SheetContent>
+      </BottomSheet>
+    </div>
   );
 }
 
