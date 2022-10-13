@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductContent from '../../src/components/productContent';
+import ProductContent from '../../src/components/content/product/productContent';
 import Header from '../../src/components/common/header';
 import { useRouter } from 'next/router';
 
