@@ -39,10 +39,12 @@ function homeContent() {
     } else {
       setUsername('User');
     }
+  }, []);
+  useEffect(() => {
     if (userLevel) {
       setProgressState(userLevel.requiredExpToNextGrade / userLevel.userExp);
     }
-  }, []);
+  }, [userLevel]);
   return (
     <>
       <div className={cx('point-box')}>

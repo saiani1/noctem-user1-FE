@@ -1,18 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
-
+import { isExistToken } from './../../store/utils/token';
+import { getUserLevel } from './../../../pages/api/level';
 import styles from '../../../styles/content/myRewardTab.module.scss';
+import { useRecoilState } from 'recoil';
+import { userGradeState } from '../../store/atom/userStates';
 
+const cx = classNames.bind(styles);
+interface ILevel {
+  userGrade: string;
+  userExp: number;
+  nextGrade: string;
+  requiredExpToNextGrade: number;
+}
 function myRewardTab() {
-  const cx = classNames.bind(styles);
-
+  const [userLevel, setUserLevel] = useState<ILevel>();
+  const [progressState, setProgressState] = useRecoilState(userGradeState);
+  const styles: { [key: string]: React.CSSProperties } = {
+    container: {
+      width: `${progressState}%`,
+    },
+  };
+  useEffect(() => {
+    if (isExistToken()) {
+      getUserLevel().then(res => {
+        setUserLevel(res.data.data);
+        console.log(userLevel);
+      });
+    }
+  }, []);
+  useEffect(() => {
+    if (userLevel) {
+      setProgressState(userLevel.requiredExpToNextGrade / userLevel.userExp);
+    }
+  }, [userLevel]);
   return (
     <div className={cx('content-wrap')}>
       <div className={cx('level-wrap')}>
         <span className={cx('sub-tit')}>멤버십 등급</span>
         <div className={cx('level-tit-wrap')}>
-          <h3 className={cx('level-tit')}>Potion Level</h3>
+          <h3 className={cx('level-tit')}>
+            {userLevel && userLevel.userGrade}
+          </h3>
           <span className={cx('level-icon-wrap')}>
             <Image
               src='/assets/svg/icon-potion-level.svg'
@@ -23,8 +53,13 @@ function myRewardTab() {
         </div>
         <div className={cx('hp-info-wrap')}>
           <span className={cx('hp-info-content')}>
-            <strong className={cx('current-hp')}>1</strong>/
-            <span className={cx('max-hp')}>20</span>
+            <strong className={cx('current-hp')}>
+              {userLevel && userLevel.userExp}
+            </strong>
+            /
+            <span className={cx('max-hp')}>
+              {userLevel && userLevel.requiredExpToNextGrade}
+            </span>
           </span>
           <Image
             src='/assets/svg/icon-charge-battery.svg'
@@ -33,11 +68,21 @@ function myRewardTab() {
           />
         </div>
         <div className={cx('progress-bar-wrap')}>
-          <div className={cx('progress-bar')} />
+          <div
+            className={cx('progress-bar')}
+            role='progressbar'
+            aria-valuemin={0}
+            aria-valuemax={100}
+            style={styles.container}
+          />
         </div>
       </div>
       <div className={cx('level-info-wrap')}>
-        <p>다음 레벨까지 19개의 HP가 남았습니다.</p>
+        <p>
+          다음 레벨까지{' '}
+          {userLevel && userLevel.requiredExpToNextGrade - userLevel.userExp}
+          개의 HP가 남았습니다.
+        </p>
       </div>
       <div className={cx('favorite-wrap')}>
         <span>
