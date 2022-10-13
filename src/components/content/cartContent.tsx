@@ -14,6 +14,7 @@ import { getToken } from '../../store/utils/token';
 import { IData, IStore } from '../../types/cart';
 import { useRecoilState } from 'recoil';
 import { cartCnt } from '../../store/atom/userStates';
+import { addComma } from '../../store/utils/function';
 
 function cartContent() {
   const cx = classNames.bind(styles);
@@ -177,9 +178,11 @@ function cartContent() {
               </span>
               <strong className={cx('total-price')}>
                 {datas &&
-                  datas.reduce(function (accu: number, curr: IData) {
-                    return accu + curr.qty * curr.totalMenuPrice;
-                  }, 0)}
+                  addComma(
+                    datas.reduce(function (accu: number, curr: IData) {
+                      return accu + curr.qty * curr.totalMenuPrice;
+                    }, 0),
+                  )}
                 원
               </strong>
             </div>

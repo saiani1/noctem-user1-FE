@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
 import { getCount } from '../../pages/api/cart';
 import { cartCnt } from '../store/atom/userStates';
+import { addComma } from '../store/utils/function';
 
 const cx = classNames.bind(styles);
 interface IDrinkList {
@@ -72,7 +73,9 @@ function categoryListContent({
                     <div className={cx('item-english-name')}>
                       {item.menuEngName}
                     </div>
-                    <div className={cx('item-price')}>{item.price}원</div>
+                    <div className={cx('item-price')}>
+                      {addComma(item.price)}원
+                    </div>
                   </div>
                 </li>
               </a>

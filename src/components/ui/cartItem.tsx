@@ -5,6 +5,7 @@ import Image from 'next/image';
 import styles from '../../../styles/ui/cartItem.module.scss';
 import { IData } from '../../types/cart';
 import { changeItemCount, deleteItem } from '../../../pages/api/cart';
+import { addComma } from '../../store/utils/function';
 
 const cx = classNames.bind(styles);
 
@@ -89,7 +90,7 @@ function cartItem({
             <span
               className={cx('option')}
             >{`${temperature} | ${size} | ${myPersonalOptionList}`}</span>
-            <span className={cx('price')}>{totalMenuPrice}원</span>
+            <span className={cx('price')}>{addComma(totalMenuPrice)}원</span>
           </div>
           {/* <button type='button' className={cx('option-change-btn')}>
             옵션변경
@@ -128,7 +129,7 @@ function cartItem({
                 />
               </div>
             </div>
-            <span>{totalMenuPrice * qty}원</span>
+            <span>{addComma(totalMenuPrice * qty)}원</span>
           </div>
         </div>
       </div>

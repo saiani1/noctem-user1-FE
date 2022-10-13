@@ -28,6 +28,7 @@ import {
 } from '../types/productDetail';
 import ProductNurtitionInfo from './productNutritionInfo';
 import { cartCnt } from '../store/atom/userStates';
+import { addComma } from '../store/utils/function';
 
 const cx = classNames.bind(styles);
 
@@ -222,7 +223,9 @@ function productContent() {
                 <div className={cx('product-content')}>
                   {detailList.temperatureList[0].description}
                 </div>
-                <div className={cx('product-price')}>{detailList.price}</div>
+                <div className={cx('product-price')}>
+                  {addComma(detailList.price)}원
+                </div>
 
                 {
                   <div className={cx('temp-button')}>
@@ -301,7 +304,9 @@ function productContent() {
                 <div className={cx('product-content')}>
                   {detailList.temperatureList[1].description}
                 </div>
-                <div className={cx('product-price')}>{detailList.price}</div>
+                <div className={cx('product-price')}>
+                  {addComma(detailList.price)}원
+                </div>
 
                 <div className={cx('temp-button')}>
                   {detailList.temperatureList.length < 2 ? (
@@ -462,7 +467,9 @@ function productContent() {
                         />
                       </div>
                     </div>
-                    <div className={cx('total-price')}>5,000원</div>
+                    <div className={cx('total-price')}>
+                      {detailList && addComma(detailList.price)}원
+                    </div>
                   </div>
                   <div className={cx('order-select')}>
                     <button
@@ -497,8 +504,9 @@ function productContent() {
       {open ? undefined : <ToolbarList />}
       <BottomSheet open={nutritionOpen} onDismiss={onDismiss}>
         <SheetContent>
+          <div style={{ height: '85vh' }} />
+
           <div className={cx('nutrition-sheet')}>
-            <div className={cx('title')}>제품 영양 정보</div>
             <div>
               <ul className={cx('cupsize')}>
                 <li onClick={() => handleNutritionSize('Tall')}>Tall</li>
