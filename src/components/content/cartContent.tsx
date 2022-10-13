@@ -11,10 +11,12 @@ import EmptyCart from './emptyCart';
 import { useEffect } from 'react';
 import { getCart, getCount } from '../../../pages/api/cart';
 import { getToken } from '../../store/utils/token';
-import { IData, IStore } from '../../types/cart';
+import { IData, IMenuList } from '../../types/cart';
 import { useRecoilState } from 'recoil';
 import { cartCnt } from '../../store/atom/userStates';
 import { addComma } from '../../store/utils/function';
+import selectStore from './../../../pages/selectStore';
+import { IStore } from '../../types/store';
 
 function cartContent() {
   const cx = classNames.bind(styles);
@@ -23,8 +25,22 @@ function cartContent() {
   const [datas, setDatas] = useState<IData[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [count, setCount] = useRecoilState(cartCnt);
-  const [selectStore, setSelectStore] = useState<IStore>();
+  const [selectStore, setSelectStore] = useState<IStore>({
+    index: 0,
+    storeId: 0,
+    name: '',
+    mainImg: '',
+    address: '',
+    businessOpenHours: '',
+    businessCloseHours: '',
+    isOpen: false,
+    isParking: false,
+    isEcoStore: false,
+    isDriveThrough: false,
+    distance: '',
+  });
   const [isStoreOpen, setIsStoreOpen] = useState<boolean>(false);
+  const [seletedItem, setSeletedItem] = useState<IMenuList[]>();
 
   const handleClickTab = (e: React.MouseEvent<HTMLElement>) => {
     setClickTab((e.target as HTMLInputElement).value);
@@ -39,6 +55,7 @@ function cartContent() {
       console.log('매장 선택 해');
       alert('매장을 선택해 주세요');
       setIsStoreOpen(true);
+    } else {
     }
   };
 
@@ -86,7 +103,10 @@ function cartContent() {
             </button>
             <Header isClose={false} isBack={false} />
           </div>
-          <SelectStoreContent />
+          <SelectStoreContent
+            selectStore={selectStore}
+            setSelectStore={setSelectStore}
+          />
         </>
       ) : (
         <>

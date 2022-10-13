@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
+import useGeolocation from 'react-hook-geolocation';
 
 import styles from '../../../styles/content/selectStoreContent.module.scss';
 import StoreInfo from '../ui/storeInfo';
@@ -8,15 +9,35 @@ import ChoiceStoreModal from './choiceStoreModal';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
+import { ISelecetStoreProps } from '../../types/cart';
+import { getStoreList } from '../../../pages/api/store';
+import { IStore } from './../../types/store.d';
 
-function selectStoreContent() {
-  const cx = classNames.bind(styles);
+const cx = classNames.bind(styles);
 
+function selectStoreContent({
+  selectStore,
+  setSelectStore,
+}: {
+  selectStore: ISelecetStoreProps['selectStore'];
+  setSelectStore: ISelecetStoreProps['setSelectStore'];
+}) {
+  const geolocation = useGeolocation();
   const [open, setOpen] = useState(false);
+  const [storeList, setStoreList] = useState<IStore[]>();
 
   function onDismiss() {
     setOpen(false);
   }
+
+  useEffect(() => {
+    if (geolocation.latitude && geolocation.longitude) {
+      getStoreList(geolocation.latitude, geolocation.longitude).then(res => {
+        console.log(res.data.data);
+        setStoreList(res.data.data);
+      });
+    }
+  }, [geolocation]);
 
   return (
     <>
@@ -46,10 +67,13 @@ function selectStoreContent() {
           </button>
           <button type='button'>자주 가는 매장</button>
         </div>
+        {storeList &&
+          storeList.map(store => (
+            <StoreInfo key={store.index} setOpen={setOpen} data={store} />
+          ))}
+        {/* <StoreInfo setOpen={setOpen} />
         <StoreInfo setOpen={setOpen} />
-        <StoreInfo setOpen={setOpen} />
-        <StoreInfo setOpen={setOpen} />
-        <StoreInfo setOpen={setOpen} />
+        <StoreInfo setOpen={setOpen} /> */}
       </div>
       <BottomSheet open={open} onDismiss={onDismiss}>
         <SheetContent>

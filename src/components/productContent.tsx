@@ -501,7 +501,7 @@ function productContent() {
           </div>
         </SheetContent>
       </BottomSheet>
-      {open ? undefined : <ToolbarList />}
+      {open && <ToolbarList />}
       <BottomSheet open={nutritionOpen} onDismiss={onDismiss}>
         <SheetContent>
           <div style={{ height: '85vh' }} />
