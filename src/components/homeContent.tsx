@@ -34,7 +34,6 @@ function homeContent() {
       });
       getUserLevel().then(res => {
         setUserLevel(res.data.data);
-        console.log(userLevel);
       });
     } else {
       setUsername('User');

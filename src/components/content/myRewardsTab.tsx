@@ -26,7 +26,6 @@ function myRewardTab() {
     if (isExistToken()) {
       getUserLevel().then(res => {
         setUserLevel(res.data.data);
-        console.log(userLevel);
       });
     }
   }, []);
