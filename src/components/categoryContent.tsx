@@ -7,6 +7,7 @@ import CategoryItem from './categoryItem';
 import { getLageCategory, getSmallCategory } from '../../pages/api/category';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
+import Link from 'next/link';
 
 const cx = classNames.bind(styles);
 
@@ -24,9 +25,11 @@ interface IDrinkCategory {
 function categoryContent({
   setCategoryName,
   setCategorySId,
+  cartCount,
 }: {
   setCategoryName: any;
   setCategorySId: any;
+  cartCount: number;
 }) {
   const [isClick, setIsClick] = useRecoilState(categoryLState);
   const [categoryL, setCategoryL] = useState<ICategory[]>([]);
@@ -96,13 +99,16 @@ function categoryContent({
             />
           </div>
         </div>
-        <div>
-          <Image
-            src='/assets/svg/icon-cart.svg'
-            alt='cart'
-            width={24}
-            height={21}
-          />
+        <div className={cx('cart-cnt-wrap')}>
+          {cartCount && <div className={cx('cnt')}>{cartCount}</div>}
+          <Link href='/cart'>
+            <Image
+              src='/assets/svg/icon-cart.svg'
+              alt='cart'
+              width={24}
+              height={21}
+            />
+          </Link>
         </div>
       </div>
       <div className={cx('menu-category')}>

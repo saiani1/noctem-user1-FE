@@ -1,11 +1,11 @@
 {
   "theme_color": "#ffffff",
-  "background_color": "#806C59",
+  "background_color": "#536173",
   "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "name": "Nectem Order",
-  "short_name": "Nectem Order",
+  "name": "Noctem Order",
+  "short_name": "Noctem Order",
   "description": "\ub179\ud15c \uc624\ub354",
   "icons": [
     {

@@ -8,22 +8,22 @@
 
   input[type='checkbox'] {
     -webkit-appearance: none;
-    width: 45px;
-    height: 25px;
+    width: 40px;
+    height: 22px;
     background-color: variable.$BG-007;
     border-radius: 20px;
 
     &:checked {
       background-color: variable.$POINT;
       & ~ .toggle {
-        margin-left: 20px;
+        margin-left: 18px;
       }
     }
   }
   .toggle {
-    @include position.absolute(3px auto auto 3px);
-    width: 19px;
-    height: 19px;
+    @include position.absolute(2px auto auto 2px);
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background-color: variable.$BG-001;
     pointer-events: none;

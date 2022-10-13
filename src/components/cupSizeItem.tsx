@@ -1,32 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { IProps } from '../types/size.d';
 import Image from 'next/image';
 import styles from '../../styles/pages/productPage.module.scss';
+import { ISizeProps } from '../types/productDetail';
 
 const cx = classNames.bind(styles);
 
 function cupSizeItem({
   list,
-  sizeChoice,
-  setSizeChoice,
-  setData,
+  selectedSizeTxt,
+  setSelectedSizeTxt,
+  cartData,
+  setCartData,
 }: {
-  list: IProps['list'];
-  sizeChoice: IProps['sizeChoice'];
-  setSizeChoice: IProps['setSizeChoice'];
-  setData: IProps['setData'];
+  list: ISizeProps['list'];
+  selectedSizeTxt: ISizeProps['selectedSizeTxt'];
+  setSelectedSizeTxt: ISizeProps['setSelectedSizeTxt'];
+  cartData: ISizeProps['cartData'];
+  setCartData: ISizeProps['setCartData'];
 }) {
   const handleChoice = () => {
-    setSizeChoice(list.size);
-    setData(list.sizeId);
+    console.log(list.sizeId);
+    setSelectedSizeTxt(list.size);
+    setCartData({
+      ...cartData,
+      sizeId: list.sizeId,
+    });
   };
+
   return (
     <>
       {list && (
         <div
           className={
-            sizeChoice === list.size ? cx('cup-card-click') : cx('cup-card')
+            selectedSizeTxt === list.size
+              ? cx('cup-card-click')
+              : cx('cup-card')
           }
           role='sizeitem'
           onClick={handleChoice}
@@ -35,19 +44,17 @@ function cupSizeItem({
           <div className={cx('cup-image-box')}>
             <Image
               src={
-                sizeChoice === list.size
+                selectedSizeTxt === list.size
                   ? '/assets/svg/icon-cup-click.svg'
                   : '/assets/svg/icon-cup.svg'
               }
               alt='cup-size'
-              width={list.sizeId === 1 ? 26 : list.sizeId * 16}
-              height={list.sizeId === 1 ? 26 : list.sizeId * 16}
+              width={(list.index + 5) * 6}
+              height={(list.index + 5) * 6}
             />
           </div>
           <div>{list.size}</div>
-          {list.size === 'Tall' && <div>335ml</div>}
-          {list.size === 'Grande' && <div>473ml</div>}
-          {list.size === 'Venti' && <div>591ml</div>}
+          <div>{list.capacity}ml</div>
         </div>
       )}
     </>

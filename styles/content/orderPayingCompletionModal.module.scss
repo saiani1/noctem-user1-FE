@@ -8,6 +8,7 @@
   z-index: variable.$MODAL;
   position: absolute;
   bottom: 0;
+  overflow: auto;
   background-color: variable.$BG-001;
 
   h2 {
@@ -52,6 +53,7 @@
       display: flex;
       column-gap: 40px;
       align-items: flex-start;
+      justify-content: space-between;
 
       p {
         margin-top: 5px;

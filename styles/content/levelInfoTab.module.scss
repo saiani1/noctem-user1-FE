@@ -18,21 +18,32 @@
     }
     .level-tit-wrap {
       display: flex;
-      align-items: center;
+      align-items: baseline;
 
+      .level-icon-wrap {
+        margin-top: 2px;
+      }
       .level-tit {
-        margin: 0 10px 10px 0;
+        margin: 0 5px;
         font-size: variable.$FS-21;
         color: variable.$RANK-001;
         &.e {
           color: variable.$RANK-002;
+          ~ .kor-name {
+            color: variable.$RANK-002;
+          }
         }
         &.pe {
           color: variable.$RANK-003;
+          ~ .kor-name {
+            color: variable.$RANK-003;
+          }
         }
       }
-      .level-icon-wrap {
-        margin-top: -4px;
+      .kor-name {
+        font-size: 12px;
+        font-weight: 400;
+        color: variable.$RANK-001;
       }
     }
     .level-content-wrap {
@@ -48,6 +59,7 @@
       }
       .img-wrap {
         margin-top: 2px;
+        color: variable.$RANK-003;
       }
       .content {
         font-size: variable.$FS-12;

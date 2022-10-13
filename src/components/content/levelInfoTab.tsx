@@ -12,7 +12,6 @@ function levelInfoTab() {
       <span className={cx('sub-tit')}>멤버십 등급</span>
       <div className={cx('level-wrap', 'first')}>
         <div className={cx('level-tit-wrap')}>
-          <h3 className={cx('level-tit')}>Potion Level</h3>
           <span className={cx('level-icon-wrap')}>
             <Image
               src='/assets/svg/icon-potion-level.svg'
@@ -20,6 +19,8 @@ function levelInfoTab() {
               height={20}
             />
           </span>
+          <h3 className={cx('level-tit')}>Potion</h3>
+          <span className={cx('kor-name')}>포션</span>
         </div>
         <div className={cx('level-content-wrap')}>
           <span className={cx('img-wrap')}>
@@ -43,7 +44,6 @@ function levelInfoTab() {
 
       <div className={cx('level-wrap')}>
         <div className={cx('level-tit-wrap')}>
-          <h3 className={cx('level-tit', 'e')}>Elixir Level</h3>
           <span className={cx('level-icon-wrap')}>
             <Image
               src='/assets/svg/icon-elixir-level.svg'
@@ -51,6 +51,8 @@ function levelInfoTab() {
               height={20}
             />
           </span>
+          <h3 className={cx('level-tit', 'e')}>Elixir</h3>
+          <span className={cx('kor-name')}>엘릭서</span>
         </div>
         <div className={cx('level-content-wrap')}>
           <span className={cx('img-wrap')}>
@@ -68,7 +70,6 @@ function levelInfoTab() {
 
       <div className={cx('level-wrap', 'pe')}>
         <div className={cx('level-tit-wrap')}>
-          <h3 className={cx('level-tit', 'pe')}>Power Elixir Level</h3>
           <span className={cx('level-icon-wrap')}>
             <Image
               src='/assets/svg/icon-power-elixir-level.svg'
@@ -76,6 +77,8 @@ function levelInfoTab() {
               height={20}
             />
           </span>
+          <h3 className={cx('level-tit', 'pe')}>Power Elixir</h3>
+          <span className={cx('kor-name')}>파워 엘릭서</span>
         </div>
         <div className={cx('level-content-wrap')}>
           <span className={cx('img-wrap')}>

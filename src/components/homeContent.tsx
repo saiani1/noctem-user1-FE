@@ -4,10 +4,11 @@ import Image from 'next/image';
 import styles from '../../styles/main/main.module.scss';
 import RecommendedMenu from './recommendedMenu';
 import { useRecoilState } from 'recoil';
-import { usernameState, userGradeState } from '../store/atom/userStates';
+import { userGradeState, nicknameState } from '../store/atom/userStates';
 import { isExistToken } from './../store/utils/token';
 import { getUserInfo } from './../../pages/api/user';
 import { getUserLevel } from './../../pages/api/level';
+import { useRouter } from 'next/router';
 
 const cx = classNames.bind(styles);
 interface ILevel {
@@ -18,8 +19,8 @@ interface ILevel {
 }
 
 function homeContent() {
+  const router = useRouter();
   const [myMenu, SetMyMenu] = useState<boolean>(true);
-  const [username, setUsername] = useRecoilState(usernameState);
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
   const styles: { [key: string]: React.CSSProperties } = {
@@ -27,6 +28,8 @@ function homeContent() {
       width: `${progressState}%`,
     },
   };
+  const [nickname, setUsername] = useRecoilState(nicknameState);
+
   useEffect(() => {
     if (isExistToken()) {
       getUserInfo().then(res => {
@@ -48,7 +51,7 @@ function homeContent() {
     <>
       <div className={cx('point-box')}>
         <div className={cx('title')}>
-          <span>{username}</span> 님, 반갑습니다.
+          <span>{nickname}</span> 님, 반갑습니다.
         </div>
         <div className={cx('point-bar')}>
           <div className={cx('progress-bar-space')}>
@@ -117,7 +120,14 @@ function homeContent() {
             </div>
             <div>
               <div className={cx('img')}>img</div>
-              <div className={cx('order-button')}>주문하기</div>
+              <div
+                className={cx('order-button')}
+                onClick={() => {
+                  router.push('/order');
+                }}
+              >
+                주문하기
+              </div>
             </div>
           </div>
         ) : (

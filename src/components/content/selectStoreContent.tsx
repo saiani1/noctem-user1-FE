@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
@@ -8,15 +8,50 @@ import ChoiceStoreModal from './choiceStoreModal';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
+import { getCloseStore } from '../../../pages/api/store';
+import { IStore } from '../../../src/types/store.d';
 
 function selectStoreContent() {
   const cx = classNames.bind(styles);
 
   const [open, setOpen] = useState(false);
+  const [info, setInfo] = useState<IStore[]>([
+    {
+      index: 0,
+      storeId: 0,
+      name: '',
+      mainImg: '',
+      address: '',
+      businessOpenHours: '',
+      businessCloseHours: '',
+      isOpen: false,
+      isParking: false,
+      isEcoStore: false,
+      isDriveThrough: false,
+      distance: '',
+    },
+  ]);
+  const [clickStoreId, setClickStoreId] = useState(0);
+  const [clickStoreInfo, setClickStoreInfo] = useState<IStore>();
+  const [isFetching, setIsFetching] = useState(false);
 
   function onDismiss() {
     setOpen(false);
   }
+
+  useEffect(() => {
+    if (info !== undefined) {
+      getCloseStore().then(res => {
+        setInfo(res.data.data);
+        setIsFetching(true);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const clickStore = info.find(store => store.storeId === clickStoreId);
+    setClickStoreInfo(clickStore);
+  }, [clickStoreId]);
 
   return (
     <>
@@ -46,16 +81,26 @@ function selectStoreContent() {
           </button>
           <button type='button'>자주 가는 매장</button>
         </div>
-        <StoreInfo setOpen={setOpen} />
-        <StoreInfo setOpen={setOpen} />
-        <StoreInfo setOpen={setOpen} />
-        <StoreInfo setOpen={setOpen} />
+        <ul>
+          {isFetching &&
+            info &&
+            info.map((item: IStore) => (
+              <StoreInfo
+                key={item.index}
+                setOpen={setOpen}
+                item={item}
+                setClickStoreId={setClickStoreId}
+              />
+            ))}
+        </ul>
       </div>
       <BottomSheet open={open} onDismiss={onDismiss}>
         <SheetContent>
           <div style={{ height: '85vh' }} />
 
-          <ChoiceStoreModal />
+          {clickStoreInfo && (
+            <ChoiceStoreModal clickStoreInfo={clickStoreInfo} />
+          )}
         </SheetContent>
       </BottomSheet>
     </>

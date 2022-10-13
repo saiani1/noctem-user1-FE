@@ -8,13 +8,13 @@ import { removeToken } from '../../store/utils/token';
 import { useRouter } from 'next/router';
 import { isExistToken } from './../../store/utils/token';
 import { useRecoilState } from 'recoil';
-import { usernameState } from '../../store/atom/userStates';
+import { nicknameState } from '../../store/atom/userStates';
 import { getUserInfo } from '../../../pages/api/user';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
   const router = useRouter();
-  const [username, setUsername] = useRecoilState(usernameState);
+  const [nickname, setUsername] = useRecoilState(nicknameState);
 
   useEffect(() => {
     if (isExistToken()) {
@@ -40,7 +40,7 @@ function myPageContent() {
       <h2>My Page</h2>
       {isExistToken() ? (
         <p className={cx('welcome-msg')}>
-          <strong>{username}</strong> 님<br />
+          <strong>{nickname}</strong> 님<br />
           환영합니다! 🙌
         </p>
       ) : (

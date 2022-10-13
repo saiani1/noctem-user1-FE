@@ -4,7 +4,6 @@
 .content-wrap {
   padding: 19px;
   display: flex;
-  justify-content: space-between;
   border-bottom: 1px solid variable.$LINE-003;
 
   .img-wrap {
@@ -16,6 +15,7 @@
     overflow: hidden;
   }
   .right {
+    width: 100%;
     .menu-contents-wrap {
       padding-top: 15px;
       position: relative;
@@ -28,6 +28,11 @@
         height: 18px;
         border: 1px solid variable.$LINE-003;
         border-radius: 50%;
+        img {
+          width: 8px;
+          height: 8px;
+          pointer-events: none;
+        }
       }
       .menu-tit-wrap {
         display: flex;
@@ -44,16 +49,20 @@
           height: 15px;
         }
       }
-      .menu-option {
-        display: inline-block;
-        margin: 10px 0 5px;
+      .sub-tit {
         font-size: 11px;
-        color: variable.$TXT-003;
+        color: variable.$TXT-004;
       }
       .price {
-        display: inline-block;
+        display: block;
         font-weight: 600;
         color: variable.$TXT-001;
+      }
+      .menu-option {
+        display: block;
+        margin: 5px 0;
+        font-size: 11px;
+        color: variable.$TXT-003;
       }
     }
     .btn-wrap {
