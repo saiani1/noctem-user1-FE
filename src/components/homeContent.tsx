@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styles from '../../styles/main/main.module.scss';
 import RecommendedMenu from './recommendedMenu';
 import { useRecoilState } from 'recoil';
-import { usernameState } from '../store/atom/userStates';
+import { usernameState, userGradeState } from '../store/atom/userStates';
 import { isExistToken } from './../store/utils/token';
 import { getUserInfo } from './../../pages/api/user';
 import { getUserLevel } from './../../pages/api/level';
@@ -21,12 +21,12 @@ function homeContent() {
   const [myMenu, SetMyMenu] = useState<boolean>(true);
   const [username, setUsername] = useRecoilState(usernameState);
   const [userLevel, setUserLevel] = useState<ILevel>();
+  const [progressState, setProgressState] = useRecoilState(userGradeState);
   const styles: { [key: string]: React.CSSProperties } = {
     container: {
-      width: 255,
+      width: `${progressState}%`,
     },
   };
-
   useEffect(() => {
     if (isExistToken()) {
       getUserInfo().then(res => {
@@ -39,8 +39,10 @@ function homeContent() {
     } else {
       setUsername('User');
     }
+    if (userLevel) {
+      setProgressState(userLevel.requiredExpToNextGrade / userLevel.userExp);
+    }
   }, []);
-  console.log(userLevel);
   return (
     <>
       <div className={cx('point-box')}>
@@ -50,7 +52,8 @@ function homeContent() {
         <div className={cx('point-bar')}>
           <div className={cx('progress-bar-space')}>
             <div>
-              {userLevel && userLevel.requiredExpToNextGrade}
+              {userLevel &&
+                userLevel.requiredExpToNextGrade - userLevel.userExp}
               <Image
                 src='/assets/svg/icon-charge-battery.svg'
                 alt='charge-battery'
@@ -71,13 +74,29 @@ function homeContent() {
           </div>
           <div className={cx('my-score')}>
             <span>{userLevel && userLevel.userExp}</span>/
-            {userLevel && userLevel.userExp + userLevel.requiredExpToNextGrade}
-            <Image
-              src='/assets/svg/icon-potion-level.svg'
-              alt='potion-level'
-              width={24}
-              height={21}
-            />
+            {userLevel && userLevel.requiredExpToNextGrade}
+            {userLevel?.userGrade === 'Potion' ? (
+              <Image
+                src='/assets/svg/icon-potion-level.svg'
+                alt='potion-level'
+                width={24}
+                height={21}
+              />
+            ) : userLevel?.userGrade === 'Elixir' ? (
+              <Image
+                src='/assets/svg/icon-elixir-level.svg'
+                alt='elixir-level'
+                width={24}
+                height={21}
+              />
+            ) : (
+              <Image
+                src='/assets/svg/icon-power-elixir-level.svg'
+                alt='potion-level'
+                width={24}
+                height={21}
+              />
+            )}
           </div>
         </div>
       </div>
