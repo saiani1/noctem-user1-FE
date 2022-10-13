@@ -9,13 +9,14 @@ export interface IOption {
   amount: string;
 }
 
-interface IMenu {
+export interface IMenu {
   index: number;
   alias: string;
   menuImg: string;
   menuName: string;
+  myMenuId: string;
+  sizeId: string;
   size: string;
   temperature: string;
-  totalPrice: number;
-  handleDeleteMenu: React.MouseEventHandler<HTMLButtonElement>;
+  totalMenuPrice: number;
 }
