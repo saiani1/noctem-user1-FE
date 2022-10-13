@@ -1,34 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
-import styles from '../../styles/pages/productPage.module.scss';
-import CategoryContent from './categoryContent';
-import { BottomSheet } from 'react-spring-bottom-sheet';
-import SheetContent from './common/sheetContent';
-import 'react-spring-bottom-sheet/dist/style.css';
-import ToolbarList from './ui/toolbarList';
-import CupSizeItem from './cupSizeItem';
-import { cupDatas } from '../../public/assets/datas/cupDatas';
+import styles from '../../../../styles/pages/productPage.module.scss';
+import CategoryContent from '../../categoryContent';
+import ProductNutritionSheet from './productNutritionSheet';
+import ProductOrder from './productOrder';
+import ToolbarList from '../../ui/toolbarList';
+import CupSizeItem from '../../cupSizeItem';
 import { useRouter } from 'next/router';
 import {
   getSize,
   getNutrition,
   getProduct,
   getTemperature,
-} from '../../pages/api/category';
-import { addCart, getCount } from '../../pages/api/cart';
+} from '../../../../pages/api/category';
+import { addCart, getCount } from '../../../../pages/api/cart';
 import { useRecoilState } from 'recoil';
-import { categoryLState, categorySIdState } from '../store/atom/categoryState';
+import {
+  categoryLState,
+  categorySIdState,
+} from '../../../store/atom/categoryState';
 import {
   ICartData,
   ICartNonMemberData,
   IDetail,
   ISize,
   INutrition,
-} from '../types/productDetail';
+} from '../../../types/productDetail';
 import ProductNurtitionInfo from './productNutritionInfo';
-import { cartCnt } from '../store/atom/userStates';
-import { addComma } from '../store/utils/function';
+import { cartCnt } from '../../../store/atom/userStates';
+import { addComma } from '../../../store/utils/function';
 
 const cx = classNames.bind(styles);
 
@@ -48,7 +49,6 @@ function productContent() {
   const [selectedTempId, setSelectedTempId] = useState<number>(0);
   const [temperatureChoice, setTemperatureChoice] = useState('ice');
   const [nutritionInfo, setNutritionInfo] = useState<INutrition>();
-  const [nutritionSize, setNutritionSize] = useState('Tall');
   const [cartData, setCartData] = useState<ICartData>({
     // 사이즈, 개수, 컵 종류, 온도
     sizeId: 1,
@@ -73,9 +73,6 @@ function productContent() {
   };
   const handleNutritionOpen = () => {
     setNutritionOpen(true);
-  };
-  const handleNutritionSize = (name: string) => {
-    setNutritionSize(name);
   };
 
   const handleAddCart = () => {
@@ -104,33 +101,33 @@ function productContent() {
 
   const handleOrder = () => {};
 
-  const handleMinus = () => {
-    if (count > 1) {
-      setCount(prev => {
-        return --prev;
-      });
-      setCartData(prev => {
-        return {
-          ...prev,
-          quantity: --prev.quantity,
-        };
-      });
-    }
-  };
+  // const handleMinus = () => {
+  //   if (count > 1) {
+  //     setCount(prev => {
+  //       return --prev;
+  //     });
+  //     setCartData(prev => {
+  //       return {
+  //         ...prev,
+  //         quantity: --prev.quantity,
+  //       };
+  //     });
+  //   }
+  // };
 
-  const handlePlus = () => {
-    if (count < 20) {
-      setCount(prev => {
-        return ++prev;
-      });
-      setCartData(prev => {
-        return {
-          ...prev,
-          quantity: ++prev.quantity,
-        };
-      });
-    }
-  };
+  // const handlePlus = () => {
+  //   if (count < 20) {
+  //     setCount(prev => {
+  //       return ++prev;
+  //     });
+  //     setCartData(prev => {
+  //       return {
+  //         ...prev,
+  //         quantity: ++prev.quantity,
+  //       };
+  //     });
+  //   }
+  // };
 
   const handleTempChoice = (e: string, tempId: number) => {
     setTemperatureChoice(e);
@@ -141,9 +138,9 @@ function productContent() {
     }
   };
 
-  const handleChoiceCup = (e: string) => {
-    setCupChoice(e);
-  };
+  // const handleChoiceCup = (e: string) => {
+  //   setCupChoice(e);
+  // };
 
   function onDismiss() {
     setOpen(false);
@@ -377,6 +374,12 @@ function productContent() {
         <p>제품영양정보</p>
         <Image src='/assets/svg/icon-more.svg' width={20} height={20} />
       </div>
+      {detailList && detailList.allergy === '없음' ? undefined : (
+        <div className={cx('product-allergy')}>
+          <p>알레르기 유발 요인</p>
+          <div>{detailList && detailList.allergy}</div>
+        </div>
+      )}
 
       <hr className={cx('line')} />
       <div className={cx('button-box')}>
@@ -388,148 +391,29 @@ function productContent() {
           주문하기
         </button>
       </div>
-      <BottomSheet open={open} onDismiss={onDismiss}>
-        <SheetContent>
-          <div style={{ height: '85vh' }} />
-
-          <div className={cx('option-box')}>
-            <div className={cx('option', 'fadeIn')}>
-              <div className={cx('menu-title')}>
-                {detailList && detailList.temperatureList[0].menuName}
-              </div>
-              <div>
-                <div className={cx('option-title')}>사이즈</div>
-                <div className={cx('cup-size')}>
-                  {/* cup size seledt */}
-                  {sizeOpt &&
-                    sizeOpt.map(item => (
-                      <CupSizeItem
-                        key={item.index}
-                        list={item}
-                        selectedSizeTxt={selectedSizeTxt}
-                        setSelectedSizeTxt={setSelectedSizeTxt}
-                        cartData={cartData}
-                        setCartData={setCartData}
-                      />
-                    ))}
-                </div>
-              </div>
-              <div>
-                <div className={cx('option-title')}>컵 선택</div>
-                <div className={cx('cup-kind')}>
-                  {/* cup select */}
-                  {cupDatas &&
-                    cupDatas.map(item => (
-                      <div
-                        key={item.id}
-                        role='cupitem'
-                        onClick={() => handleChoiceCup(item.name)}
-                        onKeyDown={() => handleChoiceCup(item.name)}
-                        className={
-                          cupChoice === item.name
-                            ? cx('click-cup')
-                            : cx('non-click')
-                        }
-                      >
-                        {item.name}
-                      </div>
-                    ))}
-                </div>
-              </div>
-              <div className={cx('bottom-order-bar')}>
-                <hr className={cx('line')} />
-                <div>
-                  <div className={cx('total-cost')}>
-                    <div className={cx('control-count')}>
-                      <div onClick={handleMinus}>
-                        <Image
-                          src={
-                            count === 1
-                              ? '/assets/svg/icon-minus.svg'
-                              : '/assets/svg/icon-minus-active.svg'
-                          }
-                          alt='minus icon'
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                      <div>{count}</div>
-                      <div onClick={handlePlus}>
-                        <Image
-                          src={
-                            count === 20
-                              ? '/assets/svg/icon-plus.svg'
-                              : '/assets/svg/icon-plus-active.svg'
-                          }
-                          alt='plus icon'
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div className={cx('total-price')}>
-                      {detailList && addComma(detailList.price)}원
-                    </div>
-                  </div>
-                  <div className={cx('order-select')}>
-                    <button
-                      type='button'
-                      className={cx('add-heart')}
-                      onClick={handleAddMyMenu}
-                    >
-                      <span>
-                        <Image
-                          src='/assets/svg/icon-heart.svg'
-                          alt='heart'
-                          width={30}
-                          height={30}
-                        />
-                      </span>
-                    </button>
-                    <div>
-                      <div className={cx('go-cart')} onClick={handleAddCart}>
-                        담기
-                      </div>
-                      <div className={cx('go-order')} onClick={handleOrder}>
-                        주문하기
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </SheetContent>
-      </BottomSheet>
-      {open ? undefined : <ToolbarList />}
-      <BottomSheet open={nutritionOpen} onDismiss={onDismiss}>
-        <SheetContent>
-          <div style={{ height: '85vh' }} />
-
-          <div className={cx('nutrition-sheet')}>
-            <div>
-              <ul className={cx('cupsize')}>
-                <li onClick={() => handleNutritionSize('Tall')}>Tall</li>
-                <li onClick={() => handleNutritionSize('Grande')}>Grande</li>
-                <li onClick={() => handleNutritionSize('Venti')}>Venti</li>
-              </ul>
-              <div
-                className={
-                  nutritionSize === 'Tall'
-                    ? cx('state-bar-tall')
-                    : nutritionSize === 'Grande'
-                    ? cx('state-bar-grande')
-                    : cx('state-bar-venti')
-                }
-              />
-              <ProductNurtitionInfo
-                nutritionInfo={nutritionInfo}
-                nutritionSize={nutritionSize}
-              />
-            </div>
-          </div>
-        </SheetContent>
-      </BottomSheet>
+      <ProductOrder
+        open={open}
+        onDismiss={onDismiss}
+        detailList={detailList}
+        sizeOpt={sizeOpt}
+        setCupChoice={setCupChoice}
+        cupChoice={cupChoice}
+        setCartData={setCartData}
+        handleAddMyMenu={handleAddMyMenu}
+        handleAddCart={handleAddCart}
+        handleOrder={handleOrder}
+        count={count}
+        setCount={setCount}
+        selectedSizeTxt={selectedSizeTxt}
+        setSelectedSizeTxt={setSelectedSizeTxt}
+        cartData={cartData}
+      />
+      {!open && <ToolbarList />}
+      <ProductNutritionSheet
+        nutritionOpen={nutritionOpen}
+        onDismiss={onDismiss}
+        nutritionInfo={nutritionInfo}
+      />
     </>
   );
 }
