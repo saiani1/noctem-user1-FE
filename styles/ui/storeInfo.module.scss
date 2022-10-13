@@ -1,65 +1,87 @@
 @use '/styles/base/variable';
 
 .store-wrap {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  margin: 20px 0;
-
-  .img-wrap {
+  button {
     display: flex;
-    justify-content: center;
-    width: 90px;
-    height: 90px;
-    overflow: hidden;
-    border-radius: 5px;
-    margin-right: 13px;
-    flex-shrink: 0;
-
-    img {
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  .contents-wrap {
-    display: flex;
-    padding: 5px;
-    height: 90px;
-    flex-direction: column;
     justify-content: space-between;
-    text-align: left;
+    width: 100%;
+    margin: 20px 0;
 
-    .top-content-wrap {
-      .store-name {
-        margin-bottom: 2px;
+    .img-wrap {
+      display: flex;
+      justify-content: center;
+      width: 90px;
+      height: 90px;
+      overflow: hidden;
+      border-radius: 5px;
+      margin-right: 13px;
+      flex-shrink: 0;
+
+      img {
+        width: 90px;
+        height: 90px;
+      }
+    }
+
+    .contents-wrap {
+      width: 100%;
+      display: flex;
+      padding: 5px;
+      height: 90px;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: left;
+
+      .top-content-wrap {
+        .store-name-wrap {
+          display: flex;
+
+          .store-name {
+            margin-bottom: 2px;
+            font-size: variable.$FS-13;
+            font-weight: bold;
+            color: variable.$TXT-002;
+          }
+
+          .is-open {
+            margin-left: 3px;
+          }
+        }
+
+        .store-address {
+          display: inline-block;
+          font-size: variable.$FS-11;
+          font-weight: 300;
+          color: variable.$TXT-003;
+          line-height: 1.4;
+        }
+      }
+
+      .bottom-content-wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .icon-wrap {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .icon {
+            margin-right: 10px;
+          }
+
+          .icon-top {
+            margin-top: 3px;
+          }
+        }
+      }
+
+      .distance {
         font-size: variable.$FS-13;
-        font-weight: bold;
+        font-weight: 500;
         color: variable.$TXT-002;
       }
-      .store-address {
-        display: inline-block;
-        font-size: variable.$FS-11;
-        font-weight: 300;
-        color: variable.$TXT-003;
-        line-height: 1.4;
-      }
-    }
-
-    .bottom-content-wrap {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .parkIcon {
-        width: 14px;
-        height: 14px;
-      }
-    }
-    .distance {
-      font-size: variable.$FS-13;
-      font-weight: 500;
-      color: variable.$TXT-002;
     }
   }
 }

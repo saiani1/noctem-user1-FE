@@ -15,5 +15,6 @@ export interface IStore {
 
 export interface IProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickStoreId: React.Dispatch<React.SetStateAction<number>>;
   data: IStore;
 }

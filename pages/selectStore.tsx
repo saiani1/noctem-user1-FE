@@ -7,7 +7,7 @@ function selectStore() {
   return (
     <>
       <Header isClose={false} isBack />
-      <SelectStoreContent selectStore={undefined} setSelectStore={undefined} />
+      <SelectStoreContent />
     </>
   );
 }

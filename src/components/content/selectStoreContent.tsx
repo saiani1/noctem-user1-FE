@@ -11,20 +11,16 @@ import SheetContent from '../common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
 import { ISelecetStoreProps } from '../../types/cart';
 import { getStoreList } from '../../../pages/api/store';
-import { IStore } from './../../types/store.d';
+import { IStore } from '../../../src/types/store.d';
 
 const cx = classNames.bind(styles);
 
-function selectStoreContent({
-  selectStore,
-  setSelectStore,
-}: {
-  selectStore: ISelecetStoreProps['selectStore'];
-  setSelectStore: ISelecetStoreProps['setSelectStore'];
-}) {
+function selectStoreContent() {
   const geolocation = useGeolocation();
   const [open, setOpen] = useState(false);
   const [storeList, setStoreList] = useState<IStore[]>();
+  const [clickStoreId, setClickStoreId] = useState(0);
+  const [clickStoreInfo, setClickStoreInfo] = useState<IStore>();
 
   function onDismiss() {
     setOpen(false);
@@ -38,6 +34,15 @@ function selectStoreContent({
       });
     }
   }, [geolocation]);
+
+  useEffect(() => {
+    if (storeList) {
+      const clickStore = storeList.find(
+        store => store.storeId === clickStoreId,
+      );
+      setClickStoreInfo(clickStore);
+    }
+  }, [clickStoreId]);
 
   return (
     <>
@@ -67,10 +72,17 @@ function selectStoreContent({
           </button>
           <button type='button'>자주 가는 매장</button>
         </div>
-        {storeList &&
-          storeList.map(store => (
-            <StoreInfo key={store.index} setOpen={setOpen} data={store} />
-          ))}
+        <ul>
+          {storeList &&
+            storeList.map((item: IStore) => (
+              <StoreInfo
+                key={item.index}
+                setOpen={setOpen}
+                data={item}
+                setClickStoreId={setClickStoreId}
+              />
+            ))}
+        </ul>
         {/* <StoreInfo setOpen={setOpen} />
         <StoreInfo setOpen={setOpen} />
         <StoreInfo setOpen={setOpen} /> */}
@@ -79,7 +91,9 @@ function selectStoreContent({
         <SheetContent>
           <div style={{ height: '85vh' }} />
 
-          <ChoiceStoreModal />
+          {clickStoreInfo && (
+            <ChoiceStoreModal clickStoreInfo={clickStoreInfo} />
+          )}
         </SheetContent>
       </BottomSheet>
     </>

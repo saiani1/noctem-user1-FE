@@ -103,10 +103,7 @@ function cartContent() {
             </button>
             <Header isClose={false} isBack={false} />
           </div>
-          <SelectStoreContent
-            selectStore={selectStore}
-            setSelectStore={setSelectStore}
-          />
+          <SelectStoreContent />
         </>
       ) : (
         <>
