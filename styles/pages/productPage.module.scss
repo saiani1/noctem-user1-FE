@@ -96,6 +96,26 @@
     }
   }
 }
+.menu-name-alert{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  .background{
+    background-color: black;
+    opacity: 0.3;
+    width: 100vw;
+    height: 100vh;
+  }
+  .my-menu{
+    position: absolute;
+    background-color: variable.$BG-001;
+    padding: 24px;
+    border-radius: 10px;
+  }
+}
 
 .product-nutrition {
   display: flex;

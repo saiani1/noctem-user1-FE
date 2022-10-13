@@ -49,6 +49,7 @@ function productContent() {
   const [temperatureChoice, setTemperatureChoice] = useState('ice');
   const [nutritionInfo, setNutritionInfo] = useState<INutrition>();
   const [nutritionSize, setNutritionSize] = useState('Tall');
+  const [myMenuAlert, setMyMenuAlert] = useState(false);
   const [cartData, setCartData] = useState<ICartData>({
     // 사이즈, 개수, 컵 종류, 온도
     sizeId: 1,
@@ -154,6 +155,8 @@ function productContent() {
     if (selectedSizeTxt === '' || cupChoice === '') {
       alert('사이즈와 컵을 선택해주세요');
       return;
+    } else {
+      setMyMenuAlert(!myMenuAlert);
     }
   };
 
@@ -388,6 +391,26 @@ function productContent() {
           주문하기
         </button>
       </div>
+      {myMenuAlert && myMenuAlert ? (
+        <div className={cx('menu-name-alert')}>
+          <div className={cx('background')} />
+          <div className={cx('my-menu')}>
+            <h3>나만의 메뉴로 등록해보세요</h3>
+            <div>
+              <h3>메뉴이름</h3>
+              <div>메뉴 속성</div>
+            </div>
+            <div>
+              <p>등록할 나만의 메뉴 이름을 지어보세요.</p>
+              <input type='text' placeholder='나만의 메뉴 이름' />
+            </div>
+            <div>
+              <button>취소</button>
+              <button>확인</button>
+            </div>
+          </div>
+        </div>
+      ) : undefined}
       <BottomSheet open={open} onDismiss={onDismiss}>
         <SheetContent>
           <div style={{ height: '85vh' }} />
