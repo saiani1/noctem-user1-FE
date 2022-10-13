@@ -96,7 +96,8 @@
     }
   }
 }
-.product-nutrition{
+
+.product-nutrition {
   display: flex;
   padding: 12px;
   justify-content: space-between;
@@ -286,27 +287,40 @@
     }
   }
 }
-.nutrition-sheet{
-  .title{
+
+.nutrition-sheet {
+  width: 100%;
+  height: 90%;
+  z-index: variable.$MODAL;
+  position: absolute;
+  bottom: 0;
+  overflow: auto;
+  background-color: variable.$BG-001;
+
+  .title {
     padding: 24px;
     text-align: center;
     font-size: variable.$FS-18;
   }
-  .cupsize{
+
+  .cupsize {
     display: flex;
-    li{
+
+    li {
       padding: 0 16px;
       font-weight: variable.$FW-003;
     }
   }
-  .state-bar-tall{
+
+  .state-bar-tall {
     position: absolute;
     padding: 2px 28px;
     margin-top: 5px;
     transition: all 0.2s ease-in-out;
     background-color: variable.$BG-006;
   }
-  .state-bar-grande{
+
+  .state-bar-grande {
     position: absolute;
     padding: 2px 36px;
     margin-top: 5px;
@@ -314,7 +328,8 @@
     transition: all 0.2s ease-in-out;
     background-color: variable.$BG-006;
   }
-  .state-bar-venti{
+
+  .state-bar-venti {
     position: absolute;
     padding: 2px 32px;
     margin-top: 5px;
@@ -322,20 +337,30 @@
     transition: all 0.2s ease-in-out;
     background-color: variable.$BG-006;
   }
-  .size{
+
+  .size {
     padding-left: 16px;
     padding-top: 24px;
     color: variable.$TXT-003;
   }
-  .nutrition-kind{
+
+  .nutrition-kind {
     padding: 16px;
-    li{
+
+    li {
       padding: 12px 0;
       display: flex;
       justify-content: space-between;
-      :nth-child(2){
+
+      :nth-child(2) {
         font-weight: variable.$FW-003;
       }
+    }
+
+    hr {
+      height: 1px;
+      background-color: variable.$LINE-002;
+      border-style: none;
     }
   }
 }

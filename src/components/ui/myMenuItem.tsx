@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 
 import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenu } from '../../../src/types/myMenu.d';
+import { addComma } from './../../store/utils/function';
 
 interface Props {
   item: IMenu;
@@ -42,9 +43,7 @@ function myMenuItem({ item, handleDeleteMenu }: Props) {
             </button>
           </div>
           <span className={cx('sub-tit')}>{menuName}</span>
-          <strong className={cx('price')}>
-            {totalMenuPrice.toLocaleString()}원
-          </strong>
+          <strong className={cx('price')}>{addComma(totalMenuPrice)}원</strong>
           <span className={cx('menu-option')}>
             {temperature} | {size}
           </span>

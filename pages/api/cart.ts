@@ -25,7 +25,6 @@ export const addCart = async (data: ICartData) => {
 };
 
 export const changeItemCount = async (cartId: number, qty: number) => {
-  console.log(`${SERVICE}/carts/${cartId}/quantities`, qty)
   const res = await basicRequest.patch(`${SERVICE}/carts/${cartId}/quantities`, { qty: qty }, HEADERS);
   return res;
 };
