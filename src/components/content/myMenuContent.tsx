@@ -5,14 +5,14 @@ import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/myMenuContent.module.scss';
 import {
-  getMyMenu,
+  getMyMenu1,
   changeMyMenuOrder,
   changeMyMenuNickName,
   deleteMyMenu,
   getShowMainMyMenu,
   changeShowMainMyMenu,
 } from '../../../pages/api/myMenu';
-import { IMenu } from '../../../src/types/myMenu.d';
+import { IMenu1 } from '../../../src/types/myMenu.d';
 import { getToken } from './../../store/utils/token';
 import ToggleCheckbox from '../ui/toggleCheckbox';
 import EmptyMyMenu from '../content/emptyMyMenu';
@@ -22,10 +22,12 @@ import ChangeOrderMyMenuModal from './changeOrderMyMenuModal';
 function myMenuContent() {
   const [isClickChangeOrderBtn, setIsClickChangeOrderBtn] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
-  const [info, setInfo] = useState<IMenu[]>([]);
+  const [info, setInfo] = useState<IMenu1[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isDeleteMyMenu, setIsDeleteMyMenu] = useState(false);
+  const [successCall, setSuccessCall] = useState(false);
   const [showMyMenu, setShowMyMenu] = useState(false);
+
   const cx = classNames.bind(styles);
   const router = useRouter();
 
@@ -33,13 +35,12 @@ function myMenuContent() {
     const token = getToken();
 
     if (token !== '{}') {
-      Promise.all([getShowMainMyMenu(), getMyMenu()]).then(res => {
+      Promise.all([getShowMainMyMenu(), getMyMenu1()]).then(res => {
         console.log(res);
         setShowMyMenu(res[0].data.data);
         if (res[1].data.data.length !== 0) {
           setInfo(res[1].data.data);
-          setIsFetching(true);
-          setIsDeleteMyMenu(false);
+          setSuccessCall(true);
         } else {
           setIsEmpty(true);
           setIsFetching(true);
@@ -64,6 +65,7 @@ function myMenuContent() {
     deleteMyMenu(name).then(res => {
       console.log(res);
       setIsDeleteMyMenu(true);
+      alert('나만의 메뉴가 삭제되었습니다.');
     });
   };
 
@@ -110,13 +112,17 @@ function myMenuContent() {
         </div>
         {isEmpty && <EmptyMyMenu />}
         <ul>
-          {isFetching &&
-            info &&
-            info.map((item: IMenu) => (
+          {info &&
+            info.map((item: IMenu1) => (
               <MyMenuItem
                 key={item.index}
                 item={item}
+                isFetching={isFetching}
+                isEmpty={isEmpty}
                 handleDeleteMenu={handleDeleteMenu}
+                successCall={successCall}
+                setIsFetching={setIsFetching}
+                setIsDeleteMyMenu={setIsDeleteMyMenu}
               />
             ))}
         </ul>
