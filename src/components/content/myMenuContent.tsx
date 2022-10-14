@@ -25,7 +25,6 @@ function myMenuContent() {
   const [info, setInfo] = useState<IMenu1[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isDeleteMyMenu, setIsDeleteMyMenu] = useState(false);
-  const [successCall, setSuccessCall] = useState(false);
   const [showMyMenu, setShowMyMenu] = useState(false);
 
   const cx = classNames.bind(styles);
@@ -40,7 +39,6 @@ function myMenuContent() {
         setShowMyMenu(res[0].data.data);
         if (res[1].data.data.length !== 0) {
           setInfo(res[1].data.data);
-          setSuccessCall(true);
         } else {
           setIsEmpty(true);
           setIsFetching(true);
@@ -120,7 +118,6 @@ function myMenuContent() {
                 isFetching={isFetching}
                 isEmpty={isEmpty}
                 handleDeleteMenu={handleDeleteMenu}
-                successCall={successCall}
                 setIsFetching={setIsFetching}
                 setIsDeleteMyMenu={setIsDeleteMyMenu}
               />

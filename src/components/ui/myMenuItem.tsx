@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
-import { getMyMenu2 } from '../../../pages/api/myMenu';
+import { getMyMenu2, changeMyMenuNickName } from '../../../pages/api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenu1, IMenu2 } from '../../../src/types/myMenu.d';
 import { addComma } from './../../store/utils/function';
+import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
 
-interface Props {
+interface IProps {
   item: IMenu1;
   isEmpty: boolean;
-  successCall: boolean;
   isFetching: boolean;
   handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,17 +20,19 @@ interface Props {
 function myMenuItem({
   item,
   isEmpty,
-  successCall,
   isFetching,
   handleDeleteMenu,
   setIsFetching,
   setIsDeleteMyMenu,
-}: Props) {
+}: IProps) {
   const [itemInfo, setItemInfo] = useState<IMenu2>();
+  const [clickRenameBtn, setClickRenameBtn] = useState(false);
+  const myMenuNameRef = useRef<HTMLInputElement>(null);
+
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    if (successCall && !isEmpty) {
+    if (item !== undefined && !isEmpty) {
       getMyMenu2(item.sizeId, item.myMenuId).then(res => {
         setItemInfo(res.data.data);
         setIsFetching(true);
@@ -38,8 +40,38 @@ function myMenuItem({
       });
     }
   }, []);
+
+  const handleAddMyMenuData = () => {
+    const mymenuNameValue = myMenuNameRef.current?.value;
+    // if (mymenuNameValue && mymenuNameValue.length !== 0) {
+    //   changeMyMenuNickName(, mymenuNameValue).then();
+    // }
+  };
+
+  const handleClickRename = () => {
+    setClickRenameBtn(prev => {
+      return !prev;
+    });
+  };
+
+  const handleClose = () => {
+    console.log('click');
+    setClickRenameBtn(prev => {
+      return !prev;
+    });
+  };
+
   return (
     <>
+      {clickRenameBtn && (
+        <MyMenuRenamePopUp
+          itemInfo={itemInfo}
+          item={item}
+          myMenuNameRef={myMenuNameRef}
+          handleClose={handleClose}
+          handleAddMyMenuData={handleAddMyMenuData}
+        />
+      )}
       {isFetching && !isEmpty && (
         <li className={cx('content-wrap')}>
           <img
@@ -59,7 +91,11 @@ function myMenuItem({
               </button>
               <div className={cx('menu-tit-wrap')}>
                 <h3 className={cx('menu-tit')}>{item?.alias}</h3>
-                <button type='button' className={cx('edit-nickname-btn')}>
+                <button
+                  type='button'
+                  className={cx('edit-nickname-btn')}
+                  onClick={handleClickRename}
+                >
                   <Image
                     src='/assets/svg/icon-pencil.svg'
                     width={10}

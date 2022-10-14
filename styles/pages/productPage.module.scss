@@ -96,64 +96,66 @@
     }
   }
 }
-.menu-name-alert{
+.menu-name-alert {
   z-index: 100;
-  position: absolute;
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
   left: 0;
   top: 0;
-  .background{
+  right: 0;
+  bottom: 0;
+  .background {
     background-color: black;
     opacity: 0.3;
     width: 100vw;
     height: 100vh;
   }
-  .my-menu{
+  .my-menu {
     position: absolute;
     background-color: variable.$BG-001;
     padding: 24px;
     border-radius: 10px;
     width: 80%;
     z-index: 150;
-    h3{
+    h3 {
       font-size: variable.$FS-18;
       padding: 10px 0;
-      font-weight:variable.$FW-003;
+      font-weight: variable.$FW-003;
     }
-    .menu-info{
+    .menu-info {
       background-color: variable.$BG-003;
       padding: 12px;
     }
-    .menu-nickname{
+    .menu-nickname {
       padding: 10px 0;
-      p{
+      p {
         font-size: variable.$FS-12;
       }
-      input{
+      input {
         border: none;
         border-bottom: 1px solid variable.$TXT-001;
         width: 100%;
         padding: 10px 0;
       }
     }
-    .button-container{
+    .button-container {
       display: flex;
       justify-content: right;
-      button{
+      button {
         margin-left: 10px;
         margin-top: 10px;
         padding: 5px 20px;
         border-radius: 50px;
       }
-      :nth-child(1){
+      :nth-child(1) {
         color: variable.$POINT;
         border: 1px solid variable.$POINT;
       }
-      :nth-child(2){
+      :nth-child(2) {
         background-color: variable.$POINT;
-        color:variable.$TXT-005
+        color: variable.$TXT-005;
       }
     }
   }
@@ -164,14 +166,14 @@
   padding: 12px;
   justify-content: space-between;
 
-  p{
+  p {
     font-size: variable.$FS-16;
     font-weight: variable.$FW-003;
   }
 }
-.product-allergy{
+.product-allergy {
   padding: 12px;
-  p{
+  p {
     font-size: variable.$FS-16;
     font-weight: variable.$FW-003;
   }
@@ -227,10 +229,10 @@
       background-color: variable.$BG-001;
       width: 100%;
 
-      &>div {
+      & > div {
         padding: 16px;
 
-        &>div {
+        & > div {
           display: flex;
           justify-content: space-between;
           font-size: variable.$FS-20;
@@ -256,7 +258,7 @@
         }
 
         .order-select {
-          &>div {
+          & > div {
             display: flex;
 
             div {
@@ -337,7 +339,7 @@
       div {
         border: 1px solid variable.$TXT-006;
         border-right: none;
-        padding: 10px
+        padding: 10px;
       }
 
       :nth-child(n) {
