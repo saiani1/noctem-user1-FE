@@ -1,0 +1,27 @@
+@use '/styles/base/variable';
+@use '/styles/mixins/position';
+
+.content-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid variable.$LINE-003;
+  .left {
+    strong {
+      margin-bottom: 3px;
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: variable.$TXT-001;
+    }
+    span {
+      display: block;
+      font-size: 11px;
+      color: variable.$TXT-003;
+    }
+  }
+  img {
+    width: 20px;
+  }
+}

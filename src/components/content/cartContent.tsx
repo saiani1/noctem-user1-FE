@@ -9,19 +9,23 @@ import styles from '../../../styles/content/cartContent.module.scss';
 import CartItem from '../ui/cartItem';
 import EmptyCart from './emptyCart';
 import { useEffect } from 'react';
-import { getCart, getCount } from '../../../pages/api/cart';
+import {
+  getCartMenuData,
+  getCartList,
+  getCount,
+} from '../../../pages/api/cart';
 import { getToken } from '../../store/utils/token';
-import { IData, IMenuList } from '../../types/cart';
+import { ICart, IData, IMenuList } from '../../types/cart';
 import { useRecoilState } from 'recoil';
 import { cartCnt } from '../../store/atom/userStates';
 import { addComma } from '../../store/utils/function';
-import selectStore from './../../../pages/selectStore';
 import { IStore } from '../../types/store';
 
 function cartContent() {
   const cx = classNames.bind(styles);
   const [clickTab, setClickTab] = useState('food');
   const isUser = getToken() !== null && getToken() !== '{}';
+  const [cartList, setCartList] = useState<ICart[]>();
   const [datas, setDatas] = useState<IData[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [count, setCount] = useRecoilState(cartCnt);
@@ -67,8 +71,8 @@ function cartContent() {
     if (getToken() !== null && getToken() !== '{}') {
       // 회원 조회
       console.log('회원 조회');
-      getCart().then(res => {
-        setDatas(res.data.data);
+      getCartList().then(res => {
+        setCartList(res.data.data);
       });
       getCount().then(res => {
         setCount(res.data.data);
@@ -152,7 +156,7 @@ function cartContent() {
               </span>
             </button>
           </div>
-          {isUser && datas.length !== 0 ? (
+          {isUser && cartList && cartList.length !== 0 ? (
             <>
               <div className={cx('cart-wrap')}>
                 <div className={cx('tit-wrap')}>
@@ -173,40 +177,44 @@ function cartContent() {
                 </div>
               </div>
               <div className={cx('item-wrap')}>
-                {datas &&
-                  datas.map(data => (
+                {cartList &&
+                  cartList.map(cart => (
                     <CartItem
-                      key={data.index}
-                      data={data}
+                      key={cart.cartId}
+                      cart={cart}
                       count={count}
                       isChange={isChange}
                       setIsChange={setIsChange}
                     />
                   ))}
               </div>
+              <div className={cx('footer')}>
+                <div className={cx('price-wrap')}>
+                  <span className={cx('check-cnt')}>
+                    총 <strong>{count}</strong>개 / 20개
+                  </span>
+                  <strong className={cx('total-price')}>
+                    {datas &&
+                      addComma(
+                        datas.reduce(function (accu: number, curr: IData) {
+                          return accu + curr.qty * curr.totalMenuPrice;
+                        }, 0),
+                      )}
+                    원
+                  </strong>
+                </div>
+                <button
+                  type='button'
+                  className={cx('btn')}
+                  onClick={handleOrder}
+                >
+                  주문하기
+                </button>
+              </div>
             </>
           ) : (
             <EmptyCart title={clickTab === 'food' ? '음료/푸드' : '상품'} />
           )}
-          <div className={cx('footer')}>
-            <div className={cx('price-wrap')}>
-              <span className={cx('check-cnt')}>
-                총 <strong>{count}</strong>개 / 20개
-              </span>
-              <strong className={cx('total-price')}>
-                {datas &&
-                  addComma(
-                    datas.reduce(function (accu: number, curr: IData) {
-                      return accu + curr.qty * curr.totalMenuPrice;
-                    }, 0),
-                  )}
-                원
-              </strong>
-            </div>
-            <button type='button' className={cx('btn')} onClick={handleOrder}>
-              주문하기
-            </button>
-          </div>
         </>
       )}
     </div>

@@ -1,34 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FocusEvent, useRef } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
-import styles from '../../styles/pages/productPage.module.scss';
-import CategoryContent from './categoryContent';
-import { BottomSheet } from 'react-spring-bottom-sheet';
-import SheetContent from './common/sheetContent';
-import 'react-spring-bottom-sheet/dist/style.css';
-import ToolbarList from './ui/toolbarList';
-import CupSizeItem from './cupSizeItem';
-import { cupDatas } from '../../public/assets/datas/cupDatas';
+import styles from '../../../../styles/pages/productPage.module.scss';
+import CategoryContent from '../../categoryContent';
+import ProductNutritionSheet from './productNutritionSheet';
+import ProductOrder from './productOrder';
+import ToolbarList from '../../ui/toolbarList';
+import CupSizeItem from '../../cupSizeItem';
 import { useRouter } from 'next/router';
+import { addMyMenu } from '../../../../pages/api/myMenu';
 import {
   getSize,
   getNutrition,
   getProduct,
   getTemperature,
-} from '../../pages/api/category';
-import { addCart, getCount } from '../../pages/api/cart';
+} from '../../../../pages/api/category';
+import { addCart, getCount } from '../../../../pages/api/cart';
 import { useRecoilState } from 'recoil';
-import { categoryLState, categorySIdState } from '../store/atom/categoryState';
+import {
+  categoryLState,
+  categorySIdState,
+} from '../../../store/atom/categoryState';
 import {
   ICartData,
   ICartNonMemberData,
   IDetail,
   ISize,
   INutrition,
-} from '../types/productDetail';
+} from '../../../types/productDetail';
+import { IParams, IOption } from '../../../types/myMenu';
 import ProductNurtitionInfo from './productNutritionInfo';
-import { cartCnt } from '../store/atom/userStates';
-import { addComma } from '../store/utils/function';
+import { cartCnt } from '../../../store/atom/userStates';
+import { addComma } from '../../../store/utils/function';
 
 const cx = classNames.bind(styles);
 
@@ -41,6 +44,7 @@ function productContent() {
   const [open, setOpen] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
+  const [selectedSizeId, setSelectedSizeId] = useState(0);
   const [selectedSizeTxt, setSelectedSizeTxt] = useState('');
   const [cupChoice, setCupChoice] = useState('');
   const [count, setCount] = useState(1);
@@ -49,6 +53,13 @@ function productContent() {
   const [temperatureChoice, setTemperatureChoice] = useState('ice');
   const [nutritionInfo, setNutritionInfo] = useState<INutrition>();
   const [nutritionSize, setNutritionSize] = useState('Tall');
+  const [myMenuAlert, setMyMenuAlert] = useState(false);
+  const [myMenuName, setMyMenuName] = useState('');
+  const [myMenuData, setMyMenuData] = useState<IParams>({
+    sizeId: 2,
+    alias: '',
+    personalOptionList: [],
+  });
   const [cartData, setCartData] = useState<ICartData>({
     // 사이즈, 개수, 컵 종류, 온도
     sizeId: 1,
@@ -74,8 +85,10 @@ function productContent() {
   const handleNutritionOpen = () => {
     setNutritionOpen(true);
   };
-  const handleNutritionSize = (name: string) => {
-    setNutritionSize(name);
+  const handleClose = () => {
+    console.log('click');
+    setMyMenuAlert(!myMenuAlert);
+    console.log(myMenuAlert);
   };
 
   const handleAddCart = () => {
@@ -101,36 +114,13 @@ function productContent() {
       alert('장바구니에 담겼습니다!');
     }
   };
+  const checkMenuName = (e: FocusEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setMyMenuName(e.target.value);
+  };
+  const myMenuNameRef = useRef<HTMLInputElement>(null);
 
   const handleOrder = () => {};
-
-  const handleMinus = () => {
-    if (count > 1) {
-      setCount(prev => {
-        return --prev;
-      });
-      setCartData(prev => {
-        return {
-          ...prev,
-          quantity: --prev.quantity,
-        };
-      });
-    }
-  };
-
-  const handlePlus = () => {
-    if (count < 20) {
-      setCount(prev => {
-        return ++prev;
-      });
-      setCartData(prev => {
-        return {
-          ...prev,
-          quantity: ++prev.quantity,
-        };
-      });
-    }
-  };
 
   const handleTempChoice = (e: string, tempId: number) => {
     setTemperatureChoice(e);
@@ -139,10 +129,6 @@ function productContent() {
     } else {
       setSelectedTempId(tempId);
     }
-  };
-
-  const handleChoiceCup = (e: string) => {
-    setCupChoice(e);
   };
 
   function onDismiss() {
@@ -154,6 +140,35 @@ function productContent() {
     if (selectedSizeTxt === '' || cupChoice === '') {
       alert('사이즈와 컵을 선택해주세요');
       return;
+    } else {
+      setOpen(false);
+      setMyMenuAlert(true);
+    }
+  };
+  const handleAddMyMenuData = () => {
+    const mymenuNameValue = myMenuNameRef.current?.value;
+    console.log(mymenuNameValue);
+    if (mymenuNameValue && mymenuNameValue.length !== 0) {
+      setMyMenuData({
+        ...myMenuData,
+        alias: mymenuNameValue,
+        sizeId: selectedSizeId,
+      });
+      const value = {
+        sizeId: selectedSizeId,
+        alias: mymenuNameValue,
+        personalOptionList: myMenuData.personalOptionList,
+      };
+      addMyMenu(value).then(res => {
+        console.log(res);
+        if (res.data.data) {
+          alert('추가되었습니다');
+          setMyMenuAlert(false);
+        } else {
+          alert('이미 등록된 상품입니다.');
+          setMyMenuAlert(false);
+        }
+      });
     }
   };
 
@@ -176,6 +191,7 @@ function productContent() {
         setSelectedTempId(detailList.temperatureList[0].temperatureId);
         getSize(detailList.temperatureList[0].temperatureId).then(res => {
           setSizeOpt(res.data.data);
+          setSelectedSizeId(res.data.data[0].sizeId);
           setSelectedSizeTxt(res.data.data[0].size);
           setCartData({
             ...cartData,
@@ -190,6 +206,7 @@ function productContent() {
         getSize(tempId).then(res => {
           setSizeOpt(res.data.data);
           setSelectedSizeTxt(res.data.data[0].size);
+          setSelectedSizeId(res.data.data[0].sizeId);
           setCartData({
             ...cartData,
             sizeId: res.data.data[0].sizeId,
@@ -377,7 +394,12 @@ function productContent() {
         <p>제품영양정보</p>
         <Image src='/assets/svg/icon-more.svg' width={20} height={20} />
       </div>
-
+      {detailList && detailList.allergy === '없음' ? undefined : (
+        <div className={cx('product-allergy')}>
+          <p>알레르기 유발 요인</p>
+          <div>{detailList && detailList.allergy}</div>
+        </div>
+      )}
       <hr className={cx('line')} />
       <div className={cx('button-box')}>
         <button
@@ -388,148 +410,61 @@ function productContent() {
           주문하기
         </button>
       </div>
-      <BottomSheet open={open} onDismiss={onDismiss}>
-        <SheetContent>
-          <div style={{ height: '85vh' }} />
-
-          <div className={cx('option-box')}>
-            <div className={cx('option', 'fadeIn')}>
-              <div className={cx('menu-title')}>
-                {detailList && detailList.temperatureList[0].menuName}
-              </div>
-              <div>
-                <div className={cx('option-title')}>사이즈</div>
-                <div className={cx('cup-size')}>
-                  {/* cup size seledt */}
-                  {sizeOpt &&
-                    sizeOpt.map(item => (
-                      <CupSizeItem
-                        key={item.index}
-                        list={item}
-                        selectedSizeTxt={selectedSizeTxt}
-                        setSelectedSizeTxt={setSelectedSizeTxt}
-                        cartData={cartData}
-                        setCartData={setCartData}
-                      />
-                    ))}
-                </div>
-              </div>
-              <div>
-                <div className={cx('option-title')}>컵 선택</div>
-                <div className={cx('cup-kind')}>
-                  {/* cup select */}
-                  {cupDatas &&
-                    cupDatas.map(item => (
-                      <div
-                        key={item.id}
-                        role='cupitem'
-                        onClick={() => handleChoiceCup(item.name)}
-                        onKeyDown={() => handleChoiceCup(item.name)}
-                        className={
-                          cupChoice === item.name
-                            ? cx('click-cup')
-                            : cx('non-click')
-                        }
-                      >
-                        {item.name}
-                      </div>
-                    ))}
-                </div>
-              </div>
-              <div className={cx('bottom-order-bar')}>
-                <hr className={cx('line')} />
-                <div>
-                  <div className={cx('total-cost')}>
-                    <div className={cx('control-count')}>
-                      <div onClick={handleMinus}>
-                        <Image
-                          src={
-                            count === 1
-                              ? '/assets/svg/icon-minus.svg'
-                              : '/assets/svg/icon-minus-active.svg'
-                          }
-                          alt='minus icon'
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                      <div>{count}</div>
-                      <div onClick={handlePlus}>
-                        <Image
-                          src={
-                            count === 20
-                              ? '/assets/svg/icon-plus.svg'
-                              : '/assets/svg/icon-plus-active.svg'
-                          }
-                          alt='plus icon'
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                    </div>
-                    <div className={cx('total-price')}>
-                      {detailList && addComma(detailList.price)}원
-                    </div>
-                  </div>
-                  <div className={cx('order-select')}>
-                    <button
-                      type='button'
-                      className={cx('add-heart')}
-                      onClick={handleAddMyMenu}
-                    >
-                      <span>
-                        <Image
-                          src='/assets/svg/icon-heart.svg'
-                          alt='heart'
-                          width={30}
-                          height={30}
-                        />
-                      </span>
-                    </button>
-                    <div>
-                      <div className={cx('go-cart')} onClick={handleAddCart}>
-                        담기
-                      </div>
-                      <div className={cx('go-order')} onClick={handleOrder}>
-                        주문하기
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </SheetContent>
-      </BottomSheet>
-      {open && <ToolbarList />}
-      <BottomSheet open={nutritionOpen} onDismiss={onDismiss}>
-        <SheetContent>
-          <div style={{ height: '85vh' }} />
-
-          <div className={cx('nutrition-sheet')}>
+      {myMenuAlert && (
+        <div className={cx('menu-name-alert')}>
+          <div className={cx('my-menu')}>
             <div>
-              <ul className={cx('cupsize')}>
-                <li onClick={() => handleNutritionSize('Tall')}>Tall</li>
-                <li onClick={() => handleNutritionSize('Grande')}>Grande</li>
-                <li onClick={() => handleNutritionSize('Venti')}>Venti</li>
-              </ul>
-              <div
-                className={
-                  nutritionSize === 'Tall'
-                    ? cx('state-bar-tall')
-                    : nutritionSize === 'Grande'
-                    ? cx('state-bar-grande')
-                    : cx('state-bar-venti')
-                }
-              />
-              <ProductNurtitionInfo
-                nutritionInfo={nutritionInfo}
-                nutritionSize={nutritionSize}
+              <h3>나만의 메뉴로 등록해보세요</h3>
+            </div>
+            <div className={cx('menu-info')}>
+              <h4>카페 아메리카노</h4>
+              <div>속성</div>
+            </div>
+            <div className={cx('menu-nickname')}>
+              <p>등록할 나만의 메뉴 이름을 지어보세요.</p>
+              <input
+                type='text'
+                placeholder='나만의 카페 아메리카노'
+                name='input-nickname'
+                // onChange={checkMenuName}
+                ref={myMenuNameRef}
               />
             </div>
+            <div className={cx('button-container')}>
+              <button type='button' onClick={handleClose}>
+                취소
+              </button>
+              <button type='button' onClick={handleAddMyMenuData}>
+                확인
+              </button>
+            </div>
           </div>
-        </SheetContent>
-      </BottomSheet>
+          <div className={cx('background')} onClick={handleClose} />
+        </div>
+      )}
+      <ProductOrder
+        open={open}
+        onDismiss={onDismiss}
+        detailList={detailList}
+        sizeOpt={sizeOpt}
+        setCupChoice={setCupChoice}
+        cupChoice={cupChoice}
+        setCartData={setCartData}
+        handleAddMyMenu={handleAddMyMenu}
+        handleAddCart={handleAddCart}
+        handleOrder={handleOrder}
+        count={count}
+        setCount={setCount}
+        selectedSizeTxt={selectedSizeTxt}
+        setSelectedSizeTxt={setSelectedSizeTxt}
+        cartData={cartData}
+      />
+      {!open && <ToolbarList />}
+      <ProductNutritionSheet
+        nutritionOpen={nutritionOpen}
+        onDismiss={onDismiss}
+        nutritionInfo={nutritionInfo}
+      />
     </>
   );
 }

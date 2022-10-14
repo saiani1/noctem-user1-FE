@@ -44,7 +44,13 @@ function homeContent() {
   }, []);
   useEffect(() => {
     if (userLevel) {
-      setProgressState(userLevel.requiredExpToNextGrade / userLevel.userExp);
+      let exp =
+        userLevel.userExp === 0
+          ? 0
+          : userLevel.requiredExpToNextGrade / userLevel.userExp;
+      setProgressState(exp);
+    } else {
+      setProgressState(0);
     }
   }, [userLevel]);
   return (

@@ -2,88 +2,72 @@ import { getToken } from '../../src/store/utils/token';
 import { IParams } from '../../src/types/myMenu.d';
 import { basicRequest } from './base';
 
-const SERVICE = '/user-service';
+const U_SERVICE = '/user-service';
+const M_SERVICE = '/menu-service';
 const HEADERS = {
   headers: {
     Authorization: JSON.parse(getToken()),
   },
 };
 
-export const getMyMenu = async () => {
-  const res = await basicRequest.get(`${SERVICE}/myMenu`, {
-    headers: {
-      Authorization: JSON.parse(getToken()),
-    },
-  });
+export const getMyMenu1 = async () => {
+  const res = await basicRequest.get(`${U_SERVICE}/myMenu`, HEADERS);
+  return res;
+};
+
+export const getMyMenu2 = async (sizeId: string, myMenuId: string) => {
+  const res = await basicRequest.get(
+    `${M_SERVICE}/size/menu/forMyMenu/${sizeId}/${myMenuId}`,
+    HEADERS,
+  );
   return res;
 };
 
 export const addMyMenu = async (value: IParams) => {
-  const res = await basicRequest.post(`${SERVICE}/myMenu`, value, {
-    headers: {
-      Authorization: JSON.parse(getToken()),
-    },
-  });
+  const res = await basicRequest.post(`${U_SERVICE}/myMenu`, value, HEADERS);
   return res;
 };
 
 export const changeMyMenuOrder = async (value: number[]) => {
   const res = await basicRequest.patch(
-    `${SERVICE}/myMenu/order`,
+    `${U_SERVICE}/myMenu/order`,
     {
       myMenuIdOrderList: value,
     },
-    {
-      headers: {
-        Authorization: JSON.parse(getToken()),
-      },
-    },
+    HEADERS,
   );
   return res;
 };
 
 export const changeMyMenuNickName = async (id: number, value: string) => {
   const res = await basicRequest.patch(
-    `${SERVICE}/myMenu/${id}/alias`,
+    `${U_SERVICE}/myMenu/${id}/alias`,
     {
       alias: value,
     },
-    {
-      headers: {
-        Authorization: JSON.parse(getToken()),
-      },
-    },
+    HEADERS,
   );
   return res;
 };
 
 export const deleteMyMenu = async (id: string) => {
-  const res = await basicRequest.delete(`${SERVICE}/myMenu/${id}`, {
-    headers: {
-      Authorization: JSON.parse(getToken()),
-    },
-  });
+  const res = await basicRequest.delete(`${U_SERVICE}/myMenu/${id}`, HEADERS);
   return res;
 };
 
 export const getShowMainMyMenu = async () => {
-  const res = await basicRequest.get(`${SERVICE}/optionalInfo/orderHome`, {
-    headers: {
-      Authorization: JSON.parse(getToken()),
-    },
-  });
+  const res = await basicRequest.get(
+    `${U_SERVICE}/optionalInfo/orderHome`,
+    HEADERS,
+  );
   return res;
 };
 
 export const changeShowMainMyMenu = async () => {
   const res = await basicRequest.patch(
-    `${SERVICE}/optionalInfo/orderHome`,
+    `${U_SERVICE}/optionalInfo/orderHome`,
     {},
-    {
-      headers: {
-        Authorization: JSON.parse(getToken()),
-      },
-    },
+    HEADERS,
   );
   return res;
 };

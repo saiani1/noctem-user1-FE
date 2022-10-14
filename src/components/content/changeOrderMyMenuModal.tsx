@@ -2,10 +2,11 @@ import React from 'react';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/changeOrderMyMenu.module.scss';
-import { IMenu } from '../../../src/types/myMenu.d';
+import { IMenu1 } from '../../../src/types/myMenu.d';
+import DndMyMenuItem from '../ui/dndMyMenuItem';
 
 interface IProps {
-  info: IMenu[];
+  info: IMenu1[];
   setIsClickChangeOrderBtn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -35,13 +36,9 @@ function changeOrderMyMenuModal({ setIsClickChangeOrderBtn }: IProps) {
         </button>
       </div>
       <ul>
-        <li className={cx('content-wrap')}>
-          <div className={cx('left')}>
-            <strong>딸기 아사이 스타벅스 리프레셔</strong>
-            <span>ICED | Tall | 개인컵</span>
-          </div>
-          <img src='/assets/svg/icon-hamburger.svg' />
-        </li>
+        <DndMyMenuItem />
+        <DndMyMenuItem />
+        <DndMyMenuItem />
       </ul>
       <div className={cx('btn-wrap')}>
         <button

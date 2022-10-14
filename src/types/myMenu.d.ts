@@ -1,7 +1,7 @@
 export interface IParams {
   sizeId: number;
   alias: string;
-  personalOptionList: IOption;
+  personalOptionList: IOption[];
 }
 
 export interface IOption {
@@ -9,14 +9,19 @@ export interface IOption {
   amount: string;
 }
 
-export interface IMenu {
+export interface IMenu1 {
   index: number;
-  alias: string;
-  menuImg: string;
-  menuName: string;
   myMenuId: string;
+  alias: string;
   sizeId: string;
-  size: string;
+  myPersonalOptionList: string[];
+}
+
+export interface IMenu2 {
+  myMenuId: string;
+  menuName: string;
+  menuImg: string;
   temperature: string;
   totalMenuPrice: number;
+  size: string;
 }
