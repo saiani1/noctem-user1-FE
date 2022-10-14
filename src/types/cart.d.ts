@@ -1,9 +1,9 @@
-export interface ICartList {
+export interface ICart {
   index: number;
   cartId: number;
   sizeId: number;
   qty: number;
-  myPersonalOptionList: IPersonalOptions;
+  myPersonalOptionList?: IPersonalOptions;
 }
 
 export interface IData {

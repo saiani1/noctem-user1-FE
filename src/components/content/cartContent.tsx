@@ -15,7 +15,7 @@ import {
   getCount,
 } from '../../../pages/api/cart';
 import { getToken } from '../../store/utils/token';
-import { ICartList, IData, IMenuList } from '../../types/cart';
+import { ICart, IData, IMenuList } from '../../types/cart';
 import { useRecoilState } from 'recoil';
 import { cartCnt } from '../../store/atom/userStates';
 import { addComma } from '../../store/utils/function';
@@ -25,7 +25,7 @@ function cartContent() {
   const cx = classNames.bind(styles);
   const [clickTab, setClickTab] = useState('food');
   const isUser = getToken() !== null && getToken() !== '{}';
-  const [cartList, setCartList] = useState<ICartList[]>();
+  const [cartList, setCartList] = useState<ICart[]>();
   const [datas, setDatas] = useState<IData[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [count, setCount] = useRecoilState(cartCnt);
@@ -87,40 +87,6 @@ function cartContent() {
       });
     }
   }, [isChange]);
-
-  useEffect(() => {
-    if (cartList) {
-      let tempDatas: IData[] = [];
-      cartList.forEach(item => {
-        getCartMenuData(item.sizeId, item.cartId).then(res => {
-          const resData = res.data.data;
-          tempDatas.push({
-            sizeId: item.sizeId,
-            cartId: item.cartId,
-            qty: item.qty,
-            menuName: resData.menuName,
-            menuEngName: resData.menuEngName,
-            menuImg: resData.menuImg,
-            temperature: resData.temperature,
-            size: resData.size,
-            totalMenuPrice: resData.totalMenuPrice,
-          });
-
-          const newData = [...tempDatas, ...datas].filter((data, idx, arr) => {
-            return arr.findIndex(item => item.cartId === data.cartId) === idx;
-          });
-
-          const idx = datas.findIndex(d => d.cartId === item.cartId);
-          // setDatas([...datas, datas[idx].qty:item.qty]);
-          console.log('인덱스', idx);
-          console.log('tempD', ...tempDatas);
-          console.log('data', ...datas);
-          console.log('newD', newData);
-          setDatas(newData);
-        });
-      });
-    }
-  }, [cartList]);
 
   return (
     <div className={cx('wrap')}>
@@ -190,7 +156,7 @@ function cartContent() {
               </span>
             </button>
           </div>
-          {isUser && datas.length !== 0 ? (
+          {isUser && cartList && cartList.length !== 0 ? (
             <>
               <div className={cx('cart-wrap')}>
                 <div className={cx('tit-wrap')}>
@@ -211,11 +177,11 @@ function cartContent() {
                 </div>
               </div>
               <div className={cx('item-wrap')}>
-                {datas &&
-                  datas.map(data => (
+                {cartList &&
+                  cartList.map(cart => (
                     <CartItem
-                      key={data.cartId}
-                      data={data}
+                      key={cart.cartId}
+                      cart={cart}
                       count={count}
                       isChange={isChange}
                       setIsChange={setIsChange}
