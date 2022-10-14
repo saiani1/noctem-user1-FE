@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/changeOrderMyMenu.module.scss';
-import { IMenu } from '../../../src/types/myMenu.d';
+import { IMenu1 } from '../../../src/types/myMenu.d';
 import DndMyMenuItem from '../ui/dndMyMenuItem';
 
 interface IProps {
-  info: IMenu[];
+  info: IMenu1[];
   setIsClickChangeOrderBtn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
