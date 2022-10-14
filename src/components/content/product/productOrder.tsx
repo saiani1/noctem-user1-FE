@@ -46,6 +46,7 @@ function productOrder({
   cartData: ICartData;
 }) {
   //   const [count, setCount] = useState(1);
+  const [drinkNickname, setDrinkNickname] = useState('');
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
   };
@@ -75,6 +76,11 @@ function productOrder({
         };
       });
     }
+  };
+
+  const checkMymenu = (e: string) => {
+    setDrinkNickname(e);
+    console.log(drinkNickname);
   };
   return (
     <>
