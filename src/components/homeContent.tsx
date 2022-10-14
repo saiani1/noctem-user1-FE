@@ -9,6 +9,7 @@ import { isExistToken } from './../store/utils/token';
 import { getUserInfo } from './../../pages/api/user';
 import { getUserLevel } from './../../pages/api/level';
 import { useRouter } from 'next/router';
+import { getMyMenu1, getMyMenu2 } from '../../pages/api/myMenu';
 
 const cx = classNames.bind(styles);
 interface ILevel {
@@ -17,10 +18,18 @@ interface ILevel {
   nextGrade: string;
   requiredExpToNextGrade: number;
 }
+interface IData {
+  index: number;
+  myMenuId: number;
+  alias: string;
+  sizeId: number;
+  myPersonalOptionList: IMyPersonalOptionList;
+}
+interface IMyPersonalOptionList {}
 
 function homeContent() {
   const router = useRouter();
-  const [myMenu, SetMyMenu] = useState<boolean>(true);
+  const [myMenu, SetMyMenu] = useState<IData[]>([]);
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
   const styles: { [key: string]: React.CSSProperties } = {
@@ -37,6 +46,10 @@ function homeContent() {
       });
       getUserLevel().then(res => {
         setUserLevel(res.data.data);
+      });
+      getMyMenu1().then(res => {
+        console.log(res.data.data);
+        SetMyMenu(res.data.data);
       });
     } else {
       setUsername('User');
@@ -116,7 +129,7 @@ function homeContent() {
           <div className={cx('my-menu-true')}>
             <div>
               <div className={cx('my-menu-title')}>
-                나민의 아이스 민트 블랜드 티
+                {myMenu[0] && myMenu[0].alias}
               </div>
               <div className={cx('my-menu-kind')}>아이스 민트 블랜드 티</div>
               <div className={cx('my-menu-detail')}>
