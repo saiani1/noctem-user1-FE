@@ -1,4 +1,6 @@
 @use '/styles/base/variable';
+@use '/styles/mixins/position';
+
 
 .point-box {
   margin: 24px;
@@ -15,26 +17,8 @@
     display: flex;
     justify-content: space-between;
 
-    & {
-      .progress-bar {
-        position: absolute;
-        width: 70%;
-        height: 6px;
-
-        /* line002 */
-
-        background: #eeeeee;
-        border-radius: 13.5px;
-      }
-
-      .my-progress-bar {
-        position: absolute;
-        width: 30%;
-        height: 6px;
-
-        background: variable.$POINT;
-        border-radius: 13.5px;
-      }
+    .progress-bar-space{
+      width: 80%;
     }
 
     .my-score {
@@ -44,6 +28,77 @@
         font-size: 22px;
         color: variable.$TXT-001;
       }
+    }
+  }
+}
+.progress-bar-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 98.5%;
+  height: 12px;
+  border: 2px solid variable.$LINE-003;
+  border-radius: 2.5px;
+
+  &::after {
+    @include position.absolute(1px -4.5px auto auto);
+    // width: 100%;
+    content: ' ';
+    width: 1.5px;
+    height: 7px;
+    background-color: variable.$LINE-003;
+  }
+  .progress-bar {
+    width: 55%;
+    height: 6px;
+    margin: 0 1px;
+    background-color: variable.$POINT;
+    border-radius: 0.5px;
+  }
+}
+.level-wrap {
+  padding: 19px 19px 25px 19px;
+  border-bottom: 1px solid variable.$LINE-003;
+
+  &.first {
+    padding-top: 0;
+  }
+  .level-tit-wrap {
+    display: flex;
+    align-items: center;
+
+    .level-tit {
+      margin: 0 10px 10px 0;
+      font-size: variable.$FS-21;
+      color: variable.$RANK-001;
+      &.e {
+        color: variable.$RANK-002;
+      }
+      &.pe {
+        color: variable.$RANK-003;
+      }
+    }
+    .level-icon-wrap {
+      margin-top: -4px;
+    }
+  }
+  .level-content-wrap {
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 3px;
+    background-color: variable.$BG-003;
+    ~ .level-content-wrap {
+      margin-top: 8px;
+    }
+    .img-wrap {
+      margin-top: 2px;
+    }
+    .content {
+      font-size: variable.$FS-12;
+      color: variable.$TXT-003;
     }
   }
 }

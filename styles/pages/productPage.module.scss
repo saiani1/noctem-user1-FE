@@ -101,7 +101,18 @@
   display: flex;
   padding: 12px;
   justify-content: space-between;
-  font-size: variable.$FS-16;
+
+  p{
+    font-size: variable.$FS-16;
+    font-weight: variable.$FW-003;
+  }
+}
+.product-allergy{
+  padding: 12px;
+  p{
+    font-size: variable.$FS-16;
+    font-weight: variable.$FW-003;
+  }
 }
 
 .line {
