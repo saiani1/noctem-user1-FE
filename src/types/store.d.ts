@@ -12,3 +12,9 @@ export interface IStore {
   isDriveThrough: boolean;
   distance: string;
 }
+
+export interface IProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setClickStoreId: React.Dispatch<React.SetStateAction<number>>;
+  data: IStore;
+}

@@ -1,15 +1,22 @@
-export interface IData {
+export interface ICart {
   index: number;
   cartId: number;
   sizeId: number;
+  qty: number;
+  myPersonalOptionList?: IPersonalOptions;
+}
+
+export interface IData {
+  sizeId: number;
+  cartId: number;
+  qty: number;
   menuName: string;
   menuEngName: string;
   menuImg: string;
   temperature: string;
   size: string;
   totalMenuPrice: number;
-  qty: number;
-  myPersonalOptionList: IPersonalOptions[];
+  myPersonalOptionList?: IPersonalOptions[];
 }
 
 export interface IPersonalOptions {
@@ -17,17 +24,13 @@ export interface IPersonalOptions {
   amount: string;
 }
 
-export interface IStore {
-  index: number;
-  storeId: number;
-  name: string;
-  mainImg: string;
-  address: string;
-  businessOpenHours: string;
-  businessCloseHours: string;
-  isOpen: boolean;
-  isParking: boolean;
-  isEcoStore: boolean;
-  isDriveThrough: boolean;
-  distance: string;
+export interface IMenuList {
+  sizeId: number;
+  qty: number;
+  optionList?: [];
+}
+
+export interface ISelecetStoreProps {
+  selectStore?: IStore;
+  setSelectStore?: Dispatch<SetStateAction<boolean>>;
 }
