@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FocusEvent, useRef } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../../../styles/pages/productPage.module.scss';
@@ -8,6 +8,7 @@ import ProductOrder from './productOrder';
 import ToolbarList from '../../ui/toolbarList';
 import CupSizeItem from '../../cupSizeItem';
 import { useRouter } from 'next/router';
+import { addMyMenu } from '../../../../pages/api/myMenu';
 import {
   getSize,
   getNutrition,
@@ -27,6 +28,7 @@ import {
   ISize,
   INutrition,
 } from '../../../types/productDetail';
+import { IParams, IOption } from '../../../types/myMenu';
 import ProductNurtitionInfo from './productNutritionInfo';
 import { cartCnt } from '../../../store/atom/userStates';
 import { addComma } from '../../../store/utils/function';
@@ -42,6 +44,7 @@ function productContent() {
   const [open, setOpen] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
+  const [selectedSizeId, setSelectedSizeId] = useState(0);
   const [selectedSizeTxt, setSelectedSizeTxt] = useState('');
   const [cupChoice, setCupChoice] = useState('');
   const [count, setCount] = useState(1);
@@ -51,6 +54,12 @@ function productContent() {
   const [nutritionInfo, setNutritionInfo] = useState<INutrition>();
   const [nutritionSize, setNutritionSize] = useState('Tall');
   const [myMenuAlert, setMyMenuAlert] = useState(false);
+  const [myMenuName, setMyMenuName] = useState('');
+  const [myMenuData, setMyMenuData] = useState<IParams>({
+    sizeId: 2,
+    alias: '',
+    personalOptionList: [],
+  });
   const [cartData, setCartData] = useState<ICartData>({
     // 사이즈, 개수, 컵 종류, 온도
     sizeId: 1,
@@ -76,6 +85,11 @@ function productContent() {
   const handleNutritionOpen = () => {
     setNutritionOpen(true);
   };
+  const handleClose = () => {
+    console.log('click');
+    setMyMenuAlert(!myMenuAlert);
+    console.log(myMenuAlert);
+  };
 
   const handleAddCart = () => {
     if (cupChoice === '') {
@@ -100,36 +114,13 @@ function productContent() {
       alert('장바구니에 담겼습니다!');
     }
   };
+  const checkMenuName = (e: FocusEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setMyMenuName(e.target.value);
+  };
+  const myMenuNameRef = useRef<HTMLInputElement>(null);
 
   const handleOrder = () => {};
-
-  // const handleMinus = () => {
-  //   if (count > 1) {
-  //     setCount(prev => {
-  //       return --prev;
-  //     });
-  //     setCartData(prev => {
-  //       return {
-  //         ...prev,
-  //         quantity: --prev.quantity,
-  //       };
-  //     });
-  //   }
-  // };
-
-  // const handlePlus = () => {
-  //   if (count < 20) {
-  //     setCount(prev => {
-  //       return ++prev;
-  //     });
-  //     setCartData(prev => {
-  //       return {
-  //         ...prev,
-  //         quantity: ++prev.quantity,
-  //       };
-  //     });
-  //   }
-  // };
 
   const handleTempChoice = (e: string, tempId: number) => {
     setTemperatureChoice(e);
@@ -139,10 +130,6 @@ function productContent() {
       setSelectedTempId(tempId);
     }
   };
-
-  // const handleChoiceCup = (e: string) => {
-  //   setCupChoice(e);
-  // };
 
   function onDismiss() {
     setOpen(false);
@@ -154,7 +141,34 @@ function productContent() {
       alert('사이즈와 컵을 선택해주세요');
       return;
     } else {
-      setMyMenuAlert(!myMenuAlert);
+      setOpen(false);
+      setMyMenuAlert(true);
+    }
+  };
+  const handleAddMyMenuData = () => {
+    const mymenuNameValue = myMenuNameRef.current?.value;
+    console.log(mymenuNameValue);
+    if (mymenuNameValue && mymenuNameValue.length !== 0) {
+      setMyMenuData({
+        ...myMenuData,
+        alias: mymenuNameValue,
+        sizeId: selectedSizeId,
+      });
+      const value = {
+        sizeId: selectedSizeId,
+        alias: mymenuNameValue,
+        personalOptionList: myMenuData.personalOptionList,
+      };
+      addMyMenu(value).then(res => {
+        console.log(res);
+        if (res.data.data) {
+          alert('추가되었습니다');
+          setMyMenuAlert(false);
+        } else {
+          alert('이미 등록된 상품입니다.');
+          setMyMenuAlert(false);
+        }
+      });
     }
   };
 
@@ -177,6 +191,7 @@ function productContent() {
         setSelectedTempId(detailList.temperatureList[0].temperatureId);
         getSize(detailList.temperatureList[0].temperatureId).then(res => {
           setSizeOpt(res.data.data);
+          setSelectedSizeId(res.data.data[0].sizeId);
           setSelectedSizeTxt(res.data.data[0].size);
           setCartData({
             ...cartData,
@@ -191,6 +206,7 @@ function productContent() {
         getSize(tempId).then(res => {
           setSizeOpt(res.data.data);
           setSelectedSizeTxt(res.data.data[0].size);
+          setSelectedSizeId(res.data.data[0].sizeId);
           setCartData({
             ...cartData,
             sizeId: res.data.data[0].sizeId,
@@ -384,7 +400,6 @@ function productContent() {
           <div>{detailList && detailList.allergy}</div>
         </div>
       )}
-
       <hr className={cx('line')} />
       <div className={cx('button-box')}>
         <button
@@ -395,6 +410,38 @@ function productContent() {
           주문하기
         </button>
       </div>
+      {myMenuAlert && (
+        <div className={cx('menu-name-alert')}>
+          <div className={cx('my-menu')}>
+            <div>
+              <h3>나만의 메뉴로 등록해보세요</h3>
+            </div>
+            <div className={cx('menu-info')}>
+              <h4>카페 아메리카노</h4>
+              <div>속성</div>
+            </div>
+            <div className={cx('menu-nickname')}>
+              <p>등록할 나만의 메뉴 이름을 지어보세요.</p>
+              <input
+                type='text'
+                placeholder='나만의 카페 아메리카노'
+                name='input-nickname'
+                // onChange={checkMenuName}
+                ref={myMenuNameRef}
+              />
+            </div>
+            <div className={cx('button-container')}>
+              <button type='button' onClick={handleClose}>
+                취소
+              </button>
+              <button type='button' onClick={handleAddMyMenuData}>
+                확인
+              </button>
+            </div>
+          </div>
+          <div className={cx('background')} onClick={handleClose} />
+        </div>
+      )}
       <ProductOrder
         open={open}
         onDismiss={onDismiss}

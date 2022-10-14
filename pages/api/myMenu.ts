@@ -19,11 +19,7 @@ export const getMyMenu = async () => {
 };
 
 export const addMyMenu = async (value: IParams) => {
-  const res = await basicRequest.post(`${SERVICE}/myMenu`, value, {
-    headers: {
-      Authorization: JSON.parse(getToken()),
-    },
-  });
+  const res = await basicRequest.post(`${SERVICE}/myMenu`, value, HEADERS);
   return res;
 };
 
