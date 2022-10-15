@@ -4,33 +4,36 @@ import Link from 'next/link';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/choiceStoreModal.module.scss';
+import { IStore } from '../../../src/types/store.d';
 
 const cx = classNames.bind(styles);
 
-function choiceStoreModal() {
+interface IProps {
+  clickStoreInfo: IStore;
+}
+
+function choiceStoreModal({ clickStoreInfo }: IProps) {
+  const {
+    name,
+    mainImg,
+    address,
+    businessOpenHours,
+    businessCloseHours,
+    isOpen,
+    isParking,
+    isEcoStore,
+    isDriveThrough,
+  } = clickStoreInfo;
   return (
     <>
       <div className={cx('wrap')}>
         <div className={cx('img-wrap')}>
-          <Image
-            src='/assets/images/jpg/centomdreamworld.jpg'
-            alt='store1'
-            width={2016}
-            height={1512}
-            layout='responsive'
-            className={cx('img')}
-          />
+          <img src={mainImg} alt={name} className={cx('img')} />
         </div>
         <div className={cx('tit-wrap')}>
-          <h2>센텀드림월드</h2>
+          <h2>{name}</h2>
           <div className={cx('tit-address-wrap')}>
-            <p>부산광역시 해운대구 센텀2로25, 센텀드림월드 1층 (우동)</p>
-            <Image
-              src='/assets/svg/icon-right-arrow.svg'
-              alt='right arrow'
-              width={15}
-              height={15}
-            />
+            <p>{address}</p>
           </div>
         </div>
         <div className={cx('line')} />
@@ -52,14 +55,10 @@ function choiceStoreModal() {
               height={13}
             />
             <span>
-              <strong>카페</strong>07:00 - 21:30
+              <strong>카페</strong>
+              {businessOpenHours} - {businessCloseHours}
             </span>
           </div>
-        </div>
-        <div className={cx('line')} />
-        <div className={cx('location-wrap')}>
-          <p>오시는 길</p>
-          <span>센텀호텔 맞은 편 횡단보도 앞</span>
         </div>
         <Link href='/order'>매장 내 직접 수령</Link>
       </div>

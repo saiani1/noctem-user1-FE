@@ -1,6 +1,4 @@
-import cx from 'classnames';
 import { forwardRef } from 'react';
-import styles from './SheetContent.module.css';
 
 type Props = {
   children: React.ReactNode;

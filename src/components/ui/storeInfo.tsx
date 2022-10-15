@@ -2,55 +2,94 @@ import React from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
-// import { ParkIcon } from '../../assets/svg/index';
 import styles from '../../../styles/ui/storeInfo.module.scss';
+import { IProps } from '../../types/store';
 
-interface IProps {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function storeInfo(props: IProps) {
-  const { setOpen } = props;
+function storeInfo({ setClickStoreId, setOpen, data }: IProps) {
+  const {
+    // index,
+    storeId,
+    name,
+    mainImg,
+    address,
+    businessOpenHours,
+    businessCloseHours,
+    isOpen,
+    isParking,
+    isEcoStore,
+    isDriveThrough,
+    distance,
+  } = data;
   const cx = classNames.bind(styles);
 
   const handleClickStore = () => {
     setOpen(prev => {
       return !prev;
     });
+    setClickStoreId(storeId);
   };
 
   return (
-    <button
-      type='button'
-      className={cx('store-wrap')}
-      onClick={handleClickStore}
-    >
-      <div className={cx('img-wrap')}>
-        <Image
-          src='/assets/images/jpg/centomdreamworld.jpg'
-          alt='센텀드림월드'
-          width={90}
-          height={90}
-        />
-      </div>
-      <div className={cx('contents-wrap')}>
-        <div className={cx('top-content-wrap')}>
-          <p className={cx('store-name')}>센텀드림월드</p>
-          <span className={cx('store-address')}>
-            부산광역시 해운대구 센텀2로25, 센텀드림월드 1층(우동)
-          </span>
+    <li className={cx('store-wrap')}>
+      <button type='button' onClick={handleClickStore}>
+        <div className={cx('img-wrap')}>
+          <img src={mainImg} alt={name} />
         </div>
-        <div className={cx('bottom-content-wrap')}>
-          <Image
-            src='/assets/svg/icon-park.svg'
-            alt='park'
-            width={15}
-            height={15}
-          />
-          <span className={cx('distance')}>151m</span>
+        <div className={cx('contents-wrap')}>
+          <div className={cx('top-content-wrap')}>
+            <div className={cx('store-name-wrap')}>
+              <p className={cx('store-name')}>{name}</p>
+              {!isOpen && (
+                <span className={cx('is-open')}>
+                  <Image
+                    src='/assets/svg/icon-ready.svg'
+                    alt='준비'
+                    width={18}
+                    height={11}
+                  />
+                </span>
+              )}
+            </div>
+            <span className={cx('store-address')}>{address}</span>
+          </div>
+          <div className={cx('bottom-content-wrap')}>
+            <span className={cx('icon-wrap')}>
+              {isParking && (
+                <span className={cx('icon')}>
+                  <Image
+                    src='/assets/svg/icon-park.svg'
+                    alt='park'
+                    width={15}
+                    height={15}
+                  />
+                </span>
+              )}
+              {isEcoStore && (
+                <span className={cx('icon')}>
+                  <Image
+                    src='/assets/svg/icon-eco.svg'
+                    alt='eco'
+                    width={15}
+                    height={15}
+                  />
+                </span>
+              )}
+              {isDriveThrough && (
+                <span className={cx('icon', 'icon-top')}>
+                  <Image
+                    src='/assets/svg/icon-car.svg'
+                    alt='eco'
+                    width={20}
+                    height={20}
+                  />
+                </span>
+              )}
+            </span>
+            <span className={cx('distance')}>{distance}</span>
+          </div>
         </div>
-      </div>
-    </button>
+      </button>
+    </li>
   );
 }
 

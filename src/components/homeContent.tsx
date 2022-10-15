@@ -4,16 +4,30 @@ import Image from 'next/image';
 import styles from '../../styles/main/main.module.scss';
 import RecommendedMenu from './recommendedMenu';
 import { useRecoilState } from 'recoil';
-import { nicknameState } from '../store/atom/userStates';
+import { userGradeState, nicknameState } from '../store/atom/userStates';
 import { isExistToken } from './../store/utils/token';
 import { getUserInfo } from './../../pages/api/user';
+import { getUserLevel } from './../../pages/api/level';
 import { useRouter } from 'next/router';
 
 const cx = classNames.bind(styles);
+interface ILevel {
+  userGrade: string;
+  userExp: number;
+  nextGrade: string;
+  requiredExpToNextGrade: number;
+}
 
 function homeContent() {
   const router = useRouter();
   const [myMenu, SetMyMenu] = useState<boolean>(true);
+  const [userLevel, setUserLevel] = useState<ILevel>();
+  const [progressState, setProgressState] = useRecoilState(userGradeState);
+  const styles: { [key: string]: React.CSSProperties } = {
+    container: {
+      width: `${progressState}%`,
+    },
+  };
   const [nickname, setUsername] = useRecoilState(nicknameState);
 
   useEffect(() => {
@@ -21,11 +35,24 @@ function homeContent() {
       getUserInfo().then(res => {
         setUsername(res.data.data.nickname);
       });
+      getUserLevel().then(res => {
+        setUserLevel(res.data.data);
+      });
     } else {
       setUsername('User');
     }
   }, []);
-
+  useEffect(() => {
+    if (userLevel) {
+      let exp =
+        userLevel.userExp === 0
+          ? 0
+          : userLevel.requiredExpToNextGrade / userLevel.userExp;
+      setProgressState(exp);
+    } else {
+      setProgressState(0);
+    }
+  }, [userLevel]);
   return (
     <>
       <div className={cx('point-box')}>
@@ -33,28 +60,53 @@ function homeContent() {
           <span>{nickname}</span> 님, 반갑습니다.
         </div>
         <div className={cx('point-bar')}>
-          <div>
+          <div className={cx('progress-bar-space')}>
             <div>
-              18
+              {userLevel &&
+                userLevel.requiredExpToNextGrade - userLevel.userExp}
               <Image
-                src='/assets/svg/icon-point.svg'
-                alt='point'
+                src='/assets/svg/icon-charge-battery.svg'
+                alt='charge-battery'
                 width={24}
                 height={21}
               />
-              until Cold Level
+              until {userLevel && userLevel.nextGrade} Level
             </div>
-            <div className={cx('progress-bar')} />
-            <div className={cx('my-progress-bar')} />
+            <div className={cx('progress-bar-wrap')}>
+              <div
+                className={cx('progress-bar')}
+                role='progressbar'
+                aria-valuemin={0}
+                aria-valuemax={100}
+                style={styles.container}
+              />
+            </div>
           </div>
           <div className={cx('my-score')}>
-            <span>7</span>/25
-            <Image
-              src='/assets/svg/icon-point.svg'
-              alt='point'
-              width={24}
-              height={21}
-            />
+            <span>{userLevel && userLevel.userExp}</span>/
+            {userLevel && userLevel.requiredExpToNextGrade}
+            {userLevel?.userGrade === 'Potion' ? (
+              <Image
+                src='/assets/svg/icon-potion-level.svg'
+                alt='potion-level'
+                width={24}
+                height={21}
+              />
+            ) : userLevel?.userGrade === 'Elixir' ? (
+              <Image
+                src='/assets/svg/icon-elixir-level.svg'
+                alt='elixir-level'
+                width={24}
+                height={21}
+              />
+            ) : (
+              <Image
+                src='/assets/svg/icon-power-elixir-level.svg'
+                alt='potion-level'
+                width={24}
+                height={21}
+              />
+            )}
           </div>
         </div>
       </div>

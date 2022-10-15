@@ -53,6 +53,27 @@
             padding: 6px;
         }
     }
+
+    .cart-cnt-wrap {
+        position: relative;
+
+        .cnt {
+            width: 14px;
+            height: 14px;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            z-index: 1;
+            border-radius: 50%;
+            background-color: variable.$TXT-ERROR;
+            font-size: 8px;
+            color: variable.$TXT-005;
+            text-align: center;
+        }
+
+    }
 }
 
 .product-list {

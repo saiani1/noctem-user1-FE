@@ -17,6 +17,11 @@ export const getMenuCategory = async (categorySId: number) => {
   return res;
 };
 
+export const getProduct = async (menuId: number) => {
+  const res = await basicRequest.get(`${SERVICE}/product/${menuId}`);
+  return res;
+};
+
 export const getTemperature = async (menuId: number) => {
   const res = await basicRequest.get(`${SERVICE}/${menuId}/temperature`);
   return res;
@@ -24,5 +29,10 @@ export const getTemperature = async (menuId: number) => {
 
 export const getSize = async (temperatureId: number) => {
   const res = await basicRequest.get(`${SERVICE}/${temperatureId}/size`);
+  return res;
+};
+
+export const getNutrition = async (menuId: number) => {
+  const res = await basicRequest.get(`${SERVICE}/${menuId}/nutrition`);
   return res;
 };

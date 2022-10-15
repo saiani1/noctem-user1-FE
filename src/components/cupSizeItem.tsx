@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/pages/productPage.module.scss';
@@ -8,30 +8,34 @@ const cx = classNames.bind(styles);
 
 function cupSizeItem({
   list,
-  sizeChoice,
-  setSizeChoice,
-  data,
-  setData,
+  selectedSizeTxt,
+  setSelectedSizeTxt,
+  cartData,
+  setCartData,
 }: {
   list: ISizeProps['list'];
-  sizeChoice: ISizeProps['sizeChoice'];
-  setSizeChoice: ISizeProps['setSizeChoice'];
-  data: ISizeProps['data'];
-  setData: ISizeProps['setData'];
+  selectedSizeTxt: ISizeProps['selectedSizeTxt'];
+  setSelectedSizeTxt: ISizeProps['setSelectedSizeTxt'];
+  cartData: ISizeProps['cartData'];
+  setCartData: ISizeProps['setCartData'];
 }) {
   const handleChoice = () => {
-    setSizeChoice(list.size);
-    setData({
-      ...data,
+    console.log(list.sizeId);
+    setSelectedSizeTxt(list.size);
+    setCartData({
+      ...cartData,
       sizeId: list.sizeId,
     });
   };
+
   return (
     <>
       {list && (
         <div
           className={
-            sizeChoice === list.size ? cx('cup-card-click') : cx('cup-card')
+            selectedSizeTxt === list.size
+              ? cx('cup-card-click')
+              : cx('cup-card')
           }
           role='sizeitem'
           onClick={handleChoice}
@@ -40,7 +44,7 @@ function cupSizeItem({
           <div className={cx('cup-image-box')}>
             <Image
               src={
-                sizeChoice === list.size
+                selectedSizeTxt === list.size
                   ? '/assets/svg/icon-cup-click.svg'
                   : '/assets/svg/icon-cup.svg'
               }
@@ -50,9 +54,7 @@ function cupSizeItem({
             />
           </div>
           <div>{list.size}</div>
-          {list.size === 'Tall' && <div>335ml</div>}
-          {list.size === 'Grande' && <div>473ml</div>}
-          {list.size === 'Venti' && <div>591ml</div>}
+          <div>{list.capacity}ml</div>
         </div>
       )}
     </>

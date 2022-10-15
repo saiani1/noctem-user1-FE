@@ -1,7 +1,7 @@
 export interface IParams {
   sizeId: number;
   alias: string;
-  personalOptionList: IOption;
+  personalOptionList: IOption[];
 }
 
 export interface IOption {
@@ -9,13 +9,19 @@ export interface IOption {
   amount: string;
 }
 
-interface IMenu {
+export interface IMenu1 {
   index: number;
+  myMenuId: string;
   alias: string;
-  menuImg: string;
+  sizeId: string;
+  myPersonalOptionList: string[];
+}
+
+export interface IMenu2 {
+  myMenuId: string;
   menuName: string;
-  size: string;
+  menuImg: string;
   temperature: string;
-  totalPrice: number;
-  handleDeleteMenu: React.MouseEventHandler<HTMLButtonElement>;
+  totalMenuPrice: number;
+  size: string;
 }
