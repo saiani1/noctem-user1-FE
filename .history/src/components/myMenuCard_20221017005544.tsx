@@ -29,7 +29,7 @@ function myMenuCard({ item }: { item: any }) {
           </div>
         </div>
         <div>
-          <div className={cx('img')}><img src={myMenuInfo?.menuImg}/></div>
+          <div className={cx('img')}></div>
           <div
             className={cx('order-button')}
             onClick={() => {

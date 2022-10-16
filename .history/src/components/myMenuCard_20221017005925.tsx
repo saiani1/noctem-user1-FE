@@ -24,8 +24,7 @@ function myMenuCard({ item }: { item: any }) {
           <div className={cx('my-menu-title')}>{item.alias}</div>
           <div className={cx('my-menu-kind')}>{myMenuInfo?.menuName}</div>
           <div className={cx('my-menu-detail')}>
-            ICED | TALL | 매장컵 | 에스프레소 샵1 | 물많이 | 얼음 적게 |
-            일반휘핑 많이 | 초콜릿 드리즐
+            {myMenuInfo?.myPersonalOptionList}
           </div>
         </div>
         <div>
