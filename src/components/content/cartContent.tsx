@@ -17,7 +17,7 @@ import {
 import { getToken } from '../../store/utils/token';
 import { ICart, IData, IMenuList } from '../../types/cart';
 import { useRecoilState } from 'recoil';
-import { cartCnt } from '../../store/atom/userStates';
+import { cartAmountList, cartCnt } from '../../store/atom/userStates';
 import { addComma } from '../../store/utils/function';
 import { IStore } from '../../types/store';
 
@@ -29,6 +29,7 @@ function cartContent() {
   const [datas, setDatas] = useState<IData[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [count, setCount] = useRecoilState(cartCnt);
+  const [totalAmount, setTotalAmount] = useRecoilState(cartAmountList);
   const [selectStore, setSelectStore] = useState<IStore>({
     index: 0,
     storeId: 0,
@@ -87,6 +88,10 @@ function cartContent() {
       });
     }
   }, [isChange]);
+
+  useEffect(() => {
+    console.log('total', totalAmount);
+  }, [totalAmount]);
 
   return (
     <div className={cx('wrap')}>
@@ -185,6 +190,7 @@ function cartContent() {
                       count={count}
                       isChange={isChange}
                       setIsChange={setIsChange}
+                      setTotalAmount={setTotalAmount}
                     />
                   ))}
               </div>
@@ -194,11 +200,12 @@ function cartContent() {
                     총 <strong>{count}</strong>개 / 20개
                   </span>
                   <strong className={cx('total-price')}>
-                    {datas &&
+                    {cartList &&
                       addComma(
-                        datas.reduce(function (accu: number, curr: IData) {
-                          return accu + curr.qty * curr.totalMenuPrice;
-                        }, 0),
+                        totalAmount,
+                        // datas.reduce(function (accu: number, curr: IData) {
+                        //   return accu + curr.qty * curr.totalMenuPrice;
+                        // }, 0),
                       )}
                     원
                   </strong>

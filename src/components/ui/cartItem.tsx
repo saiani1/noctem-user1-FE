@@ -10,7 +10,6 @@ import {
   getCartMenuData,
 } from '../../../pages/api/cart';
 import { addComma } from '../../store/utils/function';
-import { constSelector } from 'recoil';
 
 const cx = classNames.bind(styles);
 
@@ -19,11 +18,13 @@ function cartItem({
   count,
   isChange,
   setIsChange,
+  setTotalAmount,
 }: {
   cart: ICart;
   count: number;
   isChange: boolean;
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
+  setTotalAmount: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const { index, cartId, sizeId, qty } = cart;
   const [data, setData] = useState<IData>();
@@ -31,16 +32,13 @@ function cartItem({
   const handleCountChange = (type: string, id: number, qty: number) => {
     let isSuccess = false;
 
-    if (type === 'add') {
-      if (count < 20) {
-        qty++;
-        isSuccess = true;
-      }
-    } else {
-      if (qty > 1) {
-        qty--;
-        isSuccess = true;
-      }
+    if (type === 'add' && count < 20) {
+      qty++;
+      isSuccess = true;
+    }
+    if (type === 'sub' && qty > 1) {
+      qty--;
+      isSuccess = true;
     }
 
     if (isSuccess) {
@@ -61,7 +59,14 @@ function cartItem({
 
   useEffect(() => {
     getCartMenuData(sizeId, cartId).then(res => {
-      setData(res.data.data);
+      const resData = res.data.data;
+      setData(resData);
+      setTotalAmount(prev => {
+        console.log('prev', prev);
+        console.log('resData.totalMenuPrice', resData.totalMenuPrice);
+        return prev + resData.totalMenuPrice * qty;
+      });
+      setIsChange(!isChange);
     });
   }, []);
 
