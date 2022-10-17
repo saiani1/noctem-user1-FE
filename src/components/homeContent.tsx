@@ -46,6 +46,7 @@ function homeContent() {
   useEffect(() => {
     if (isExistToken()) {
       getUserInfo().then(res => {
+        console.log(res.data.data);
         setUsername(res.data.data.nickname);
       });
       getUserLevel().then(res => {
