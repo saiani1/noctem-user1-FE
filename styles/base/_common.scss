@@ -36,7 +36,7 @@ h3 {
 
 // button
 .btn {
-  // @include position.absolute(auto 0 auto 0);
+  @include position.absolute(auto 0 auto 0);
   display: block;
   margin: 0 19px;
   padding: 8px;
@@ -56,7 +56,9 @@ h3 {
   background-color: variable.$BG-004;
   cursor: default;
 }
-
+.btn-fixed{
+  position:fixed!important;
+}
 // layout
 .wrap {
   margin-top: 20px;
