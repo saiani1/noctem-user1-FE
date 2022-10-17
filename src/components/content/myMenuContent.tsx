@@ -16,6 +16,8 @@ import ToggleCheckbox from '../ui/toggleCheckbox';
 import EmptyMyMenu from '../content/emptyMyMenu';
 import MyMenuItem from '../ui/myMenuItem';
 import ChangeOrderMyMenuModal from './changeOrderMyMenuModal';
+import { confirmAlert } from 'react-confirm-alert';
+import CustomAlert from './../customAlert';
 
 function myMenuContent() {
   const [isClickChangeOrderBtn, setIsClickChangeOrderBtn] = useState(false);
@@ -28,6 +30,10 @@ function myMenuContent() {
 
   const cx = classNames.bind(styles);
   const router = useRouter();
+
+  const onLogin = () => {
+    router.push('/login');
+  };
 
   useEffect(() => {
     const token = getToken();
@@ -44,8 +50,20 @@ function myMenuContent() {
         }
       });
     } else {
-      alert('로그인이 필요한 서비스입니다.');
-      router.push('/login');
+      // alert('로그인이 필요한 서비스입니다.');
+      // router.push('/login');
+      confirmAlert({
+        customUI: ({ onClose }) => (
+          <CustomAlert
+            title='로그인'
+            desc='로그인이 필요한 서비스입니다. 로그인 하시겠습니까?'
+            btnTitle='로그인'
+            // id={}
+            onAction={onLogin}
+            onClose={onClose}
+          />
+        ),
+      });
     }
   }, [isDeleteMyMenu, isChangeMyMenuName]);
 
