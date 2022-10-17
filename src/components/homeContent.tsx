@@ -10,7 +10,6 @@ import { getUserInfo } from './../../pages/api/user';
 import { getUserLevel } from './../../pages/api/level';
 import { useRouter } from 'next/router';
 import { getMyMenu1, getMyMenu2 } from '../../pages/api/myMenu';
-import ReactDOM from 'react-dom';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import MyMenuCard from './myMenuCard';
@@ -133,6 +132,8 @@ function homeContent() {
             showArrows={false}
             showStatus={false}
             showIndicators={false}
+            autoPlay={true}
+            verticalSwipe={'standard'}
           >
             {myMenu && myMenu.map(item => <MyMenuCard item={item} />)}
           </Carousel>
