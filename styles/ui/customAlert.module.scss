@@ -1,10 +1,11 @@
 .react-confirm-alert-overlay {
-  background-color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.7) !important;
   z-index: 9999;
 }
 
 .popup-overlay {
-  padding: 20px 30px;
+  margin: 0 30px;
+  padding: 20px 20px;
   background: rgb(255, 255, 255);
   color: #222;
 
@@ -35,6 +36,11 @@
       &.btn-confirm {
         background-color: #ff5b59;
         color: #fff;
+      }
+
+      .txt-wrap {
+        display: inline-block;
+        padding-bottom: 4px;
       }
     }
   }

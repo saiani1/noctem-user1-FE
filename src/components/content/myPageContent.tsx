@@ -10,11 +10,36 @@ import { isExistToken } from './../../store/utils/token';
 import { useRecoilState } from 'recoil';
 import { nicknameState } from '../../store/atom/userStates';
 import { getUserInfo } from '../../../pages/api/user';
+import { confirmAlert } from 'react-confirm-alert';
+import CustomAlert from './../customAlert';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
   const router = useRouter();
   const [nickname, setUsername] = useRecoilState(nicknameState);
+
+  const onLogin = () => {
+    router.push('/login');
+  };
+
+  const handleMyMenuPage = () => {
+    if (!isExistToken()) {
+      confirmAlert({
+        customUI: ({ onClose }) => (
+          <CustomAlert
+            title='로그인'
+            desc='로그인이 필요한 서비스입니다. 로그인 하시겠습니까?'
+            btnTitle='로그인'
+            // id={}
+            onAction={onLogin}
+            onClose={onClose}
+          />
+        ),
+      });
+    } else {
+      router.push('/myMenu');
+    }
+  };
 
   useEffect(() => {
     if (isExistToken()) {
@@ -87,12 +112,12 @@ function myPageContent() {
           </button>
         </li>
         <li className={cx('menu-btn-li')}>
-          <Link href='/myMenu'>
+          <button onClick={handleMyMenuPage}>
             <a className={cx('button')}>
               <Image src='/assets/svg/icon-mug.svg' width={35} height={35} />
               <span>나만의 메뉴</span>
             </a>
-          </Link>
+          </button>
         </li>
         <li className={cx('menu-btn-li')}>
           <Link href='/userInfo'>

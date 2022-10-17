@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/myMenuContent.module.scss';
@@ -11,13 +10,10 @@ import {
   changeShowMainMyMenu,
 } from '../../../pages/api/myMenu';
 import { IMenu1 } from '../../../src/types/myMenu.d';
-import { getToken } from './../../store/utils/token';
 import ToggleCheckbox from '../ui/toggleCheckbox';
 import EmptyMyMenu from '../content/emptyMyMenu';
 import MyMenuItem from '../ui/myMenuItem';
 import ChangeOrderMyMenuModal from './changeOrderMyMenuModal';
-import { confirmAlert } from 'react-confirm-alert';
-import CustomAlert from './../customAlert';
 
 function myMenuContent() {
   const [isClickChangeOrderBtn, setIsClickChangeOrderBtn] = useState(false);
@@ -29,42 +25,18 @@ function myMenuContent() {
   const [showMyMenu, setShowMyMenu] = useState(false);
 
   const cx = classNames.bind(styles);
-  const router = useRouter();
-
-  const onLogin = () => {
-    router.push('/login');
-  };
 
   useEffect(() => {
-    const token = getToken();
-
-    if (token !== '{}') {
-      Promise.all([getShowMainMyMenu(), getMyMenu1()]).then(res => {
-        console.log(res);
-        setShowMyMenu(res[0].data.data);
-        if (res[1].data.data.length !== 0) {
-          setInfo(res[1].data.data);
-        } else {
-          setIsEmpty(true);
-          setIsFetching(true);
-        }
-      });
-    } else {
-      // alert('로그인이 필요한 서비스입니다.');
-      // router.push('/login');
-      confirmAlert({
-        customUI: ({ onClose }) => (
-          <CustomAlert
-            title='로그인'
-            desc='로그인이 필요한 서비스입니다. 로그인 하시겠습니까?'
-            btnTitle='로그인'
-            // id={}
-            onAction={onLogin}
-            onClose={onClose}
-          />
-        ),
-      });
-    }
+    Promise.all([getShowMainMyMenu(), getMyMenu1()]).then(res => {
+      console.log(res);
+      setShowMyMenu(res[0].data.data);
+      if (res[1].data.data.length !== 0) {
+        setInfo(res[1].data.data);
+      } else {
+        setIsEmpty(true);
+        setIsFetching(true);
+      }
+    });
   }, [isDeleteMyMenu, isChangeMyMenuName]);
 
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
