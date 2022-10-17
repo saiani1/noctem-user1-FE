@@ -125,36 +125,38 @@ function homeContent() {
           </div>
         </div>
       </div>
-      <div className={cx('my-menu')}>
-        <h2 className={cx('title')}>나만의 메뉴</h2>
-        {myMenu ? (
-          <Carousel
-            showArrows={false}
-            showStatus={false}
-            showIndicators={false}
-            autoPlay={true}
-            verticalSwipe={'standard'}
-          >
-            {myMenu && myMenu.map(item => <MyMenuCard item={item} />)}
-          </Carousel>
-        ) : (
-          <div className={cx('card')}>나만의 메뉴를 등록해 주세요</div>
-        )}
-      </div>
-      <div className={cx('nearly-store')}>
-        <h2 className={cx('title')}>가까운 매장</h2>
-        <div className={cx('card')}>
-          <div className={cx('store-img')}>img</div>
-          <div className={cx('text-space')}>
-            <div className={cx('store-name')}>센텀드림월드</div>
-            <div className={cx('store-address')}>
-              부산광역시 해운대구 셈텀2로25, 센텀드림월드 1층(우동)
-            </div>
-            <div>
-              <div>
-                예상대기시간<span>20</span>분
+      <div className={cx('my-wrap')}>
+        <div className={cx('my-menu')}>
+          <h2 className={cx('title')}>나만의 메뉴</h2>
+          {myMenu ? (
+            <Carousel
+              showArrows={false}
+              showStatus={false}
+              showIndicators={false}
+              autoPlay={false}
+              verticalSwipe={'standard'}
+            >
+              {myMenu && myMenu.map(item => <MyMenuCard item={item} />)}
+            </Carousel>
+          ) : (
+            <div className={cx('card')}>나만의 메뉴를 등록해 주세요</div>
+          )}
+        </div>
+        <div className={cx('nearly-store')}>
+          <h2 className={cx('title')}>가까운 매장</h2>
+          <div className={cx('card')}>
+            <div className={cx('store-img')}>img</div>
+            <div className={cx('text-space')}>
+              <div className={cx('store-name')}>센텀드림월드</div>
+              <div className={cx('store-address')}>
+                부산광역시 해운대구 셈텀2로25, 센텀드림월드 1층(우동)
               </div>
-              <div>151m</div>
+              <div>
+                <div>
+                  예상대기시간<span>20</span>분
+                </div>
+                <div>151m</div>
+              </div>
             </div>
           </div>
         </div>
