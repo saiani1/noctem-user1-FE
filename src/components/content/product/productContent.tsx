@@ -32,6 +32,7 @@ import { IParams, IOption } from '../../../types/myMenu';
 import ProductNurtitionInfo from './productNutritionInfo';
 import { cartCnt } from '../../../store/atom/userStates';
 import { addComma } from '../../../store/utils/function';
+import MyMenuRenamePopUp from '../myMenuRenamePopUp';
 
 const cx = classNames.bind(styles);
 
@@ -145,9 +146,11 @@ function productContent() {
       setMyMenuAlert(true);
     }
   };
+
+  console.log('myMenuData:', detailList);
   const handleAddMyMenuData = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
-    console.log(mymenuNameValue);
+    console.log('myMenuName:', mymenuNameValue);
     if (mymenuNameValue && mymenuNameValue.length !== 0) {
       setMyMenuData({
         ...myMenuData,
@@ -411,36 +414,15 @@ function productContent() {
         </button>
       </div>
       {myMenuAlert && (
-        <div className={cx('menu-name-alert')}>
-          <div className={cx('my-menu')}>
-            <div>
-              <h3>나만의 메뉴로 등록해보세요</h3>
-            </div>
-            <div className={cx('menu-info')}>
-              <h4>카페 아메리카노</h4>
-              <div>속성</div>
-            </div>
-            <div className={cx('menu-nickname')}>
-              <p>등록할 나만의 메뉴 이름을 지어보세요.</p>
-              <input
-                type='text'
-                placeholder='나만의 카페 아메리카노'
-                name='input-nickname'
-                // onChange={checkMenuName}
-                ref={myMenuNameRef}
-              />
-            </div>
-            <div className={cx('button-container')}>
-              <button type='button' onClick={handleClose}>
-                취소
-              </button>
-              <button type='button' onClick={handleAddMyMenuData}>
-                확인
-              </button>
-            </div>
-          </div>
-          <div className={cx('background')} onClick={handleClose} />
-        </div>
+        <MyMenuRenamePopUp
+          prevPage='product'
+          selectedSizeTxt={selectedSizeTxt}
+          temperatureChoice={temperatureChoice}
+          detailList={detailList}
+          myMenuNameRef={myMenuNameRef}
+          handleClose={handleClose}
+          handleAddMyMenuData={handleAddMyMenuData}
+        />
       )}
       <ProductOrder
         open={open}

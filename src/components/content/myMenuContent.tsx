@@ -6,8 +6,6 @@ import classNames from 'classnames/bind';
 import styles from '../../../styles/content/myMenuContent.module.scss';
 import {
   getMyMenu1,
-  changeMyMenuOrder,
-  changeMyMenuNickName,
   deleteMyMenu,
   getShowMainMyMenu,
   changeShowMainMyMenu,
@@ -25,7 +23,7 @@ function myMenuContent() {
   const [info, setInfo] = useState<IMenu1[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isDeleteMyMenu, setIsDeleteMyMenu] = useState(false);
-  const [successCall, setSuccessCall] = useState(false);
+  const [isChangeMyMenuName, setIsChangeMyMenuName] = useState(false);
   const [showMyMenu, setShowMyMenu] = useState(false);
 
   const cx = classNames.bind(styles);
@@ -40,7 +38,6 @@ function myMenuContent() {
         setShowMyMenu(res[0].data.data);
         if (res[1].data.data.length !== 0) {
           setInfo(res[1].data.data);
-          setSuccessCall(true);
         } else {
           setIsEmpty(true);
           setIsFetching(true);
@@ -50,7 +47,7 @@ function myMenuContent() {
       alert('로그인이 필요한 서비스입니다.');
       router.push('/login');
     }
-  }, [isDeleteMyMenu]);
+  }, [isDeleteMyMenu, isChangeMyMenuName]);
 
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeShowMainMyMenu().then(res => {
@@ -120,9 +117,9 @@ function myMenuContent() {
                 isFetching={isFetching}
                 isEmpty={isEmpty}
                 handleDeleteMenu={handleDeleteMenu}
-                successCall={successCall}
                 setIsFetching={setIsFetching}
                 setIsDeleteMyMenu={setIsDeleteMyMenu}
+                setIsChangeMyMenuName={setIsChangeMyMenuName}
               />
             ))}
         </ul>
