@@ -43,3 +43,18 @@
     }
   }
 }
+.login-button{
+  display: block;
+  width: 100%;
+  margin: 50px 0;
+  padding: 8px;
+  text-align: center;
+  font-size: variable.$FS-14;
+  font-weight: 400;
+  border-radius: 20px;
+  color: variable.$TXT-005;
+  background-color: variable.$POINT;
+}
+
+
+
