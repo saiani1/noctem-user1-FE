@@ -15,6 +15,7 @@ interface IProps {
   handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleteMyMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsChangeMyMenuName: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function myMenuItem({
@@ -24,6 +25,7 @@ function myMenuItem({
   handleDeleteMenu,
   setIsFetching,
   setIsDeleteMyMenu,
+  setIsChangeMyMenuName,
 }: IProps) {
   const [itemInfo, setItemInfo] = useState<IMenu2>();
   const [clickRenameBtn, setClickRenameBtn] = useState(false);
@@ -37,15 +39,23 @@ function myMenuItem({
         setItemInfo(res.data.data);
         setIsFetching(true);
         setIsDeleteMyMenu(false);
+        setIsChangeMyMenuName(false);
       });
     }
   }, []);
 
-  const handleAddMyMenuData = () => {
+  const handleChangeMyMenuName = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
-    // if (mymenuNameValue && mymenuNameValue.length !== 0) {
-    //   changeMyMenuNickName(, mymenuNameValue).then();
-    // }
+    if (mymenuNameValue && mymenuNameValue.length !== 0) {
+      changeMyMenuNickName(item?.myMenuId, mymenuNameValue).then(res => {
+        console.log(res);
+        setClickRenameBtn(prev => {
+          return !prev;
+        });
+        setIsChangeMyMenuName(true);
+        alert('나만의 메뉴 이름이 변경되었습니다.');
+      });
+    }
   };
 
   const handleClickRename = () => {
@@ -65,11 +75,12 @@ function myMenuItem({
     <>
       {clickRenameBtn && (
         <MyMenuRenamePopUp
+          prevPage='myMenu'
           itemInfo={itemInfo}
           item={item}
           myMenuNameRef={myMenuNameRef}
           handleClose={handleClose}
-          handleAddMyMenuData={handleAddMyMenuData}
+          handleAddMyMenuData={handleChangeMyMenuName}
         />
       )}
       {isFetching && !isEmpty && (

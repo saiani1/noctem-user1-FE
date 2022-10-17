@@ -2,35 +2,69 @@ import React from 'react';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/pages/productPage.module.scss';
+import { IMenu1, IMenu2 } from '../../../src/types/myMenu.d';
+import { IDetail } from '../../types/productDetail';
 
 interface IProps {
+  prevPage: string;
+  item?: IMenu1;
+  itemInfo?: IMenu2;
+  detailList?: IDetail;
+  selectedSizeTxt: string;
+  temperatureChoice: string;
   myMenuNameRef: React.ForwardedRef<HTMLInputElement>;
   handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleAddMyMenuData: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 function myMenuRenamePopUp({
+  prevPage,
+  item,
+  itemInfo,
+  detailList,
+  selectedSizeTxt,
+  temperatureChoice,
   myMenuNameRef,
   handleClose,
   handleAddMyMenuData,
 }: IProps) {
   const cx = classNames.bind(styles);
+  console.log('item:', item, 'itemInfo:', itemInfo);
 
   return (
     <div className={cx('menu-name-alert')}>
       <div className={cx('my-menu')}>
         <div>
-          <h3>나만의 메뉴로 등록해보세요</h3>
+          <h3>
+            나만의 메뉴
+            {prevPage === 'myMenu'
+              ? ' 이름을 수정해보세요.'
+              : '로 등록해보세요'}
+          </h3>
         </div>
         <div className={cx('menu-info')}>
-          <h4>카페 아메리카노</h4>
-          <div>속성</div>
+          <h4>
+            {prevPage === 'myMenu'
+              ? itemInfo?.menuName
+              : detailList?.temperatureList[0].menuName}
+          </h4>
+          <div className={cx('menu-option')}>
+            {prevPage === 'myMenu' ? itemInfo?.temperature : temperatureChoice}{' '}
+            | {prevPage === 'myMenu' ? itemInfo?.size : selectedSizeTxt}
+          </div>
         </div>
         <div className={cx('menu-nickname')}>
-          <p>등록할 나만의 메뉴 이름을 지어보세요.</p>
+          <p>
+            {prevPage === 'myMenu' ? '수정할' : '등록할'} 나만의 메뉴 이름을
+            지어보세요.
+          </p>
           <input
             type='text'
-            placeholder='나만의 카페 아메리카노'
+            placeholder={
+              prevPage === 'myMenu'
+                ? item?.alias
+                : detailList?.temperatureList[0].menuName
+            }
             name='input-nickname'
             // onChange={checkMenuName}
             ref={myMenuNameRef}

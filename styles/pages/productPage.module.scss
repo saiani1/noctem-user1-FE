@@ -120,13 +120,21 @@
     width: 80%;
     z-index: 150;
     h3 {
-      font-size: variable.$FS-18;
+      font-size: variable.$FS-16;
       padding: 10px 0;
       font-weight: variable.$FW-003;
     }
     .menu-info {
       background-color: variable.$BG-003;
       padding: 12px;
+
+      h4 {
+        font-weight: bold;
+      }
+      .menu-option {
+        font-size: variable.$FS-12;
+        color: variable.$TXT-003;
+      }
     }
     .menu-nickname {
       padding: 10px 0;

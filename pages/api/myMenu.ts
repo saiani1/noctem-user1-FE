@@ -39,7 +39,7 @@ export const changeMyMenuOrder = async (value: number[]) => {
   return res;
 };
 
-export const changeMyMenuNickName = async (id: number, value: string) => {
+export const changeMyMenuNickName = async (id: string, value: string) => {
   const res = await basicRequest.patch(
     `${U_SERVICE}/myMenu/${id}/alias`,
     {
