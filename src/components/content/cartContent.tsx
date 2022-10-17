@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
@@ -9,15 +8,11 @@ import styles from '../../../styles/content/cartContent.module.scss';
 import CartItem from '../ui/cartItem';
 import EmptyCart from './emptyCart';
 import { useEffect } from 'react';
-import {
-  getCartMenuData,
-  getCartList,
-  getCount,
-} from '../../../pages/api/cart';
+import { getCartList, getCount } from '../../../pages/api/cart';
 import { getToken } from '../../store/utils/token';
 import { ICart, IData, IMenuList } from '../../types/cart';
 import { useRecoilState } from 'recoil';
-import { cartAmountList, cartCnt } from '../../store/atom/userStates';
+import { cartTotalAmount, cartCnt } from '../../store/atom/userStates';
 import { addComma } from '../../store/utils/function';
 import { IStore } from '../../types/store';
 
@@ -29,7 +24,7 @@ function cartContent() {
   const [datas, setDatas] = useState<IData[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [count, setCount] = useRecoilState(cartCnt);
-  const [totalAmount, setTotalAmount] = useRecoilState(cartAmountList);
+  const [totalAmount, setTotalAmount] = useRecoilState(cartTotalAmount);
   const [selectStore, setSelectStore] = useState<IStore>({
     index: 0,
     storeId: 0,
