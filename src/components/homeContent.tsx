@@ -56,8 +56,6 @@ function homeContent() {
         console.log(res.data.data);
         SetMyMenu(res.data.data);
       });
-    } else {
-      setUsername('User');
     }
   }, []);
   useEffect(() => {

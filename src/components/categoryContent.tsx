@@ -100,7 +100,7 @@ function categoryContent({
           </div>
         </div>
         <div className={cx('cart-cnt-wrap')}>
-          {cartCount && <div className={cx('cnt')}>{cartCount}</div>}
+          {cartCount !== 0 && <div className={cx('cnt')}>{cartCount}</div>}
           <Link href='/cart'>
             <Image
               src='/assets/svg/icon-cart.svg'

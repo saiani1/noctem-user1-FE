@@ -21,15 +21,13 @@ function myPageContent() {
       getUserInfo().then(res => {
         setUsername(res.data.data.nickname);
       });
-    } else {
-      setUsername('User');
     }
   }, []);
 
   const handleLogout = () => {
     if (isExistToken()) {
       removeToken();
-      setUsername('User');
+      setUsername('게스트');
       alert('로그아웃 되셨습니다.');
       router.push('/');
     }

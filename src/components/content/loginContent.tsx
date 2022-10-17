@@ -67,7 +67,7 @@ function loginContent() {
           <Link href='/'>비밀번호 찾기</Link>
           <Link href='/signUp'>회원가입</Link>
         </div>
-        <button type='submit' className={cx('btn', 'btn-bottom')}>
+        <button type='submit' className={cx('login-button')}>
           로그인 하기
         </button>
       </form>
