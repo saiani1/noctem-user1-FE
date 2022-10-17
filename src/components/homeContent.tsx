@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../styles/main/main.module.scss';
@@ -9,6 +9,11 @@ import { isExistToken } from './../store/utils/token';
 import { getUserInfo } from './../../pages/api/user';
 import { getUserLevel } from './../../pages/api/level';
 import { useRouter } from 'next/router';
+import { getMyMenu1, getMyMenu2 } from '../../pages/api/myMenu';
+import ReactDOM from 'react-dom';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
+import MyMenuCard from './myMenuCard';
 
 const cx = classNames.bind(styles);
 interface ILevel {
@@ -17,10 +22,18 @@ interface ILevel {
   nextGrade: string;
   requiredExpToNextGrade: number;
 }
+interface IData {
+  index: number;
+  myMenuId: number;
+  alias: string;
+  sizeId: number;
+  myPersonalOptionList: IMyPersonalOptionList;
+}
+interface IMyPersonalOptionList {}
 
 function homeContent() {
   const router = useRouter();
-  const [myMenu, SetMyMenu] = useState<boolean>(true);
+  const [myMenu, SetMyMenu] = useState<IData[]>([]);
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
   const styles: { [key: string]: React.CSSProperties } = {
@@ -37,6 +50,10 @@ function homeContent() {
       });
       getUserLevel().then(res => {
         setUserLevel(res.data.data);
+      });
+      getMyMenu1().then(res => {
+        console.log(res.data.data);
+        SetMyMenu(res.data.data);
       });
     } else {
       setUsername('User');
@@ -113,29 +130,13 @@ function homeContent() {
       <div className={cx('my-menu')}>
         <h2 className={cx('title')}>나만의 메뉴</h2>
         {myMenu ? (
-          <div className={cx('my-menu-true')}>
-            <div>
-              <div className={cx('my-menu-title')}>
-                나민의 아이스 민트 블랜드 티
-              </div>
-              <div className={cx('my-menu-kind')}>아이스 민트 블랜드 티</div>
-              <div className={cx('my-menu-detail')}>
-                ICED | TALL | 매장컵 | 에스프레소 샵1 | 물많이 | 얼음 적게 |
-                일반휘핑 많이 | 초콜릿 드리즐
-              </div>
-            </div>
-            <div>
-              <div className={cx('img')}>img</div>
-              <div
-                className={cx('order-button')}
-                onClick={() => {
-                  router.push('/order');
-                }}
-              >
-                주문하기
-              </div>
-            </div>
-          </div>
+          <Carousel
+            showArrows={false}
+            showStatus={false}
+            showIndicators={false}
+          >
+            {myMenu && myMenu.map(item => <MyMenuCard item={item} />)}
+          </Carousel>
         ) : (
           <div className={cx('card')}>나만의 메뉴를 등록해 주세요</div>
         )}

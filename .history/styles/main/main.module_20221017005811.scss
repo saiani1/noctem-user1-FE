@@ -147,12 +147,10 @@
 
     div {
       .img {
+        border-radius: 100px;
         width: 55px;
-        height: 55px;
-        margin: 8px;
         img{
           width: 100%;
-          border-radius: 100px;
         }
       }
 
