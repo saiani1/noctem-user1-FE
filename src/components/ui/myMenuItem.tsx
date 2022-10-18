@@ -3,7 +3,10 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 import toast from 'react-hot-toast';
 
-import { getMyMenu2, changeMyMenuNickName } from '../../../pages/api/myMenu';
+import {
+  getMyMenuDetailData,
+  changeMyMenuNickName,
+} from '../../../pages/api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma } from './../../store/utils/function';
@@ -36,7 +39,7 @@ function myMenuItem({
 
   useEffect(() => {
     if (item !== undefined && !isEmpty) {
-      getMyMenu2(item.sizeId, item.myMenuId).then(res => {
+      getMyMenuDetailData(item.sizeId, item.myMenuId).then(res => {
         setItemInfo(res.data.data);
         setIsFetching(true);
         setIsDeleteMyMenu(false);

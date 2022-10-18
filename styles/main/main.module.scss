@@ -1,7 +1,6 @@
 @use '/styles/base/variable';
 @use '/styles/mixins/position';
 
-
 .point-box {
   margin: 24px;
 
@@ -162,10 +161,15 @@
 }
 
 .my-menu {
-  margin: 0 20px;
+  // margin: 0 20px;
   margin-bottom: -20px;
 
+  .carousel .slider-wrapper.axis-horizontal .slider {
+    width: calc(100% - 40px) !important;
+  }
+
   .title {
+    padding: 0 20px;
     font-weight: bold;
     margin-left: 4px;
   }
@@ -174,16 +178,37 @@
     background: #ffffff;
     box-shadow: 0px 2px 4px rgba(98, 98, 98, 0.25);
     border-radius: 5px;
-
     color: variable.$TXT-003;
     text-align: center;
-    padding: 50px 66px;
+    margin-bottom: 50px;
+    padding: 30px;
+
+    .card-btn {
+      margin-top: 10px;
+      color: variable.$TXT-004;
+      text-decoration: underline;
+    }
   }
 
   div {
-    // padding: 2px;
     margin: 2px;
 
+    div {
+      div {
+        ul {
+          width: calc(100% - 80px) !important;
+
+          li:first-child {
+            margin-right: 20px !important;
+            margin-left: 20px !important;
+          }
+
+          li {
+            margin-right: 20px !important;
+          }
+        }
+      }
+    }
 
     .my-menu-true {
       background: #ffffff;

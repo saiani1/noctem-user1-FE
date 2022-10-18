@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/myMenuContent.module.scss';
 import {
-  getMyMenu1,
+  getMyMenuData,
   deleteMyMenu,
   getShowMainMyMenu,
   changeShowMainMyMenu,
@@ -28,7 +28,7 @@ function myMenuContent() {
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    Promise.all([getShowMainMyMenu(), getMyMenu1()]).then(res => {
+    Promise.all([getShowMainMyMenu(), getMyMenuData()]).then(res => {
       console.log(res);
       setShowMyMenu(res[0].data.data);
       if (res[1].data.data.length !== 0) {
@@ -50,6 +50,7 @@ function myMenuContent() {
     e: React.MouseEvent<HTMLElement, MouseEvent>,
   ): void => {
     const name = (e.target as HTMLInputElement).name;
+    console.log('ID', name);
     deleteMyMenu(name).then(res => {
       console.log(res);
       setIsDeleteMyMenu(true);

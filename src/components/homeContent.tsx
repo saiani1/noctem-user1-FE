@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import useGeolocation from 'react-hook-geolocation';
 import Image from 'next/image';
-import styles from '../../styles/main/main.module.scss';
 import RecommendedMenu from './recommendedMenu';
 import { useRecoilState } from 'recoil';
 import { userGradeState, nicknameState } from '../store/atom/userStates';
@@ -10,7 +9,7 @@ import { isExistToken } from './../store/utils/token';
 import { getUserInfo } from './../../pages/api/user';
 import { getUserLevel } from './../../pages/api/level';
 import { useRouter } from 'next/router';
-import { getMyMenu1 } from '../../pages/api/myMenu';
+import { getMyMenuData } from '../../pages/api/myMenu';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import MyMenuCard from './myMenuCard';
@@ -19,6 +18,7 @@ import { getStoreList, getStoreWaitingTime } from '../../pages/api/store';
 import { IStore } from '../types/store';
 import { IMenuData1 } from '../types/myMenu';
 import { ILevel } from '../types/user';
+import styles from '../../styles/main/main.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -26,7 +26,7 @@ function homeContent() {
   const router = useRouter();
   const geolocation = useGeolocation();
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [myMenu, SetMyMenu] = useState<IMenuData1[]>();
+  const [myMenu, setMyMenu] = useState<IMenuData1[]>();
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
   const styles: { [key: string]: React.CSSProperties } = {
@@ -47,8 +47,9 @@ function homeContent() {
       getUserLevel().then(res => {
         setUserLevel(res.data.data);
       });
-      getMyMenu1().then(res => {
-        SetMyMenu(res.data.data);
+      getMyMenuData().then(res => {
+        console.log(res);
+        setMyMenu(res.data.data);
       });
     } else {
       setIsLogin(false);
@@ -195,7 +196,20 @@ function homeContent() {
                 </Carousel>
               </>
             ) : (
-              <div className={cx('card')}>나만의 메뉴를 등록해 주세요</div>
+              <>
+                <h2 className={cx('title')}>나만의 메뉴</h2>
+                <div className={cx('card')}>
+                  <div>나만의 메뉴를 등록해 주세요!</div>
+                  <button
+                    onClick={() => {
+                      router.push('/category');
+                    }}
+                    className={cx('card-btn')}
+                  >
+                    찾으러 가기
+                  </button>
+                </div>
+              </>
             )}
           </div>
         ) : (
