@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
+import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/myPageContent.module.scss';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -54,7 +55,7 @@ function myPageContent() {
     if (isExistToken()) {
       removeToken();
       setUsername('게스트');
-      alert('로그아웃 되셨습니다.');
+      toast.success('로그아웃 되셨습니다.');
       router.push('/');
     }
   };
@@ -114,7 +115,9 @@ function myPageContent() {
           <button
             onClick={() => {
               // handleMyPage('');
-              alert('준비 중인 서비스입니다.');
+              toast('준비 중인 서비스입니다.', {
+                icon: '📢',
+              });
             }}
           >
             <Image src='/assets/svg/icon-receipt.svg' width={35} height={35} />

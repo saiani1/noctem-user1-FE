@@ -32,6 +32,41 @@
   }
 }
 
+.info-wrap {
+  padding: 15px 15px 20px;
+  margin: 10px 24px 24px;
+  background-color: variable.$BG-001;
+  box-shadow: 1px 1px 5px rgba(variable.$BG-004, 0.3);
+  border-radius: 10px;
+
+  .info {
+    margin-bottom: 10px;
+    font-size: variable.$FS-16;
+    font-weight: bold;
+  }
+
+  .btn-box {
+    text-align: right;
+
+    .btn {
+      margin: 0 4px;
+      padding: 4px 10px;
+      text-align: center;
+      font-size: variable.$FS-14;
+      font-weight: 400;
+      border-radius: 20px;
+      color: variable.$TXT-005;
+      background-color: variable.$POINT;
+    }
+
+    .login-btn {
+      border: 1px solid variable.$POINT;
+      color: variable.$POINT;
+      background-color: variable.$BG-001
+    }
+  }
+}
+
 .progress-bar-wrap {
   position: relative;
   display: flex;
@@ -42,10 +77,9 @@
   border-radius: 2.5px;
 
   &::after {
-    @include position.absolute(1px -4.5px auto auto);
-    // width: 100%;
+    @include position.absolute(0 -4.5px auto auto);
     content: ' ';
-    width: 1.5px;
+    width: 2px;
     height: 7px;
     background-color: variable.$LINE-003;
   }
@@ -116,12 +150,13 @@
 
 .my-wrap {
   padding: 14px 0;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   background-color: variable.$BG-002;
 }
 
 .my-menu {
   margin: 0 20px;
+  margin-bottom: -20px;
 
   .title {
     font-weight: bold;
@@ -155,17 +190,19 @@
         text-align: left;
 
         .my-menu-title {
+          font-weight: variable.$FW-002;
+          font-size: variable.$FS-16;
           color: variable.$TXT-001;
         }
 
         .my-menu-kind {
-          color: variable.$TXT-003;
-          font-size: 12px;
+          color: variable.$TXT-004;
+          font-size: variable.$FS-12;
         }
 
         .my-menu-detail {
           color: variable.$TXT-002;
-          font-size: 12px;
+          font-size: variable.$FS-12;
         }
       }
 
@@ -184,6 +221,9 @@
         .order-button {
           background-color: variable.$TXT-001;
           color: variable.$TXT-005;
+          font-size: variable.$FS-12;
+          font-weight: variable.$FW-002;
+          padding: 2px;
           border-radius: 13px;
           text-align: center;
           white-space: nowrap;
@@ -213,13 +253,27 @@
     display: flex;
 
     .store-img {
-      padding: 40px;
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      overflow: hidden;
+      align-self: center;
+      margin-right: 10px;
+
+      img {
+        width: inherit;
+      }
     }
 
     .text-space {
+      width: 100%;
       text-align: left;
+      display: flex;
+      flex-direction: column;
 
       .store-name {
+        font-size: variable.$FS-14;
+        font-weight: variable.$FW-003;
         color: variable.$TXT-001;
       }
 
@@ -228,21 +282,29 @@
         font-size: 12px;
       }
 
-      div {
+      .info {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
         font-size: 12px;
         margin-top: auto;
+        color: variable.$TXT-002;
 
-        span {
+        .waiting,
+        .distance {
+          display: inline-block;
           color: variable.$TXT-001;
-          font-size: 22px;
+          font-size: variable.$FS-18;
+          font-weight: variable.$FW-003;
         }
-      }
 
-      :nth-child(2) {
-        color: variable.$TXT-001;
+        .waiting {
+          padding-left: 8px;
+        }
+
+        .distance {
+          font-size: variable.$FS-12;
+        }
       }
     }
   }

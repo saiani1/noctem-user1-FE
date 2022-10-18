@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
+import toast from 'react-hot-toast';
 
 import { getMyMenu2, changeMyMenuNickName } from '../../../pages/api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
@@ -53,7 +54,7 @@ function myMenuItem({
           return !prev;
         });
         setIsChangeMyMenuName(true);
-        alert('나만의 메뉴 이름이 변경되었습니다.');
+        toast.success('나만의 메뉴 이름이 변경되었습니다.');
       });
     }
   };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FocusEvent, useRef } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
 import styles from '../../../../styles/pages/productPage.module.scss';
 import CategoryContent from '../../categoryContent';
 import ProductNutritionSheet from './productNutritionSheet';
@@ -94,11 +95,11 @@ function productContent() {
 
   const handleAddCart = () => {
     if (cupChoice === '') {
-      alert('컵을 선택하세요.');
+      toast.error('컵을 선택하세요.');
     } else {
       const sum = cartCount + count;
       if (sum > 20) {
-        alert('총 20개까지 담을 수 있습니다.');
+        toast.error('총 20개까지 담을 수 있습니다.');
         return;
       }
 
@@ -112,7 +113,7 @@ function productContent() {
         addCart(cartData);
       }
       setOpen(false);
-      alert('장바구니에 담겼습니다!');
+      toast.success('장바구니에 담겼습니다!');
     }
   };
   const checkMenuName = (e: FocusEvent<HTMLInputElement>) => {
@@ -139,7 +140,7 @@ function productContent() {
 
   const handleAddMyMenu = (e: any) => {
     if (selectedSizeTxt === '' || cupChoice === '') {
-      alert('사이즈와 컵을 선택해주세요');
+      toast.error('사이즈와 컵을 선택해주세요');
       return;
     } else {
       setOpen(false);
@@ -165,10 +166,10 @@ function productContent() {
       addMyMenu(value).then(res => {
         console.log(res);
         if (res.data.data) {
-          alert('추가되었습니다');
+          toast.success('나만의 메뉴에 추가되었습니다');
           setMyMenuAlert(false);
         } else {
-          alert('이미 등록된 상품입니다.');
+          toast.error('이미 등록된 상품입니다.');
           setMyMenuAlert(false);
         }
       });

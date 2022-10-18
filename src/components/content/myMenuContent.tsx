@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
+import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/myMenuContent.module.scss';
 import {
@@ -52,7 +53,7 @@ function myMenuContent() {
     deleteMyMenu(name).then(res => {
       console.log(res);
       setIsDeleteMyMenu(true);
-      alert('나만의 메뉴가 삭제되었습니다.');
+      toast.success('나만의 메뉴가 삭제되었습니다.');
     });
   };
 

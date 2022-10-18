@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
+import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/userInfoContent.module.scss';
 import { getToken } from '../../store/utils/token';
@@ -94,9 +95,9 @@ function userInfoContent() {
             ...info,
             nickname: nickValue,
           });
-          alert('닉네임이 변경되었습니다.');
+          toast.success('닉네임이 변경되었습니다.');
         } else {
-          alert('닉네임 변경에 실패하였습니다.');
+          toast.error('닉네임 변경에 실패하였습니다.');
         }
       });
     } else if (!isValid) setError('닉네임 중복확인을 진행해주세요.');
