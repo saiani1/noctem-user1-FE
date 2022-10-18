@@ -6,3 +6,8 @@ export const getStoreList = async (latitude: number, longitude: number) => {
   const res = await basicRequest.get(`${SERVICE}/store/search/${latitude}/${longitude}`);
   return res;
 };
+
+export const getStoreWaitingTime = async (storeId: number) => {
+  const res = await basicRequest.get(`${SERVICE}/order/waitingTime/${storeId}`);
+  return res;
+}

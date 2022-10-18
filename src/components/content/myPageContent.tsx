@@ -2,19 +2,46 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
+import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/myPageContent.module.scss';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import { removeToken } from '../../store/utils/token';
 import { useRouter } from 'next/router';
 import { isExistToken } from './../../store/utils/token';
 import { useRecoilState } from 'recoil';
 import { nicknameState } from '../../store/atom/userStates';
 import { getUserInfo } from '../../../pages/api/user';
+import { confirmAlert } from 'react-confirm-alert';
+import CustomAlert from './../customAlert';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
   const router = useRouter();
   const [nickname, setUsername] = useRecoilState(nicknameState);
+
+  const onLogin = () => {
+    router.push('/login');
+  };
+
+  const handleMyPage = (link: string) => {
+    if (!isExistToken()) {
+      confirmAlert({
+        customUI: ({ onClose }) => (
+          <CustomAlert
+            title='로그인'
+            desc='로그인이 필요한 서비스입니다. 로그인 하시겠습니까?'
+            btnTitle='로그인'
+            // id={}
+            onAction={onLogin}
+            onClose={onClose}
+          />
+        ),
+      });
+    } else {
+      router.push(link);
+    }
+  };
 
   useEffect(() => {
     if (isExistToken()) {
@@ -28,7 +55,7 @@ function myPageContent() {
     if (isExistToken()) {
       removeToken();
       setUsername('게스트');
-      alert('로그아웃 되셨습니다.');
+      toast.success('로그아웃 되셨습니다.');
       router.push('/');
     }
   };
@@ -69,7 +96,11 @@ function myPageContent() {
 
       <ul className={cx('menu-btn-li-wrap')}>
         <li className={cx('menu-btn-li')}>
-          <Link href='/rewards'>
+          <button
+            onClick={() => {
+              handleMyPage('/rewards');
+            }}
+          >
             <a className={cx('button')}>
               <Image
                 src='/assets/svg/icon-my-reward.svg'
@@ -78,32 +109,51 @@ function myPageContent() {
               />
               <span>등급 조회</span>
             </a>
-          </Link>
+          </button>
         </li>
         <li className={cx('menu-btn-li')}>
-          <button type='button'>
+          <button
+            onClick={() => {
+              // handleMyPage('');
+              toast('준비 중인 서비스입니다.', {
+                icon: '📢',
+              });
+            }}
+          >
             <Image src='/assets/svg/icon-receipt.svg' width={35} height={35} />
             <span>전자영수증</span>
           </button>
         </li>
         <li className={cx('menu-btn-li')}>
-          <Link href='/myMenu'>
+          <button
+            onClick={() => {
+              handleMyPage('/myMenu');
+            }}
+          >
             <a className={cx('button')}>
               <Image src='/assets/svg/icon-mug.svg' width={35} height={35} />
               <span>나만의 메뉴</span>
             </a>
-          </Link>
+          </button>
         </li>
         <li className={cx('menu-btn-li')}>
-          <Link href='/userInfo'>
+          <button
+            onClick={() => {
+              handleMyPage('/userInfo');
+            }}
+          >
             <a className={cx('button')}>
               <Image src='/assets/svg/icon-user.svg' width={35} height={35} />
               <span>개인정보 관리</span>
             </a>
-          </Link>
+          </button>
         </li>
         <li className={cx('menu-btn-li')}>
-          <Link href='/setting'>
+          <button
+            onClick={() => {
+              handleMyPage('/setting');
+            }}
+          >
             <a className={cx('button')}>
               <Image
                 src='/assets/svg/icon-settings.svg'
@@ -112,7 +162,7 @@ function myPageContent() {
               />
               <span>설정</span>
             </a>
-          </Link>
+          </button>
         </li>
         <li className={cx('menu-btn-li')}>
           <Image
@@ -127,16 +177,16 @@ function myPageContent() {
           <h3>Gift</h3>
           <ul className={cx('sub-menu-wrap')}>
             <li>
-              <Link href='/'>기프티콘 등록</Link>
+              <Link href='/myPage'>기프티콘 등록</Link>
             </li>
             <li>
-              <Link href='/'>금액권 등록</Link>
+              <Link href='/myPage'>금액권 등록</Link>
             </li>
             <li>
-              <Link href='/'>기프티콘 사용</Link>
+              <Link href='/myPage'>기프티콘 사용</Link>
             </li>
             <li>
-              <Link href='/'>금액권 사용</Link>
+              <Link href='/myPage'>금액권 사용</Link>
             </li>
           </ul>
         </li>
@@ -147,13 +197,13 @@ function myPageContent() {
               <Link href='/cart'>장바구니</Link>
             </li>
             <li>
-              <Link href='/'>주문내역</Link>
+              <Link href='/myPage'>주문내역</Link>
             </li>
           </ul>
         </li>
         <li className={cx('menu-wrap')}>
           <h3>고객지원</h3>
-          <Link href='/'>
+          <Link href='/myPage'>
             <a className={cx('qna')}>문의사항</a>
           </Link>
         </li>

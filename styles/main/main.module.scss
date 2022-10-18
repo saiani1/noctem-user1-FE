@@ -17,7 +17,7 @@
     display: flex;
     justify-content: space-between;
 
-    .progress-bar-space{
+    .progress-bar-space {
       width: 80%;
     }
 
@@ -31,6 +31,42 @@
     }
   }
 }
+
+.info-wrap {
+  padding: 15px 15px 20px;
+  margin: 10px 24px 24px;
+  background-color: variable.$BG-001;
+  box-shadow: 1px 1px 5px rgba(variable.$BG-004, 0.3);
+  border-radius: 10px;
+
+  .info {
+    margin-bottom: 10px;
+    font-size: variable.$FS-16;
+    font-weight: bold;
+  }
+
+  .btn-box {
+    text-align: right;
+
+    .btn {
+      margin: 0 4px;
+      padding: 4px 10px;
+      text-align: center;
+      font-size: variable.$FS-14;
+      font-weight: 400;
+      border-radius: 20px;
+      color: variable.$TXT-005;
+      background-color: variable.$POINT;
+    }
+
+    .login-btn {
+      border: 1px solid variable.$POINT;
+      color: variable.$POINT;
+      background-color: variable.$BG-001
+    }
+  }
+}
+
 .progress-bar-wrap {
   position: relative;
   display: flex;
@@ -41,13 +77,13 @@
   border-radius: 2.5px;
 
   &::after {
-    @include position.absolute(1px -4.5px auto auto);
-    // width: 100%;
+    @include position.absolute(0 -4.5px auto auto);
     content: ' ';
-    width: 1.5px;
+    width: 2px;
     height: 7px;
     background-color: variable.$LINE-003;
   }
+
   .progress-bar {
     width: 55%;
     height: 6px;
@@ -56,6 +92,7 @@
     border-radius: 0.5px;
   }
 }
+
 .level-wrap {
   padding: 19px 19px 25px 19px;
   border-bottom: 1px solid variable.$LINE-003;
@@ -63,6 +100,7 @@
   &.first {
     padding-top: 0;
   }
+
   .level-tit-wrap {
     display: flex;
     align-items: center;
@@ -71,17 +109,21 @@
       margin: 0 10px 10px 0;
       font-size: variable.$FS-21;
       color: variable.$RANK-001;
+
       &.e {
         color: variable.$RANK-002;
       }
+
       &.pe {
         color: variable.$RANK-003;
       }
     }
+
     .level-icon-wrap {
       margin-top: -4px;
     }
   }
+
   .level-content-wrap {
     display: flex;
     align-items: center;
@@ -90,12 +132,15 @@
     padding: 10px 20px;
     border-radius: 3px;
     background-color: variable.$BG-003;
-    ~ .level-content-wrap {
+
+    ~.level-content-wrap {
       margin-top: 8px;
     }
+
     .img-wrap {
       margin-top: 2px;
     }
+
     .content {
       font-size: variable.$FS-12;
       color: variable.$TXT-003;
@@ -103,8 +148,15 @@
   }
 }
 
+.my-wrap {
+  padding: 14px 0;
+  margin-bottom: 20px;
+  background-color: variable.$BG-002;
+}
+
 .my-menu {
-  margin: 20px;
+  margin: 0 20px;
+  margin-bottom: -20px;
 
   .title {
     font-weight: bold;
@@ -120,9 +172,12 @@
     text-align: center;
     padding: 50px 66px;
   }
-  div{
+
+  div {
     // padding: 2px;
     margin: 2px;
+
+
     .my-menu-true {
       background: #ffffff;
       box-shadow: 0px 2px 4px rgba(98, 98, 98, 0.25);
@@ -130,38 +185,45 @@
       padding: 8px;
       display: flex;
       justify-content: space-between;
-  
+
       div {
         text-align: left;
+
         .my-menu-title {
+          font-weight: variable.$FW-002;
+          font-size: variable.$FS-16;
           color: variable.$TXT-001;
         }
-  
+
         .my-menu-kind {
-          color: variable.$TXT-003;
-          font-size: 12px;
+          color: variable.$TXT-004;
+          font-size: variable.$FS-12;
         }
-  
+
         .my-menu-detail {
           color: variable.$TXT-002;
-          font-size: 12px;
+          font-size: variable.$FS-12;
         }
       }
-  
+
       div {
         .img {
           width: 55px;
           height: 55px;
           margin: 8px;
-          img{
+
+          img {
             width: 100%;
             border-radius: 100px;
           }
         }
-  
+
         .order-button {
           background-color: variable.$TXT-001;
           color: variable.$TXT-005;
+          font-size: variable.$FS-12;
+          font-weight: variable.$FW-002;
+          padding: 2px;
           border-radius: 13px;
           text-align: center;
           white-space: nowrap;
@@ -171,14 +233,15 @@
   }
 
 }
+
 .nearly-store {
-  margin: 24px;
+  margin: 10px 24px;
 
   .title {
     font-weight: bold;
   }
 
-  & > .card {
+  &>.card {
     background: #ffffff;
     box-shadow: 0px 2px 4px rgba(98, 98, 98, 0.25);
     border-radius: 5px;
@@ -190,13 +253,27 @@
     display: flex;
 
     .store-img {
-      padding: 40px;
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      overflow: hidden;
+      align-self: center;
+      margin-right: 10px;
+
+      img {
+        width: inherit;
+      }
     }
 
     .text-space {
+      width: 100%;
       text-align: left;
+      display: flex;
+      flex-direction: column;
 
       .store-name {
+        font-size: variable.$FS-14;
+        font-weight: variable.$FW-003;
         color: variable.$TXT-001;
       }
 
@@ -205,21 +282,29 @@
         font-size: 12px;
       }
 
-      div {
+      .info {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
         font-size: 12px;
         margin-top: auto;
+        color: variable.$TXT-002;
 
-        span {
+        .waiting,
+        .distance {
+          display: inline-block;
           color: variable.$TXT-001;
-          font-size: 22px;
+          font-size: variable.$FS-18;
+          font-weight: variable.$FW-003;
         }
-      }
 
-      :nth-child(2) {
-        color: variable.$TXT-001;
+        .waiting {
+          padding-left: 8px;
+        }
+
+        .distance {
+          font-size: variable.$FS-12;
+        }
       }
     }
   }
@@ -230,17 +315,15 @@
 
   .title {
     font-weight: bold;
-    margin: 0 0 0 24px;
-  }
-
-  div {
-    border-radius: max;
+    margin: 0 0 20px 24px;
   }
 }
 
 .recommended {
   display: flex;
   width: 100vw;
+  margin-bottom: 20px;
+  padding-left: 24px;
   overflow: auto;
   white-space: nowrap;
   -ms-overflow-style: none;
@@ -249,11 +332,12 @@
   &::-webkit-scrollbar {
     display: none;
   }
+
   .recommended-menu {
-    margin: 8px;
     text-align: center;
     min-width: 120px;
     width: 120px;
+    padding-right: 20px;
 
     img {
       width: 100%;
