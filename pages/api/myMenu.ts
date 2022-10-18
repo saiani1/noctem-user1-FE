@@ -50,7 +50,7 @@ export const changeMyMenuNickName = async (id: number, value: string) => {
   return res;
 };
 
-export const deleteMyMenu = async (id: string) => {
+export const deleteMyMenu = async (id: number) => {
   const res = await basicRequest.delete(`${U_SERVICE}/myMenu/${id}`, HEADERS);
   return res;
 };

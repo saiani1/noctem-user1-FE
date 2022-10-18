@@ -6,17 +6,18 @@ import toast from 'react-hot-toast';
 import {
   getMyMenuDetailData,
   changeMyMenuNickName,
+  deleteMyMenu,
 } from '../../../pages/api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma } from './../../store/utils/function';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
+import { addCart } from '../../../pages/api/cart';
 
 interface IProps {
   item: IMenuData1;
   isEmpty: boolean;
   isFetching: boolean;
-  handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleteMyMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsChangeMyMenuName: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,7 +27,6 @@ function myMenuItem({
   item,
   isEmpty,
   isFetching,
-  handleDeleteMenu,
   setIsFetching,
   setIsDeleteMyMenu,
   setIsChangeMyMenuName,
@@ -38,12 +38,16 @@ function myMenuItem({
   const cx = classNames.bind(styles);
 
   useEffect(() => {
+    console.log('item:', item);
+    console.log('itemInfo:', itemInfo);
     if (item !== undefined && !isEmpty) {
+      console.log('item', item);
       getMyMenuDetailData(item.sizeId, item.myMenuId).then(res => {
+        console.log('itemInfo', res.data.data);
         setItemInfo(res.data.data);
         setIsFetching(true);
-        setIsDeleteMyMenu(false);
-        setIsChangeMyMenuName(false);
+        setIsDeleteMyMenu(prev => !prev);
+        setIsChangeMyMenuName(prev => !prev);
       });
     }
   }, []);
@@ -56,7 +60,7 @@ function myMenuItem({
         setClickRenameBtn(prev => {
           return !prev;
         });
-        setIsChangeMyMenuName(true);
+        setIsChangeMyMenuName(prev => !prev);
         toast.success('나만의 메뉴 이름이 변경되었습니다.');
       });
     }
@@ -75,6 +79,36 @@ function myMenuItem({
     });
   };
 
+  const handleAddCart = () => {
+    const cartData = {
+      sizeId: item.sizeId,
+      quantity: 1,
+      personalOptionList: item?.myPersonalOptionList,
+    };
+
+    addCart(cartData).then(res => {
+      if (res.data.data) {
+        toast.success('상품이 장바구니에 담겼습니다!');
+      } else {
+        toast.error('실패하였습니다. 잠시 후 다시 시도해주세요.');
+      }
+    });
+  };
+
+  const handleTest = (test: number) => {
+    console.log('Test', test);
+  };
+
+  const handleDeleteMenu = (menuId: number): void => {
+    console.log('Delete ItemInfo', itemInfo);
+    console.log('menuId', menuId);
+    deleteMyMenu(menuId).then(res => {
+      console.log(res);
+      setIsDeleteMyMenu(prev => !prev);
+      toast.success('나만의 메뉴가 삭제되었습니다.');
+    });
+  };
+
   return (
     <>
       {clickRenameBtn && (
@@ -87,11 +121,20 @@ function myMenuItem({
           handleAddMyMenuData={handleChangeMyMenuName}
         />
       )}
-      {isFetching && !isEmpty && (
+      {isFetching && !isEmpty && itemInfo && (
         <li className={cx('content-wrap')}>
+          <button
+            type='button'
+            className={cx('close-btn')}
+            onClick={() => {
+              handleTest(item.myMenuId);
+            }}
+          >
+            TEST
+          </button>
           <img
-            src={itemInfo?.menuImg}
-            alt={itemInfo?.menuName}
+            src={itemInfo.menuImg}
+            alt={itemInfo.menuName}
             className={cx('img-wrap')}
           />
           <div className={cx('right')}>
@@ -99,8 +142,9 @@ function myMenuItem({
               <button
                 type='button'
                 className={cx('close-btn')}
-                name={itemInfo?.myMenuId}
-                onClick={handleDeleteMenu}
+                onClick={() => {
+                  handleDeleteMenu(item.myMenuId);
+                }}
               >
                 <img src='/assets/svg/icon-x-mark.svg' alt='삭제버튼' />
               </button>
@@ -124,11 +168,15 @@ function myMenuItem({
                 원
               </strong>
               <span className={cx('menu-option')}>
-                {itemInfo?.temperature} | {itemInfo?.size}
+                {itemInfo?.temperature.toUpperCase()} | {itemInfo?.size}
               </span>
             </div>
             <div className={cx('btn-wrap')}>
-              <button type='button' className={cx('cart-btn')}>
+              <button
+                type='button'
+                className={cx('cart-btn')}
+                onClick={handleAddCart}
+              >
                 담기
               </button>
               <button type='button' className={cx('order-btn')}>

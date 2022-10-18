@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
-import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/myMenuContent.module.scss';
 import {
   getMyMenuData,
-  deleteMyMenu,
   getShowMainMyMenu,
   changeShowMainMyMenu,
 } from '../../../pages/api/myMenu';
@@ -29,9 +27,9 @@ function myMenuContent() {
 
   useEffect(() => {
     Promise.all([getShowMainMyMenu(), getMyMenuData()]).then(res => {
-      console.log(res);
       setShowMyMenu(res[0].data.data);
       if (res[1].data.data.length !== 0) {
+        console.log(res[1].data.data);
         setInfo(res[1].data.data);
       } else {
         setIsEmpty(true);
@@ -43,18 +41,6 @@ function myMenuContent() {
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeShowMainMyMenu().then(res => {
       console.log('res : ', res);
-    });
-  };
-
-  const handleDeleteMenu = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-  ): void => {
-    const name = (e.target as HTMLInputElement).name;
-    console.log('ID', name);
-    deleteMyMenu(name).then(res => {
-      console.log(res);
-      setIsDeleteMyMenu(true);
-      toast.success('나만의 메뉴가 삭제되었습니다.');
     });
   };
 
@@ -108,7 +94,6 @@ function myMenuContent() {
                 item={item}
                 isFetching={isFetching}
                 isEmpty={isEmpty}
-                handleDeleteMenu={handleDeleteMenu}
                 setIsFetching={setIsFetching}
                 setIsDeleteMyMenu={setIsDeleteMyMenu}
                 setIsChangeMyMenuName={setIsChangeMyMenuName}
