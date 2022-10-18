@@ -54,14 +54,12 @@ function homeContent() {
     if (isExistToken()) {
       setIsLogin(true);
       getUserInfo().then(res => {
-        console.log(res.data.data);
         setUsername(res.data.data.nickname);
       });
       getUserLevel().then(res => {
         setUserLevel(res.data.data);
       });
       getMyMenu1().then(res => {
-        console.log(res.data.data);
         SetMyMenu(res.data.data);
       });
     } else {
@@ -84,14 +82,9 @@ function homeContent() {
   useEffect(() => {
     if (geolocation.latitude && geolocation.longitude) {
       getStoreList(geolocation.latitude, geolocation.longitude).then(res => {
-        console.log(res.data.data[0]);
         setStore(res.data.data[0]);
         getStoreWaitingTime(res.data.data[0].storeId).then(resData => {
-          console.log('웨이팅', resData);
           setStoreWaitingTime(Math.round(resData.data.data.waitingTime / 60));
-          console.log(resData.data.data.waitingTime);
-          console.log(resData.data.data.waitingTime / 60);
-          console.log(Math.round(resData.data.data.waitingTime / 60));
         });
       });
     }
