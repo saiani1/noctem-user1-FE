@@ -16,8 +16,13 @@ export const getCartList = async () => {
 };
 
 export const getCartMenuData = async (sizeId: number, cartId: number) => {
-  console.log(`${MENU_SERVICE}/size/menu/forCart/${sizeId}/${cartId}`);
   const res = await basicRequest.get(`${MENU_SERVICE}/size/menu/forCart/${sizeId}/${cartId}`);
+  return res;
+}
+
+export const getMyMenuData = async (sizeId: number, cartId: number) => {
+  console.log(`${MENU_SERVICE}/size/menu/forMyMenu/${sizeId}/${cartId}`);
+  const res = await basicRequest.get(`${MENU_SERVICE}/size/menu/forMyMenu/${sizeId}/${cartId}`);
   return res;
 }
 

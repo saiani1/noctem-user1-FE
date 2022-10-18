@@ -186,7 +186,10 @@
       display: flex;
       justify-content: space-between;
 
-      div {
+      .my-menu-info-wrap {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
         text-align: left;
 
         .my-menu-title {
@@ -219,7 +222,7 @@
         }
 
         .order-button {
-          background-color: variable.$TXT-001;
+          background-color: variable.$TXT-006;
           color: variable.$TXT-005;
           font-size: variable.$FS-12;
           font-weight: variable.$FW-002;

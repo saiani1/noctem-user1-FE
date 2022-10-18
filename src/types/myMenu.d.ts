@@ -9,15 +9,15 @@ export interface IOption {
   amount: string;
 }
 
-export interface IMenu1 {
+export interface IMenuData1 {
   index: number;
-  myMenuId: string;
+  myMenuId: number;
   alias: string;
-  sizeId: string;
-  myPersonalOptionList: string[];
+  sizeId: number;
+  myPersonalOptionList?: [];
 }
 
-export interface IMenu2 {
+export interface IMenuDetailData {
   myMenuId: string;
   menuName: string;
   menuImg: string;

@@ -17,28 +17,16 @@ import MyMenuCard from './myMenuCard';
 import Link from 'next/link';
 import { getStoreList, getStoreWaitingTime } from '../../pages/api/store';
 import { IStore } from '../types/store';
+import { IMenuData1 } from '../types/myMenu';
+import { ILevel } from '../types/user';
 
 const cx = classNames.bind(styles);
-interface ILevel {
-  userGrade: string;
-  userExp: number;
-  nextGrade: string;
-  requiredExpToNextGrade: number;
-}
-interface IData {
-  index: number;
-  myMenuId: number;
-  alias: string;
-  sizeId: number;
-  myPersonalOptionList: IMyPersonalOptionList;
-}
-interface IMyPersonalOptionList {}
 
 function homeContent() {
   const router = useRouter();
   const geolocation = useGeolocation();
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [myMenu, SetMyMenu] = useState<IData[]>([]);
+  const [myMenu, SetMyMenu] = useState<IMenuData1[]>();
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
   const styles: { [key: string]: React.CSSProperties } = {
@@ -185,20 +173,21 @@ function homeContent() {
       <div className={cx('my-wrap')}>
         {isLogin ? (
           <div className={cx('my-menu')}>
-            <h2 className={cx('title')}>나만의 메뉴</h2>
-            {myMenu ? (
-              <Carousel
-                showArrows={false}
-                showStatus={false}
-                showIndicators={false}
-                autoPlay={false}
-                verticalSwipe={'standard'}
-              >
-                {myMenu &&
-                  myMenu.map(item => (
+            {myMenu && myMenu.length !== 0 ? (
+              <>
+                <h2 className={cx('title')}>나만의 메뉴</h2>
+                <Carousel
+                  showArrows={false}
+                  showStatus={false}
+                  showIndicators={false}
+                  autoPlay={false}
+                  verticalSwipe={'standard'}
+                >
+                  {myMenu.map(item => (
                     <MyMenuCard key={item.index} item={item} />
                   ))}
-              </Carousel>
+                </Carousel>
+              </>
             ) : (
               <div className={cx('card')}>나만의 메뉴를 등록해 주세요</div>
             )}

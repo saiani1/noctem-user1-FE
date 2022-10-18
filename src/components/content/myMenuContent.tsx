@@ -10,7 +10,7 @@ import {
   getShowMainMyMenu,
   changeShowMainMyMenu,
 } from '../../../pages/api/myMenu';
-import { IMenu1 } from '../../../src/types/myMenu.d';
+import { IMenuData1 } from '../../../src/types/myMenu.d';
 import ToggleCheckbox from '../ui/toggleCheckbox';
 import EmptyMyMenu from '../content/emptyMyMenu';
 import MyMenuItem from '../ui/myMenuItem';
@@ -19,7 +19,7 @@ import ChangeOrderMyMenuModal from './changeOrderMyMenuModal';
 function myMenuContent() {
   const [isClickChangeOrderBtn, setIsClickChangeOrderBtn] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
-  const [info, setInfo] = useState<IMenu1[]>([]);
+  const [info, setInfo] = useState<IMenuData1[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isDeleteMyMenu, setIsDeleteMyMenu] = useState(false);
   const [isChangeMyMenuName, setIsChangeMyMenuName] = useState(false);
@@ -101,7 +101,7 @@ function myMenuContent() {
         {isEmpty && <EmptyMyMenu />}
         <ul>
           {info &&
-            info.map((item: IMenu1) => (
+            info.map((item: IMenuData1) => (
               <MyMenuItem
                 key={item.index}
                 item={item}

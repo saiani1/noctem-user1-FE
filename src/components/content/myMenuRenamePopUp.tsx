@@ -2,13 +2,13 @@ import React from 'react';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/pages/productPage.module.scss';
-import { IMenu1, IMenu2 } from '../../../src/types/myMenu.d';
+import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { IDetail } from '../../types/productDetail';
 
 interface IProps {
   prevPage: string;
-  item?: IMenu1;
-  itemInfo?: IMenu2;
+  item?: IMenuData1;
+  itemInfo?: IMenuDetailData;
   detailList?: IDetail;
   selectedSizeTxt?: string;
   temperatureChoice?: string;

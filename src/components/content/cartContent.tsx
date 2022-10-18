@@ -11,7 +11,7 @@ import EmptyCart from './emptyCart';
 import { useEffect } from 'react';
 import { getCartList, getCount } from '../../../pages/api/cart';
 import { getToken } from '../../store/utils/token';
-import { ICart, IData, IMenuList } from '../../types/cart';
+import { ICart, IData, IMenuDataList } from '../../types/cart';
 import { useRecoilState } from 'recoil';
 import { cartTotalAmount, cartCnt } from '../../store/atom/userStates';
 import { addComma } from '../../store/utils/function';
@@ -41,7 +41,7 @@ function cartContent() {
     distance: '',
   });
   const [isStoreOpen, setIsStoreOpen] = useState<boolean>(false);
-  const [seletedItem, setSeletedItem] = useState<IMenuList[]>();
+  const [seletedItem, setSeletedItem] = useState<IMenuDataList[]>();
 
   const handleClickTab = (e: React.MouseEvent<HTMLElement>) => {
     setClickTab((e.target as HTMLInputElement).value);

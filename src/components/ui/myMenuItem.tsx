@@ -5,12 +5,12 @@ import toast from 'react-hot-toast';
 
 import { getMyMenu2, changeMyMenuNickName } from '../../../pages/api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
-import { IMenu1, IMenu2 } from '../../../src/types/myMenu.d';
+import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma } from './../../store/utils/function';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
 
 interface IProps {
-  item: IMenu1;
+  item: IMenuData1;
   isEmpty: boolean;
   isFetching: boolean;
   handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
@@ -28,7 +28,7 @@ function myMenuItem({
   setIsDeleteMyMenu,
   setIsChangeMyMenuName,
 }: IProps) {
-  const [itemInfo, setItemInfo] = useState<IMenu2>();
+  const [itemInfo, setItemInfo] = useState<IMenuDetailData>();
   const [clickRenameBtn, setClickRenameBtn] = useState(false);
   const myMenuNameRef = useRef<HTMLInputElement>(null);
 
