@@ -109,8 +109,13 @@ function homeContent() {
               </div>
             </div>
             <div className={cx('my-score')}>
-              <span>{userLevel && userLevel.userExp}</span>/
-              {userLevel && userLevel.requiredExpToNextGrade}
+              <span className={cx('my-exp')}>
+                {userLevel && userLevel.userExp}
+              </span>
+              /
+              <span className={cx('req-exp')}>
+                {userLevel && userLevel.requiredExpToNextGrade}
+              </span>
               {userLevel?.userGrade === 'Potion' ? (
                 <Image
                   src='/assets/svg/icon-potion-level.svg'
@@ -159,7 +164,8 @@ function homeContent() {
               </div>
             </div>
             <div className={cx('my-score')}>
-              <span>0</span>/ 20
+              <span className={cx('my-exp')}>0</span>/
+              <span className={cx('req-exp')}>20</span>
               <Image
                 src='/assets/svg/icon-potion-level.svg'
                 alt='potion-level'

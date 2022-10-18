@@ -15,6 +15,7 @@
 
   .point-bar {
     display: flex;
+    align-items: flex-end;
     justify-content: space-between;
 
     .progress-bar-space {
@@ -23,10 +24,16 @@
 
     .my-score {
       color: variable.$POINT;
+      line-height: 20px;
 
-      span {
+      .my-exp {
+        margin-right: 2px;
         font-size: 22px;
         color: variable.$TXT-001;
+      }
+
+      .req-exp {
+        margin-left: 2px;
       }
     }
   }
