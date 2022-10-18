@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames/bind';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import styles from '../../styles/ui/customAlert.module.scss';
 
 const cx = classNames.bind(styles);

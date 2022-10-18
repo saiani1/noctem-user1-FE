@@ -10,8 +10,8 @@ interface IProps {
   item?: IMenu1;
   itemInfo?: IMenu2;
   detailList?: IDetail;
-  selectedSizeTxt: string;
-  temperatureChoice: string;
+  selectedSizeTxt?: string;
+  temperatureChoice?: string;
   myMenuNameRef: React.ForwardedRef<HTMLInputElement>;
   handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleAddMyMenuData: (e: React.MouseEvent<HTMLButtonElement>) => void;
