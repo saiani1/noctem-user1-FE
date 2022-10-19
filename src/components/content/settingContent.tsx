@@ -1,11 +1,8 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/settingContent.module.scss';
 import { getUserOptions, patchUserOptions } from '../../../pages/api/user';
-import { useRouter } from 'next/router';
-import { getToken } from './../../store/utils/token';
 import ToggleCheckbox from '../ui/toggleCheckbox';
 
 interface IInfo {
@@ -26,21 +23,13 @@ function settingContent() {
   });
   const [isFetching, setIsFetching] = useState(false);
   const cx = classNames.bind(styles);
-  const router = useRouter();
 
   useEffect(() => {
-    const token = getToken();
-
-    if (token !== '{}') {
-      getUserOptions().then(res => {
-        console.log('res : ', res);
-        setInfo(res.data.data);
-        setIsFetching(true);
-      });
-    } else {
-      alert('로그인이 필요한 서비스입니다.');
-      router.push('/login');
-    }
+    getUserOptions().then(res => {
+      console.log('res : ', res);
+      setInfo(res.data.data);
+      setIsFetching(true);
+    });
   }, []);
 
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {

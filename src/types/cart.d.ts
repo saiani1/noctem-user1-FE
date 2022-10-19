@@ -24,7 +24,7 @@ export interface IPersonalOptions {
   amount: string;
 }
 
-export interface IMenuList {
+export interface IMenuDataList {
   sizeId: number;
   qty: number;
   optionList?: [];

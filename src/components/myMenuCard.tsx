@@ -2,34 +2,35 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../../styles/main/main.module.scss';
 import { useRouter } from 'next/router';
-import { IData } from '../types/cart';
-import { getCartMenuData } from '../../pages/api/cart';
+import { getMyMenuData } from './../../pages/api/cart';
+import { IMenuData1, IMenuDetailData } from '../types/myMenu';
 
 const cx = classNames.bind(styles);
 
-function myMenuCard({ item }: { item: any }) {
+function myMenuCard({ item }: { item: IMenuData1 }) {
   const router = useRouter();
-  const [myMenuInfo, setMyMenuInfo] = useState<IData>();
+  const [myMenuInfo, setMyMenuInfo] = useState<IMenuDetailData>();
   useEffect(() => {
-    getCartMenuData(item.sizeId, item.myMenuId).then(res => {
+    getMyMenuData(item.sizeId, item.myMenuId).then(res => {
+      console.log('detail', res.data.data);
       setMyMenuInfo(res.data.data);
     });
   }, []);
   return (
     <>
-      <div>
+      {myMenuInfo && (
         <div className={cx('my-menu-true')}>
-          <div>
+          <div className={cx('my-menu-info-wrap')}>
             <div className={cx('my-menu-title')}>{item.alias}</div>
             <div className={cx('my-menu-kind')}>{myMenuInfo?.menuName}</div>
             <div className={cx('my-menu-detail')}>
-              ICED | TALL | 매장컵 | 에스프레소 샵1 | 물많이 | 얼음 적게 |
-              일반휘핑 많이 | 초콜릿 드리즐
+              {myMenuInfo.temperature.toUpperCase()} | Tall | 매장 컵 |
+              에스프레소 샵1 | 얼음 적게 | 일반휘핑 많이 | 초콜릿 드리즐
             </div>
           </div>
           <div>
             <div className={cx('img')}>
-              <img src={myMenuInfo?.menuImg} />
+              <img src={myMenuInfo.menuImg} />
             </div>
             <div
               className={cx('order-button')}
@@ -41,7 +42,7 @@ function myMenuCard({ item }: { item: any }) {
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

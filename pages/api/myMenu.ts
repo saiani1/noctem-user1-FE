@@ -10,12 +10,12 @@ const HEADERS = {
   },
 };
 
-export const getMyMenu1 = async () => {
+export const getMyMenuData = async () => {
   const res = await basicRequest.get(`${U_SERVICE}/myMenu`, HEADERS);
   return res;
 };
 
-export const getMyMenu2 = async (sizeId: string, myMenuId: string) => {
+export const getMyMenuDetailData = async (sizeId: number, myMenuId: number) => {
   const res = await basicRequest.get(
     `${M_SERVICE}/size/menu/forMyMenu/${sizeId}/${myMenuId}`,
     HEADERS,
@@ -39,7 +39,7 @@ export const changeMyMenuOrder = async (value: number[]) => {
   return res;
 };
 
-export const changeMyMenuNickName = async (id: string, value: string) => {
+export const changeMyMenuNickName = async (id: number, value: string) => {
   const res = await basicRequest.patch(
     `${U_SERVICE}/myMenu/${id}/alias`,
     {

@@ -1,15 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
+import toast from 'react-hot-toast';
 
-import { getMyMenu2, changeMyMenuNickName } from '../../../pages/api/myMenu';
+import {
+  getMyMenuDetailData,
+  changeMyMenuNickName,
+} from '../../../pages/api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
-import { IMenu1, IMenu2 } from '../../../src/types/myMenu.d';
+import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma } from './../../store/utils/function';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
 
 interface IProps {
-  item: IMenu1;
+  item: IMenuData1;
   isEmpty: boolean;
   isFetching: boolean;
   handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
@@ -27,7 +31,7 @@ function myMenuItem({
   setIsDeleteMyMenu,
   setIsChangeMyMenuName,
 }: IProps) {
-  const [itemInfo, setItemInfo] = useState<IMenu2>();
+  const [itemInfo, setItemInfo] = useState<IMenuDetailData>();
   const [clickRenameBtn, setClickRenameBtn] = useState(false);
   const myMenuNameRef = useRef<HTMLInputElement>(null);
 
@@ -35,7 +39,7 @@ function myMenuItem({
 
   useEffect(() => {
     if (item !== undefined && !isEmpty) {
-      getMyMenu2(item.sizeId, item.myMenuId).then(res => {
+      getMyMenuDetailData(item.sizeId, item.myMenuId).then(res => {
         setItemInfo(res.data.data);
         setIsFetching(true);
         setIsDeleteMyMenu(false);
@@ -53,7 +57,7 @@ function myMenuItem({
           return !prev;
         });
         setIsChangeMyMenuName(true);
-        alert('나만의 메뉴 이름이 변경되었습니다.');
+        toast.success('나만의 메뉴 이름이 변경되었습니다.');
       });
     }
   };

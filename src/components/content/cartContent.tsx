@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import Image from 'next/image';
 import Header from '../common/header';
 import SelectStoreContent from './selectStoreContent';
+import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/cartContent.module.scss';
 import CartItem from '../ui/cartItem';
@@ -10,7 +11,7 @@ import EmptyCart from './emptyCart';
 import { useEffect } from 'react';
 import { getCartList, getCount } from '../../../pages/api/cart';
 import { getToken } from '../../store/utils/token';
-import { ICart, IData, IMenuList } from '../../types/cart';
+import { ICart, IData, IMenuDataList } from '../../types/cart';
 import { useRecoilState } from 'recoil';
 import { cartTotalAmount, cartCnt } from '../../store/atom/userStates';
 import { addComma } from '../../store/utils/function';
@@ -40,7 +41,7 @@ function cartContent() {
     distance: '',
   });
   const [isStoreOpen, setIsStoreOpen] = useState<boolean>(false);
-  const [seletedItem, setSeletedItem] = useState<IMenuList[]>();
+  const [seletedItem, setSeletedItem] = useState<IMenuDataList[]>();
 
   const handleClickTab = (e: React.MouseEvent<HTMLElement>) => {
     setClickTab((e.target as HTMLInputElement).value);
@@ -51,11 +52,9 @@ function cartContent() {
   };
 
   const handleOrder = () => {
-    if (selectStore === undefined) {
-      console.log('매장 선택 해');
-      alert('매장을 선택해 주세요');
+    if (selectStore.distance === '') {
+      toast.error('매장을 선택해 주세요');
       setIsStoreOpen(true);
-    } else {
     }
   };
 
@@ -138,7 +137,9 @@ function cartContent() {
             >
               <span className={cx('tit-wrap')}>
                 음료/푸드
-                <span className={cx('cnt-wrap')}>{datas && datas.length}</span>
+                <span className={cx('cnt-wrap')}>
+                  {cartList && cartList.length}
+                </span>
               </span>
             </button>
             <button
