@@ -18,7 +18,7 @@ import CustomAlert from './../customAlert';
 function myPageContent() {
   const cx = classNames.bind(styles);
   const router = useRouter();
-  const [nickname, setUsername] = useRecoilState(nicknameState);
+  const [nickname, setNickname] = useRecoilState(nicknameState);
 
   const onLogin = () => {
     router.push('/login');
@@ -46,7 +46,7 @@ function myPageContent() {
   useEffect(() => {
     if (isExistToken()) {
       getUserInfo().then(res => {
-        setUsername(res.data.data.nickname);
+        setNickname(res.data.data.nickname);
       });
     }
   }, []);
@@ -54,7 +54,7 @@ function myPageContent() {
   const handleLogout = () => {
     if (isExistToken()) {
       removeToken();
-      setUsername('게스트');
+      setNickname('게스트');
       toast.success('로그아웃 되셨습니다.');
       router.push('/');
     }

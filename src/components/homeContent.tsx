@@ -34,7 +34,7 @@ function homeContent() {
       width: `${progressState}%`,
     },
   };
-  const [nickname, setUsername] = useRecoilState(nicknameState);
+  const [nickname, setNickname] = useRecoilState(nicknameState);
   const [store, setStore] = useState<IStore>();
   const [storeWaitingTime, setStoreWaitingTime] = useState<number>();
 
@@ -42,7 +42,7 @@ function homeContent() {
     if (isExistToken()) {
       setIsLogin(true);
       getUserInfo().then(res => {
-        setUsername(res.data.data.nickname);
+        setNickname(res.data.data.nickname);
       });
       getUserLevel().then(res => {
         setUserLevel(res.data.data);
@@ -53,6 +53,7 @@ function homeContent() {
       });
     } else {
       setIsLogin(false);
+      setNickname('게스트');
     }
   }, []);
 
@@ -183,17 +184,24 @@ function homeContent() {
             {myMenu && myMenu.length !== 0 ? (
               <>
                 <h2 className={cx('title')}>나만의 메뉴</h2>
-                <Carousel
-                  showArrows={false}
-                  showStatus={false}
-                  showIndicators={false}
-                  autoPlay={false}
-                  verticalSwipe={'standard'}
-                >
-                  {myMenu.map(item => (
-                    <MyMenuCard key={item.index} item={item} />
-                  ))}
-                </Carousel>
+                {myMenu.length === 1 && (
+                  <div className={cx('card')}>
+                    <MyMenuCard key={myMenu[0].index} item={myMenu[0]} />
+                  </div>
+                )}
+                {myMenu.length > 1 && (
+                  <Carousel
+                    showArrows={false}
+                    showStatus={false}
+                    showIndicators={false}
+                    autoPlay={false}
+                    verticalSwipe={'standard'}
+                  >
+                    {myMenu.map(item => (
+                      <MyMenuCard key={item.index} item={item} />
+                    ))}
+                  </Carousel>
+                )}
               </>
             ) : (
               <>

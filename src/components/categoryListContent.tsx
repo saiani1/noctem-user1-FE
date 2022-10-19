@@ -10,7 +10,8 @@ import { useRecoilState } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
 import { getCount } from '../../pages/api/cart';
 import { cartCnt } from '../store/atom/userStates';
-import { addComma } from '../store/utils/function';
+import { addComma, getSessionCartCount } from '../store/utils/function';
+import { isExistToken } from './../store/utils/token';
 
 const cx = classNames.bind(styles);
 interface IDrinkList {
@@ -44,9 +45,13 @@ function categoryListContent({
     });
     console.log(categorySId);
 
-    getCount().then(res => {
-      setCartCount(res.data.data);
-    });
+    if (isExistToken()) {
+      getCount().then(res => {
+        setCartCount(res.data.data);
+      });
+    } else {
+      setCartCount(getSessionCartCount());
+    }
   }, [categorySId]);
 
   const handleClickSelectStore = () => {

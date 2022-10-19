@@ -28,7 +28,7 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
               에스프레소 샵1 | 얼음 적게 | 일반휘핑 많이 | 초콜릿 드리즐
             </div>
           </div>
-          <div>
+          <div className={cx('mymenu-order-wrap')}>
             <div className={cx('img')}>
               <img src={myMenuInfo.menuImg} />
             </div>

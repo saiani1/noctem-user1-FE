@@ -14,7 +14,11 @@ import { getToken } from '../../store/utils/token';
 import { ICart, IData, IMenuDataList } from '../../types/cart';
 import { useRecoilState } from 'recoil';
 import { cartTotalAmount, cartCnt } from '../../store/atom/userStates';
-import { addComma } from '../../store/utils/function';
+import {
+  addComma,
+  getSessionCartCount,
+  getSessionCartList,
+} from '../../store/utils/function';
 import { IStore } from '../../types/store';
 
 function cartContent() {
@@ -77,15 +81,18 @@ function cartContent() {
       console.log('비회원 조회');
       [...Array(sessionStorage.length)].map((v, i) => {
         if (sessionStorage.getItem(i + '') !== null) {
-          console.log(JSON.parse(sessionStorage.getItem(i + '') || ''));
+          console.log(JSON.parse(sessionStorage.getItem(i + '') + ''));
+          setCartList(getSessionCartList());
         }
       });
+      setCount(getSessionCartCount());
     }
   }, [isChange]);
 
   useEffect(() => {
     console.log('total', totalAmount);
-  }, [totalAmount]);
+    console.log('cartList', cartList);
+  }, [totalAmount, cartList]);
 
   return (
     <div className={cx('wrap')}>
@@ -157,7 +164,7 @@ function cartContent() {
               </span>
             </button>
           </div>
-          {isUser && cartList && cartList.length !== 0 ? (
+          {cartList && cartList.length !== 0 ? (
             <>
               <div className={cx('cart-wrap')}>
                 <div className={cx('tit-wrap')}>
