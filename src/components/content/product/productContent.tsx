@@ -146,9 +146,11 @@ function productContent() {
       setMyMenuAlert(true);
     }
   };
+
+  console.log('myMenuData:', detailList);
   const handleAddMyMenuData = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
-    console.log(mymenuNameValue);
+    console.log('myMenuName:', mymenuNameValue);
     if (mymenuNameValue && mymenuNameValue.length !== 0) {
       setMyMenuData({
         ...myMenuData,
@@ -413,6 +415,10 @@ function productContent() {
       </div>
       {myMenuAlert && (
         <MyMenuRenamePopUp
+          prevPage='product'
+          selectedSizeTxt={selectedSizeTxt}
+          temperatureChoice={temperatureChoice}
+          detailList={detailList}
           myMenuNameRef={myMenuNameRef}
           handleClose={handleClose}
           handleAddMyMenuData={handleAddMyMenuData}
