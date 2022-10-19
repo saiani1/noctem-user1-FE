@@ -6,5 +6,10 @@ const withPWA = require('next-pwa')({
 
 module.exports = withPlugins([
   withPWA,
+  {
+    images: {
+      domains: ['image.istarbucks.co.kr'],
+    }
+  }
   // 추가 플러그인
 ]);

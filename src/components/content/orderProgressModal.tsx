@@ -3,33 +3,23 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/orderProgressModal.module.scss';
-import OrderCancelConfirmPopUp from './orderCancelConfirmPopUp';
 
 interface IProp {
   setIsClickOrderProgressBtn: React.Dispatch<React.SetStateAction<boolean>>;
+  handleClickMenuCancel: () => void;
 }
 
 function orderProgressModal(props: IProp) {
+  const handleClickMenuCancel = props.handleClickMenuCancel;
   const [isCancelActive, setIsCancelActive] = useState(true);
-  const [isConfirmPopUpActive, setIsConfirmPopUpActive] = useState(false);
   const [orderProgress, setOrderProgress] = useState('준비 중');
   const { setIsClickOrderProgressBtn } = props;
   const cx = classNames.bind(styles);
 
-  const handleClickMenuCancel = () => {
-    setIsConfirmPopUpActive(prev => {
-      return !prev;
-    });
-  };
-
   return (
     <>
-      {isConfirmPopUpActive && (
-        <OrderCancelConfirmPopUp
-          setIsConfirmPopUpActive={setIsConfirmPopUpActive}
-        />
-      )}
-      <div className={cx('background')} />
+      <div style={{ height: '85vh' }} />
+
       <div className={cx('wrap')}>
         <div className={cx('top-wrap')}>
           <div className={cx('tit-wrap')}>

@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/choiceStoreModal.module.scss';
@@ -10,9 +9,10 @@ const cx = classNames.bind(styles);
 
 interface IProps {
   clickStoreInfo: IStore;
+  handleOrder: () => void;
 }
 
-function choiceStoreModal({ clickStoreInfo }: IProps) {
+function choiceStoreModal({ clickStoreInfo, handleOrder }: IProps) {
   const {
     name,
     mainImg,
@@ -23,7 +23,9 @@ function choiceStoreModal({ clickStoreInfo }: IProps) {
     isParking,
     isEcoStore,
     isDriveThrough,
+    contactNumber,
   } = clickStoreInfo;
+
   return (
     <>
       <div className={cx('wrap')}>
@@ -60,7 +62,7 @@ function choiceStoreModal({ clickStoreInfo }: IProps) {
             </span>
           </div>
         </div>
-        <Link href='/order'>매장 내 직접 수령</Link>
+        <button onClick={handleOrder}>매장 내 직접 수령</button>
       </div>
     </>
   );

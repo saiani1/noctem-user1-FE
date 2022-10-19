@@ -2,19 +2,20 @@ import React, { useState, useEffect, FocusEvent, useRef } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import styles from '../../../../styles/pages/productPage.module.scss';
 import CategoryContent from '../../categoryContent';
 import ProductNutritionSheet from './productNutritionSheet';
 import ProductOrder from './productOrder';
 import ToolbarList from '../../ui/toolbarList';
-import CupSizeItem from '../../cupSizeItem';
+import CustomAlert from '../../customAlert';
 import { useRouter } from 'next/router';
 import { addMyMenu } from '../../../../pages/api/myMenu';
 import {
   getSize,
   getNutrition,
   getProduct,
-  getTemperature,
 } from '../../../../pages/api/category';
 import { addCart, getCount } from '../../../../pages/api/cart';
 import { useRecoilState } from 'recoil';
@@ -29,11 +30,12 @@ import {
   ISize,
   INutrition,
 } from '../../../types/productDetail';
-import { IParams, IOption } from '../../../types/myMenu';
-import ProductNurtitionInfo from './productNutritionInfo';
+import { IParams } from '../../../types/myMenu';
 import { cartCnt } from '../../../store/atom/userStates';
-import { addComma } from '../../../store/utils/function';
+import { addComma, getSessionCartCount } from '../../../store/utils/function';
 import MyMenuRenamePopUp from '../myMenuRenamePopUp';
+import { selectedStoreState } from '../../../store/atom/orderState';
+import { isExistToken } from './../../../store/utils/token';
 
 const cx = classNames.bind(styles);
 
@@ -42,6 +44,7 @@ function productContent() {
   const id = router.query.id ? +router.query.id : 1;
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
+  const [selectedStore] = useRecoilState(selectedStoreState);
   const [cartCount, setCartCount] = useRecoilState(cartCnt);
   const [open, setOpen] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
@@ -103,12 +106,14 @@ function productContent() {
         return;
       }
 
-      if (localStorage.getItem('token') === null) {
+      console.log(cartData);
+      if (!isExistToken()) {
         // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
         sessionStorage.setItem(
           sessionStorage.length + '',
           JSON.stringify(cartData),
         );
+        setCartCount(getSessionCartCount());
       } else {
         addCart(cartData);
       }
@@ -122,7 +127,46 @@ function productContent() {
   };
   const myMenuNameRef = useRef<HTMLInputElement>(null);
 
-  const handleOrder = () => {};
+  const handleOrder = () => {
+    console.log('주문하기');
+    if (cupChoice === '') {
+      toast.error('컵을 선택하세요.');
+      return;
+    }
+
+    if (selectedStore.distance === '') {
+      setOpen(false);
+      confirmAlert({
+        customUI: ({ onClose }) => (
+          <>
+            <CustomAlert
+              title='주문할 매장을 선택해주세요.'
+              desc='매장을 선택하신 후 주문해주세요! 품절된 상품은 주문하실 수 없습니다.'
+              btnTitle='매장 선택하기'
+              // id={}
+              onAction={onSelectStore}
+              onClose={onClose}
+            />
+          </>
+        ),
+      });
+    } else {
+      console.log('선택된 매장', selectedStore);
+    }
+  };
+
+  const onSelectStore = () => {
+    console.log('id', selectedSizeId);
+    console.log('qty', count);
+    router.push({
+      pathname: '/selectStore',
+      query: {
+        sizeId: selectedSizeId,
+        qty: count,
+        optionList: [],
+      },
+    });
+  };
 
   const handleTempChoice = (e: string, tempId: number) => {
     setTemperatureChoice(e);
@@ -148,7 +192,6 @@ function productContent() {
     }
   };
 
-  console.log('myMenuData:', detailList);
   const handleAddMyMenuData = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
     console.log('myMenuName:', mymenuNameValue);
@@ -183,7 +226,6 @@ function productContent() {
     getNutrition(id).then(res => {
       setNutritionInfo(res.data.data);
     });
-
     getCount().then(res => {
       setCartCount(res.data.data);
     });
@@ -219,6 +261,13 @@ function productContent() {
       }
     }
   }, [detailList, temperatureChoice]);
+
+  // useEffect(() => {
+  //   console.log('selectedSizeId', selectedSizeId);
+  //   console.log('count', count);
+  //   console.log('price', detailList?.price);
+  //   console.log('cup', cupChoice);
+  // }, [selectedSizeId, count, detailList, cupChoice]);
 
   return (
     <>

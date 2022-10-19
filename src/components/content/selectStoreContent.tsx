@@ -9,9 +9,9 @@ import ChoiceStoreModal from './choiceStoreModal';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
-import { ISelecetStoreProps } from '../../types/cart';
 import { getStoreList } from '../../../pages/api/store';
 import { IStore } from '../../../src/types/store.d';
+import { useRouter } from 'next/router';
 
 const cx = classNames.bind(styles);
 
@@ -21,10 +21,28 @@ function selectStoreContent() {
   const [storeList, setStoreList] = useState<IStore[]>();
   const [clickStoreId, setClickStoreId] = useState(0);
   const [clickStoreInfo, setClickStoreInfo] = useState<IStore>();
+  const router = useRouter();
 
   function onDismiss() {
     setOpen(false);
   }
+
+  const handleOrder = () => {
+    if (clickStoreInfo !== undefined) {
+      router.push({
+        pathname: '/order',
+        query: {
+          sizeId: router.query.sizeId,
+          qty: router.query.qty,
+          optionList: router.query.optionList,
+          storeId: clickStoreInfo.storeId,
+          storeName: clickStoreInfo.name,
+          storeAddress: clickStoreInfo.address,
+          storeContactNumber: clickStoreInfo.contactNumber,
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     if (geolocation.latitude && geolocation.longitude) {
@@ -92,7 +110,10 @@ function selectStoreContent() {
           <div style={{ height: '85vh' }} />
 
           {clickStoreInfo && (
-            <ChoiceStoreModal clickStoreInfo={clickStoreInfo} />
+            <ChoiceStoreModal
+              clickStoreInfo={clickStoreInfo}
+              handleOrder={handleOrder}
+            />
           )}
         </SheetContent>
       </BottomSheet>

@@ -11,6 +11,7 @@ export interface IStore {
   isEcoStore: boolean;
   isDriveThrough: boolean;
   distance: string;
+  contactNumber: string;
 }
 
 export interface IProps {
