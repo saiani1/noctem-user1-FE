@@ -29,18 +29,21 @@ function selectStoreContent() {
 
   const handleOrder = () => {
     if (clickStoreInfo !== undefined) {
-      router.push({
-        pathname: '/order',
-        query: {
-          sizeId: router.query.sizeId,
-          qty: router.query.qty,
-          optionList: router.query.optionList,
-          storeId: clickStoreInfo.storeId,
-          storeName: clickStoreInfo.name,
-          storeAddress: clickStoreInfo.address,
-          storeContactNumber: clickStoreInfo.contactNumber,
+      router.push(
+        {
+          pathname: '/order',
+          query: {
+            sizeId: router.query.sizeId,
+            qty: router.query.qty,
+            optionList: router.query.optionList,
+            storeId: clickStoreInfo.storeId,
+            storeName: clickStoreInfo.name,
+            storeAddress: clickStoreInfo.address,
+            storeContactNumber: clickStoreInfo.contactNumber,
+          },
         },
-      });
+        '/order',
+      );
     }
   };
 

@@ -152,20 +152,38 @@ function productContent() {
       });
     } else {
       console.log('선택된 매장', selectedStore);
+      router.push(
+        {
+          pathname: '/order',
+          query: {
+            sizeId: selectedSizeId,
+            qty: count,
+            optionList: [],
+            storeId: selectedStore.storeId,
+            storeName: selectedStore.name,
+            storeAddress: selectedStore.address,
+            storeContactNumber: selectedStore.contactNumber,
+          },
+        },
+        '/order',
+      );
     }
   };
 
   const onSelectStore = () => {
     console.log('id', selectedSizeId);
     console.log('qty', count);
-    router.push({
-      pathname: '/selectStore',
-      query: {
-        sizeId: selectedSizeId,
-        qty: count,
-        optionList: [],
+    router.push(
+      {
+        pathname: '/selectStore',
+        query: {
+          sizeId: selectedSizeId,
+          qty: count,
+          optionList: [],
+        },
       },
-    });
+      '/selectStore',
+    );
   };
 
   const handleTempChoice = (e: string, tempId: number) => {
