@@ -12,6 +12,8 @@ import 'react-spring-bottom-sheet/dist/style.css';
 import { getStoreList } from '../../../pages/api/store';
 import { IStore } from '../../../src/types/store.d';
 import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { selectedStoreState } from './../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
 
@@ -21,14 +23,55 @@ function selectStoreContent() {
   const [storeList, setStoreList] = useState<IStore[]>();
   const [clickStoreId, setClickStoreId] = useState(0);
   const [clickStoreInfo, setClickStoreInfo] = useState<IStore>();
+  const [selectedStore, setSelectedStore] = useRecoilState(selectedStoreState);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   function onDismiss() {
     setOpen(false);
   }
 
+  const handleSelect = () => {
+    if (clickStoreInfo !== undefined) {
+      console.log('선택된 매장', clickStoreInfo);
+      setSelectedStore({
+        index: 0,
+        storeId: clickStoreInfo.storeId,
+        name: clickStoreInfo.name,
+        mainImg: clickStoreInfo.mainImg,
+        address: clickStoreInfo.address,
+        businessOpenHours: clickStoreInfo.businessOpenHours,
+        businessCloseHours: clickStoreInfo.businessCloseHours,
+        isOpen: clickStoreInfo.isOpen,
+        isParking: clickStoreInfo.isParking,
+        isEcoStore: clickStoreInfo.isEcoStore,
+        isDriveThrough: clickStoreInfo.isDriveThrough,
+        distance: clickStoreInfo.distance,
+        contactNumber: clickStoreInfo.contactNumber,
+      });
+      if (router.query.backPage !== undefined) {
+        router.push(router.query.backPage + '');
+      }
+    }
+  };
+
   const handleOrder = () => {
     if (clickStoreInfo !== undefined) {
+      setSelectedStore({
+        index: 0,
+        storeId: clickStoreInfo.storeId,
+        name: clickStoreInfo.name,
+        mainImg: clickStoreInfo.mainImg,
+        address: clickStoreInfo.address,
+        businessOpenHours: clickStoreInfo.businessOpenHours,
+        businessCloseHours: clickStoreInfo.businessCloseHours,
+        isOpen: clickStoreInfo.isOpen,
+        isParking: clickStoreInfo.isParking,
+        isEcoStore: clickStoreInfo.isEcoStore,
+        isDriveThrough: clickStoreInfo.isDriveThrough,
+        distance: clickStoreInfo.distance,
+        contactNumber: clickStoreInfo.contactNumber,
+      });
       router.push(
         {
           pathname: '/order',
@@ -48,11 +91,19 @@ function selectStoreContent() {
   };
 
   useEffect(() => {
+    console.log(router);
+    console.log(router.query);
+  }, [router]);
+
+  useEffect(() => {
     if (geolocation.latitude && geolocation.longitude) {
       getStoreList(geolocation.latitude, geolocation.longitude).then(res => {
         console.log(res.data.data);
         setStoreList(res.data.data);
+        setLoading(false);
       });
+    } else {
+      setLoading(true);
     }
   }, [geolocation]);
 
@@ -64,6 +115,10 @@ function selectStoreContent() {
       setClickStoreInfo(clickStore);
     }
   }, [clickStoreId]);
+
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
 
   return (
     <>
@@ -115,6 +170,7 @@ function selectStoreContent() {
           {clickStoreInfo && (
             <ChoiceStoreModal
               clickStoreInfo={clickStoreInfo}
+              handleSelect={handleSelect}
               handleOrder={handleOrder}
             />
           )}

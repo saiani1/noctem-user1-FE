@@ -10,6 +10,7 @@ import { getUserInfo } from './../../pages/api/user';
 import { getUserLevel } from './../../pages/api/level';
 import { useRouter } from 'next/router';
 import { getMyMenuData } from '../../pages/api/myMenu';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import MyMenuCard from './myMenuCard';
@@ -19,6 +20,10 @@ import { IStore } from '../types/store';
 import { IMenuData1 } from '../types/myMenu';
 import { ILevel } from '../types/user';
 import styles from '../../styles/main/main.module.scss';
+import { selectedStoreState } from '../store/atom/orderState';
+import { confirmAlert } from 'react-confirm-alert';
+import CustomAlert from '../components/customAlert';
+import { toast } from 'react-hot-toast';
 
 const cx = classNames.bind(styles);
 
@@ -29,6 +34,7 @@ function homeContent() {
   const [myMenu, setMyMenu] = useState<IMenuData1[]>();
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
+  const [, setSelectedStore] = useRecoilState(selectedStoreState);
   const styles: { [key: string]: React.CSSProperties } = {
     container: {
       width: `${progressState}%`,
@@ -38,9 +44,31 @@ function homeContent() {
   const [store, setStore] = useState<IStore>();
   const [storeWaitingTime, setStoreWaitingTime] = useState<number>();
 
+  const handleStoreSelect = () => {
+    if (store !== undefined) {
+      confirmAlert({
+        customUI: ({ onClose }) => (
+          <>
+            <CustomAlert
+              title='가까운 매장 선택'
+              desc='주문을 위해 해당 매장을 선택하시겠습니까?'
+              btnTitle='매장 선택하기'
+              // id={}
+              onAction={() => {
+                setSelectedStore(store);
+                router.push('/category');
+                toast.success('매장이 선택되었습니다.');
+              }}
+              onClose={onClose}
+            />
+          </>
+        ),
+      });
+    }
+  };
+
   useEffect(() => {
     if (isExistToken()) {
-      setIsLogin(true);
       getUserInfo().then(res => {
         setNickname(res.data.data.nickname);
       });
@@ -48,14 +76,14 @@ function homeContent() {
         setUserLevel(res.data.data);
       });
       getMyMenuData().then(res => {
-        console.log(res);
         setMyMenu(res.data.data);
       });
+      setIsLogin(true);
     } else {
       setIsLogin(false);
       setNickname('게스트');
     }
-  }, []);
+  }, [isExistToken]);
 
   useEffect(() => {
     if (userLevel) {
@@ -185,7 +213,7 @@ function homeContent() {
               <>
                 <h2 className={cx('title')}>나만의 메뉴</h2>
                 {myMenu.length === 1 && (
-                  <div className={cx('card')}>
+                  <div className={cx('one-card')}>
                     <MyMenuCard key={myMenu[0].index} item={myMenu[0]} />
                   </div>
                 )}
@@ -194,6 +222,7 @@ function homeContent() {
                     showArrows={false}
                     showStatus={false}
                     showIndicators={false}
+                    showThumbs={false}
                     autoPlay={false}
                     verticalSwipe={'standard'}
                   >
@@ -249,7 +278,7 @@ function homeContent() {
           {store && (
             <>
               <h2 className={cx('title')}>가까운 매장</h2>
-              <div className={cx('card')}>
+              <div className={cx('card')} onClick={handleStoreSelect}>
                 <div className={cx('store-img')}>
                   <img src={store.mainImg} alt={store.name} />
                 </div>

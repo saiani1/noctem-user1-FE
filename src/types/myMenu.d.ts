@@ -24,4 +24,5 @@ export interface IMenuDetailData {
   temperature: string;
   totalMenuPrice: number;
   size: string;
+  sizeId: number;
 }

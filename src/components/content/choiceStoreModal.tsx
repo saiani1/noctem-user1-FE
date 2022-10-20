@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/choiceStoreModal.module.scss';
 import { IStore } from '../../../src/types/store.d';
+import { useRouter } from 'next/router';
 
 const cx = classNames.bind(styles);
 
 interface IProps {
   clickStoreInfo: IStore;
+  handleSelect: () => void;
   handleOrder: () => void;
 }
 
-function choiceStoreModal({ clickStoreInfo, handleOrder }: IProps) {
+function choiceStoreModal({
+  clickStoreInfo,
+  handleSelect,
+  handleOrder,
+}: IProps) {
   const {
     name,
     mainImg,
@@ -25,6 +31,7 @@ function choiceStoreModal({ clickStoreInfo, handleOrder }: IProps) {
     isDriveThrough,
     contactNumber,
   } = clickStoreInfo;
+  const router = useRouter();
 
   return (
     <>
@@ -62,7 +69,11 @@ function choiceStoreModal({ clickStoreInfo, handleOrder }: IProps) {
             </span>
           </div>
         </div>
-        <button onClick={handleOrder}>매장 내 직접 수령</button>
+        <button
+          onClick={router.query.isStoreSelect ? handleSelect : handleOrder}
+        >
+          매장 내 직접 수령
+        </button>
       </div>
     </>
   );

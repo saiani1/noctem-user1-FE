@@ -7,6 +7,8 @@ import OrderCancelConfirmPopUp from './orderCancelConfirmPopUp';
 import styles from '../../../styles/content/orderPayingCompletionModal.module.scss';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../common/sheetContent';
+import { selectedStoreState } from '../../store/atom/orderState';
+import { useRecoilState } from 'recoil';
 
 function orderPayingCompletionModal({
   onDismiss,
@@ -15,6 +17,7 @@ function orderPayingCompletionModal({
   onDismiss: () => void;
   isOpen: boolean;
 }) {
+  const [selectedStore] = useRecoilState(selectedStoreState);
   const [isClickOrderProgressBtn, setIsClickOrderProgressBtn] = useState(false);
   const [isConfirmPopUpActive, setIsConfirmPopUpActive] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -48,7 +51,7 @@ function orderPayingCompletionModal({
 
             <div className={cx('wrap')}>
               <form onSubmit={handleSubmit}>
-                <h2>센텀드림월드점으로 주문하시겠어요?</h2>
+                <h2>{selectedStore.name}으로 주문하시겠어요?</h2>
                 <div className={cx('img-wrap')}>
                   <Image
                     src='/assets/images/jpg/centomdreamworld.jpg'
