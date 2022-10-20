@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
@@ -18,6 +18,7 @@ import CustomAlert from './../customAlert';
 function myPageContent() {
   const cx = classNames.bind(styles);
   const router = useRouter();
+  const [isLogin, setIsLogin] = useState(false);
   const [nickname, setNickname] = useRecoilState(nicknameState);
 
   const onLogin = () => {
@@ -43,14 +44,6 @@ function myPageContent() {
     }
   };
 
-  useEffect(() => {
-    if (isExistToken()) {
-      getUserInfo().then(res => {
-        setNickname(res.data.data.nickname);
-      });
-    }
-  }, []);
-
   const handleLogout = () => {
     if (isExistToken()) {
       removeToken();
@@ -60,10 +53,21 @@ function myPageContent() {
     }
   };
 
+  useEffect(() => {
+    if (isExistToken()) {
+      setIsLogin(true);
+      getUserInfo().then(res => {
+        setNickname(res.data.data.nickname);
+      });
+    } else {
+      setIsLogin(false);
+    }
+  }, []);
+
   return (
     <div className={cx('wrap')}>
       <h2>My Page</h2>
-      {isExistToken() ? (
+      {isLogin ? (
         <p className={cx('welcome-msg')}>
           <strong>{nickname}</strong> 님<br />
           환영합니다! 🙌
