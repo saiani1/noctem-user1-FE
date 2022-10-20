@@ -6,6 +6,7 @@ import Link from 'next/link';
 import styles from '../../../styles/content/login.module.scss';
 import { login } from '../../../pages/api/login';
 import { setToken } from '../../store/utils/token';
+import { toast } from 'react-hot-toast';
 
 const cx = classNames.bind(styles);
 
@@ -19,10 +20,17 @@ function loginContent() {
     const emailValue = emailInputRef.current?.value;
     const passwordValue = passwordInputRef.current?.value;
 
-    login(emailValue, passwordValue).then(res => {
-      setToken(res.headers.authorization);
-      router.push('/');
-    });
+    login(emailValue, passwordValue)
+      .then(res => {
+        setToken(res.headers.authorization);
+        router.push('/');
+      })
+      .catch(err => {
+        if (err.response.data.errorCode === 2020) {
+          toast.error('존재하지 않는 계정입니다.');
+          emailInputRef.current?.focus();
+        }
+      });
   };
 
   return (
