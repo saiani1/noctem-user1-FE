@@ -13,13 +13,12 @@ import { getCartList, getCount } from '../../../pages/api/cart';
 import { getToken } from '../../store/utils/token';
 import {
   ICart,
-  IData,
-  IMenuDataList,
+  ICartTotalPriceList,
   IPriceList,
   IQtyList,
 } from '../../types/cart';
 import { useRecoilState } from 'recoil';
-import { cartAmountList, cartCnt } from '../../store/atom/userStates';
+import { cartCnt } from '../../store/atom/userStates';
 import {
   addComma,
   getSessionCartCount,
@@ -32,14 +31,10 @@ function cartContent() {
   const cx = classNames.bind(styles);
   const [clickTab, setClickTab] = useState('food');
   const [cartList, setCartList] = useState<ICart[]>();
-  const [datas, setDatas] = useState<IData[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [count, setCount] = useRecoilState(cartCnt);
-  const [isStoreOpen, setIsStoreOpen] = useState<boolean>(false);
-  const [seletedItem, setSeletedItem] = useState<IMenuDataList[]>();
   const [selectedStore] = useRecoilState(selectedStoreState);
 
-  const [totalAmountList, setTotalAmountList] = useRecoilState(cartAmountList);
   const [total, setTotal] = useState(0);
   const [qtyList, setQtyList] = useState<IQtyList[]>([]);
   const [priceList, setPriceList] = useState<IPriceList[]>([]);
@@ -57,12 +52,6 @@ function cartContent() {
         backPage: '/cart',
       },
     });
-    // setIsStoreOpen(true);
-    // router
-  };
-
-  const handleClose = () => {
-    setIsStoreOpen(false);
   };
 
   const handleOrder = () => {
@@ -73,7 +62,23 @@ function cartContent() {
     }
   };
 
+  const handleSetCartPrice = (cartId: number, totalMenuPrice: number) => {
+    if (priceList) {
+      const test = priceList.filter(
+        (arr, i, callback) =>
+          i === callback.findIndex(loc => loc.cartId === arr.cartId),
+      );
+      console.log('test!!!', test);
+      setPriceList(test);
+    } else {
+      setPriceList(prev => {
+        return [...prev, { cartId: cartId, amount: totalMenuPrice }];
+      });
+    }
+  };
+
   useEffect(() => {
+    console.log('isChange', isChange);
     if (getToken() !== null && getToken() !== '{}') {
       // 회원 조회
       console.log('회원 조회');
@@ -96,43 +101,27 @@ function cartContent() {
     }
   }, [isChange]);
 
-  const handleAddTest = (cartId: number, totalMenuPrice: number) => {
-    console.log('Test', cartId, totalMenuPrice);
-    setPriceList(prev => {
-      console.log('prev', prev);
-      console.log('priceList', [
-        ...prev,
-        { cartId: cartId, amount: totalMenuPrice },
-      ]);
-      return [...prev, { cartId: cartId, amount: totalMenuPrice }];
-    });
-  };
-
   useEffect(() => {
+    console.log('cartList', cartList);
     if (cartList && cartList.length !== 0) {
-      console.log('cartList', cartList);
-      console.log('총계');
       const qtyList = cartList.map(cart => {
-        // const index =
         return {
           cartId: cart.cartId,
           qty: cart.qty,
         };
       });
-
       setQtyList(qtyList);
-      // console.log('qtyList', qtyList);
     }
   }, [cartList]);
 
   useEffect(() => {
+    console.log('priceList', priceList);
+    console.log('qtyList', qtyList);
     if (priceList.length !== 0 && qtyList.length !== 0) {
-      const totalAmountList = priceList.map(v => {
-        console.log('v', v);
-        const cartId = v.cartId;
-        const amount = v.amount;
-        const qty = qtyList.find(l => l.cartId === v.cartId)?.qty || 1;
-
+      const totalAmountList = priceList.map(price => {
+        const cartId = price.cartId;
+        const amount = price.amount;
+        const qty = qtyList.find(qty => qty.cartId === price.cartId)?.qty || 1;
         return {
           cartId: cartId,
           amount: amount,
@@ -140,13 +129,21 @@ function cartContent() {
         };
       });
 
-      console.log('드디어 완성', totalAmountList);
-      setTotalAmountList(totalAmountList);
+      console.log('totalAmountList', totalAmountList);
+      const total = totalAmountList.reduce(
+        (acc: number, curr: ICartTotalPriceList) => {
+          return acc + curr.qty * curr.amount;
+        },
+        0,
+      );
 
-      // totalAmountList.map()
-      // setTotal
+      setTotal(total);
     }
   }, [priceList, qtyList]);
+
+  useEffect(() => {
+    console.log('total', total);
+  }, [total]);
 
   return (
     <div className={cx('wrap')}>
@@ -179,9 +176,7 @@ function cartContent() {
           >
             <span className={cx('tit-wrap')}>
               음료/푸드
-              <span className={cx('cnt-wrap')}>
-                {cartList && cartList.length}
-              </span>
+              <span className={cx('cnt-wrap')}>{count}</span>
             </span>
           </button>
           <button
@@ -225,7 +220,7 @@ function cartContent() {
                     count={count}
                     isChange={isChange}
                     setIsChange={setIsChange}
-                    handleAddTest={handleAddTest}
+                    handleSetCartPrice={handleSetCartPrice}
                   />
                 ))}
             </div>

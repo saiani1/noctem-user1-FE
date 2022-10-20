@@ -19,13 +19,13 @@ function cartItem({
   count,
   isChange,
   setIsChange,
-  handleAddTest,
+  handleSetCartPrice,
 }: {
   cart: ICart;
   count: number;
   isChange: boolean;
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
-  handleAddTest: (cartId: number, totalMenuPrice: number) => void;
+  handleSetCartPrice: (cartId: number, totalMenuPrice: number) => void;
 }) {
   const { index, cartId, sizeId, qty } = cart;
   const [data, setData] = useState<IData>();
@@ -53,8 +53,11 @@ function cartItem({
 
   const handleDelete = (id: number) => {
     deleteItem(id).then(res => {
-      console.log(res);
-      setIsChange(!isChange);
+      getCartMenuData(sizeId, cartId).then(memu => {
+        const resData = memu.data.data;
+        handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
+        setIsChange(!isChange);
+      });
     });
   };
 
@@ -64,7 +67,7 @@ function cartItem({
         const resData = res.data.data;
         setData(resData);
         console.log('cartMenu', resData);
-        handleAddTest(resData.cartId, resData.totalMenuPrice);
+        handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
         setIsChange(!isChange);
       });
     } else {
