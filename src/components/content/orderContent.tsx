@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
 import { getMenuDetail } from '../../../pages/api/order';
 import { IMenuData, IProps } from '../../types/order';
+import { addComma } from '../../store/utils/function';
 
 const cx = classNames.bind(styles);
 
@@ -36,6 +37,11 @@ function orderContent(props: IProps) {
       // optionList: [],
     },
   ]);
+  const totalPrice = menuList.reduce((acc, curr) => {
+    return acc + curr.menuTotalPrice;
+  }, 0);
+  const discountPrice = 0;
+  const finallPrice = totalPrice - discountPrice;
 
   function onDismiss() {
     setIsClickPaymentBtn(false);
@@ -147,11 +153,11 @@ function orderContent(props: IProps) {
               </button>
             </li>
             <li className={cx('order-info-wrap')}>
-              <h3>주문 내역({})</h3>
+              <h3>주문 내역 ({menuList && menuList.length})</h3>
               <ul>
                 {menuList &&
                   menuList.map(menu => (
-                    <OrderItem key={menu.sizeId} menu={menu} />
+                    <OrderItem key={menu.imgUrl} menu={menu} />
                   ))}
               </ul>
               <div className={cx('wide-bg')} />
@@ -159,20 +165,20 @@ function orderContent(props: IProps) {
             <li className={cx('price-info-wrap')}>
               <dl>
                 <dt>주문 금액</dt>
-                <dd>6,300원</dd>
+                <dd>{addComma(totalPrice)}원</dd>
               </dl>
               <dl>
                 <dt>할인 금액</dt>
-                <dd>0원</dd>
+                <dd>{addComma(discountPrice)}원</dd>
               </dl>
               <dl className={cx('total-price-wrap')}>
                 <dt>최종 결제 금액</dt>
-                <dd>6,300원</dd>
+                <dd>{addComma(finallPrice)}원</dd>
               </dl>
             </li>
           </ul>
           <button type='submit' className={cx('btn')}>
-            6,300원 결제하기
+            {addComma(finallPrice)}원 결제하기
           </button>
         </form>
       </div>

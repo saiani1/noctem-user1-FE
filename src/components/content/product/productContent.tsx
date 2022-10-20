@@ -114,11 +114,20 @@ function productContent() {
           JSON.stringify(cartData),
         );
         setCartCount(getSessionCartCount());
+        setOpen(false);
+        toast.success('장바구니에 담겼습니다!');
       } else {
-        addCart(cartData);
+        addCart(cartData).then(res => {
+          if (res.data.data) {
+            setOpen(false);
+            toast.success('장바구니에 담겼습니다!');
+          } else {
+            toast.error(
+              '장바구니에 담을 수 없습니다. 잠시 후 다시 시도해주세요.',
+            );
+          }
+        });
       }
-      setOpen(false);
-      toast.success('장바구니에 담겼습니다!');
     }
   };
   const checkMenuName = (e: FocusEvent<HTMLInputElement>) => {

@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { ICartTotalPriceList } from '../../types/cart';
 
 export const nicknameState = atom({
   key: 'nickname',
@@ -15,7 +16,7 @@ export const cartCnt = atom({
   default: 0,
 });
 
-export const cartTotalAmount = atom({
-  key: 'cartTotalAmount',
-  default: 0,
+export const cartAmountList = atom<ICartTotalPriceList[]>({
+  key: 'cartAmountList',
+  default: [],
 });

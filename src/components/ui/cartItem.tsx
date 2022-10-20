@@ -19,13 +19,13 @@ function cartItem({
   count,
   isChange,
   setIsChange,
-  setTotalAmount,
+  handleAddTest,
 }: {
   cart: ICart;
   count: number;
   isChange: boolean;
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
-  setTotalAmount: React.Dispatch<React.SetStateAction<number>>;
+  handleAddTest: (cartId: number, totalMenuPrice: number) => void;
 }) {
   const { index, cartId, sizeId, qty } = cart;
   const [data, setData] = useState<IData>();
@@ -63,11 +63,8 @@ function cartItem({
       getCartMenuData(sizeId, cartId).then(res => {
         const resData = res.data.data;
         setData(resData);
-        setTotalAmount(prev => {
-          console.log('prev', prev);
-          console.log('resData.totalMenuPrice', resData.totalMenuPrice);
-          return prev + resData.totalMenuPrice * qty;
-        });
+        console.log('cartMenu', resData);
+        handleAddTest(resData.cartId, resData.totalMenuPrice);
         setIsChange(!isChange);
       });
     } else {
@@ -75,7 +72,6 @@ function cartItem({
         const resData = res.data.data;
         console.log('res', resData);
         setData(resData);
-        // setTotalAmount(resData.totalMenuPrice * qty);
         setIsChange(!isChange);
       });
     }
@@ -86,7 +82,7 @@ function cartItem({
       {data && (
         <div className={cx('cart-item-wrap')}>
           <div className={cx('first-wrap')}>
-            <input type='checkbox' />
+            {/* <input type='checkbox' /> */}
             <button
               type='button'
               className={cx('close-btn')}

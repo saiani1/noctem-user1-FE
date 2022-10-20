@@ -34,3 +34,19 @@ export interface ISelecetStoreProps {
   selectStore?: IStore;
   setSelectStore?: Dispatch<SetStateAction<boolean>>;
 }
+
+export interface ICartTotalPriceList {
+  cartId: number;
+  qty: number;
+  amount: number;
+}
+
+export interface IQtyList {
+  cartId: number;
+  qty: number;
+}
+
+export interface IPriceList {
+  cartId: number;
+  amount: number;
+}
