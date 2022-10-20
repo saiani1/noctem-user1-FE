@@ -26,8 +26,11 @@ function loginContent() {
         router.push('/');
       })
       .catch(err => {
-        if (err.response.data.errorCode === 2020) {
-          toast.error('존재하지 않는 계정입니다.');
+        let errCode = err.response.data.errorCode;
+        if (errCode === 2016 || errCode === 2017 || errCode === 2020) {
+          toast.error(
+            '아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.',
+          );
           emailInputRef.current?.focus();
         }
       });
