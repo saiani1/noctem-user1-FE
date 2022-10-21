@@ -10,6 +10,7 @@ import {
   getCartMenuData,
 } from '../../../pages/api/cart';
 import { addComma } from '../../store/utils/function';
+import { isExistToken } from './../../store/utils/token';
 
 const cx = classNames.bind(styles);
 
@@ -18,13 +19,13 @@ function cartItem({
   count,
   isChange,
   setIsChange,
-  setTotalAmount,
+  handleSetCartPrice,
 }: {
   cart: ICart;
   count: number;
   isChange: boolean;
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
-  setTotalAmount: React.Dispatch<React.SetStateAction<number>>;
+  handleSetCartPrice: (cartId: number, totalMenuPrice: number) => void;
 }) {
   const { index, cartId, sizeId, qty } = cart;
   const [data, setData] = useState<IData>();
@@ -52,22 +53,31 @@ function cartItem({
 
   const handleDelete = (id: number) => {
     deleteItem(id).then(res => {
-      console.log(res);
-      setIsChange(!isChange);
+      getCartMenuData(sizeId, cartId).then(memu => {
+        const resData = memu.data.data;
+        handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
+        setIsChange(!isChange);
+      });
     });
   };
 
   useEffect(() => {
-    getCartMenuData(sizeId, cartId).then(res => {
-      const resData = res.data.data;
-      setData(resData);
-      setTotalAmount(prev => {
-        console.log('prev', prev);
-        console.log('resData.totalMenuPrice', resData.totalMenuPrice);
-        return prev + resData.totalMenuPrice * qty;
+    if (isExistToken()) {
+      getCartMenuData(sizeId, cartId).then(res => {
+        const resData = res.data.data;
+        setData(resData);
+        console.log('cartMenu', resData);
+        handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
+        setIsChange(!isChange);
       });
-      setIsChange(!isChange);
-    });
+    } else {
+      getCartMenuData(sizeId, 0).then(res => {
+        const resData = res.data.data;
+        console.log('res', resData);
+        setData(resData);
+        setIsChange(!isChange);
+      });
+    }
   }, []);
 
   return (
@@ -75,7 +85,7 @@ function cartItem({
       {data && (
         <div className={cx('cart-item-wrap')}>
           <div className={cx('first-wrap')}>
-            <input type='checkbox' />
+            {/* <input type='checkbox' /> */}
             <button
               type='button'
               className={cx('close-btn')}

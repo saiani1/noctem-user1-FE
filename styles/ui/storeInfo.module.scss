@@ -1,6 +1,8 @@
 @use '/styles/base/variable';
 
 .store-wrap {
+  position: relative;
+
   button {
     display: flex;
     justify-content: space-between;
@@ -83,5 +85,16 @@
         color: variable.$TXT-002;
       }
     }
+  }
+
+  .close-store {
+    background-color: variable.$BG-ALPA-003;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    cursor: auto;
   }
 }

@@ -27,7 +27,8 @@
 
   .first-wrap {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
+    justify-content: flex-end;
 
     .close-btn {
       display: flex;

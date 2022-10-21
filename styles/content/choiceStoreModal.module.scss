@@ -22,6 +22,7 @@
       height: 200px;
     }
   }
+
   .tit-wrap {
     display: flex;
     flex-direction: column;
@@ -93,7 +94,7 @@
     }
   }
 
-  a {
+  button {
     @include position.absolute(auto 0 35px 0);
     display: block;
     margin: 0 19px;

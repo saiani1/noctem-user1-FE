@@ -6,6 +6,7 @@ import Link from 'next/link';
 import styles from '../../../styles/content/login.module.scss';
 import { login } from '../../../pages/api/login';
 import { setToken } from '../../store/utils/token';
+import { toast } from 'react-hot-toast';
 
 const cx = classNames.bind(styles);
 
@@ -19,10 +20,20 @@ function loginContent() {
     const emailValue = emailInputRef.current?.value;
     const passwordValue = passwordInputRef.current?.value;
 
-    login(emailValue, passwordValue).then(res => {
-      setToken(res.headers.authorization);
-      router.push('/');
-    });
+    login(emailValue, passwordValue)
+      .then(res => {
+        setToken(res.headers.authorization);
+        router.push('/');
+      })
+      .catch(err => {
+        let errCode = err.response.data.errorCode;
+        if (errCode === 2016 || errCode === 2017 || errCode === 2020) {
+          toast.error(
+            '아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.',
+          );
+          emailInputRef.current?.focus();
+        }
+      });
   };
 
   return (

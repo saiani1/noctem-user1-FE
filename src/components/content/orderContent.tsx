@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
@@ -8,17 +8,13 @@ import 'react-spring-bottom-sheet/dist/style.css';
 import ChoicePaymentModal from '../../components/content/choicePaymentModal';
 import RegisterCashReceiptModal from '../../components/content/registerCashReceiptModal';
 import OrderPayingCompletionModal from '../../components/content/orderPayingCompletionModal';
+import { useRouter } from 'next/router';
+import OrderItem from '../ui/orderItem';
+import { getMenuDetail } from '../../../pages/api/order';
+import { IMenuData, IProps } from '../../types/order';
+import { addComma } from '../../store/utils/function';
 
 const cx = classNames.bind(styles);
-
-interface IProps {
-  isClickPaymentBtn: boolean;
-  isClickCashReceiptBtn: boolean;
-  isClickSubmitBtn: boolean;
-  setIsClickPaymentBtn: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsClickCashReceiptBtn: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsClickSubmitBtn: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 function orderContent(props: IProps) {
   const {
@@ -29,6 +25,23 @@ function orderContent(props: IProps) {
     setIsClickCashReceiptBtn,
     setIsClickSubmitBtn,
   } = props;
+  const router = useRouter();
+  const [menuList, setMenuList] = useState<IMenuData[]>([
+    {
+      sizeId: 0,
+      menuFullName: '',
+      menuShortName: '',
+      imgUrl: '',
+      qty: 0,
+      menuTotalPrice: 0,
+      // optionList: [],
+    },
+  ]);
+  const totalPrice = menuList.reduce((acc, curr) => {
+    return acc + curr.menuTotalPrice;
+  }, 0);
+  const discountPrice = 0;
+  const finallPrice = totalPrice - discountPrice;
 
   function onDismiss() {
     setIsClickPaymentBtn(false);
@@ -54,6 +67,39 @@ function orderContent(props: IProps) {
       return !prev;
     });
   };
+
+  useEffect(() => {
+    console.log('router', router);
+    console.log('router.query', router.query);
+    if (Object.keys(router.query).length === 0) {
+      // 장바구니 주문하기
+      console.log('장바구니 주문');
+      // setMenuList();
+    } else {
+      // 메뉴에서 바로 주문하기
+      console.log('메뉴 즉시 주문');
+      console.log(router.query);
+      const sizeId = router.query.sizeId ? +router.query.sizeId + 0 : 0;
+      const qty = router.query.qty ? +router.query.qty + 0 : 0;
+      if (router.query.sizeId !== undefined) {
+        getMenuDetail(sizeId).then(res => {
+          let resData: IMenuData = res.data.data;
+          console.log('res', resData);
+          setMenuList([
+            {
+              sizeId: sizeId,
+              menuFullName: resData.menuFullName,
+              menuShortName: resData.menuShortName,
+              imgUrl: resData.imgUrl,
+              qty: qty,
+              menuTotalPrice: qty * resData.menuTotalPrice,
+              // optionList: [],
+            },
+          ]);
+        });
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -107,46 +153,32 @@ function orderContent(props: IProps) {
               </button>
             </li>
             <li className={cx('order-info-wrap')}>
-              <h3>주문 내역</h3>
-              <div className={cx('order-info')}>
-                <div className={cx('img-wrap')}>
-                  <Image
-                    src='/assets/images/jpg/menu.jpg'
-                    alt='주문한음료'
-                    width={40}
-                    height={40}
-                  />
-                </div>
-                <div className={cx('order-info-text-wrap')}>
-                  <div className={cx('order-item-wrap')}>
-                    <p>아이스 블랙 글레이즈드 라떼</p>
-                    <span>6,300원</span>
-                  </div>
-                  <div className={cx('order-option-wrap')}>
-                    <p>ICED | Tall | 개인컵</p>
-                    <span>6,300원</span>
-                  </div>
-                </div>
-              </div>
+              <h3>주문 내역 ({menuList && menuList.length})</h3>
+              <ul>
+                {menuList &&
+                  menuList.map(menu => (
+                    <OrderItem key={menu.imgUrl} menu={menu} />
+                  ))}
+              </ul>
               <div className={cx('wide-bg')} />
             </li>
             <li className={cx('price-info-wrap')}>
               <dl>
                 <dt>주문 금액</dt>
-                <dd>6,300원</dd>
+                <dd>{addComma(totalPrice)}원</dd>
               </dl>
               <dl>
                 <dt>할인 금액</dt>
-                <dd>0원</dd>
+                <dd>{addComma(discountPrice)}원</dd>
               </dl>
               <dl className={cx('total-price-wrap')}>
                 <dt>최종 결제 금액</dt>
-                <dd>6,300원</dd>
+                <dd>{addComma(finallPrice)}원</dd>
               </dl>
             </li>
           </ul>
           <button type='submit' className={cx('btn')}>
-            6,300원 결제하기
+            {addComma(finallPrice)}원 결제하기
           </button>
         </form>
       </div>

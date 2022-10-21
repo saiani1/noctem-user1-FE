@@ -14,8 +14,3 @@ export const cartCnt = atom({
   key: 'cartCount',
   default: 0,
 });
-
-export const cartTotalAmount = atom({
-  key: 'cartTotalAmount',
-  default: 0,
-});

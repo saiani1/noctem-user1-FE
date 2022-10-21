@@ -40,7 +40,12 @@ function myMenuItem({
   useEffect(() => {
     if (item !== undefined && !isEmpty) {
       getMyMenuDetailData(item.sizeId, item.myMenuId).then(res => {
-        setItemInfo(res.data.data);
+        const resData = res.data.data;
+        const mymenuInfo = {
+          ...resData,
+          sizeId: item.sizeId,
+        };
+        setItemInfo(mymenuInfo);
         setIsFetching(true);
         setIsDeleteMyMenu(false);
         setIsChangeMyMenuName(false);

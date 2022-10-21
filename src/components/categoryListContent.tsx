@@ -10,7 +10,9 @@ import { useRecoilState } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
 import { getCount } from '../../pages/api/cart';
 import { cartCnt } from '../store/atom/userStates';
-import { addComma } from '../store/utils/function';
+import { addComma, getSessionCartCount } from '../store/utils/function';
+import { isExistToken } from './../store/utils/token';
+import { selectedStoreState } from '../store/atom/orderState';
 
 const cx = classNames.bind(styles);
 interface IDrinkList {
@@ -35,6 +37,7 @@ function categoryListContent({
 }) {
   const router = useRouter();
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
+  const [selectedStore] = useRecoilState(selectedStoreState);
   const [cartCount, setCartCount] = useRecoilState(cartCnt);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
   useEffect(() => {
@@ -44,13 +47,23 @@ function categoryListContent({
     });
     console.log(categorySId);
 
-    getCount().then(res => {
-      setCartCount(res.data.data);
-    });
+    if (isExistToken()) {
+      getCount().then(res => {
+        setCartCount(res.data.data);
+      });
+    } else {
+      setCartCount(getSessionCartCount());
+    }
   }, [categorySId]);
 
   const handleClickSelectStore = () => {
-    router.push('/selectStore');
+    router.push({
+      pathname: '/selectStore',
+      query: {
+        isStoreSelect: false,
+        backPage: '/category',
+      },
+    });
   };
 
   return (
@@ -94,7 +107,11 @@ function categoryListContent({
         onClick={handleClickSelectStore}
       >
         <div>
-          <div>주문할 매장을 선택하세요</div>
+          <div>
+            {selectedStore.distance === ''
+              ? '주문할 매장을 선택하세요'
+              : selectedStore.name}
+          </div>
           <div>
             <Image
               src='/assets/svg/icon-down-arrow.svg'
