@@ -22,7 +22,9 @@ function orderItem({ menu }: { menu: IMenuData }) {
     <li>
       <div className={cx('order-info')}>
         <div className={cx('img-wrap')}>
-          <Image src={imgUrl} alt={menuFullName} width={40} height={40} />
+          {imgUrl && (
+            <Image src={imgUrl} alt={menuFullName} width={40} height={40} />
+          )}
         </div>
         <div className={cx('order-info-text-wrap')}>
           <div className={cx('order-item-wrap')}>
