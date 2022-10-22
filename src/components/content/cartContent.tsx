@@ -37,7 +37,7 @@ function cartContent() {
 
   const [total, setTotal] = useState(0);
   const [qtyList, setQtyList] = useState<IQtyList[]>([]);
-  const [priceList, setPriceList] = useState<IPriceList[]>([]);
+  const [priceList, setPriceList] = useState<IPriceList[]>();
   const router = useRouter();
 
   const handleClickTab = (e: React.MouseEvent<HTMLElement>) => {
@@ -64,15 +64,13 @@ function cartContent() {
 
   const handleSetCartPrice = (cartId: number, totalMenuPrice: number) => {
     if (priceList) {
-      const test = priceList.filter(
-        (arr, i, callback) =>
-          i === callback.findIndex(loc => loc.cartId === arr.cartId),
-      );
-      console.log('test!!!', test);
-      setPriceList(test);
+      const newPriceList = priceList.filter((arr, i, callback) => {
+        return i !== callback.findIndex(loc => loc.cartId === cartId);
+      });
+      setPriceList(newPriceList);
     } else {
       setPriceList(prev => {
-        return [...prev, { cartId: cartId, amount: totalMenuPrice }];
+        return [...(prev || []), { cartId: cartId, amount: totalMenuPrice }];
       });
     }
   };
@@ -117,7 +115,7 @@ function cartContent() {
   useEffect(() => {
     console.log('priceList', priceList);
     console.log('qtyList', qtyList);
-    if (priceList.length !== 0 && qtyList.length !== 0) {
+    if (priceList && priceList.length !== 0 && qtyList.length !== 0) {
       const totalAmountList = priceList.map(price => {
         const cartId = price.cartId;
         const amount = price.amount;

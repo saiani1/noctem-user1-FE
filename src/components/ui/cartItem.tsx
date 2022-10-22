@@ -53,8 +53,8 @@ function cartItem({
 
   const handleDelete = (id: number) => {
     deleteItem(id).then(res => {
-      getCartMenuData(sizeId, cartId).then(memu => {
-        const resData = memu.data.data;
+      getCartMenuData(sizeId, cartId).then(menu => {
+        const resData = menu.data.data;
         handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
         setIsChange(!isChange);
       });
