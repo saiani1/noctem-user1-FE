@@ -11,6 +11,8 @@ import {
 } from '../../../pages/api/cart';
 import { addComma } from '../../store/utils/function';
 import { isExistToken } from './../../store/utils/token';
+import { getMenuDetail } from '../../../pages/api/order';
+import { IMenuList } from './../../types/order.d';
 
 const cx = classNames.bind(styles);
 
@@ -20,12 +22,14 @@ function cartItem({
   isChange,
   setIsChange,
   handleSetCartPrice,
+  setMenuList,
 }: {
   cart: ICart;
   count: number;
   isChange: boolean;
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
   handleSetCartPrice: (cartId: number, totalMenuPrice: number) => void;
+  setMenuList: React.Dispatch<React.SetStateAction<IMenuList[]>>;
 }) {
   const { index, cartId, sizeId, qty } = cart;
   const [data, setData] = useState<IData>();
@@ -68,7 +72,25 @@ function cartItem({
         setData(resData);
         console.log('cartMenu', resData);
         handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
-        setIsChange(!isChange);
+        // setIsChange(!isChange);
+      });
+
+      getMenuDetail(sizeId, cartId).then(res => {
+        const resData = res.data.data;
+        setMenuList(prev => {
+          return [
+            ...prev,
+            {
+              sizeId: sizeId,
+              menuFullName: resData.menuFullName,
+              menuShortName: resData.menuShortName,
+              imgUrl: resData.imgUrl,
+              qty: qty,
+              menuTotalPrice: 0,
+              optionList: [],
+            },
+          ];
+        });
       });
     } else {
       getCartMenuData(sizeId, 0).then(res => {

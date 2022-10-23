@@ -26,14 +26,24 @@ import {
 } from '../../store/utils/function';
 import { useRouter } from 'next/router';
 import { selectedStoreState } from '../../store/atom/orderState';
+import { isExistToken } from './../../store/utils/token';
+import { getUserDetailInfo } from '../../../pages/api/user';
+import { IMenuList, IPurchaseData } from '../../types/order';
+import { IUserDetailInfo } from '../../types/user';
 
 function cartContent() {
   const cx = classNames.bind(styles);
   const [clickTab, setClickTab] = useState('food');
   const [cartList, setCartList] = useState<ICart[]>();
+  const [menuList, setMenuList] = useState<IMenuList[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [count, setCount] = useRecoilState(cartCnt);
   const [selectedStore] = useRecoilState(selectedStoreState);
+  const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
+    userAge: 0,
+    userSex: '남자',
+  });
+  const [orderData, setOrderData] = useState<IPurchaseData>();
 
   const [total, setTotal] = useState(0);
   const [qtyList, setQtyList] = useState<IQtyList[]>([]);
@@ -57,8 +67,27 @@ function cartContent() {
   const handleOrder = () => {
     if (selectedStore.distance === '') {
       toast.error('매장을 선택해 주세요');
+      return;
+    }
+
+    if (isExistToken()) {
+      console.log('회원 주문');
+
+      const data = {
+        storeId: selectedStore.storeId,
+        storeName: selectedStore.name,
+        storeAddress: selectedStore.address,
+        storeContactNumber: selectedStore.contactNumber,
+        userAge: userDetailInfo.userAge,
+        userSex: userDetailInfo.userSex,
+        purchaseTotalPrice: total,
+        cardCorp: '신한카드',
+        cardPaymentPrice: total,
+        // menuList: menuList,
+      };
+      console.log(data);
     } else {
-      console.log('주문하기');
+      console.log('비회원 주문');
     }
   };
 
@@ -75,16 +104,26 @@ function cartContent() {
     }
   };
 
+  // const handleSetMenuList = (sizeId: number) => {
+  //   console.log('menuList', menuList);
+  //   const newMenuList = menuList.filter(menu => {
+  //     return menu.sizeId !== sizeId;
+  //   });
+  //   console.log('newMenuList', newMenuList);
+  //   setMenuList(newMenuList);
+  // };
+
   useEffect(() => {
     console.log('isChange', isChange);
-    if (getToken() !== null && getToken() !== '{}') {
+    if (isExistToken()) {
       // 회원 조회
       console.log('회원 조회');
       getCartList().then(res => {
         setCartList(res.data.data);
       });
       getCount().then(res => {
-        setCount(res.data.data);
+        const resData = res.data.data === null ? 0 : res.data.data;
+        setCount(resData);
       });
     } else {
       // 비회원 조회
@@ -115,7 +154,12 @@ function cartContent() {
   useEffect(() => {
     console.log('priceList', priceList);
     console.log('qtyList', qtyList);
-    if (priceList && priceList.length !== 0 && qtyList.length !== 0) {
+    if (
+      priceList &&
+      qtyList &&
+      priceList.length !== 0 &&
+      qtyList.length !== 0
+    ) {
       const totalAmountList = priceList.map(price => {
         const cartId = price.cartId;
         const amount = price.amount;
@@ -140,8 +184,20 @@ function cartContent() {
   }, [priceList, qtyList]);
 
   useEffect(() => {
-    console.log('total', total);
-  }, [total]);
+    if (menuList.length !== 0) {
+      console.log('메뉴리스트!!!!', menuList);
+    }
+  }, [menuList]);
+
+  useEffect(() => {
+    if (isExistToken()) {
+      getUserDetailInfo().then(res => {
+        console.log('getUser', res.data.data);
+        setUserDetailInfo(res.data.data);
+      });
+    } else {
+    }
+  }, []);
 
   return (
     <div className={cx('wrap')}>
@@ -219,6 +275,7 @@ function cartContent() {
                     isChange={isChange}
                     setIsChange={setIsChange}
                     handleSetCartPrice={handleSetCartPrice}
+                    setMenuList={setMenuList}
                   />
                 ))}
             </div>
