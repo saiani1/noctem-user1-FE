@@ -49,7 +49,8 @@ function categoryListContent({
 
     if (isExistToken()) {
       getCount().then(res => {
-        setCartCount(res.data.data);
+        const resData = res.data.data === null ? 0 : res.data.data;
+        setCartCount(resData);
       });
     } else {
       setCartCount(getSessionCartCount());

@@ -254,7 +254,8 @@ function productContent() {
       setNutritionInfo(res.data.data);
     });
     getCount().then(res => {
-      setCartCount(res.data.data);
+      const resData = res.data.data === null ? 0 : res.data.data;
+      setCartCount(resData);
     });
   }, [id, open]);
 
