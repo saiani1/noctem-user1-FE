@@ -27,7 +27,11 @@ export const getMyMenuData = async (sizeId: number, cartId: number) => {
 }
 
 export const getCount = async () => {
-  const res = await basicRequest.get(`${USER_SERVICE}/carts/qty`, HEADERS);
+  const res = await basicRequest.get(`${USER_SERVICE}/carts/qty`, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 }
 

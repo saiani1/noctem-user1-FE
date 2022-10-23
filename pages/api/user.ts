@@ -17,6 +17,15 @@ export const getUserInfo = async () => {
   return res;
 }
 
+export const getUserDetailInfo = async () => {
+  const res = await basicRequest.get(`${SERVICE}/userAccount/info`, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
+  return res;
+}
+
 export const getUserOptions = async () => {
   const res = await basicRequest.get(`${SERVICE}/optionalInfo`, {
     headers: {

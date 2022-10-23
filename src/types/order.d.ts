@@ -17,10 +17,10 @@ export interface IPurchaseData {
   purchaseTotalPrice: number;
   cardCorp: string;
   cardPaymentPrice: number;
-  menuList: IMenuData[];
+  menuList: IMenuList[];
 }
 
-export interface IMenuData {
+export interface IMenuList {
   sizeId: number;
   menuFullName: string;
   menuShortName: string;
