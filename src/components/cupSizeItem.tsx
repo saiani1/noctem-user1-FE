@@ -32,11 +32,10 @@ function cupSizeItem({
     <>
       {list && (
         <div
-          className={
-            selectedSizeTxt === list.size
-              ? cx('cup-card-click')
-              : cx('cup-card')
-          }
+          className={cx(
+            'cup-card',
+            selectedSizeTxt === list.size && 'cup-card-click',
+          )}
           role='sizeitem'
           onClick={handleChoice}
           onKeyDown={handleChoice}
