@@ -27,7 +27,11 @@ export const getMyMenuData = async (sizeId: number, cartId: number) => {
 }
 
 export const getCount = async () => {
-  const res = await basicRequest.get(`${USER_SERVICE}/carts/qty`, HEADERS);
+  const res = await basicRequest.get(`${USER_SERVICE}/carts/qty`, {
+    headers: {
+      Authorization: JSON.parse(getToken())
+    }
+  });
   return res;
 }
 
@@ -46,3 +50,8 @@ export const deleteItem = async (cartId: number) => {
   const res = await basicRequest.delete(`${USER_SERVICE}/carts/${cartId}`, HEADERS);
   return res;
 };
+
+export const deleteAll = async () => {
+  const res = await basicRequest.delete(`${USER_SERVICE}/carts/all`, HEADERS);
+  return res;
+}

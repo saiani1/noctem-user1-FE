@@ -11,7 +11,11 @@ const HEADERS = {
 };
 
 export const getMyMenuData = async () => {
-  const res = await basicRequest.get(`${U_SERVICE}/myMenu`, HEADERS);
+  const res = await basicRequest.get(`${U_SERVICE}/myMenu`, {
+    headers: {
+      Authorization: JSON.parse(getToken()),
+    },
+  });
   return res;
 };
 

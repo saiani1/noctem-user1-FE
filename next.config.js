@@ -8,7 +8,7 @@ module.exports = withPlugins([
   withPWA,
   {
     images: {
-      domains: ['image.istarbucks.co.kr'],
+      domains: ['image.istarbucks.co.kr', 'user-images.githubusercontent.com'],
     }
   }
   // 추가 플러그인
