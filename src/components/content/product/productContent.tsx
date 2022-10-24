@@ -31,7 +31,7 @@ import {
   INutrition,
 } from '../../../types/productDetail';
 import { IParams } from '../../../types/myMenu';
-import { cartCnt } from '../../../store/atom/userStates';
+import { cartCntState } from '../../../store/atom/userStates';
 import { addComma, getSessionCartCount } from '../../../store/utils/function';
 import MyMenuRenamePopUp from '../myMenuRenamePopUp';
 import { selectedStoreState } from '../../../store/atom/orderState';
@@ -45,7 +45,7 @@ function productContent() {
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [cartCount, setCartCount] = useRecoilState(cartCnt);
+  const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [open, setOpen] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();

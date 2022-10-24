@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
-import Header from '../common/header';
-import SelectStoreContent from './selectStoreContent';
 import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/cartContent.module.scss';
@@ -10,7 +8,6 @@ import CartItem from '../ui/cartItem';
 import EmptyCart from './emptyCart';
 import { useEffect } from 'react';
 import { getCartList, getCount } from '../../../pages/api/cart';
-import { getToken } from '../../store/utils/token';
 import {
   ICart,
   ICartTotalPriceList,
@@ -18,7 +15,7 @@ import {
   IQtyList,
 } from '../../types/cart';
 import { useRecoilState } from 'recoil';
-import { cartCnt } from '../../store/atom/userStates';
+import { cartCntState } from '../../store/atom/userStates';
 import {
   addComma,
   getSessionCartCount,
@@ -31,24 +28,25 @@ import { getUserDetailInfo } from '../../../pages/api/user';
 import { IMenuList, IPurchaseData } from '../../types/order';
 import { IUserDetailInfo } from '../../types/user';
 
+const cx = classNames.bind(styles);
+
 function cartContent() {
-  const cx = classNames.bind(styles);
+  const router = useRouter();
   const [clickTab, setClickTab] = useState('food');
-  const [cartList, setCartList] = useState<ICart[]>();
-  const [menuList, setMenuList] = useState<IMenuList[]>([]);
-  const [isChange, setIsChange] = useState<boolean>(false);
-  const [count, setCount] = useRecoilState(cartCnt);
+  const [count, setCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
     userAge: 0,
     userSex: '남자',
   });
-  const [orderData, setOrderData] = useState<IPurchaseData>();
 
   const [total, setTotal] = useState(0);
+  const [cartList, setCartList] = useState<ICart[]>();
+  const [menuList, setMenuList] = useState<IMenuList[]>([]);
+  const [isChange, setIsChange] = useState<boolean>(false);
   const [qtyList, setQtyList] = useState<IQtyList[]>([]);
   const [priceList, setPriceList] = useState<IPriceList[]>();
-  const router = useRouter();
+  const [orderData, setOrderData] = useState<IPurchaseData>();
 
   const handleClickTab = (e: React.MouseEvent<HTMLElement>) => {
     setClickTab((e.target as HTMLInputElement).value);

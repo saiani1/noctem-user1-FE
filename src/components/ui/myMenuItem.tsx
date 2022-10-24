@@ -12,7 +12,7 @@ import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma, getSessionCartCount } from './../../store/utils/function';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
 import { useRecoilState } from 'recoil';
-import { cartCnt } from '../../store/atom/userStates';
+import { cartCntState } from '../../store/atom/userStates';
 import { isExistToken } from '../../store/utils/token';
 import { ICartData } from '../../types/productDetail';
 import { addCart } from '../../../pages/api/cart';
@@ -42,7 +42,7 @@ function myMenuItem({
   setIsChangeMyMenuName,
 }: IProps) {
   const router = useRouter();
-  const [cartCount, setCartCount] = useRecoilState(cartCnt);
+  const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [itemInfo, setItemInfo] = useState<IMenuDetailData>();
   const [clickRenameBtn, setClickRenameBtn] = useState(false);

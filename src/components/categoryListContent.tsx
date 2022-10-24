@@ -9,7 +9,7 @@ import { getMenuCategory } from '../../pages/api/category';
 import { useRecoilState } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
 import { getCount } from '../../pages/api/cart';
-import { cartCnt } from '../store/atom/userStates';
+import { cartCntState } from '../store/atom/userStates';
 import { addComma, getSessionCartCount } from '../store/utils/function';
 import { isExistToken } from './../store/utils/token';
 import { selectedStoreState } from '../store/atom/orderState';
@@ -38,7 +38,7 @@ function categoryListContent({
   const router = useRouter();
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [cartCount, setCartCount] = useRecoilState(cartCnt);
+  const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
   useEffect(() => {
     getMenuCategory(categorySId).then(res => {

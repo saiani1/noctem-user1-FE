@@ -46,7 +46,7 @@ export const userGradeState = atom({
   default: 0,
 });
 
-export const cartCnt = atom({
+export const cartCntState = atom({
   key: 'cartCount',
   default: 0,
 });
