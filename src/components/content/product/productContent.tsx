@@ -216,7 +216,28 @@ function productContent() {
     setNutritionOpen(false);
   }
 
+  const onLogin = () => {
+    router.push('/login');
+  };
+
   const handleAddMyMenu = (e: any) => {
+    if (!isExistToken()) {
+      setOpen(false);
+      confirmAlert({
+        customUI: ({ onClose }) => (
+          <CustomAlert
+            title='로그인'
+            desc='로그인이 필요한 서비스입니다. 로그인 하시겠습니까?'
+            btnTitle='로그인'
+            // id={}
+            onAction={onLogin}
+            onClose={onClose}
+          />
+        ),
+      });
+      return;
+    }
+
     if (selectedSizeTxt === '' || cupChoice === '') {
       toast.error('사이즈와 컵을 선택해주세요');
       return;
