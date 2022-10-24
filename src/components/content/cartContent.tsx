@@ -26,6 +26,7 @@ import { selectedStoreState } from '../../store/atom/orderState';
 import { isExistToken } from './../../store/utils/token';
 import { IMenuList, IPurchaseData } from '../../types/order';
 import { IUserDetailInfo } from '../../types/user';
+import { orderInfoState } from './../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
 
@@ -34,6 +35,7 @@ function cartContent() {
   const [clickTab, setClickTab] = useState('food');
   const [count, setCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
+  const [orderInfo] = useRecoilState(orderInfoState);
 
   const [total, setTotal] = useState(0);
   const [cartList, setCartList] = useState<ICart[]>();
@@ -41,7 +43,6 @@ function cartContent() {
   const [isChange, setIsChange] = useState<boolean>(false);
   const [qtyList, setQtyList] = useState<IQtyList[]>([]);
   const [priceList, setPriceList] = useState<IPriceList[]>();
-  const [orderData, setOrderData] = useState<IPurchaseData>();
 
   const handleClickTab = (e: React.MouseEvent<HTMLElement>) => {
     setClickTab((e.target as HTMLInputElement).value);
@@ -61,6 +62,13 @@ function cartContent() {
   };
 
   const handleOrder = () => {
+    if (orderInfo.storeId !== 0) {
+      toast('진행 중인 주문이 있습니다.', {
+        icon: '📢',
+      });
+      return;
+    }
+
     if (selectedStore.distance === '') {
       toast.error('매장을 선택해 주세요');
       return;

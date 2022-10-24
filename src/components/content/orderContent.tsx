@@ -36,6 +36,7 @@ function orderContent(props: IProps) {
   } = props;
   const router = useRouter();
   const [selectedStore] = useRecoilState(selectedStoreState);
+  const [orderInfo] = useRecoilState(orderInfoState);
   const [, setOrderInfo] = useRecoilState(orderInfoState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
   const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
@@ -79,6 +80,13 @@ function orderContent(props: IProps) {
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log('주문 ㄱㄱ');
+    if (orderInfo.storeId !== 0) {
+      toast('진행 중인 주문이 있습니다.', {
+        icon: '📢',
+      });
+      return;
+    }
+
     // 유효성 검사 추가 : 매장 있을 때, 메뉴 리스트 있을 때, 카드 있을 때, 현금영수증 있을 때
     if (menuList) {
       const orderData: IPurchaseData = {

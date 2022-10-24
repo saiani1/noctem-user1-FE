@@ -16,7 +16,10 @@ import { cartCntState } from '../../store/atom/userStates';
 import { isExistToken } from '../../store/utils/token';
 import { ICartData } from '../../types/productDetail';
 import { addCart } from '../../../pages/api/cart';
-import { selectedStoreState } from '../../store/atom/orderState';
+import {
+  orderInfoState,
+  selectedStoreState,
+} from '../../store/atom/orderState';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from '../customAlert';
 import { useRouter } from 'next/router';
@@ -44,6 +47,7 @@ function myMenuItem({
   const router = useRouter();
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
+  const [orderInfo] = useRecoilState(orderInfoState);
   const [itemInfo, setItemInfo] = useState<IMenuDetailData>();
   const [clickRenameBtn, setClickRenameBtn] = useState(false);
   const myMenuNameRef = useRef<HTMLInputElement>(null);
@@ -129,6 +133,13 @@ function myMenuItem({
   };
 
   const handleOrder = () => {
+    if (orderInfo.storeId !== 0) {
+      toast('진행 중인 주문이 있습니다.', {
+        icon: '📢',
+      });
+      return;
+    }
+
     if (selectedStore.distance === '') {
       confirmAlert({
         customUI: ({ onClose }) => (
