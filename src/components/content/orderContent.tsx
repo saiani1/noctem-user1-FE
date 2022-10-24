@@ -22,6 +22,7 @@ import {
   selectedStoreState,
 } from '../../store/atom/orderState';
 import { useRecoilState } from 'recoil';
+import { deleteAll } from '../../../pages/api/cart';
 
 const cx = classNames.bind(styles);
 
@@ -104,7 +105,12 @@ function orderContent(props: IProps) {
       console.log('orderData', orderData);
       addOrder(orderData).then(res => {
         console.log('res', res);
+        toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
         setOrderInfo(res.data.data);
+        deleteAll().then(res => {
+          console.log('전체 삭제', res);
+        });
+        router.push('/');
       });
     }
   };
