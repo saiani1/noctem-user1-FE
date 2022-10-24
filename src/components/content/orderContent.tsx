@@ -11,8 +11,12 @@ import OrderPayingCompletionModal from '../../components/content/orderPayingComp
 import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
 import { getMenuDetail } from '../../../pages/api/order';
-import { IMenuData, IProps } from '../../types/order';
+import { IMenuList, IProps } from '../../types/order';
 import { addComma } from '../../store/utils/function';
+import toast from 'react-hot-toast';
+import { IUserDetailInfo } from '../../types/user';
+import { isExistToken } from '../../store/utils/token';
+import { getUserDetailInfo } from '../../../pages/api/user';
 
 const cx = classNames.bind(styles);
 
@@ -26,20 +30,18 @@ function orderContent(props: IProps) {
     setIsClickSubmitBtn,
   } = props;
   const router = useRouter();
-  const [menuList, setMenuList] = useState<IMenuData[]>([
-    {
-      sizeId: 0,
-      menuFullName: '',
-      menuShortName: '',
-      imgUrl: '',
-      qty: 0,
-      menuTotalPrice: 0,
-      // optionList: [],
-    },
-  ]);
-  const totalPrice = menuList.reduce((acc, curr) => {
-    return acc + curr.menuTotalPrice;
-  }, 0);
+  const [menuList, setMenuList] = useState<IMenuList[]>();
+  const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
+    userAge: 0,
+    userSex: '남자',
+  });
+
+  const totalPrice =
+    (menuList &&
+      menuList.reduce((acc, curr) => {
+        return acc + curr.menuTotalPrice;
+      }, 0)) ||
+    0;
   const discountPrice = 0;
   const finallPrice = totalPrice - discountPrice;
 
@@ -69,35 +71,54 @@ function orderContent(props: IProps) {
   };
 
   useEffect(() => {
+    const query = router.query;
     console.log('router', router);
-    console.log('router.query', router.query);
+    console.log('query', query);
+
     if (Object.keys(router.query).length === 0) {
-      // 장바구니 주문하기
-      console.log('장바구니 주문');
-      // setMenuList();
+      console.log('잘못된 접근');
+      toast.error('잘못된 접근입니다. 이전 페이지로 돌아갑니다.');
+      router.back();
+      return;
+    }
+
+    if (isExistToken()) {
+      // 회원 주문
+      getUserDetailInfo().then(res => {
+        setUserDetailInfo(res.data.data);
+      });
     } else {
-      // 메뉴에서 바로 주문하기
+      // 비회원 주문
+      // 정보 입력 받아야 함
+      // setUserDetailInfo(res.data.data);
+    }
+
+    if (query.menuList) {
+      console.log('장바구니 주문');
+      const menuList = JSON.parse(query.menuList + '');
+      setMenuList(menuList);
+    } else {
       console.log('메뉴 즉시 주문');
-      console.log(router.query);
-      const sizeId = router.query.sizeId ? +router.query.sizeId + 0 : 0;
-      const qty = router.query.qty ? +router.query.qty + 0 : 0;
-      if (router.query.sizeId !== undefined) {
-        getMenuDetail(sizeId).then(res => {
-          let resData: IMenuData = res.data.data;
-          console.log('res', resData);
-          setMenuList([
-            {
-              sizeId: sizeId,
-              menuFullName: resData.menuFullName,
-              menuShortName: resData.menuShortName,
-              imgUrl: resData.imgUrl,
-              qty: qty,
-              menuTotalPrice: qty * resData.menuTotalPrice,
-              // optionList: [],
-            },
-          ]);
-        });
-      }
+      const sizeId = query.sizeId ? +query.sizeId + 0 : 0;
+      const qty = query.qty ? +query.qty + 0 : 0;
+      const cartId = query.cartId ? +query.cartId + 0 : 0;
+      console.log('sizeId', sizeId, ', cartId', cartId, ', qty', qty);
+      getMenuDetail(sizeId, 0).then(res => {
+        let resData: IMenuList = res.data.data;
+        console.log('orderContent resData', resData);
+        setMenuList([
+          {
+            sizeId: sizeId,
+            menuFullName: resData.menuFullName,
+            menuShortName: resData.menuShortName,
+            imgUrl: resData.imgUrl,
+            qty: qty,
+            menuTotalPrice: qty * resData.menuTotalPrice,
+            cartId: cartId,
+            // optionList: [],
+          },
+        ]);
+      });
     }
   }, []);
 
@@ -157,7 +178,7 @@ function orderContent(props: IProps) {
               <ul>
                 {menuList &&
                   menuList.map(menu => (
-                    <OrderItem key={menu.imgUrl} menu={menu} />
+                    <OrderItem key={menu.sizeId} menu={menu} />
                   ))}
               </ul>
               <div className={cx('wide-bg')} />

@@ -10,14 +10,14 @@ const HEADERS = {
   }
 };
 
-export const getMenuDetail = async (sizeId: number, cartId: number = 0) => {
+export const getMenuDetail = async (sizeId: number, cartId: number) => {
   console.log(`${MENU_SERVICE}/size/menu/forPurchase/${sizeId}/${cartId}`);
   const res = await basicRequest.get(`${MENU_SERVICE}/size/menu/forPurchase/${sizeId}/${cartId}`);
   return res;
 };
 
 export const addOrder = async (data: IPurchaseData) => {
-  const res = await basicRequest.post(`${ORDER_SERVICE}/carts`, data, HEADERS);
+  console.log(`${ORDER_SERVICE}/purchase/user`);
+  const res = await basicRequest.post(`${ORDER_SERVICE}/purchase/user`, data, HEADERS);
   return res;
 };
-

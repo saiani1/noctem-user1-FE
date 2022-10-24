@@ -82,6 +82,7 @@ function cartItem({
             ...prev,
             {
               sizeId: sizeId,
+              cartId: cartId,
               menuFullName: resData.menuFullName,
               menuShortName: resData.menuShortName,
               imgUrl: resData.imgUrl,
@@ -91,6 +92,7 @@ function cartItem({
             },
           ];
         });
+        setIsChange(!isChange);
       });
     } else {
       getCartMenuData(sizeId, 0).then(res => {

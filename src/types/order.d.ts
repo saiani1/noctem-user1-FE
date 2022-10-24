@@ -12,7 +12,7 @@ export interface IPurchaseData {
   storeName: string;
   storeAddress: string;
   storeContactNumber: string;
-  userAge: string;
+  userAge: number;
   userSex: string;
   purchaseTotalPrice: number;
   cardCorp: string;
@@ -22,6 +22,7 @@ export interface IPurchaseData {
 
 export interface IMenuList {
   sizeId: number;
+  cartId: number;
   menuFullName: string;
   menuShortName: string;
   imgUrl: string;

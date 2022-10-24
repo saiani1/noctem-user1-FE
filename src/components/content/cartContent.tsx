@@ -24,7 +24,6 @@ import {
 import { useRouter } from 'next/router';
 import { selectedStoreState } from '../../store/atom/orderState';
 import { isExistToken } from './../../store/utils/token';
-import { getUserDetailInfo } from '../../../pages/api/user';
 import { IMenuList, IPurchaseData } from '../../types/order';
 import { IUserDetailInfo } from '../../types/user';
 
@@ -35,10 +34,6 @@ function cartContent() {
   const [clickTab, setClickTab] = useState('food');
   const [count, setCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
-    userAge: 0,
-    userSex: '남자',
-  });
 
   const [total, setTotal] = useState(0);
   const [cartList, setCartList] = useState<ICart[]>();
@@ -68,22 +63,23 @@ function cartContent() {
       return;
     }
 
+    if (!cartList) {
+      toast.error('장바구니에 담긴 메뉴가 없습니다.');
+      return;
+    }
+
     if (isExistToken()) {
       console.log('회원 주문');
-
-      const data = {
-        storeId: selectedStore.storeId,
-        storeName: selectedStore.name,
-        storeAddress: selectedStore.address,
-        storeContactNumber: selectedStore.contactNumber,
-        userAge: userDetailInfo.userAge,
-        userSex: userDetailInfo.userSex,
-        purchaseTotalPrice: total,
-        cardCorp: '신한카드',
-        cardPaymentPrice: total,
-        // menuList: menuList,
-      };
-      console.log(data);
+      router.push({
+        pathname: '/order',
+        query: {
+          menuList: JSON.stringify(menuList),
+          storeId: selectedStore.storeId,
+          storeName: selectedStore.name,
+          storeAddress: selectedStore.address,
+          storeContactNumber: selectedStore.contactNumber,
+        },
+      });
     } else {
       console.log('비회원 주문');
     }
@@ -101,15 +97,6 @@ function cartContent() {
       });
     }
   };
-
-  // const handleSetMenuList = (sizeId: number) => {
-  //   console.log('menuList', menuList);
-  //   const newMenuList = menuList.filter(menu => {
-  //     return menu.sizeId !== sizeId;
-  //   });
-  //   console.log('newMenuList', newMenuList);
-  //   setMenuList(newMenuList);
-  // };
 
   useEffect(() => {
     console.log('isChange', isChange);
@@ -146,6 +133,27 @@ function cartContent() {
         };
       });
       setQtyList(qtyList);
+
+      const totalMenuList: IMenuList[] = menuList.map(menu => {
+        const sizeId = menu.sizeId;
+        const qty =
+          cartList.find(cart => cart.sizeId === menu.sizeId)?.qty || 1;
+        const cartId =
+          cartList.find(cart => cart.sizeId === menu.sizeId)?.cartId || 0;
+        const menuTotalPrice =
+          priceList?.find(price => price.cartId === cartId)?.amount || 0;
+        // const optionList: IPersonalOptions = cartList.find(cart => cart.sizeId === menu.sizeId)?.myPersonalOptionList || [];
+        return {
+          sizeId: sizeId,
+          cartId: cartId,
+          menuFullName: menu.menuFullName,
+          menuShortName: menu.menuShortName,
+          imgUrl: menu.imgUrl,
+          qty: qty,
+          menuTotalPrice: menuTotalPrice * qty,
+        };
+      });
+      setMenuList(totalMenuList);
     }
   }, [cartList]);
 
@@ -180,22 +188,6 @@ function cartContent() {
       setTotal(total);
     }
   }, [priceList, qtyList]);
-
-  useEffect(() => {
-    if (menuList.length !== 0) {
-      console.log('메뉴리스트!!!!', menuList);
-    }
-  }, [menuList]);
-
-  useEffect(() => {
-    if (isExistToken()) {
-      getUserDetailInfo().then(res => {
-        console.log('getUser', res.data.data);
-        setUserDetailInfo(res.data.data);
-      });
-    } else {
-    }
-  }, []);
 
   return (
     <div className={cx('wrap')}>
