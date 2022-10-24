@@ -58,13 +58,16 @@ function categoryListContent({
   }, [categorySId]);
 
   const handleClickSelectStore = () => {
-    router.push({
-      pathname: '/selectStore',
-      query: {
-        isStoreSelect: false,
-        backPage: '/category',
+    router.push(
+      {
+        pathname: '/selectStore',
+        query: {
+          isStoreSelect: false,
+          backPage: '/category',
+        },
       },
-    });
+      '/selectStore',
+    );
   };
 
   return (

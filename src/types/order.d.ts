@@ -30,3 +30,14 @@ export interface IMenuList {
   menuTotalPrice: number;
   optionList?: [];
 }
+
+export interface IPayment {
+  cardCorp: string;
+  cardNumber: string;
+  cardPaymentPrice: number;
+}
+
+export interface IOrderInfo {
+  storeId: number;
+  purchaseId: number;
+}

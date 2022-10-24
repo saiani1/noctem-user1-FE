@@ -10,13 +10,18 @@ import RegisterCashReceiptModal from '../../components/content/registerCashRecei
 import OrderPayingCompletionModal from '../../components/content/orderPayingCompletionModal';
 import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
-import { getMenuDetail } from '../../../pages/api/order';
-import { IMenuList, IProps } from '../../types/order';
+import { addOrder, getMenuDetail } from '../../../pages/api/order';
+import { IMenuList, IProps, IPurchaseData } from '../../types/order';
 import { addComma } from '../../store/utils/function';
 import toast from 'react-hot-toast';
 import { IUserDetailInfo } from '../../types/user';
 import { isExistToken } from '../../store/utils/token';
 import { getUserDetailInfo } from '../../../pages/api/user';
+import {
+  orderInfoState,
+  selectedStoreState,
+} from '../../store/atom/orderState';
+import { useRecoilState } from 'recoil';
 
 const cx = classNames.bind(styles);
 
@@ -30,12 +35,13 @@ function orderContent(props: IProps) {
     setIsClickSubmitBtn,
   } = props;
   const router = useRouter();
+  const [selectedStore] = useRecoilState(selectedStoreState);
+  const [, setOrderInfo] = useRecoilState(orderInfoState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
   const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
     userAge: 0,
     userSex: '남자',
   });
-
   const totalPrice =
     (menuList &&
       menuList.reduce((acc, curr) => {
@@ -63,11 +69,36 @@ function orderContent(props: IProps) {
     });
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleOnSubmitModal = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsClickSubmitBtn(prev => {
       return !prev;
     });
+  };
+
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    console.log('주문 ㄱㄱ');
+    // 유효성 검사 추가 : 매장 있을 때, 메뉴 리스트 있을 때, 카드 있을 때, 현금영수증 있을 때
+    if (menuList) {
+      const orderData: IPurchaseData = {
+        storeId: selectedStore.storeId,
+        storeName: selectedStore.name,
+        storeAddress: selectedStore.address,
+        storeContactNumber: selectedStore.contactNumber,
+        userAge: userDetailInfo.userAge,
+        userSex: userDetailInfo.userSex,
+        purchaseTotalPrice: totalPrice,
+        cardCorp: '신한카드',
+        cardPaymentPrice: totalPrice,
+        menuList: menuList,
+      };
+      console.log('orderData', orderData);
+      addOrder(orderData).then(res => {
+        console.log('res', res);
+        setOrderInfo(res.data.data);
+      });
+    }
   };
 
   useEffect(() => {
@@ -125,7 +156,7 @@ function orderContent(props: IProps) {
   return (
     <>
       <div className={cx('wrap')}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleOnSubmitModal}>
           <h2 className={cx('tit')}>결제하기</h2>
           <ul className={cx('list-wrap')}>
             <li className={cx('pay-method-wrap')}>
@@ -203,21 +234,6 @@ function orderContent(props: IProps) {
           </button>
         </form>
       </div>
-      {/* <BottomSheet open={isClickCashReceiptBtn} onDismiss={onDismiss}>
-        <SheetContent>
-          {isClickPaymentBtn || isClickCashReceiptBtn || isClickSubmitBtn || (
-            <div style={{ height: '85vh' }} />
-          )}
-          {isClickPaymentBtn && <ChoicePaymentModal onDismiss={onDismiss} />}
-          {isClickCashReceiptBtn && (
-            <RegisterCashReceiptModal onDismiss={onDismiss} />
-          )}
-
-          {isClickSubmitBtn && (
-            <OrderPayingCompletionModal onDismiss={onDismiss} />
-          )}
-        </SheetContent>
-      </BottomSheet> */}
 
       <ChoicePaymentModal onDismiss={onDismiss} isOpen={isClickPaymentBtn} />
 
@@ -229,6 +245,8 @@ function orderContent(props: IProps) {
       <OrderPayingCompletionModal
         onDismiss={onDismiss}
         isOpen={isClickSubmitBtn}
+        selectedStore={selectedStore}
+        handleSubmit={handleSubmit}
       />
     </>
   );

@@ -48,13 +48,16 @@ function cartContent() {
   };
 
   const handleClickSelectStore = () => {
-    router.push({
-      pathname: '/selectStore',
-      query: {
-        isStoreSelect: false,
-        backPage: '/cart',
+    router.push(
+      {
+        pathname: '/selectStore',
+        query: {
+          isStoreSelect: false,
+          backPage: '/cart',
+        },
       },
-    });
+      '/selectStore',
+    );
   };
 
   const handleOrder = () => {
@@ -70,16 +73,19 @@ function cartContent() {
 
     if (isExistToken()) {
       console.log('회원 주문');
-      router.push({
-        pathname: '/order',
-        query: {
-          menuList: JSON.stringify(menuList),
-          storeId: selectedStore.storeId,
-          storeName: selectedStore.name,
-          storeAddress: selectedStore.address,
-          storeContactNumber: selectedStore.contactNumber,
+      router.push(
+        {
+          pathname: '/order',
+          query: {
+            menuList: JSON.stringify(menuList),
+            storeId: selectedStore.storeId,
+            storeName: selectedStore.name,
+            storeAddress: selectedStore.address,
+            storeContactNumber: selectedStore.contactNumber,
+          },
         },
-      });
+        '/order',
+      );
     } else {
       console.log('비회원 주문');
     }
