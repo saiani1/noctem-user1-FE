@@ -90,7 +90,7 @@ function homeContent() {
       let exp =
         userLevel.userExp === 0
           ? 0
-          : userLevel.requiredExpToNextGrade / userLevel.userExp;
+          : (userLevel.userExp / userLevel.requiredExpToNextGrade) * 100;
       setProgressState(exp);
     } else {
       setProgressState(0);

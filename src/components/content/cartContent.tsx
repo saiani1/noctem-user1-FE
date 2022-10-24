@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import Image from 'next/image';
-import Header from '../common/header';
-import SelectStoreContent from './selectStoreContent';
 import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/cartContent.module.scss';
@@ -10,7 +8,6 @@ import CartItem from '../ui/cartItem';
 import EmptyCart from './emptyCart';
 import { useEffect } from 'react';
 import { getCartList, getCount } from '../../api/cart';
-import { getToken } from '../../store/utils/token';
 import {
   ICart,
   ICartTotalPriceList,
@@ -18,7 +15,7 @@ import {
   IQtyList,
 } from '../../types/cart';
 import { useRecoilState } from 'recoil';
-import { cartCnt } from '../../store/atom/userStates';
+import { cartCntState } from '../../store/atom/userStates';
 import {
   addComma,
   getSessionCartCount,
@@ -26,67 +23,106 @@ import {
 } from '../../store/utils/function';
 import { useRouter } from 'next/router';
 import { selectedStoreState } from '../../store/atom/orderState';
+import { isExistToken } from './../../store/utils/token';
+import { IMenuList, IPurchaseData } from '../../types/order';
+import { IUserDetailInfo } from '../../types/user';
+import { orderInfoState } from './../../store/atom/orderState';
+
+const cx = classNames.bind(styles);
 
 function cartContent() {
-  const cx = classNames.bind(styles);
+  const router = useRouter();
   const [clickTab, setClickTab] = useState('food');
-  const [cartList, setCartList] = useState<ICart[]>();
-  const [isChange, setIsChange] = useState<boolean>(false);
-  const [count, setCount] = useRecoilState(cartCnt);
+  const [count, setCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
+  const [orderInfo] = useRecoilState(orderInfoState);
 
   const [total, setTotal] = useState(0);
+  const [cartList, setCartList] = useState<ICart[]>();
+  const [menuList, setMenuList] = useState<IMenuList[]>([]);
+  const [isChange, setIsChange] = useState<boolean>(false);
   const [qtyList, setQtyList] = useState<IQtyList[]>([]);
-  const [priceList, setPriceList] = useState<IPriceList[]>([]);
-  const router = useRouter();
+  const [priceList, setPriceList] = useState<IPriceList[]>();
 
   const handleClickTab = (e: React.MouseEvent<HTMLElement>) => {
     setClickTab((e.target as HTMLInputElement).value);
   };
 
   const handleClickSelectStore = () => {
-    router.push({
-      pathname: '/selectStore',
-      query: {
-        isStoreSelect: false,
-        backPage: '/cart',
+    router.push(
+      {
+        pathname: '/selectStore',
+        query: {
+          isStoreSelect: false,
+          backPage: '/cart',
+        },
       },
-    });
+      '/selectStore',
+    );
   };
 
   const handleOrder = () => {
+    if (orderInfo.storeId !== 0) {
+      toast('진행 중인 주문이 있습니다.', {
+        icon: '📢',
+      });
+      return;
+    }
+
     if (selectedStore.distance === '') {
       toast.error('매장을 선택해 주세요');
+      return;
+    }
+
+    if (!cartList) {
+      toast.error('장바구니에 담긴 메뉴가 없습니다.');
+      return;
+    }
+
+    if (isExistToken()) {
+      console.log('회원 주문');
+      router.push(
+        {
+          pathname: '/order',
+          query: {
+            menuList: JSON.stringify(menuList),
+            storeId: selectedStore.storeId,
+            storeName: selectedStore.name,
+            storeAddress: selectedStore.address,
+            storeContactNumber: selectedStore.contactNumber,
+          },
+        },
+        '/order',
+      );
     } else {
-      console.log('주문하기');
+      console.log('비회원 주문');
     }
   };
 
   const handleSetCartPrice = (cartId: number, totalMenuPrice: number) => {
     if (priceList) {
-      const test = priceList.filter(
-        (arr, i, callback) =>
-          i === callback.findIndex(loc => loc.cartId === arr.cartId),
-      );
-      console.log('test!!!', test);
-      setPriceList(test);
+      const newPriceList = priceList.filter((arr, i, callback) => {
+        return i !== callback.findIndex(loc => loc.cartId === cartId);
+      });
+      setPriceList(newPriceList);
     } else {
       setPriceList(prev => {
-        return [...prev, { cartId: cartId, amount: totalMenuPrice }];
+        return [...(prev || []), { cartId: cartId, amount: totalMenuPrice }];
       });
     }
   };
 
   useEffect(() => {
     console.log('isChange', isChange);
-    if (getToken() !== null && getToken() !== '{}') {
+    if (isExistToken()) {
       // 회원 조회
       console.log('회원 조회');
       getCartList().then(res => {
         setCartList(res.data.data);
       });
       getCount().then(res => {
-        setCount(res.data.data);
+        const resData = res.data.data === null ? 0 : res.data.data;
+        setCount(resData);
       });
     } else {
       // 비회원 조회
@@ -111,13 +147,39 @@ function cartContent() {
         };
       });
       setQtyList(qtyList);
+
+      const totalMenuList: IMenuList[] = menuList.map(menu => {
+        const sizeId = menu.sizeId;
+        const qty =
+          cartList.find(cart => cart.sizeId === menu.sizeId)?.qty || 1;
+        const cartId =
+          cartList.find(cart => cart.sizeId === menu.sizeId)?.cartId || 0;
+        const menuTotalPrice =
+          priceList?.find(price => price.cartId === cartId)?.amount || 0;
+        // const optionList: IPersonalOptions = cartList.find(cart => cart.sizeId === menu.sizeId)?.myPersonalOptionList || [];
+        return {
+          sizeId: sizeId,
+          cartId: cartId,
+          menuFullName: menu.menuFullName,
+          menuShortName: menu.menuShortName,
+          imgUrl: menu.imgUrl,
+          qty: qty,
+          menuTotalPrice: menuTotalPrice * qty,
+        };
+      });
+      setMenuList(totalMenuList);
     }
   }, [cartList]);
 
   useEffect(() => {
     console.log('priceList', priceList);
     console.log('qtyList', qtyList);
-    if (priceList.length !== 0 && qtyList.length !== 0) {
+    if (
+      priceList &&
+      qtyList &&
+      priceList.length !== 0 &&
+      qtyList.length !== 0
+    ) {
       const totalAmountList = priceList.map(price => {
         const cartId = price.cartId;
         const amount = price.amount;
@@ -140,10 +202,6 @@ function cartContent() {
       setTotal(total);
     }
   }, [priceList, qtyList]);
-
-  useEffect(() => {
-    console.log('total', total);
-  }, [total]);
 
   return (
     <div className={cx('wrap')}>
@@ -221,6 +279,7 @@ function cartContent() {
                     isChange={isChange}
                     setIsChange={setIsChange}
                     handleSetCartPrice={handleSetCartPrice}
+                    setMenuList={setMenuList}
                   />
                 ))}
             </div>

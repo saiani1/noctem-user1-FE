@@ -7,17 +7,19 @@ import OrderCancelConfirmPopUp from './orderCancelConfirmPopUp';
 import styles from '../../../styles/content/orderPayingCompletionModal.module.scss';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../common/sheetContent';
-import { selectedStoreState } from '../../store/atom/orderState';
-import { useRecoilState } from 'recoil';
+import { IStore } from '../../types/store';
 
 function orderPayingCompletionModal({
   onDismiss,
   isOpen,
+  selectedStore,
+  handleSubmit,
 }: {
   onDismiss: () => void;
   isOpen: boolean;
+  selectedStore: IStore;
+  handleSubmit: (e: { preventDefault: () => void }) => void;
 }) {
-  const [selectedStore] = useRecoilState(selectedStoreState);
   const [isClickOrderProgressBtn, setIsClickOrderProgressBtn] = useState(false);
   const [isConfirmPopUpActive, setIsConfirmPopUpActive] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -35,13 +37,6 @@ function orderPayingCompletionModal({
     });
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    setIsClickOrderProgressBtn(prev => {
-      return !prev;
-    });
-  };
-
   return (
     <>
       {!isClickOrderProgressBtn && (
@@ -54,8 +49,8 @@ function orderPayingCompletionModal({
                 <h2>{selectedStore.name}으로 주문하시겠어요?</h2>
                 <div className={cx('img-wrap')}>
                   <Image
-                    src='/assets/images/jpg/centomdreamworld.jpg'
-                    alt='store1'
+                    src={selectedStore.mainImg}
+                    alt={selectedStore.name}
                     width={2016}
                     height={1512}
                     layout='responsive'
@@ -64,13 +59,11 @@ function orderPayingCompletionModal({
                 </div>
                 <div className={cx('sub-tit-wrap')}>
                   <div className={cx('tit-wrap')}>
-                    <h3>센텀드림월드</h3>
+                    <h3>{selectedStore.name}</h3>
                     <span>매장 내 직접 수령</span>
                   </div>
                   <div className={cx('tit-address-wrap')}>
-                    <p>
-                      부산광역시 해운대구 센텀2로25, 센텀드림월드 1층 (우동)
-                    </p>
+                    <p>{selectedStore.address}</p>
                     <button type='button' onClick={handleClickMoreBtn}>
                       <Image
                         src='/assets/svg/icon-down-arrow.svg'

@@ -12,20 +12,32 @@ export interface IPurchaseData {
   storeName: string;
   storeAddress: string;
   storeContactNumber: string;
-  userAge: string;
+  userAge: number;
   userSex: string;
   purchaseTotalPrice: number;
   cardCorp: string;
   cardPaymentPrice: number;
-  menuList: IMenuData[];
+  menuList: IMenuList[];
 }
 
-export interface IMenuData {
+export interface IMenuList {
   sizeId: number;
+  cartId: number;
   menuFullName: string;
   menuShortName: string;
   imgUrl: string;
   qty: number;
   menuTotalPrice: number;
   optionList?: [];
+}
+
+export interface IPayment {
+  cardCorp: string;
+  cardNumber: string;
+  cardPaymentPrice: number;
+}
+
+export interface IOrderInfo {
+  storeId: number;
+  purchaseId: number;
 }

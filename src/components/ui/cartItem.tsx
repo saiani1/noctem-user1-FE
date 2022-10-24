@@ -7,6 +7,8 @@ import { ICart, IData } from '../../types/cart';
 import { changeItemCount, deleteItem, getCartMenuData } from '../../api/cart';
 import { addComma } from '../../store/utils/function';
 import { isExistToken } from './../../store/utils/token';
+import { getMenuDetail } from '../../../pages/api/order';
+import { IMenuList } from './../../types/order.d';
 
 const cx = classNames.bind(styles);
 
@@ -16,12 +18,14 @@ function cartItem({
   isChange,
   setIsChange,
   handleSetCartPrice,
+  setMenuList,
 }: {
   cart: ICart;
   count: number;
   isChange: boolean;
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
   handleSetCartPrice: (cartId: number, totalMenuPrice: number) => void;
+  setMenuList: React.Dispatch<React.SetStateAction<IMenuList[]>>;
 }) {
   const { index, cartId, sizeId, qty } = cart;
   const [data, setData] = useState<IData>();
@@ -49,8 +53,8 @@ function cartItem({
 
   const handleDelete = (id: number) => {
     deleteItem(id).then(res => {
-      getCartMenuData(sizeId, cartId).then(memu => {
-        const resData = memu.data.data;
+      getCartMenuData(sizeId, cartId).then(menu => {
+        const resData = menu.data.data;
         handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
         setIsChange(!isChange);
       });
@@ -64,6 +68,26 @@ function cartItem({
         setData(resData);
         console.log('cartMenu', resData);
         handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
+        // setIsChange(!isChange);
+      });
+
+      getMenuDetail(sizeId, cartId).then(res => {
+        const resData = res.data.data;
+        setMenuList(prev => {
+          return [
+            ...prev,
+            {
+              sizeId: sizeId,
+              cartId: cartId,
+              menuFullName: resData.menuFullName,
+              menuShortName: resData.menuShortName,
+              imgUrl: resData.imgUrl,
+              qty: qty,
+              menuTotalPrice: 0,
+              optionList: [],
+            },
+          ];
+        });
         setIsChange(!isChange);
       });
     } else {
