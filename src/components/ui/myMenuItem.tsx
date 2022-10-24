@@ -3,10 +3,7 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 import toast from 'react-hot-toast';
 
-import {
-  getMyMenuDetailData,
-  changeMyMenuNickName,
-} from '../../../pages/api/myMenu';
+import { getMyMenuDetailData, changeMyMenuNickName } from '../../api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma } from './../../store/utils/function';

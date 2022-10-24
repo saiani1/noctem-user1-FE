@@ -1,4 +1,4 @@
-import { getToken } from '../../src/store/utils/token';
+import { getToken } from '../store/utils/token';
 import { basicRequest } from './base';
 
 const SERVICE = '/user-service';

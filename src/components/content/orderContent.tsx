@@ -10,7 +10,7 @@ import RegisterCashReceiptModal from '../../components/content/registerCashRecei
 import OrderPayingCompletionModal from '../../components/content/orderPayingCompletionModal';
 import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
-import { getMenuDetail } from '../../../pages/api/order';
+import { getMenuDetail } from '../../api/order';
 import { IMenuData, IProps } from '../../types/order';
 import { addComma } from '../../store/utils/function';
 

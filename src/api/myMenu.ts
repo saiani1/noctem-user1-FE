@@ -1,5 +1,5 @@
-import { getToken } from '../../src/store/utils/token';
-import { IParams } from '../../src/types/myMenu.d';
+import { getToken } from '../store/utils/token';
+import { IParams } from '../types/myMenu';
 import { basicRequest } from './base';
 
 const U_SERVICE = '/user-service';

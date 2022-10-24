@@ -11,13 +11,9 @@ import ProductOrder from './productOrder';
 import ToolbarList from '../../ui/toolbarList';
 import CustomAlert from '../../customAlert';
 import { useRouter } from 'next/router';
-import { addMyMenu } from '../../../../pages/api/myMenu';
-import {
-  getSize,
-  getNutrition,
-  getProduct,
-} from '../../../../pages/api/category';
-import { addCart, getCount } from '../../../../pages/api/cart';
+import { addMyMenu } from '../../../api/myMenu';
+import { getSize, getNutrition, getProduct } from '../../../api/category';
+import { addCart, getCount } from '../../../api/cart';
 import { useRecoilState } from 'recoil';
 import {
   categoryLState,

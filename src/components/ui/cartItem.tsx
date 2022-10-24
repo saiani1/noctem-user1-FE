@@ -4,11 +4,7 @@ import Image from 'next/image';
 
 import styles from '../../../styles/ui/cartItem.module.scss';
 import { ICart, IData } from '../../types/cart';
-import {
-  changeItemCount,
-  deleteItem,
-  getCartMenuData,
-} from '../../../pages/api/cart';
+import { changeItemCount, deleteItem, getCartMenuData } from '../../api/cart';
 import { addComma } from '../../store/utils/function';
 import { isExistToken } from './../../store/utils/token';
 

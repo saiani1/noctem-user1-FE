@@ -4,7 +4,7 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 import Link from 'next/link';
 import styles from '../../../styles/content/login.module.scss';
-import { login } from '../../../pages/api/login';
+import { login } from '../../api/login';
 import { setToken } from '../../store/utils/token';
 import { toast } from 'react-hot-toast';
 

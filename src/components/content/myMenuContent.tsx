@@ -9,7 +9,7 @@ import {
   deleteMyMenu,
   getShowMainMyMenu,
   changeShowMainMyMenu,
-} from '../../../pages/api/myMenu';
+} from '../../api/myMenu';
 import { IMenuData1 } from '../../../src/types/myMenu.d';
 import ToggleCheckbox from '../ui/toggleCheckbox';
 import EmptyMyMenu from '../content/emptyMyMenu';

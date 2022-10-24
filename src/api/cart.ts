@@ -1,5 +1,5 @@
-import { getToken } from '../../src/store/utils/token';
-import { ICartData } from '../../src/types/productDetail';
+import { getToken } from '../store/utils/token';
+import { ICartData } from '../types/productDetail';
 import { basicRequest } from './base';
 
 const USER_SERVICE = '/user-service';

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
 // import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
-import { getLageCategory, getSmallCategory } from '../../pages/api/category';
+import { getLageCategory, getSmallCategory } from '../api/category';
 import { useRecoilState } from 'recoil';
 import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 import Link from 'next/link';

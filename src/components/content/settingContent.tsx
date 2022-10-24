@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/content/settingContent.module.scss';
-import { getUserOptions, patchUserOptions } from '../../../pages/api/user';
+import { getUserOptions, patchUserOptions } from '../../api/user';
 import ToggleCheckbox from '../ui/toggleCheckbox';
 
 interface IInfo {

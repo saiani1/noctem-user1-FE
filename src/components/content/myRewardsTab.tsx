@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { isExistToken } from './../../store/utils/token';
-import { getUserLevel } from './../../../pages/api/level';
+import { getUserLevel } from '../../api/level';
 import styles from '../../../styles/content/myRewardTab.module.scss';
 import { useRecoilState } from 'recoil';
 import { userGradeState } from '../../store/atom/userStates';
