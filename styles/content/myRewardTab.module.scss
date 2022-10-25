@@ -21,6 +21,15 @@
         font-size: variable.$FS-21;
         color: variable.$RANK-001;
       }
+      .potion{
+        color: variable.$RANK-001;
+      }
+      .elixir{
+        color: variable.$RANK-002;
+      }
+      .power-elixir{
+        color: variable.$RANK-003;
+      }
     }
     .hp-info-wrap {
       .hp-info-content {

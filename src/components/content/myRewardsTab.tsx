@@ -21,6 +21,9 @@ function myRewardTab() {
     container: {
       width: `${progressState}%`,
     },
+    maxContainer: {
+      width: '100%',
+    },
   };
   useEffect(() => {
     if (isExistToken()) {
@@ -46,13 +49,38 @@ function myRewardTab() {
         <span className={cx('sub-tit')}>멤버십 등급</span>
         <div className={cx('level-tit-wrap')}>
           <span className={cx('level-icon-wrap')}>
-            <Image
-              src='/assets/svg/icon-potion-level.svg'
-              width={16}
-              height={20}
-            />
+            {userLevel?.userGrade === 'Potion' ? (
+              <Image
+                src='/assets/svg/icon-potion-level.svg'
+                alt='potion-level'
+                width={24}
+                height={21}
+              />
+            ) : userLevel?.userGrade === 'Elixir' ? (
+              <Image
+                src='/assets/svg/icon-elixir-level.svg'
+                alt='elixir-level'
+                width={24}
+                height={21}
+              />
+            ) : (
+              <Image
+                src='/assets/svg/icon-power-elixir-level.svg'
+                alt='potion-level'
+                width={24}
+                height={21}
+              />
+            )}
           </span>
-          <h3 className={cx('level-tit')}>
+          <h3
+            className={
+              userLevel?.userGrade === 'Potion'
+                ? cx('level-tit', 'potion')
+                : userLevel?.userGrade === 'Elixir'
+                ? cx('level-tit', 'elixir')
+                : cx('level-tit', 'power-elixir')
+            }
+          >
             {userLevel && userLevel.userGrade}
           </h3>
         </div>
@@ -63,7 +91,11 @@ function myRewardTab() {
             </strong>
             /
             <span className={cx('max-hp')}>
-              {userLevel && userLevel.requiredExpToNextGrade}
+              {userLevel?.userGrade === 'Power Elixir' ? (
+                <>MAX</>
+              ) : (
+                userLevel && userLevel.requiredExpToNextGrade
+              )}
             </span>
           </span>
           <Image
@@ -73,13 +105,23 @@ function myRewardTab() {
           />
         </div>
         <div className={cx('progress-bar-wrap')}>
-          <div
-            className={cx('progress-bar')}
-            role='progressbar'
-            aria-valuemin={0}
-            aria-valuemax={100}
-            style={styles.container}
-          />
+          {userLevel?.userGrade === 'Power Elixir' ? (
+            <div
+              className={cx('progress-bar')}
+              role='progressbar'
+              aria-valuemin={0}
+              aria-valuemax={100}
+              style={styles.maxContainer}
+            />
+          ) : (
+            <div
+              className={cx('progress-bar')}
+              role='progressbar'
+              aria-valuemin={0}
+              aria-valuemax={100}
+              style={styles.container}
+            />
+          )}
         </div>
       </div>
       <div className={cx('level-info-wrap')}>

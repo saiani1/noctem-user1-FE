@@ -39,6 +39,9 @@ function homeContent() {
     container: {
       width: `${progressState}%`,
     },
+    maxContainer: {
+      width: '100%',
+    },
   };
   const [nickname, setNickname] = useRecoilState(nicknameState);
   const [store, setStore] = useState<IStore>();
@@ -107,7 +110,6 @@ function homeContent() {
       });
     }
   }, [geolocation]);
-
   return (
     <>
       <div className={cx('point-box')}>
@@ -118,24 +120,41 @@ function homeContent() {
           <div className={cx('point-bar')}>
             <div className={cx('progress-bar-space')}>
               <div>
-                {userLevel &&
-                  userLevel.requiredExpToNextGrade - userLevel.userExp}
+                {userLevel?.userGrade === 'Power Elixir'
+                  ? userLevel.userExp
+                  : userLevel &&
+                    userLevel.requiredExpToNextGrade - userLevel.userExp}
+
                 <Image
                   src='/assets/svg/icon-charge-battery.svg'
                   alt='charge-battery'
                   width={24}
                   height={21}
                 />
-                until {userLevel && userLevel.nextGrade} Level
+                {userLevel?.userGrade === 'Power Elixir' ? (
+                  <>Power Elixir</>
+                ) : (
+                  <>until {userLevel && userLevel.nextGrade} Level</>
+                )}
               </div>
               <div className={cx('progress-bar-wrap')}>
-                <div
-                  className={cx('progress-bar')}
-                  role='progressbar'
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  style={styles.container}
-                />
+                {userLevel?.userGrade === 'Power Elixir' ? (
+                  <div
+                    className={cx('progress-bar')}
+                    role='progressbar'
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    style={styles.maxContainer}
+                  />
+                ) : (
+                  <div
+                    className={cx('progress-bar')}
+                    role='progressbar'
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    style={styles.container}
+                  />
+                )}
               </div>
             </div>
             <div className={cx('my-score')}>
@@ -144,6 +163,7 @@ function homeContent() {
               </span>
               /
               <span className={cx('req-exp')}>
+                {}
                 {userLevel && userLevel.requiredExpToNextGrade}
               </span>
               {userLevel?.userGrade === 'Potion' ? (
