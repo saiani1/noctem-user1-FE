@@ -33,7 +33,7 @@ const cx = classNames.bind(styles);
 function cartContent() {
   const router = useRouter();
   const [clickTab, setClickTab] = useState('food');
-  const [count, setCount] = useRecoilState(cartCntState);
+  const [count, setCartCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo] = useRecoilState(orderInfoState);
 
@@ -122,7 +122,7 @@ function cartContent() {
       });
       getCount().then(res => {
         const resData = res.data.data === null ? 0 : res.data.data;
-        setCount(resData);
+        setCartCount(resData);
       });
     } else {
       // 비회원 조회
@@ -133,7 +133,7 @@ function cartContent() {
           setCartList(getSessionCartList());
         }
       });
-      setCount(getSessionCartCount());
+      setCartCount(getSessionCartCount());
     }
   }, [isChange]);
 
