@@ -1,6 +1,5 @@
-
-import { getToken } from "../../src/store/utils/token";
-import { IParams } from "../../src/types/signUp";
+import { IParams } from "../../types/signUp";
+import { getToken } from "../utils/token";
 import { basicRequest } from "./base";
 
 const SERVICE = '/user-service';

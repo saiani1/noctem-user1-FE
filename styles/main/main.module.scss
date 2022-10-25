@@ -18,12 +18,14 @@
     justify-content: space-between;
 
     .progress-bar-space {
-      width: 80%;
+      flex: 5;
     }
 
     .my-score {
       color: variable.$POINT;
       line-height: 20px;
+      flex: 1.5;
+      text-align: right;
 
       .my-exp {
         margin-right: 2px;

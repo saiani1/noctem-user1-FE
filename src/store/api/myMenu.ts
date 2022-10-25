@@ -1,5 +1,5 @@
-import { getToken } from '../../src/store/utils/token';
-import { IParams } from '../../src/types/myMenu.d';
+import { getToken } from '../utils/token';
+import { IParams } from '../../types/myMenu';
 import { basicRequest } from './base';
 
 const U_SERVICE = '/user-service';
@@ -11,7 +11,11 @@ const HEADERS = {
 };
 
 export const getMyMenuData = async () => {
-  const res = await basicRequest.get(`${U_SERVICE}/myMenu`, HEADERS);
+  const res = await basicRequest.get(`${U_SERVICE}/myMenu`, {
+    headers: {
+      Authorization: JSON.parse(getToken()),
+    },
+  });
   return res;
 };
 

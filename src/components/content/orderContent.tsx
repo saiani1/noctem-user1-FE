@@ -10,9 +10,19 @@ import RegisterCashReceiptModal from '../../components/content/registerCashRecei
 import OrderPayingCompletionModal from '../../components/content/orderPayingCompletionModal';
 import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
-import { getMenuDetail } from '../../../pages/api/order';
-import { IMenuData, IProps } from '../../types/order';
+import { addOrder, getMenuDetail } from '../../../src/store/api/order';
+import { IMenuList, IProps, IPurchaseData } from '../../types/order';
 import { addComma } from '../../store/utils/function';
+import toast from 'react-hot-toast';
+import { IUserDetailInfo } from '../../types/user';
+import { isExistToken } from '../../store/utils/token';
+import { getUserDetailInfo } from '../../../src/store/api/user';
+import {
+  orderInfoState,
+  selectedStoreState,
+} from '../../store/atom/orderState';
+import { useRecoilState } from 'recoil';
+import { deleteAll } from '../../../src/store/api/cart';
 
 const cx = classNames.bind(styles);
 
@@ -26,20 +36,20 @@ function orderContent(props: IProps) {
     setIsClickSubmitBtn,
   } = props;
   const router = useRouter();
-  const [menuList, setMenuList] = useState<IMenuData[]>([
-    {
-      sizeId: 0,
-      menuFullName: '',
-      menuShortName: '',
-      imgUrl: '',
-      qty: 0,
-      menuTotalPrice: 0,
-      // optionList: [],
-    },
-  ]);
-  const totalPrice = menuList.reduce((acc, curr) => {
-    return acc + curr.menuTotalPrice;
-  }, 0);
+  const [selectedStore] = useRecoilState(selectedStoreState);
+  const [orderInfo] = useRecoilState(orderInfoState);
+  const [, setOrderInfo] = useRecoilState(orderInfoState);
+  const [menuList, setMenuList] = useState<IMenuList[]>();
+  const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
+    userAge: 0,
+    userSex: '남자',
+  });
+  const totalPrice =
+    (menuList &&
+      menuList.reduce((acc, curr) => {
+        return acc + curr.menuTotalPrice;
+      }, 0)) ||
+    0;
   const discountPrice = 0;
   const finallPrice = totalPrice - discountPrice;
 
@@ -61,50 +71,106 @@ function orderContent(props: IProps) {
     });
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleOnSubmitModal = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setIsClickSubmitBtn(prev => {
       return !prev;
     });
   };
 
-  useEffect(() => {
-    console.log('router', router);
-    console.log('router.query', router.query);
-    if (Object.keys(router.query).length === 0) {
-      // 장바구니 주문하기
-      console.log('장바구니 주문');
-      // setMenuList();
-    } else {
-      // 메뉴에서 바로 주문하기
-      console.log('메뉴 즉시 주문');
-      console.log(router.query);
-      const sizeId = router.query.sizeId ? +router.query.sizeId + 0 : 0;
-      const qty = router.query.qty ? +router.query.qty + 0 : 0;
-      if (router.query.sizeId !== undefined) {
-        getMenuDetail(sizeId).then(res => {
-          let resData: IMenuData = res.data.data;
-          console.log('res', resData);
-          setMenuList([
-            {
-              sizeId: sizeId,
-              menuFullName: resData.menuFullName,
-              menuShortName: resData.menuShortName,
-              imgUrl: resData.imgUrl,
-              qty: qty,
-              menuTotalPrice: qty * resData.menuTotalPrice,
-              // optionList: [],
-            },
-          ]);
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    console.log('주문 ㄱㄱ');
+    if (orderInfo.storeId !== 0) {
+      toast('진행 중인 주문이 있습니다.', {
+        icon: '📢',
+      });
+      return;
+    }
+
+    // 유효성 검사 추가 : 매장 있을 때, 메뉴 리스트 있을 때, 카드 있을 때, 현금영수증 있을 때
+    if (menuList) {
+      const orderData: IPurchaseData = {
+        storeId: selectedStore.storeId,
+        storeName: selectedStore.name,
+        storeAddress: selectedStore.address,
+        storeContactNumber: selectedStore.contactNumber,
+        userAge: userDetailInfo.userAge,
+        userSex: userDetailInfo.userSex,
+        purchaseTotalPrice: totalPrice,
+        cardCorp: '신한카드',
+        cardPaymentPrice: totalPrice,
+        menuList: menuList,
+      };
+      console.log('orderData', orderData);
+      addOrder(orderData).then(res => {
+        console.log('res', res);
+        toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
+        setOrderInfo(res.data.data);
+        deleteAll().then(res => {
+          console.log('전체 삭제', res);
         });
-      }
+        router.push('/');
+      });
+    }
+  };
+
+  useEffect(() => {
+    const query = router.query;
+    console.log('router', router);
+    console.log('query', query);
+
+    if (Object.keys(router.query).length === 0) {
+      console.log('잘못된 접근');
+      toast.error('잘못된 접근입니다. 이전 페이지로 돌아갑니다.');
+      router.back();
+      return;
+    }
+
+    if (isExistToken()) {
+      // 회원 주문
+      getUserDetailInfo().then(res => {
+        setUserDetailInfo(res.data.data);
+      });
+    } else {
+      // 비회원 주문
+      // 정보 입력 받아야 함
+      // setUserDetailInfo(res.data.data);
+    }
+
+    if (query.menuList) {
+      console.log('장바구니 주문');
+      const menuList = JSON.parse(query.menuList + '');
+      setMenuList(menuList);
+    } else {
+      console.log('메뉴 즉시 주문');
+      const sizeId = query.sizeId ? +query.sizeId + 0 : 0;
+      const qty = query.qty ? +query.qty + 0 : 0;
+      const cartId = query.cartId ? +query.cartId + 0 : 0;
+      console.log('sizeId', sizeId, ', cartId', cartId, ', qty', qty);
+      getMenuDetail(sizeId, 0).then(res => {
+        let resData: IMenuList = res.data.data;
+        console.log('orderContent resData', resData);
+        setMenuList([
+          {
+            sizeId: sizeId,
+            menuFullName: resData.menuFullName,
+            menuShortName: resData.menuShortName,
+            imgUrl: resData.imgUrl,
+            qty: qty,
+            menuTotalPrice: qty * resData.menuTotalPrice,
+            cartId: cartId,
+            // optionList: [],
+          },
+        ]);
+      });
     }
   }, []);
 
   return (
     <>
       <div className={cx('wrap')}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleOnSubmitModal}>
           <h2 className={cx('tit')}>결제하기</h2>
           <ul className={cx('list-wrap')}>
             <li className={cx('pay-method-wrap')}>
@@ -157,7 +223,7 @@ function orderContent(props: IProps) {
               <ul>
                 {menuList &&
                   menuList.map(menu => (
-                    <OrderItem key={menu.imgUrl} menu={menu} />
+                    <OrderItem key={menu.sizeId} menu={menu} />
                   ))}
               </ul>
               <div className={cx('wide-bg')} />
@@ -182,21 +248,6 @@ function orderContent(props: IProps) {
           </button>
         </form>
       </div>
-      {/* <BottomSheet open={isClickCashReceiptBtn} onDismiss={onDismiss}>
-        <SheetContent>
-          {isClickPaymentBtn || isClickCashReceiptBtn || isClickSubmitBtn || (
-            <div style={{ height: '85vh' }} />
-          )}
-          {isClickPaymentBtn && <ChoicePaymentModal onDismiss={onDismiss} />}
-          {isClickCashReceiptBtn && (
-            <RegisterCashReceiptModal onDismiss={onDismiss} />
-          )}
-
-          {isClickSubmitBtn && (
-            <OrderPayingCompletionModal onDismiss={onDismiss} />
-          )}
-        </SheetContent>
-      </BottomSheet> */}
 
       <ChoicePaymentModal onDismiss={onDismiss} isOpen={isClickPaymentBtn} />
 
@@ -208,6 +259,8 @@ function orderContent(props: IProps) {
       <OrderPayingCompletionModal
         onDismiss={onDismiss}
         isOpen={isClickSubmitBtn}
+        selectedStore={selectedStore}
+        handleSubmit={handleSubmit}
       />
     </>
   );

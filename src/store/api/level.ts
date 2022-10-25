@@ -1,4 +1,4 @@
-import { getToken } from '../../src/store/utils/token';
+import { getToken } from '../utils/token';
 import { basicRequest } from './base';
 
 const SERVICE = '/user-service';
@@ -9,6 +9,10 @@ const HEADERS = {
 };
 
 export const getUserLevel = async () => {
-  const res = await basicRequest.get(`${SERVICE}/userAccount/grade`, HEADERS);
+  const res = await basicRequest.get(`${SERVICE}/userAccount/grade`, {
+    headers: {
+      Authorization: JSON.parse(getToken()),
+    },
+  });
   return res;
 };

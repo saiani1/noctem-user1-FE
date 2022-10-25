@@ -4,11 +4,11 @@ import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/userInfoContent.module.scss';
 import { getToken } from '../../store/utils/token';
-import { getUserInfo } from './../../../pages/api/user';
+import { getUserInfo } from '../../../src/store/api/user';
 import {
   getDuplicationCheck,
   patchNickname,
-} from './../../../pages/api/signUp';
+} from '../../../src/store/api/signUp';
 
 interface IInfo {
   email: string;

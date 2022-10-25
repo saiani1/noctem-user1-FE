@@ -11,13 +11,13 @@ import ProductOrder from './productOrder';
 import ToolbarList from '../../ui/toolbarList';
 import CustomAlert from '../../customAlert';
 import { useRouter } from 'next/router';
-import { addMyMenu } from '../../../../pages/api/myMenu';
+import { addMyMenu } from '../../../../src/store/api/myMenu';
 import {
   getSize,
   getNutrition,
   getProduct,
-} from '../../../../pages/api/category';
-import { addCart, getCount } from '../../../../pages/api/cart';
+} from '../../../../src/store/api/category';
+import { addCart, getCount } from '../../../../src/store/api/cart';
 import { useRecoilState } from 'recoil';
 import {
   categoryLState,
@@ -31,10 +31,13 @@ import {
   INutrition,
 } from '../../../types/productDetail';
 import { IParams } from '../../../types/myMenu';
-import { cartCnt } from '../../../store/atom/userStates';
+import { cartCntState } from '../../../store/atom/userStates';
 import { addComma, getSessionCartCount } from '../../../store/utils/function';
 import MyMenuRenamePopUp from '../myMenuRenamePopUp';
-import { selectedStoreState } from '../../../store/atom/orderState';
+import {
+  orderInfoState,
+  selectedStoreState,
+} from '../../../store/atom/orderState';
 import { isExistToken } from './../../../store/utils/token';
 
 const cx = classNames.bind(styles);
@@ -45,7 +48,8 @@ function productContent() {
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [cartCount, setCartCount] = useRecoilState(cartCnt);
+  const [orderInfo] = useRecoilState(orderInfoState);
+  const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [open, setOpen] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
@@ -130,14 +134,17 @@ function productContent() {
       }
     }
   };
-  const checkMenuName = (e: FocusEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setMyMenuName(e.target.value);
-  };
+
   const myMenuNameRef = useRef<HTMLInputElement>(null);
 
   const handleOrder = () => {
-    console.log('주문하기');
+    if (orderInfo.storeId !== 0) {
+      toast('진행 중인 주문이 있습니다.', {
+        icon: '📢',
+      });
+      return;
+    }
+
     if (cupChoice === '') {
       toast.error('컵을 선택하세요.');
       return;
@@ -209,7 +216,28 @@ function productContent() {
     setNutritionOpen(false);
   }
 
+  const onLogin = () => {
+    router.push('/login');
+  };
+
   const handleAddMyMenu = (e: any) => {
+    if (!isExistToken()) {
+      setOpen(false);
+      confirmAlert({
+        customUI: ({ onClose }) => (
+          <CustomAlert
+            title='로그인'
+            desc='로그인이 필요한 서비스입니다. 로그인 하시겠습니까?'
+            btnTitle='로그인'
+            // id={}
+            onAction={onLogin}
+            onClose={onClose}
+          />
+        ),
+      });
+      return;
+    }
+
     if (selectedSizeTxt === '' || cupChoice === '') {
       toast.error('사이즈와 컵을 선택해주세요');
       return;
@@ -254,7 +282,8 @@ function productContent() {
       setNutritionInfo(res.data.data);
     });
     getCount().then(res => {
-      setCartCount(res.data.data);
+      const resData = res.data.data === null ? 0 : res.data.data;
+      setCartCount(resData);
     });
   }, [id, open]);
 

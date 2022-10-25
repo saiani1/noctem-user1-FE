@@ -3,12 +3,13 @@ import classNames from 'classnames/bind';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import styles from '../../styles/main/main.module.scss';
 import { useRouter } from 'next/router';
-import { getMyMenuData } from './../../pages/api/cart';
+import { getMyMenuData } from '../../src/store/api/cart';
 import { IMenuData1, IMenuDetailData } from '../types/myMenu';
-import { selectedStoreState } from '../store/atom/orderState';
+import { orderInfoState, selectedStoreState } from '../store/atom/orderState';
 import { useRecoilState } from 'recoil';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from '../components/customAlert';
+import toast from 'react-hot-toast';
 
 const cx = classNames.bind(styles);
 
@@ -16,8 +17,16 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
   const router = useRouter();
   const [myMenuInfo, setMyMenuInfo] = useState<IMenuDetailData>();
   const [selectedStore] = useRecoilState(selectedStoreState);
+  const [orderInfo] = useRecoilState(orderInfoState);
 
   const handleOrder = () => {
+    if (orderInfo.storeId !== 0) {
+      toast('진행 중인 주문이 있습니다.', {
+        icon: '📢',
+      });
+      return;
+    }
+
     if (selectedStore.distance === '') {
       confirmAlert({
         customUI: ({ onClose }) => (
