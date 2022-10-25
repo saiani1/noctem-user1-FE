@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { getToken } from '../utils/token';
 import { basicRequest } from './base';
+=======
+import { getToken } from "../utils/token";
+import { basicRequest } from "./base";
+>>>>>>> 079d38251ff90995abab2bd434e5da24093875f8
 
 const SERVICE = '/user-service';
 const HEADERS = {
