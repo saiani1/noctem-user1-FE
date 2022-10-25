@@ -22,7 +22,7 @@ import {
   selectedStoreState,
 } from '../../store/atom/orderState';
 import { useRecoilState } from 'recoil';
-import { deleteAll } from '../../../src/store/api/cart';
+import { deleteCartAll } from '../../../src/store/api/cart';
 
 const cx = classNames.bind(styles);
 
@@ -37,8 +37,7 @@ function orderContent(props: IProps) {
   } = props;
   const router = useRouter();
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [orderInfo] = useRecoilState(orderInfoState);
-  const [, setOrderInfo] = useRecoilState(orderInfoState);
+  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
   const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
     userAge: 0,
@@ -52,6 +51,7 @@ function orderContent(props: IProps) {
     0;
   const discountPrice = 0;
   const finallPrice = totalPrice - discountPrice;
+  let orderCnt = 0;
 
   function onDismiss() {
     setIsClickPaymentBtn(false);
@@ -80,7 +80,6 @@ function orderContent(props: IProps) {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log('주문 ㄱㄱ');
     if (orderInfo.storeId !== 0) {
       toast('진행 중인 주문이 있습니다.', {
         icon: '📢',
@@ -102,16 +101,23 @@ function orderContent(props: IProps) {
         cardPaymentPrice: totalPrice,
         menuList: menuList,
       };
-      console.log('orderData', orderData);
-      addOrder(orderData).then(res => {
-        console.log('res', res);
-        toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
-        setOrderInfo(res.data.data);
-        deleteAll().then(res => {
-          console.log('전체 삭제', res);
+
+      if (orderCnt === 0) {
+        console.log('orderData', orderData);
+        addOrder(orderData).then(res => {
+          console.log('res', res);
+          toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
+          setOrderInfo(res.data.data);
+          if (router.query.menuList) {
+            // 장바구니 주문일 경우
+            deleteCartAll().then(res => {
+              console.log('전체 삭제', res);
+            });
+          }
+          router.push('/');
         });
-        router.push('/');
-      });
+        orderCnt++;
+      }
     }
   };
 
