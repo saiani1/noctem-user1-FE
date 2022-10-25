@@ -24,8 +24,7 @@ import {
 import { useRouter } from 'next/router';
 import { selectedStoreState } from '../../store/atom/orderState';
 import { isExistToken } from './../../store/utils/token';
-import { IMenuList, IPurchaseData } from '../../types/order';
-import { IUserDetailInfo } from '../../types/user';
+import { IMenuList } from '../../types/order';
 import { orderInfoState } from './../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
@@ -33,7 +32,7 @@ const cx = classNames.bind(styles);
 function cartContent() {
   const router = useRouter();
   const [clickTab, setClickTab] = useState('food');
-  const [count, setCartCount] = useRecoilState(cartCntState);
+  const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo] = useRecoilState(orderInfoState);
 
@@ -234,7 +233,7 @@ function cartContent() {
           >
             <span className={cx('tit-wrap')}>
               음료/푸드
-              <span className={cx('cnt-wrap')}>{count}</span>
+              <span className={cx('cnt-wrap')}>{cartCount}</span>
             </span>
           </button>
           <button
@@ -275,7 +274,7 @@ function cartContent() {
                   <CartItem
                     key={cart.cartId}
                     cart={cart}
-                    count={count}
+                    cartCount={cartCount}
                     isChange={isChange}
                     setIsChange={setIsChange}
                     handleSetCartPrice={handleSetCartPrice}
@@ -286,7 +285,7 @@ function cartContent() {
             <div className={cx('footer')}>
               <div className={cx('price-wrap')}>
                 <span className={cx('check-cnt')}>
-                  총 <strong>{count}</strong>개 / 20개
+                  총 <strong>{cartCount}</strong>개 / 20개
                 </span>
                 <strong className={cx('total-price')}>
                   {addComma(total)}원

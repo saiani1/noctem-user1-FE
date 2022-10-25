@@ -18,14 +18,14 @@ const cx = classNames.bind(styles);
 
 function cartItem({
   cart,
-  count,
+  cartCount,
   isChange,
   setIsChange,
   handleSetCartPrice,
   setMenuList,
 }: {
   cart: ICart;
-  count: number;
+  cartCount: number;
   isChange: boolean;
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
   handleSetCartPrice: (cartId: number, totalMenuPrice: number) => void;
@@ -37,7 +37,7 @@ function cartItem({
   const handleCountChange = (type: string, id: number, qty: number) => {
     let isSuccess = false;
 
-    if (type === 'add' && count < 20) {
+    if (type === 'add' && cartCount < 20) {
       qty++;
       isSuccess = true;
     }
