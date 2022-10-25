@@ -6,16 +6,16 @@ import RecommendedMenu from './recommendedMenu';
 import { useRecoilState } from 'recoil';
 import { userGradeState, nicknameState } from '../store/atom/userStates';
 import { isExistToken } from './../store/utils/token';
-import { getUserInfo } from '../api/user';
-import { getUserLevel } from '../api/level';
+import { getUserInfo } from '../../src/store/api/user';
+import { getUserLevel } from '../../src/store/api/level';
 import { useRouter } from 'next/router';
-import { getMyMenuData } from '../api/myMenu';
+import { getMyMenuData } from '../../src/store/api/myMenu';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import MyMenuCard from './myMenuCard';
 import Link from 'next/link';
-import { getStoreList, getStoreWaitingTime } from '../api/store';
+import { getStoreList, getStoreWaitingTime } from '../../src/store/api/store';
 import { IStore } from '../types/store';
 import { IMenuData1 } from '../types/myMenu';
 import { ILevel } from '../types/user';
@@ -38,6 +38,9 @@ function homeContent() {
   const styles: { [key: string]: React.CSSProperties } = {
     container: {
       width: `${progressState}%`,
+    },
+    maxContainer: {
+      width: '100%',
     },
   };
   const [nickname, setNickname] = useRecoilState(nicknameState);
@@ -107,7 +110,6 @@ function homeContent() {
       });
     }
   }, [geolocation]);
-
   return (
     <>
       <div className={cx('point-box')}>
@@ -118,24 +120,41 @@ function homeContent() {
           <div className={cx('point-bar')}>
             <div className={cx('progress-bar-space')}>
               <div>
-                {userLevel &&
-                  userLevel.requiredExpToNextGrade - userLevel.userExp}
+                {userLevel?.userGrade === 'Power Elixir'
+                  ? userLevel.userExp
+                  : userLevel &&
+                    userLevel.requiredExpToNextGrade - userLevel.userExp}
+
                 <Image
                   src='/assets/svg/icon-charge-battery.svg'
                   alt='charge-battery'
                   width={24}
                   height={21}
                 />
-                until {userLevel && userLevel.nextGrade} Level
+                {userLevel?.userGrade === 'Power Elixir' ? (
+                  <>Power Elixir</>
+                ) : (
+                  <>until {userLevel && userLevel.nextGrade} Level</>
+                )}
               </div>
               <div className={cx('progress-bar-wrap')}>
-                <div
-                  className={cx('progress-bar')}
-                  role='progressbar'
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  style={styles.container}
-                />
+                {userLevel?.userGrade === 'Power Elixir' ? (
+                  <div
+                    className={cx('progress-bar')}
+                    role='progressbar'
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    style={styles.maxContainer}
+                  />
+                ) : (
+                  <div
+                    className={cx('progress-bar')}
+                    role='progressbar'
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    style={styles.container}
+                  />
+                )}
               </div>
             </div>
             <div className={cx('my-score')}>
@@ -144,6 +163,7 @@ function homeContent() {
               </span>
               /
               <span className={cx('req-exp')}>
+                {}
                 {userLevel && userLevel.requiredExpToNextGrade}
               </span>
               {userLevel?.userGrade === 'Potion' ? (

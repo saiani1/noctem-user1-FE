@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { isExistToken } from './../../store/utils/token';
 import { useRecoilState } from 'recoil';
 import { nicknameState } from '../../store/atom/userStates';
-import { getUserInfo } from '../../api/user';
+import { getUserInfo } from '../../../src/store/api/user';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from './../customAlert';
 

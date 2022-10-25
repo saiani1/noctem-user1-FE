@@ -9,7 +9,7 @@ import ChoiceStoreModal from './choiceStoreModal';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
-import { getStoreList } from '../../api/store';
+import { getStoreList } from '../../../src/store/api/store';
 import { IStore } from '../../../src/types/store.d';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
