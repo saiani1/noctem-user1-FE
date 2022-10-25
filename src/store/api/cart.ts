@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import { getToken } from '../utils/token';
-import { ICartData } from '../../types/productDetail';
-=======
 import { ICartData } from '../../types/productDetail';
 import { getToken } from '../utils/token';
->>>>>>> 079d38251ff90995abab2bd434e5da24093875f8
 import { basicRequest } from './base';
 
 const USER_SERVICE = '/user-service';

@@ -15,11 +15,9 @@ import { useRecoilState } from 'recoil';
 import { cartCntState } from '../../store/atom/userStates';
 import { isExistToken } from '../../store/utils/token';
 import { ICartData } from '../../types/productDetail';
-<<<<<<< HEAD
+
 import { addCart } from '../../../src/store/api/cart';
-=======
-import { addCart } from '../../store/api/cart';
->>>>>>> 079d38251ff90995abab2bd434e5da24093875f8
+
 import {
   orderInfoState,
   selectedStoreState,
