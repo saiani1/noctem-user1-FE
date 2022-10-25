@@ -62,7 +62,7 @@ export const deleteItem = async (cartId: number) => {
   return res;
 };
 
-export const deleteAll = async () => {
+export const deleteCartAll = async () => {
   const res = await basicRequest.delete(`${USER_SERVICE}/carts/all`, HEADERS);
   return res;
 };
