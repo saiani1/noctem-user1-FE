@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import styles from '../../../styles/content/orderContent.module.scss';
 import { IMenuList } from './../../types/order.d';
 import { addComma } from '../../store/utils/function';
-import { getMenuDetail } from '../../api/order';
+import { getMenuDetail } from '../../../src/store/api/order';
 
 const cx = classNames.bind(styles);
 

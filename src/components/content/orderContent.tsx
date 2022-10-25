@@ -10,19 +10,19 @@ import RegisterCashReceiptModal from '../../components/content/registerCashRecei
 import OrderPayingCompletionModal from '../../components/content/orderPayingCompletionModal';
 import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
-import { addOrder, getMenuDetail } from '../../api/order';
+import { addOrder, getMenuDetail } from '../../../src/store/api/order';
 import { IMenuList, IProps, IPurchaseData } from '../../types/order';
 import { addComma } from '../../store/utils/function';
 import toast from 'react-hot-toast';
 import { IUserDetailInfo } from '../../types/user';
 import { isExistToken } from '../../store/utils/token';
-import { getUserDetailInfo } from '../../api/user';
+import { getUserDetailInfo } from '../../../src/store/api/user';
 import {
   orderInfoState,
   selectedStoreState,
 } from '../../store/atom/orderState';
 import { useRecoilState } from 'recoil';
-import { deleteAll } from '../../api/cart';
+import { deleteAll } from '../../../src/store/api/cart';
 
 const cx = classNames.bind(styles);
 

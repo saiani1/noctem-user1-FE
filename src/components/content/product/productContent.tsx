@@ -11,9 +11,13 @@ import ProductOrder from './productOrder';
 import ToolbarList from '../../ui/toolbarList';
 import CustomAlert from '../../customAlert';
 import { useRouter } from 'next/router';
-import { addMyMenu } from '../../../api/myMenu';
-import { getSize, getNutrition, getProduct } from '../../../api/category';
-import { addCart, getCount } from '../../../api/cart';
+import { addMyMenu } from '../../../../src/store/api/myMenu';
+import {
+  getSize,
+  getNutrition,
+  getProduct,
+} from '../../../../src/store/api/category';
+import { addCart, getCount } from '../../../../src/store/api/cart';
 import { useRecoilState } from 'recoil';
 import {
   categoryLState,

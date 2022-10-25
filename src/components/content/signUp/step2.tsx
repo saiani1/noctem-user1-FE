@@ -7,7 +7,7 @@ import {
   IError,
   IDuplValid,
 } from '../../../types/signUp.d';
-import { addUser, getDuplicationCheck } from '../../../api/signUp';
+import { addUser, getDuplicationCheck } from '../../../../src/store/api/signUp';
 
 const cx = classNames.bind(styles);
 

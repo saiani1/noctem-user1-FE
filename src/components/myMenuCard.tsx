@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import styles from '../../styles/main/main.module.scss';
 import { useRouter } from 'next/router';
-import { getMyMenuData } from '../api/cart';
+import { getMyMenuData } from '../../src/store/api/cart';
 import { IMenuData1, IMenuDetailData } from '../types/myMenu';
 import { orderInfoState, selectedStoreState } from '../store/atom/orderState';
 import { useRecoilState } from 'recoil';

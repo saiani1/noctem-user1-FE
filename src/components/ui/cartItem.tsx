@@ -4,10 +4,14 @@ import Image from 'next/image';
 
 import styles from '../../../styles/ui/cartItem.module.scss';
 import { ICart, IData } from '../../types/cart';
-import { changeItemCount, deleteItem, getCartMenuData } from '../../api/cart';
+import {
+  changeItemCount,
+  deleteItem,
+  getCartMenuData,
+} from '../../../src/store/api/cart';
 import { addComma } from '../../store/utils/function';
 import { isExistToken } from './../../store/utils/token';
-import { getMenuDetail } from '../../../pages/api/order';
+import { getMenuDetail } from '../../store/api/order';
 import { IMenuList } from './../../types/order.d';
 
 const cx = classNames.bind(styles);

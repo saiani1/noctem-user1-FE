@@ -7,7 +7,7 @@ import styles from '../../../styles/content/cartContent.module.scss';
 import CartItem from '../ui/cartItem';
 import EmptyCart from './emptyCart';
 import { useEffect } from 'react';
-import { getCartList, getCount } from '../../api/cart';
+import { getCartList, getCount } from '../../../src/store/api/cart';
 import {
   ICart,
   ICartTotalPriceList,

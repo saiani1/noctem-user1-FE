@@ -1,5 +1,5 @@
-import { getToken } from '../../src/store/utils/token';
-import { IPurchaseData } from '../../src/types/order';
+import { getToken } from '../utils/token';
+import { IPurchaseData } from '../../types/order';
 import { basicRequest } from './base';
 
 const MENU_SERVICE = '/menu-service';

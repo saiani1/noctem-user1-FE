@@ -3,7 +3,10 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 import toast from 'react-hot-toast';
 
-import { getMyMenuDetailData, changeMyMenuNickName } from '../../api/myMenu';
+import {
+  getMyMenuDetailData,
+  changeMyMenuNickName,
+} from '../../../src/store/api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma, getSessionCartCount } from './../../store/utils/function';
@@ -12,7 +15,7 @@ import { useRecoilState } from 'recoil';
 import { cartCntState } from '../../store/atom/userStates';
 import { isExistToken } from '../../store/utils/token';
 import { ICartData } from '../../types/productDetail';
-import { addCart } from '../../../pages/api/cart';
+import { addCart } from '../../store/api/cart';
 import {
   orderInfoState,
   selectedStoreState,
