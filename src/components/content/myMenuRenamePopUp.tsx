@@ -11,7 +11,7 @@ interface IProps {
   itemInfo?: IMenuDetailData;
   detailList?: IDetail;
   selectedSizeTxt?: string;
-  temperatureChoice?: number;
+  temperatureChoice: number;
   myMenuNameRef: React.ForwardedRef<HTMLInputElement>;
   handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleAddMyMenuData: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -52,8 +52,7 @@ function myMenuRenamePopUp({
           <h4>
             {prevPage === 'myMenu'
               ? itemInfo?.menuName
-              : temperatureChoice &&
-                detailList?.temperatureList[temperatureChoice].menuName}
+              : detailList?.temperatureList[temperatureChoice].menuName}
           </h4>
           <div className={cx('menu-option')}>
             {prevPage === 'myMenu' ? itemInfo?.temperature : temperature} |{' '}
@@ -70,7 +69,7 @@ function myMenuRenamePopUp({
             placeholder={
               prevPage === 'myMenu'
                 ? item?.alias
-                : detailList?.temperatureList[0].menuName
+                : detailList?.temperatureList[temperatureChoice].menuName
             }
             name='input-nickname'
             // onChange={checkMenuName}

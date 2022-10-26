@@ -200,6 +200,7 @@ function myMenuItem({
           myMenuNameRef={myMenuNameRef}
           handleClose={handleClose}
           handleAddMyMenuData={handleChangeMyMenuName}
+          temperatureChoice={0}
         />
       )}
       {isFetching && !isEmpty && (
