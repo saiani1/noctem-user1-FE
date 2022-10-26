@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/pages/productPage.module.scss';
@@ -11,7 +11,7 @@ interface IProps {
   itemInfo?: IMenuDetailData;
   detailList?: IDetail;
   selectedSizeTxt?: string;
-  temperatureChoice?: string;
+  temperatureChoice: number;
   myMenuNameRef: React.ForwardedRef<HTMLInputElement>;
   handleClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
   handleAddMyMenuData: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -29,7 +29,13 @@ function myMenuRenamePopUp({
   handleAddMyMenuData,
 }: IProps) {
   const cx = classNames.bind(styles);
-  console.log('item:', item, 'itemInfo:', itemInfo);
+  const [temperature, setTemperature] = useState('ice');
+
+  console.log(temperatureChoice, temperature);
+  useEffect(() => {
+    if (temperatureChoice === 0) setTemperature('ice');
+    else setTemperature('hot');
+  }, []);
 
   return (
     <div className={cx('menu-name-alert')}>
@@ -46,11 +52,11 @@ function myMenuRenamePopUp({
           <h4>
             {prevPage === 'myMenu'
               ? itemInfo?.menuName
-              : detailList?.temperatureList[0].menuName}
+              : detailList?.temperatureList[temperatureChoice].menuName}
           </h4>
           <div className={cx('menu-option')}>
-            {prevPage === 'myMenu' ? itemInfo?.temperature : temperatureChoice}{' '}
-            | {prevPage === 'myMenu' ? itemInfo?.size : selectedSizeTxt}
+            {prevPage === 'myMenu' ? itemInfo?.temperature : temperature} |{' '}
+            {prevPage === 'myMenu' ? itemInfo?.size : selectedSizeTxt}
           </div>
         </div>
         <div className={cx('menu-nickname')}>
