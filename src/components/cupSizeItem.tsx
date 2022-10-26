@@ -12,16 +12,19 @@ function cupSizeItem({
   setSelectedSizeTxt,
   cartData,
   setCartData,
+  setExtraCost,
 }: {
   list: ISizeProps['list'];
   selectedSizeTxt: ISizeProps['selectedSizeTxt'];
   setSelectedSizeTxt: ISizeProps['setSelectedSizeTxt'];
   cartData: ISizeProps['cartData'];
   setCartData: ISizeProps['setCartData'];
+  setExtraCost: ISizeProps['setExtraCost'];
 }) {
   const handleChoice = () => {
     console.log(list.sizeId);
     setSelectedSizeTxt(list.size);
+    setExtraCost(list.extraCost);
     setCartData({
       ...cartData,
       sizeId: list.sizeId,

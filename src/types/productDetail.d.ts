@@ -78,6 +78,7 @@ export interface ISizeProps {
   setSelectedSizeTxt: Dispatch<SetStateAction<boolean>>;
   cartData: ICartData;
   setCartData: Dispatch<SetStateAction<boolean>>;
+  setExtraCost: Dispatch<SetStateAction<number>>;
 }
 
 export interface INutrition {
