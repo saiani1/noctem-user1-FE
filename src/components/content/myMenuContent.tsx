@@ -24,37 +24,40 @@ function myMenuContent() {
   const [isDeleteMyMenu, setIsDeleteMyMenu] = useState(false);
   const [isChangeMyMenuName, setIsChangeMyMenuName] = useState(false);
   const [showMyMenu, setShowMyMenu] = useState(false);
+  const [isChangeMyMenuList, setIsChangeMyMenuList] = useState(false);
 
   const cx = classNames.bind(styles);
 
+  // useEffect(() => {
+  //   Promise.all([getShowMainMyMenu(), getMyMenuData()]).then(res => {
+  //     console.log(res);
+  //     setShowMyMenu(res[0].data.data);
+  //     if (res[1].data.data.length !== 0) {
+  //       setInfo(res[1].data.data);
+  //     } else {
+  //       setIsEmpty(true);
+  //       setIsFetching(true);
+  //     }
+  //   });
+  // }, [isDeleteMyMenu, isChangeMyMenuName]);
   useEffect(() => {
-    Promise.all([getShowMainMyMenu(), getMyMenuData()]).then(res => {
-      console.log(res);
-      setShowMyMenu(res[0].data.data);
-      if (res[1].data.data.length !== 0) {
-        setInfo(res[1].data.data);
+    getMyMenuData().then(res => {
+      console.log('삭제전', res.data.data);
+      if (res.data.data.length !== 0) {
+        setInfo(res.data.data);
+        console.log('최초', res.data.data);
       } else {
         setIsEmpty(true);
         setIsFetching(true);
       }
     });
-  }, [isDeleteMyMenu, isChangeMyMenuName]);
-
+  }, [isDeleteMyMenu, isChangeMyMenuList]);
+  useEffect(() => {
+    console.log('갱신', info);
+  }, [info]);
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeShowMainMyMenu().then(res => {
       console.log('res : ', res);
-    });
-  };
-
-  const handleDeleteMenu = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-  ): void => {
-    const name = (e.target as HTMLInputElement).name;
-    console.log('ID', name);
-    deleteMyMenu(name).then(res => {
-      console.log(res);
-      setIsDeleteMyMenu(true);
-      toast.success('나만의 메뉴가 삭제되었습니다.');
     });
   };
 
@@ -108,10 +111,12 @@ function myMenuContent() {
                 item={item}
                 isFetching={isFetching}
                 isEmpty={isEmpty}
-                handleDeleteMenu={handleDeleteMenu}
                 setIsFetching={setIsFetching}
                 setIsDeleteMyMenu={setIsDeleteMyMenu}
                 setIsChangeMyMenuName={setIsChangeMyMenuName}
+                setInfo={setInfo}
+                setIsChangeMyMenuList={setIsChangeMyMenuList}
+                isChangeMyMenuList={isChangeMyMenuList}
               />
             ))}
         </ul>

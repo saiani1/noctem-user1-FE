@@ -11,13 +11,14 @@ import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma, getSessionCartCount } from './../../store/utils/function';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
-import { useRecoilState } from 'recoil';
+import { constSelector, useRecoilState } from 'recoil';
 import { cartCntState } from '../../store/atom/userStates';
 import { isExistToken } from '../../store/utils/token';
 import { ICartData } from '../../types/productDetail';
 
 import { addCart } from '../../../src/store/api/cart';
 
+import { getMyMenuData, deleteMyMenu } from '../../../src/store/api/myMenu';
 import {
   orderInfoState,
   selectedStoreState,
@@ -31,20 +32,25 @@ interface IProps {
   item: IMenuData1;
   isEmpty: boolean;
   isFetching: boolean;
-  handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
+  // handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleteMyMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsChangeMyMenuName: React.Dispatch<React.SetStateAction<boolean>>;
+  setInfo: React.Dispatch<React.SetStateAction<IMenuData1[]>>;
+  setIsChangeMyMenuList: React.Dispatch<React.SetStateAction<boolean>>;
+  isChangeMyMenuList: boolean;
 }
 
 function myMenuItem({
   item,
   isEmpty,
   isFetching,
-  handleDeleteMenu,
   setIsFetching,
   setIsDeleteMyMenu,
   setIsChangeMyMenuName,
+  setInfo,
+  setIsChangeMyMenuList,
+  isChangeMyMenuList,
 }: IProps) {
   const router = useRouter();
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
@@ -57,6 +63,8 @@ function myMenuItem({
   const cx = classNames.bind(styles);
 
   useEffect(() => {
+    /// 밥먹고 여기 보기
+    console.log('asdf', item);
     if (item !== undefined && !isEmpty) {
       getMyMenuDetailData(item.sizeId, item.myMenuId).then(res => {
         const resData = res.data.data;
@@ -65,12 +73,34 @@ function myMenuItem({
           sizeId: item.sizeId,
         };
         setItemInfo(mymenuInfo);
+        console.log('aaaa', mymenuInfo);
         setIsFetching(true);
         setIsDeleteMyMenu(false);
         setIsChangeMyMenuName(false);
       });
     }
-  }, []);
+  }, [isChangeMyMenuList]);
+
+  const handleDeleteMenu = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+  ): void => {
+    const name = (e.target as HTMLInputElement).name;
+    // console.log('ID', name);
+    // deleteMyMenu(name).then(res => {
+    //   console.log(res);
+    //   setIsDeleteMyMenu(true);
+    //   toast.success('나만의 메뉴가 삭제되었습니다.');
+    // });
+    deleteMyMenu(name).then(res => {
+      console.log('삭제 직후', res.data.data);
+      setIsDeleteMyMenu(true);
+      setIsChangeMyMenuList(!isChangeMyMenuList);
+      // getMyMenuData().then(res => {
+      //   setInfo(res.data.data);
+      //   toast.success('나만의 메뉴가 삭제되었습니다.');
+      // });
+    });
+  };
 
   const handleChangeMyMenuName = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
