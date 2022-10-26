@@ -3,8 +3,9 @@ import classNames from 'classnames/bind';
 import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/userInfoContent.module.scss';
-import { getToken } from '../../store/utils/token';
 import { getUserInfo } from '../../../src/store/api/user';
+import { tokenState } from '../../store/atom/userStates';
+import { useRecoilValue } from 'recoil';
 import {
   getDuplicationCheck,
   patchNickname,
@@ -22,6 +23,7 @@ interface IInfo {
 }
 
 function userInfoContent() {
+  const token = useRecoilValue(tokenState);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
   const [info, setInfo] = useState<IInfo>({
     email: '',
@@ -38,14 +40,10 @@ function userInfoContent() {
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    const token = getToken();
-
-    if (token !== '{}') {
-      getUserInfo().then(res => {
-        console.log(res);
-        setInfo(res.data.data);
-      });
-    }
+    getUserInfo(token).then(res => {
+      console.log(res);
+      setInfo(res.data.data);
+    });
   }, []);
 
   const isNickName = (value: string) => {
@@ -83,13 +81,9 @@ function userInfoContent() {
   };
 
   const handleSubmit = () => {
-    console.log('서브밋');
-
     const nickValue = nicknameInputRef.current?.value || '';
-    const token = getToken();
-
-    if (isValid && token !== '{}') {
-      patchNickname(nickValue).then(res => {
+    if (isValid) {
+      patchNickname(nickValue, token).then(res => {
         if (res.data.data) {
           setInfo({
             ...info,

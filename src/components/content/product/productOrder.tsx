@@ -36,7 +36,7 @@ function productOrder({
   setCupChoice: React.Dispatch<React.SetStateAction<string>>;
   cupChoice: string;
   setCartData: React.Dispatch<React.SetStateAction<ICartData>>;
-  handleAddMyMenu: (e: any) => void;
+  handleAddMyMenu: () => void;
   handleAddCart: () => void;
   handleOrder: () => void;
   count: number;

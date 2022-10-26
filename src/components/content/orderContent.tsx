@@ -15,14 +15,14 @@ import { IMenuList, IProps, IPurchaseData } from '../../types/order';
 import { addComma } from '../../store/utils/function';
 import toast from 'react-hot-toast';
 import { IUserDetailInfo } from '../../types/user';
-import { isExistToken } from '../../store/utils/token';
 import { getUserDetailInfo } from '../../../src/store/api/user';
 import {
   orderInfoState,
   selectedStoreState,
 } from '../../store/atom/orderState';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { deleteCartAll } from '../../../src/store/api/cart';
+import { loginState, tokenState } from './../../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
@@ -36,6 +36,8 @@ function orderContent(props: IProps) {
     setIsClickSubmitBtn,
   } = props;
   const router = useRouter();
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
@@ -104,13 +106,13 @@ function orderContent(props: IProps) {
 
       if (orderCnt === 0) {
         console.log('orderData', orderData);
-        addOrder(orderData).then(res => {
+        addOrder(orderData, token).then(res => {
           console.log('res', res);
           toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
           setOrderInfo(res.data.data);
           if (router.query.menuList) {
             // 장바구니 주문일 경우
-            deleteCartAll().then(res => {
+            deleteCartAll(token).then(res => {
               console.log('전체 삭제', res);
             });
           }
@@ -133,9 +135,9 @@ function orderContent(props: IProps) {
       return;
     }
 
-    if (isExistToken()) {
+    if (isLogin) {
       // 회원 주문
-      getUserDetailInfo().then(res => {
+      getUserDetailInfo(token).then(res => {
         setUserDetailInfo(res.data.data);
       });
     } else {

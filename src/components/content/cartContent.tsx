@@ -14,8 +14,12 @@ import {
   IPriceList,
   IQtyList,
 } from '../../types/cart';
-import { useRecoilState } from 'recoil';
-import { cartCntState } from '../../store/atom/userStates';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  cartCntState,
+  loginState,
+  tokenState,
+} from '../../store/atom/userStates';
 import {
   addComma,
   getSessionCartCount,
@@ -23,7 +27,6 @@ import {
 } from '../../store/utils/function';
 import { useRouter } from 'next/router';
 import { selectedStoreState } from '../../store/atom/orderState';
-import { isExistToken } from './../../store/utils/token';
 import { IMenuList } from '../../types/order';
 import { orderInfoState } from './../../store/atom/orderState';
 
@@ -32,6 +35,8 @@ const cx = classNames.bind(styles);
 function cartContent() {
   const router = useRouter();
   const [clickTab, setClickTab] = useState('food');
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo] = useRecoilState(orderInfoState);
@@ -78,7 +83,7 @@ function cartContent() {
       return;
     }
 
-    if (isExistToken()) {
+    if (isLogin) {
       console.log('회원 주문');
       router.push(
         {
@@ -113,13 +118,13 @@ function cartContent() {
 
   useEffect(() => {
     console.log('isChange', isChange);
-    if (isExistToken()) {
+    if (isLogin) {
       // 회원 조회
       console.log('회원 조회');
-      getCartList().then(res => {
+      getCartList(token).then(res => {
         setCartList(res.data.data);
       });
-      getCount().then(res => {
+      getCount(token).then(res => {
         const resData = res.data.data === null ? 0 : res.data.data;
         setCartCount(resData);
       });

@@ -11,9 +11,8 @@ import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma, getSessionCartCount } from './../../store/utils/function';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
-import { useRecoilState } from 'recoil';
-import { cartCntState } from '../../store/atom/userStates';
-import { isExistToken } from '../../store/utils/token';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { cartCntState, tokenState } from '../../store/atom/userStates';
 import { ICartData } from '../../types/productDetail';
 
 import { addCart } from '../../../src/store/api/cart';
@@ -26,6 +25,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from '../customAlert';
 import { useRouter } from 'next/router';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { loginState } from './../../store/atom/userStates';
 
 interface IProps {
   item: IMenuData1;
@@ -47,6 +47,8 @@ function myMenuItem({
   setIsChangeMyMenuName,
 }: IProps) {
   const router = useRouter();
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo] = useRecoilState(orderInfoState);
@@ -58,7 +60,7 @@ function myMenuItem({
 
   useEffect(() => {
     if (item !== undefined && !isEmpty) {
-      getMyMenuDetailData(item.sizeId, item.myMenuId).then(res => {
+      getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
         const resData = res.data.data;
         const mymenuInfo = {
           ...resData,
@@ -75,7 +77,7 @@ function myMenuItem({
   const handleChangeMyMenuName = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
     if (mymenuNameValue && mymenuNameValue.length !== 0) {
-      changeMyMenuNickName(item?.myMenuId, mymenuNameValue).then(res => {
+      changeMyMenuNickName(item?.myMenuId, mymenuNameValue, token).then(res => {
         console.log(res);
         setClickRenameBtn(prev => {
           return !prev;
@@ -112,7 +114,7 @@ function myMenuItem({
       personalOptionList: [],
     };
 
-    if (!isExistToken()) {
+    if (!isLogin) {
       // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
       sessionStorage.setItem(
         sessionStorage.length + '',
@@ -121,7 +123,7 @@ function myMenuItem({
       setCartCount(getSessionCartCount());
       toast.success('장바구니에 담겼습니다!');
     } else {
-      addCart(cartData).then(res => {
+      addCart(cartData, token).then(res => {
         if (res.data.data) {
           console.log('mycartItem res', res);
           toast.success('장바구니에 담겼습니다!');
