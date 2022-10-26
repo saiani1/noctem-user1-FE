@@ -10,6 +10,7 @@ import { getUserInfo } from '../../src/store/api/user';
 import { getUserLevel } from '../../src/store/api/level';
 import { useRouter } from 'next/router';
 import { getMyMenuData } from '../../src/store/api/myMenu';
+import { getPopularMenu } from '../store/api/popularMenu';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -19,6 +20,7 @@ import { getStoreList, getStoreWaitingTime } from '../../src/store/api/store';
 import { IStore } from '../types/store';
 import { IMenuData1 } from '../types/myMenu';
 import { ILevel } from '../types/user';
+import { IPopularMenuList } from '../types/popularMenu';
 import styles from '../../styles/main/main.module.scss';
 import { selectedStoreState } from '../store/atom/orderState';
 import { confirmAlert } from 'react-confirm-alert';
@@ -46,6 +48,9 @@ function homeContent() {
   const [nickname, setNickname] = useRecoilState(nicknameState);
   const [store, setStore] = useState<IStore>();
   const [storeWaitingTime, setStoreWaitingTime] = useState<number>();
+  const [popularMenuList, setPopularMenuList] = useState<IPopularMenuList[]>(
+    [],
+  );
 
   const handleStoreSelect = () => {
     if (store !== undefined) {
@@ -71,6 +76,8 @@ function homeContent() {
   };
 
   useEffect(() => {
+    getPopularMenu().then(res => setPopularMenuList(res.data.data));
+
     if (isExistToken()) {
       getUserInfo().then(res => {
         setNickname(res.data.data.nickname);
@@ -323,7 +330,11 @@ function homeContent() {
       </div>
       <div className={cx('recommend-menu')}>
         <h2 className={cx('title')}>추천 메뉴</h2>
-        <RecommendedMenu />
+        <ul className={cx('recommended')}>
+          {popularMenuList.map(menu => (
+            <RecommendedMenu key={menu.index} popularMenuList={menu} />
+          ))}
+        </ul>
       </div>
     </>
   );
