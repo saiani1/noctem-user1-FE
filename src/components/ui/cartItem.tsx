@@ -10,9 +10,11 @@ import {
   getCartMenuData,
 } from '../../../src/store/api/cart';
 import { addComma } from '../../store/utils/function';
-import { isExistToken } from './../../store/utils/token';
 import { getMenuDetail } from '../../store/api/order';
 import { IMenuList } from './../../types/order.d';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from '../../store/atom/userStates';
+import { loginState } from './../../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +34,8 @@ function cartItem({
   setMenuList: React.Dispatch<React.SetStateAction<IMenuList[]>>;
 }) {
   const { index, cartId, sizeId, qty } = cart;
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const [data, setData] = useState<IData>();
 
   const handleCountChange = (type: string, id: number, qty: number) => {
@@ -47,7 +51,7 @@ function cartItem({
     }
 
     if (isSuccess) {
-      changeItemCount(id, qty).then(res => {
+      changeItemCount(id, qty, token).then(res => {
         if (res.data.data) {
           setIsChange(!isChange);
         }
@@ -56,7 +60,7 @@ function cartItem({
   };
 
   const handleDelete = (id: number) => {
-    deleteItem(id).then(res => {
+    deleteItem(id, token).then(res => {
       getCartMenuData(sizeId, cartId).then(menu => {
         const resData = menu.data.data;
         handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
@@ -66,7 +70,7 @@ function cartItem({
   };
 
   useEffect(() => {
-    if (isExistToken()) {
+    if (isLogin) {
       getCartMenuData(sizeId, cartId).then(res => {
         const resData = res.data.data;
         setData(resData);

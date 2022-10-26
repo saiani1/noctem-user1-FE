@@ -1,14 +1,8 @@
-import { getToken } from '../utils/token';
 import { IPurchaseData } from '../../types/order';
 import { basicRequest } from './base';
 
 const MENU_SERVICE = '/menu-service';
 const ORDER_SERVICE = '/purchase-service';
-const HEADERS = {
-  headers: {
-    Authorization: JSON.parse(getToken()),
-  },
-};
 
 export const getMenuDetail = async (sizeId: number, cartId: number) => {
   console.log(`${MENU_SERVICE}/size/menu/forPurchase/${sizeId}/${cartId}`);
@@ -18,12 +12,15 @@ export const getMenuDetail = async (sizeId: number, cartId: number) => {
   return res;
 };
 
-export const addOrder = async (data: IPurchaseData) => {
-  console.log(`${ORDER_SERVICE}/purchase/user`);
+export const addOrder = async (data: IPurchaseData, token: string) => {
   const res = await basicRequest.post(
     `${ORDER_SERVICE}/purchase/user`,
     data,
-    HEADERS,
+    {
+      headers: {
+        Authorization: token,
+      },
+    },
   );
   return res;
 };

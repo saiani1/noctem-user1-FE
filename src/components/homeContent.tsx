@@ -3,11 +3,14 @@ import classNames from 'classnames/bind';
 import useGeolocation from 'react-hook-geolocation';
 import Image from 'next/image';
 import RecommendedMenu from './recommendedMenu';
-import { useRecoilState } from 'recoil';
-import { userGradeState, nicknameState } from '../store/atom/userStates';
-import { isExistToken } from './../store/utils/token';
-import { getUserInfo } from '../../src/store/api/user';
-import { getUserLevel } from '../../src/store/api/level';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  userGradeState,
+  nicknameState,
+  loginState,
+  tokenState,
+} from '../store/atom/userStates';
+import { getUserInfo, getUserLevel } from '../../src/store/api/user';
 import { useRouter } from 'next/router';
 import { getMyMenuData } from '../../src/store/api/myMenu';
 import { getPopularMenu } from '../store/api/popularMenu';
@@ -32,7 +35,10 @@ const cx = classNames.bind(styles);
 function homeContent() {
   const router = useRouter();
   const geolocation = useGeolocation();
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
+  const [isFatching, setIsFatching] = useState(false);
+
   const [myMenu, setMyMenu] = useState<IMenuData1[]>();
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
@@ -78,22 +84,23 @@ function homeContent() {
   useEffect(() => {
     getPopularMenu().then(res => setPopularMenuList(res.data.data));
 
-    if (isExistToken()) {
-      getUserInfo().then(res => {
+    if (isLogin) {
+      setIsFatching(true);
+      getUserInfo(token).then(res => {
         setNickname(res.data.data.nickname);
       });
-      getUserLevel().then(res => {
+      getUserLevel(token).then(res => {
+        console.log('userLevel', res.data.data);
         setUserLevel(res.data.data);
       });
-      getMyMenuData().then(res => {
+      getMyMenuData(token).then(res => {
         setMyMenu(res.data.data);
       });
-      setIsLogin(true);
     } else {
-      setIsLogin(false);
+      setIsFatching(false);
       setNickname('게스트');
     }
-  }, [isExistToken]);
+  }, []);
 
   useEffect(() => {
     if (userLevel) {
@@ -117,13 +124,14 @@ function homeContent() {
       });
     }
   }, [geolocation]);
+
   return (
     <>
       <div className={cx('point-box')}>
         <div className={cx('title')}>
           <span>{nickname}</span> 님, 반갑습니다.
         </div>
-        {isLogin ? (
+        {isFatching ? (
           <div className={cx('point-bar')}>
             <div className={cx('progress-bar-space')}>
               <div>
@@ -234,7 +242,7 @@ function homeContent() {
         )}
       </div>
       <div className={cx('my-wrap')}>
-        {isLogin ? (
+        {isFatching ? (
           <div className={cx('my-menu')}>
             {myMenu && myMenu.length !== 0 ? (
               <>

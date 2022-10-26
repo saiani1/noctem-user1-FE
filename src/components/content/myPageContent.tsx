@@ -6,19 +6,20 @@ import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/myPageContent.module.scss';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { removeToken } from '../../store/utils/token';
 import { useRouter } from 'next/router';
-import { isExistToken } from './../../store/utils/token';
 import { useRecoilState } from 'recoil';
-import { nicknameState } from '../../store/atom/userStates';
+import { nicknameState, tokenState } from '../../store/atom/userStates';
 import { getUserInfo } from '../../../src/store/api/user';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from './../customAlert';
+import { loginState } from './../../store/atom/userStates';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const [token, setToken] = useRecoilState(tokenState);
+  const [isFatching, setIsFatching] = useState(false);
   const [nickname, setNickname] = useRecoilState(nicknameState);
 
   const onLogin = () => {
@@ -26,7 +27,7 @@ function myPageContent() {
   };
 
   const handleMyPage = (link: string) => {
-    if (!isExistToken()) {
+    if (!isLogin) {
       confirmAlert({
         customUI: ({ onClose }) => (
           <CustomAlert
@@ -45,8 +46,9 @@ function myPageContent() {
   };
 
   const handleLogout = () => {
-    if (isExistToken()) {
-      removeToken();
+    if (isLogin) {
+      setToken('');
+      setIsLogin(false);
       setNickname('게스트');
       toast.success('로그아웃 되셨습니다.');
       router.push('/');
@@ -54,20 +56,20 @@ function myPageContent() {
   };
 
   useEffect(() => {
-    if (isExistToken()) {
-      setIsLogin(true);
-      getUserInfo().then(res => {
+    if (isLogin) {
+      getUserInfo(token).then(res => {
         setNickname(res.data.data.nickname);
       });
+      setIsFatching(true);
     } else {
-      setIsLogin(false);
+      setIsFatching(false);
     }
   }, []);
 
   return (
     <div className={cx('wrap')}>
       <h2>My Page</h2>
-      {isLogin ? (
+      {isFatching ? (
         <p className={cx('welcome-msg')}>
           <strong>{nickname}</strong> 님<br />
           환영합니다! 🙌

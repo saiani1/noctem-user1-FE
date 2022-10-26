@@ -18,7 +18,7 @@ import {
   getProduct,
 } from '../../../../src/store/api/category';
 import { addCart, getCount } from '../../../../src/store/api/cart';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   categoryLState,
   categorySIdState,
@@ -31,20 +31,22 @@ import {
   INutrition,
 } from '../../../types/productDetail';
 import { IParams } from '../../../types/myMenu';
-import { cartCntState } from '../../../store/atom/userStates';
+import { cartCntState, tokenState } from '../../../store/atom/userStates';
 import { addComma, getSessionCartCount } from '../../../store/utils/function';
 import MyMenuRenamePopUp from '../myMenuRenamePopUp';
 import {
   orderInfoState,
   selectedStoreState,
 } from '../../../store/atom/orderState';
-import { isExistToken } from './../../../store/utils/token';
+import { loginState } from './../../../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
 function productContent() {
   const router = useRouter();
   const id = router.query.id ? +router.query.id : 1;
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
@@ -111,7 +113,7 @@ function productContent() {
       }
 
       console.log(cartData);
-      if (!isExistToken()) {
+      if (!isLogin) {
         // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
         sessionStorage.setItem(
           sessionStorage.length + '',
@@ -121,7 +123,7 @@ function productContent() {
         setOpen(false);
         toast.success('장바구니에 담겼습니다!');
       } else {
-        addCart(cartData).then(res => {
+        addCart(cartData, token).then(res => {
           if (res.data.data) {
             setOpen(false);
             toast.success('장바구니에 담겼습니다!');
@@ -222,8 +224,8 @@ function productContent() {
     router.push('/login');
   };
 
-  const handleAddMyMenu = (e: any) => {
-    if (!isExistToken()) {
+  const handleAddMyMenu = () => {
+    if (!isLogin) {
       setOpen(false);
       confirmAlert({
         customUI: ({ onClose }) => (
@@ -263,7 +265,7 @@ function productContent() {
         alias: mymenuNameValue,
         personalOptionList: myMenuData.personalOptionList,
       };
-      addMyMenu(value).then(res => {
+      addMyMenu(value, token).then(res => {
         console.log(res);
         if (res.data.data) {
           toast.success('나만의 메뉴에 추가되었습니다');
@@ -283,10 +285,16 @@ function productContent() {
     getNutrition(id).then(res => {
       setNutritionInfo(res.data.data);
     });
-    getCount().then(res => {
-      const resData = res.data.data === null ? 0 : res.data.data;
-      setCartCount(resData);
-    });
+    if (isLogin) {
+      // 회원 장바구니 개수
+      getCount(token).then(res => {
+        const resData = res.data.data === null ? 0 : res.data.data;
+        setCartCount(resData);
+      });
+    } else {
+      // 비회원 장바구니 개수
+      setCartCount(getSessionCartCount());
+    }
   }, [id, open]);
 
   useEffect(() => {
