@@ -13,14 +13,18 @@ export const getMyMenuData = async (token: string) => {
   return res;
 };
 
-export const getMyMenuDetailData = async (sizeId: number, myMenuId: number, token: string) => {
+export const getMyMenuDetailData = async (
+  sizeId: number,
+  myMenuId: number,
+  token: string,
+) => {
   const res = await basicRequest.get(
     `${M_SERVICE}/size/menu/forMyMenu/${sizeId}/${myMenuId}`,
     {
       headers: {
         Authorization: token,
       },
-    }
+    },
   );
   return res;
 };
@@ -44,12 +48,16 @@ export const changeMyMenuOrder = async (value: number[], token: string) => {
       headers: {
         Authorization: token,
       },
-    }
+    },
   );
   return res;
 };
 
-export const changeMyMenuNickName = async (id: number, value: string, token: string) => {
+export const changeMyMenuNickName = async (
+  id: number,
+  value: string,
+  token: string,
+) => {
   const res = await basicRequest.patch(
     `${U_SERVICE}/myMenu/${id}/alias`,
     {
@@ -59,12 +67,12 @@ export const changeMyMenuNickName = async (id: number, value: string, token: str
       headers: {
         Authorization: token,
       },
-    }
+    },
   );
   return res;
 };
 
-export const deleteMyMenu = async (id: string, token: string) => {
+export const deleteMyMenu = async (id: number, token: string) => {
   const res = await basicRequest.delete(`${U_SERVICE}/myMenu/${id}`, {
     headers: {
       Authorization: token,
@@ -74,14 +82,11 @@ export const deleteMyMenu = async (id: string, token: string) => {
 };
 
 export const getShowMainMyMenu = async (token: string) => {
-  const res = await basicRequest.get(
-    `${U_SERVICE}/optionalInfo/orderHome`,
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
-  );
+  const res = await basicRequest.get(`${U_SERVICE}/optionalInfo/orderHome`, {
+    headers: {
+      Authorization: token,
+    },
+  });
   return res;
 };
 
@@ -93,7 +98,7 @@ export const changeShowMainMyMenu = async (token: string) => {
       headers: {
         Authorization: token,
       },
-    }
+    },
   );
   return res;
 };

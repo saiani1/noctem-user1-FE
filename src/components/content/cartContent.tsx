@@ -117,6 +117,7 @@ function cartContent() {
   };
 
   useEffect(() => {
+    console.log('찍히나?', cartList);
     console.log('isChange', isChange);
     if (isLogin) {
       // 회원 조회
