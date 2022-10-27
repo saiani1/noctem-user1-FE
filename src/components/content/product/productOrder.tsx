@@ -27,6 +27,7 @@ function productOrder({
   setCount,
   selectedSizeTxt,
   setSelectedSizeTxt,
+  setSelectedSizeId,
   cartData,
 }: {
   open: boolean;
@@ -43,6 +44,7 @@ function productOrder({
   setCount: React.Dispatch<React.SetStateAction<number>>;
   selectedSizeTxt: string;
   setSelectedSizeTxt: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedSizeId: React.Dispatch<React.SetStateAction<number>>;
   cartData: ICartData;
 }) {
   //   const [count, setCount] = useState(1);
@@ -108,6 +110,7 @@ function productOrder({
                         cartData={cartData}
                         setCartData={setCartData}
                         setExtraCost={setExtraCost}
+                        setSelectedSizeId={setSelectedSizeId}
                       />
                     ))}
                 </div>

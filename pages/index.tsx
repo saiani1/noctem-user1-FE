@@ -6,8 +6,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Nectem Order</title>
-        <meta name='description' content='Nectom Order' />
+        <title>Noctem Order</title>
+        <meta name='description' content='Noctem Order' />
         <meta
           name='viewport'
           content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no'

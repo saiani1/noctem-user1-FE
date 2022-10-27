@@ -168,6 +168,7 @@ function productContent() {
       });
     } else {
       console.log('선택된 매장', selectedStore);
+      console.log('선택된 사이즈아이디', selectedSizeId);
       router.push(
         {
           pathname: '/order',
@@ -468,6 +469,7 @@ function productContent() {
         selectedSizeTxt={selectedSizeTxt}
         setSelectedSizeTxt={setSelectedSizeTxt}
         cartData={cartData}
+        setSelectedSizeId={setSelectedSizeId}
       />
       {!open && <ToolbarList />}
       <ProductNutritionSheet
