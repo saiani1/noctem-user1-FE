@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
-import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/myMenuContent.module.scss';
 import {
   getMyMenuData,
-  deleteMyMenu,
   getShowMainMyMenu,
   changeShowMainMyMenu,
 } from '../../../src/store/api/myMenu';
@@ -59,17 +57,17 @@ function myMenuContent() {
     });
   };
 
-  const handleDeleteMenu = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-  ): void => {
-    const name = (e.target as HTMLInputElement).name;
-    console.log('ID', name);
-    deleteMyMenu(name, token).then(res => {
-      console.log(res);
-      setIsDeleteMyMenu(true);
-      toast.success('나만의 메뉴가 삭제되었습니다.');
-    });
-  };
+  // const handleDeleteMenu = (
+  //   e: React.MouseEvent<HTMLElement, MouseEvent>,
+  // ): void => {
+  //   const name = (e.target as HTMLInputElement).name;
+  //   console.log('ID', name);
+  //   deleteMyMenu(name, token).then(res => {
+  //     console.log(res);
+  //     setIsDeleteMyMenu(true);
+  //     toast.success('나만의 메뉴가 삭제되었습니다.');
+  //   });
+  // };
 
   const handleClickChangeOrderBtn = () => {
     setIsClickChangeOrderBtn(prev => {

@@ -68,11 +68,17 @@ function myMenuItem({
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    if (item !== undefined && !isEmpty) {
-      getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
-        setItemInfo(res.data.data);
-      });
-    }
+    console.log('itemInfo:', itemInfo);
+    getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
+      setItemInfo(res.data.data);
+      console.log('item', item);
+      // getMyMenuDetailData(item.sizeId, item.myMenuId).then(res => {
+      //   console.log('itemInfo', res.data.data);
+      //   setItemInfo(res.data.data);
+      //   setIsFetching(true);
+      //   setIsDeleteMyMenu(prev => !prev);
+      //   setIsChangeMyMenuName(prev => !prev);
+    });
 
     // if (item !== undefined && !isEmpty) {
     //   getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
@@ -89,20 +95,20 @@ function myMenuItem({
     // }ty
   }, [info]);
 
-  const handleDeleteMenu = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-  ): void => {
-    const name = (e.target as HTMLInputElement).name;
-    deleteMyMenu(name, token).then(res => {
-      setIsDeleteMyMenu(true);
-      setIsChangeMyMenuList(!isChangeMyMenuList);
-      toast.success('나만의 메뉴가 삭제되었습니다.');
-      // getMyMenuData().then(res => {
-      //   setInfo(res.data.data);
-      //   toast.success('나만의 메뉴가 삭제되었습니다.');
-      // });
-    });
-  };
+  // const handleDeleteMenu = (
+  //   e: React.MouseEvent<HTMLElement, MouseEvent>,
+  // ): void => {
+  //   const name = (e.target as HTMLInputElement).name;
+  //   deleteMyMenu(name, token).then(res => {
+  //     setIsDeleteMyMenu(true);
+  //     setIsChangeMyMenuList(!isChangeMyMenuList);
+  //     toast.success('나만의 메뉴가 삭제되었습니다.');
+  //     // getMyMenuData().then(res => {
+  //     //   setInfo(res.data.data);
+  //     //   toast.success('나만의 메뉴가 삭제되었습니다.');
+  //     // });
+  //   });
+  // };
 
   const handleChangeMyMenuName = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
@@ -112,7 +118,7 @@ function myMenuItem({
         setClickRenameBtn(prev => {
           return !prev;
         });
-        setIsChangeMyMenuName(true);
+        setIsChangeMyMenuName(prev => !prev);
         toast.success('나만의 메뉴 이름이 변경되었습니다.');
       });
     }
@@ -220,6 +226,32 @@ function myMenuItem({
       },
       '/selectStore',
     );
+    const cartData = {
+      sizeId: item.sizeId,
+      quantity: 1,
+      personalOptionList: item?.myPersonalOptionList,
+    };
+
+    addCart(cartData, token).then(res => {
+      if (res.data.data) {
+        toast.success('상품이 장바구니에 담겼습니다!');
+      } else {
+        toast.error('실패하였습니다. 잠시 후 다시 시도해주세요.');
+      }
+    });
+  };
+
+  const handleTest = (test: number) => {
+    console.log('Test', test);
+  };
+
+  const handleDeleteMenu = (): void => {
+    console.log('Delete ItemInfo', itemInfo);
+    deleteMyMenu(item.myMenuId, token).then(res => {
+      console.log(res);
+      setIsDeleteMyMenu(prev => !prev);
+      toast.success('나만의 메뉴가 삭제되었습니다.');
+    });
   };
 
   return (
