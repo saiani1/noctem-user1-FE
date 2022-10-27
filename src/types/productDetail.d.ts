@@ -79,6 +79,7 @@ export interface ISizeProps {
   cartData: ICartData;
   setCartData: Dispatch<SetStateAction<boolean>>;
   setExtraCost: Dispatch<SetStateAction<number>>;
+  setSelectedSizeId: Dispatch<SetStateAction<number>>;
 }
 
 export interface INutrition {

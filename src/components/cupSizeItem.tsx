@@ -13,6 +13,7 @@ function cupSizeItem({
   cartData,
   setCartData,
   setExtraCost,
+  setSelectedSizeId,
 }: {
   list: ISizeProps['list'];
   selectedSizeTxt: ISizeProps['selectedSizeTxt'];
@@ -20,11 +21,13 @@ function cupSizeItem({
   cartData: ISizeProps['cartData'];
   setCartData: ISizeProps['setCartData'];
   setExtraCost: ISizeProps['setExtraCost'];
+  setSelectedSizeId: ISizeProps['setSelectedSizeId'];
 }) {
   const handleChoice = () => {
     console.log(list.sizeId);
     setSelectedSizeTxt(list.size);
     setExtraCost(list.extraCost);
+    setSelectedSizeId(list.sizeId);
     setCartData({
       ...cartData,
       sizeId: list.sizeId,

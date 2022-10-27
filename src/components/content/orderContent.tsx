@@ -6,7 +6,6 @@ import styles from '../../../styles/content/orderContent.module.scss';
 import 'react-spring-bottom-sheet/dist/style.css';
 
 import ChoicePaymentModal from '../../components/content/choicePaymentModal';
-import RegisterCashReceiptModal from '../../components/content/registerCashReceiptModal';
 import OrderPayingCompletionModal from '../../components/content/orderPayingCompletionModal';
 import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
@@ -26,6 +25,32 @@ import { loginState, tokenState } from './../../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
+// const changeCardNum = (num) => {
+//   const cardNum = num;
+//   for (let i = 0; i < cardNum.length; i += 1) {
+//     if (i === 7 || i === 8 || i === 10 || i === 11 || i === 12 || i === 13) {
+//       cardNum[i] = '*';
+//     }
+//   }
+//   return cardNum.join('');
+// };
+
+{
+  /* <select
+id="creditCrdCdSelect"
+title="카드를 선택하세요."
+onChange={handleCardOption}
+>
+<option value="">카드를 선택하세요.</option>
+{userPaymentData &&
+  userPaymentData.map((data, i) => (
+    <option key={`data-${i}`}>
+      {data.cardCompany} / {data.cardNumber}
+    </option>
+  ))}
+</select> */
+}
+
 function orderContent(props: IProps) {
   const {
     isClickPaymentBtn,
@@ -41,6 +66,7 @@ function orderContent(props: IProps) {
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
+  const [cashReceipt, setCashReceipt] = useState('');
   const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
     userAge: 0,
     userSex: '남자',
@@ -209,23 +235,6 @@ function orderContent(props: IProps) {
               </button>
             </li>
             <div className={cx('line')} />
-            <li className={cx('cash-receipt-wrap')}>
-              <h3>현금영수증</h3>
-              <button
-                type='button'
-                className={cx('cash-receipt-btn')}
-                onClick={handleClickCashReceiptBtn}
-              >
-                <span>010-1234-5678</span>
-                <Image
-                  src='/assets/svg/icon-right-arrow.svg'
-                  alt='right arrow'
-                  width={15}
-                  height={15}
-                  className={cx('img')}
-                />
-              </button>
-            </li>
             <li className={cx('order-info-wrap')}>
               <h3>주문 내역 ({menuList && menuList.length})</h3>
               <ul>
@@ -258,11 +267,6 @@ function orderContent(props: IProps) {
       </div>
 
       <ChoicePaymentModal onDismiss={onDismiss} isOpen={isClickPaymentBtn} />
-
-      <RegisterCashReceiptModal
-        onDismiss={onDismiss}
-        isOpen={isClickCashReceiptBtn}
-      />
 
       <OrderPayingCompletionModal
         onDismiss={onDismiss}

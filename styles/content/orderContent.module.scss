@@ -75,23 +75,6 @@
         }
       }
 
-      .cash-receipt-wrap {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .cash-receipt-btn {
-          display: flex;
-          column-gap: 20px;
-
-          span {
-            margin-top: -1px;
-            font-size: variable.$FS-12;
-            color: variable.$TXT-002;
-          }
-        }
-      }
-
       .order-info-wrap {
         position: relative;
 
