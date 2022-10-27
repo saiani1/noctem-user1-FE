@@ -3,13 +3,17 @@ import classNames from 'classnames/bind';
 import useGeolocation from 'react-hook-geolocation';
 import Image from 'next/image';
 import RecommendedMenu from './recommendedMenu';
-import { useRecoilState } from 'recoil';
-import { userGradeState, nicknameState } from '../store/atom/userStates';
-import { isExistToken } from './../store/utils/token';
-import { getUserInfo } from '../../src/store/api/user';
-import { getUserLevel } from '../../src/store/api/level';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  userGradeState,
+  nicknameState,
+  loginState,
+  tokenState,
+} from '../store/atom/userStates';
+import { getUserInfo, getUserLevel } from '../../src/store/api/user';
 import { useRouter } from 'next/router';
 import { getMyMenuData } from '../../src/store/api/myMenu';
+import { getPopularMenu } from '../store/api/popularMenu';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -19,6 +23,7 @@ import { getStoreList, getStoreWaitingTime } from '../../src/store/api/store';
 import { IStore } from '../types/store';
 import { IMenuData1 } from '../types/myMenu';
 import { ILevel } from '../types/user';
+import { IPopularMenuList } from '../types/popularMenu';
 import styles from '../../styles/main/main.module.scss';
 import { selectedStoreState } from '../store/atom/orderState';
 import { confirmAlert } from 'react-confirm-alert';
@@ -30,7 +35,10 @@ const cx = classNames.bind(styles);
 function homeContent() {
   const router = useRouter();
   const geolocation = useGeolocation();
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
+  const [isFatching, setIsFatching] = useState(false);
+
   const [myMenu, setMyMenu] = useState<IMenuData1[]>();
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
@@ -46,6 +54,9 @@ function homeContent() {
   const [nickname, setNickname] = useRecoilState(nicknameState);
   const [store, setStore] = useState<IStore>();
   const [storeWaitingTime, setStoreWaitingTime] = useState<number>();
+  const [popularMenuList, setPopularMenuList] = useState<IPopularMenuList[]>(
+    [],
+  );
 
   const handleStoreSelect = () => {
     if (store !== undefined) {
@@ -71,22 +82,25 @@ function homeContent() {
   };
 
   useEffect(() => {
-    if (isExistToken()) {
-      getUserInfo().then(res => {
+    getPopularMenu().then(res => setPopularMenuList(res.data.data));
+
+    if (isLogin) {
+      setIsFatching(true);
+      getUserInfo(token).then(res => {
         setNickname(res.data.data.nickname);
       });
-      getUserLevel().then(res => {
+      getUserLevel(token).then(res => {
+        console.log('userLevel', res.data.data);
         setUserLevel(res.data.data);
       });
-      getMyMenuData().then(res => {
+      getMyMenuData(token).then(res => {
         setMyMenu(res.data.data);
       });
-      setIsLogin(true);
     } else {
-      setIsLogin(false);
+      setIsFatching(false);
       setNickname('게스트');
     }
-  }, [isExistToken]);
+  }, []);
 
   useEffect(() => {
     if (userLevel) {
@@ -110,13 +124,14 @@ function homeContent() {
       });
     }
   }, [geolocation]);
+
   return (
     <>
       <div className={cx('point-box')}>
         <div className={cx('title')}>
           <span>{nickname}</span> 님, 반갑습니다.
         </div>
-        {isLogin ? (
+        {isFatching ? (
           <div className={cx('point-bar')}>
             <div className={cx('progress-bar-space')}>
               <div>
@@ -227,7 +242,7 @@ function homeContent() {
         )}
       </div>
       <div className={cx('my-wrap')}>
-        {isLogin ? (
+        {isFatching ? (
           <div className={cx('my-menu')}>
             {myMenu && myMenu.length !== 0 ? (
               <>
@@ -323,7 +338,11 @@ function homeContent() {
       </div>
       <div className={cx('recommend-menu')}>
         <h2 className={cx('title')}>추천 메뉴</h2>
-        <RecommendedMenu />
+        <ul className={cx('recommended')}>
+          {popularMenuList.map(menu => (
+            <RecommendedMenu key={menu.index} popularMenuList={menu} />
+          ))}
+        </ul>
       </div>
     </>
   );

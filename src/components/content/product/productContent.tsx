@@ -18,7 +18,7 @@ import {
   getProduct,
 } from '../../../../src/store/api/category';
 import { addCart, getCount } from '../../../../src/store/api/cart';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   categoryLState,
   categorySIdState,
@@ -31,20 +31,22 @@ import {
   INutrition,
 } from '../../../types/productDetail';
 import { IParams } from '../../../types/myMenu';
-import { cartCntState } from '../../../store/atom/userStates';
+import { cartCntState, tokenState } from '../../../store/atom/userStates';
 import { addComma, getSessionCartCount } from '../../../store/utils/function';
 import MyMenuRenamePopUp from '../myMenuRenamePopUp';
 import {
   orderInfoState,
   selectedStoreState,
 } from '../../../store/atom/orderState';
-import { isExistToken } from './../../../store/utils/token';
+import { loginState } from './../../../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
 function productContent() {
   const router = useRouter();
   const id = router.query.id ? +router.query.id : 1;
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
@@ -59,7 +61,7 @@ function productContent() {
   const [count, setCount] = useState(1);
   const [detailList, setdetailList] = useState<IDetail>();
   const [selectedTempId, setSelectedTempId] = useState<number>(0);
-  const [temperatureChoice, setTemperatureChoice] = useState('ice');
+  const [temperatureChoice, setTemperatureChoice] = useState(0);
   const [nutritionInfo, setNutritionInfo] = useState<INutrition>();
   const [nutritionSize, setNutritionSize] = useState('Tall');
   const [myMenuAlert, setMyMenuAlert] = useState(false);
@@ -111,7 +113,7 @@ function productContent() {
       }
 
       console.log(cartData);
-      if (!isExistToken()) {
+      if (!isLogin) {
         // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
         sessionStorage.setItem(
           sessionStorage.length + '',
@@ -121,7 +123,7 @@ function productContent() {
         setOpen(false);
         toast.success('장바구니에 담겼습니다!');
       } else {
-        addCart(cartData).then(res => {
+        addCart(cartData, token).then(res => {
           if (res.data.data) {
             setOpen(false);
             toast.success('장바구니에 담겼습니다!');
@@ -203,7 +205,9 @@ function productContent() {
   };
 
   const handleTempChoice = (e: string, tempId: number) => {
-    setTemperatureChoice(e);
+    if (e === 'hot') setTemperatureChoice(1);
+    else setTemperatureChoice(0);
+
     if (detailList && detailList.temperatureList.length === 1) {
       setSelectedTempId(detailList.temperatureList[0].temperatureId);
     } else {
@@ -220,8 +224,8 @@ function productContent() {
     router.push('/login');
   };
 
-  const handleAddMyMenu = (e: any) => {
-    if (!isExistToken()) {
+  const handleAddMyMenu = () => {
+    if (!isLogin) {
       setOpen(false);
       confirmAlert({
         customUI: ({ onClose }) => (
@@ -261,7 +265,7 @@ function productContent() {
         alias: mymenuNameValue,
         personalOptionList: myMenuData.personalOptionList,
       };
-      addMyMenu(value).then(res => {
+      addMyMenu(value, token).then(res => {
         console.log(res);
         if (res.data.data) {
           toast.success('나만의 메뉴에 추가되었습니다');
@@ -281,10 +285,16 @@ function productContent() {
     getNutrition(id).then(res => {
       setNutritionInfo(res.data.data);
     });
-    getCount().then(res => {
-      const resData = res.data.data === null ? 0 : res.data.data;
-      setCartCount(resData);
-    });
+    if (isLogin) {
+      // 회원 장바구니 개수
+      getCount(token).then(res => {
+        const resData = res.data.data === null ? 0 : res.data.data;
+        setCartCount(resData);
+      });
+    } else {
+      // 비회원 장바구니 개수
+      setCartCount(getSessionCartCount());
+    }
   }, [id, open]);
 
   useEffect(() => {
@@ -332,169 +342,89 @@ function productContent() {
         setCategorySId={setCategorySId}
         cartCount={cartCount}
       />
-      {temperatureChoice === 'ice' ? (
+      {detailList && (
         <>
-          {detailList && (
-            <>
-              <div className={cx('product-img')}>
-                <img src={detailList.temperatureList[0].menuImg} alt='' />
-              </div>
-              <div className={cx('product-detail')}>
-                <div className={cx('product-name')}>
-                  {detailList.temperatureList[0].menuName}
-                </div>
-                <div className={cx('product-english-name')}>
-                  {detailList.temperatureList[0].menuEngName}
-                </div>
-                <div className={cx('product-content')}>
-                  {detailList.temperatureList[0].description}
-                </div>
-                <div className={cx('product-price')}>
-                  {addComma(detailList.price)}원
-                </div>
+          <div className={cx('product-img')}>
+            <img
+              src={detailList.temperatureList[temperatureChoice].menuImg}
+              alt=''
+            />
+          </div>
+          <div className={cx('product-detail')}>
+            <div className={cx('product-name')}>
+              {detailList.temperatureList[temperatureChoice].menuName}
+            </div>
+            <div className={cx('product-english-name')}>
+              {detailList.temperatureList[temperatureChoice].menuEngName}
+            </div>
+            <div className={cx('product-content')}>
+              {detailList.temperatureList[temperatureChoice].description}
+            </div>
+            <div className={cx('product-price')}>
+              {addComma(detailList.price)}원
+            </div>
 
-                {
-                  <div className={cx('temp-button')}>
-                    {detailList.temperatureList.length === 1 ? (
-                      <div
-                        className={
-                          detailList.temperatureList[0].temperature === 'hot'
-                            ? cx('only-hot')
-                            : cx('only-ice')
-                        }
-                      >
-                        {detailList.temperatureList[0].temperature === 'hot' ? (
-                          <div>HOT ONLY</div>
-                        ) : (
-                          <div>ICED ONLY</div>
-                        )}
-                      </div>
+            {
+              <div className={cx('temp-button')}>
+                {detailList.temperatureList.length === 1 ? (
+                  <div
+                    className={
+                      detailList.temperatureList[0].temperature === 'hot'
+                        ? cx('only-hot')
+                        : cx('only-ice')
+                    }
+                  >
+                    {detailList.temperatureList[0].temperature === 'hot' ? (
+                      <div>HOT ONLY</div>
                     ) : (
-                      <>
-                        <div
-                          className={cx('hot-unclicked')}
-                          onClick={() =>
-                            handleTempChoice(
-                              'hot',
-                              detailList.temperatureList[1].temperatureId,
-                            )
-                          }
-                          onKeyDown={() =>
-                            handleTempChoice(
-                              'hot',
-                              detailList.temperatureList[1].temperatureId,
-                            )
-                          }
-                        >
-                          HOT
-                        </div>
-                        <div
-                          className={cx('iced')}
-                          onClick={() =>
-                            handleTempChoice(
-                              'ice',
-                              detailList.temperatureList[0].temperatureId,
-                            )
-                          }
-                          onKeyDown={() =>
-                            handleTempChoice(
-                              'ice',
-                              detailList.temperatureList[0].temperatureId,
-                            )
-                          }
-                        >
-                          ICED
-                        </div>
-                      </>
+                      <div>ICED ONLY</div>
                     )}
                   </div>
-                }
-              </div>
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          {detailList && (
-            <>
-              <div className={cx('product-img')}>
-                <img src={detailList.temperatureList[1].menuImg} alt='' />
-              </div>
-              <div className={cx('product-detail')}>
-                <div className={cx('product-name')}>
-                  {detailList.temperatureList[1].menuName}
-                </div>
-                <div className={cx('product-english-name')}>
-                  {detailList.temperatureList[1].menuEngName}
-                </div>
-                <div className={cx('product-content')}>
-                  {detailList.temperatureList[1].description}
-                </div>
-                <div className={cx('product-price')}>
-                  {addComma(detailList.price)}원
-                </div>
-
-                <div className={cx('temp-button')}>
-                  {detailList.temperatureList.length < 2 ? (
+                ) : (
+                  <>
                     <div
-                      className={
-                        detailList.temperatureList[1].temperature === 'hot'
-                          ? cx('only-hot')
-                          : cx('only-ice')
+                      className={cx(
+                        temperatureChoice === 0 ? 'hot-unclicked' : 'hot',
+                      )}
+                      onClick={() =>
+                        handleTempChoice(
+                          'hot',
+                          detailList.temperatureList[1].temperatureId,
+                        )
+                      }
+                      onKeyDown={() =>
+                        handleTempChoice(
+                          'hot',
+                          detailList.temperatureList[1].temperatureId,
+                        )
                       }
                     >
-                      {detailList.temperatureList[1].temperature === 'hot' ? (
-                        <div>HOT ONLY</div>
-                      ) : (
-                        <div>ICED ONLY</div>
-                      )}
+                      HOT
                     </div>
-                  ) : (
-                    <>
-                      <div
-                        className={cx('hot')}
-                        onClick={() =>
-                          handleTempChoice(
-                            'hot',
-                            detailList.temperatureList[1].temperatureId,
-                          )
-                        }
-                        onKeyDown={() =>
-                          handleTempChoice(
-                            'hot',
-                            detailList.temperatureList[1].temperatureId,
-                          )
-                        }
-                      >
-                        HOT
-                      </div>
-                      <div
-                        className={
-                          temperatureChoice === 'ice'
-                            ? cx('iced')
-                            : cx('iced-unclicked')
-                        }
-                        onClick={() =>
-                          handleTempChoice(
-                            'ice',
-                            detailList.temperatureList[0].temperatureId,
-                          )
-                        }
-                        onKeyDown={() =>
-                          handleTempChoice(
-                            'ice',
-                            detailList.temperatureList[0].temperatureId,
-                          )
-                        }
-                      >
-                        ICED
-                      </div>
-                    </>
-                  )}
-                </div>
+                    <div
+                      className={cx(
+                        temperatureChoice === 0 ? 'iced' : 'iced-unclicked',
+                      )}
+                      onClick={() =>
+                        handleTempChoice(
+                          'ice',
+                          detailList.temperatureList[0].temperatureId,
+                        )
+                      }
+                      onKeyDown={() =>
+                        handleTempChoice(
+                          'ice',
+                          detailList.temperatureList[0].temperatureId,
+                        )
+                      }
+                    >
+                      ICED
+                    </div>
+                  </>
+                )}
               </div>
-            </>
-          )}
+            }
+          </div>
         </>
       )}
 

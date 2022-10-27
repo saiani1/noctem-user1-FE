@@ -15,8 +15,11 @@ import ToggleCheckbox from '../ui/toggleCheckbox';
 import EmptyMyMenu from '../content/emptyMyMenu';
 import MyMenuItem from '../ui/myMenuItem';
 import ChangeOrderMyMenuModal from './changeOrderMyMenuModal';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from '../../store/atom/userStates';
 
 function myMenuContent() {
+  const token = useRecoilValue(tokenState);
   const [isClickChangeOrderBtn, setIsClickChangeOrderBtn] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [info, setInfo] = useState<IMenuData1[]>([]);
@@ -41,7 +44,7 @@ function myMenuContent() {
   //   });
   // }, [isDeleteMyMenu, isChangeMyMenuName]);
   useEffect(() => {
-    getMyMenuData().then(res => {
+    getMyMenuData(token).then(res => {
       console.log('삭제전', res.data.data);
       if (res.data.data.length !== 0) {
         setInfo(res.data.data);
@@ -56,8 +59,20 @@ function myMenuContent() {
     console.log('갱신', info);
   }, [info]);
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
-    changeShowMainMyMenu().then(res => {
+    changeShowMainMyMenu(token).then(res => {
       console.log('res : ', res);
+    });
+  };
+
+  const handleDeleteMenu = (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+  ): void => {
+    const name = (e.target as HTMLInputElement).name;
+    console.log('ID', name);
+    deleteMyMenu(name, token).then(res => {
+      console.log(res);
+      setIsDeleteMyMenu(true);
+      toast.success('나만의 메뉴가 삭제되었습니다.');
     });
   };
 

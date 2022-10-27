@@ -50,3 +50,14 @@ export interface IPriceList {
   cartId: number;
   amount: number;
 }
+
+export interface IDetailMenuInfo {
+  menuId: number;
+  cartId: number;
+  menuName: string;
+  menuEngName: string;
+  menuImg: string;
+  temperature: string;
+  totalMenuPrice: number;
+  size: string;
+}

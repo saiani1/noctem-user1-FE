@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import Header from '../src/components/common/header';
 import OrderContent from '../src/components/content/orderContent';
-import ToolbarList from '../src/components/ui/toolbarList';
 import 'react-spring-bottom-sheet/dist/style.css';
 
 function order() {
@@ -21,10 +20,6 @@ function order() {
         setIsClickCashReceiptBtn={setIsClickCashReceiptBtn}
         setIsClickSubmitBtn={setIsClickSubmitBtn}
       />
-
-      {!isClickPaymentBtn && !isClickCashReceiptBtn && !isClickSubmitBtn && (
-        <ToolbarList />
-      )}
     </>
   );
 }

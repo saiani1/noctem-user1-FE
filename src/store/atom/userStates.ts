@@ -1,23 +1,33 @@
 import { atom } from 'recoil';
 import { IMenuData1 } from '../../types/myMenu';
 import { ILevel, IUserInfo } from '../../types/user';
+import { recoilPersist } from 'recoil-persist';
 
-export const loginState = atom<boolean>({
-  key: 'login',
+const { persistAtom } = recoilPersist();
+
+export const loginState = atom({
+  key: 'loginState',
   default: false,
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const tokenState = atom<string>({
+  key: 'tokenState',
+  default: '',
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const userInfoState = atom<IUserInfo>({
   key: 'userInfo',
   default: {
-    'email': '',
-    'name': '',
-    'sex': '',
-    'birthdayYear': '',
-    'birthdayMonth': '',
-    'birthdayDay': '',
-    'phoneNumber': null,
-    'nickname': '게스트',
+    email: '',
+    name: '',
+    sex: '',
+    birthdayYear: '',
+    birthdayMonth: '',
+    birthdayDay: '',
+    phoneNumber: null,
+    nickname: '게스트',
   },
 });
 

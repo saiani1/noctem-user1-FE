@@ -1,17 +1,15 @@
 import { ICartData } from '../../types/productDetail';
-import { getToken } from '../utils/token';
 import { basicRequest } from './base';
 
 const USER_SERVICE = '/user-service';
 const MENU_SERVICE = '/menu-service';
-const HEADERS = {
-  headers: {
-    Authorization: JSON.parse(getToken()),
-  },
-};
 
-export const getCartList = async () => {
-  const res = await basicRequest.get(`${USER_SERVICE}/carts`, HEADERS);
+export const getCartList = async (token: string) => {
+  const res = await basicRequest.get(`${USER_SERVICE}/carts`, {
+    headers: {
+      Authorization: token,
+    },
+  });
   return res;
 };
 
@@ -30,39 +28,55 @@ export const getMyMenuData = async (sizeId: number, cartId: number) => {
   return res;
 };
 
-export const getCount = async () => {
+export const getCount = async (token: string) => {
   const res = await basicRequest.get(`${USER_SERVICE}/carts/qty`, {
     headers: {
-      Authorization: JSON.parse(getToken()),
+      Authorization: token,
     },
   });
   return res;
 };
 
-export const addCart = async (data: ICartData) => {
-  const res = await basicRequest.post(`${USER_SERVICE}/carts`, data, HEADERS);
+export const addCart = async (data: ICartData, token: string) => {
+  const res = await basicRequest.post(`${USER_SERVICE}/carts`, data, {
+    headers: {
+      Authorization: token,
+    },
+  });
   return res;
 };
 
-export const changeItemCount = async (cartId: number, qty: number) => {
+export const changeItemCount = async (cartId: number, qty: number, token: string) => {
   const res = await basicRequest.patch(
     `${USER_SERVICE}/carts/${cartId}/quantities`,
     { qty: qty },
-    HEADERS,
+    {
+      headers: {
+        Authorization: token,
+      },
+    },
   );
   return res;
 };
 
-export const deleteItem = async (cartId: number) => {
+export const deleteItem = async (cartId: number, token: string) => {
   console.log(`${USER_SERVICE}/carts/${cartId}`);
   const res = await basicRequest.delete(
     `${USER_SERVICE}/carts/${cartId}`,
-    HEADERS,
+    {
+      headers: {
+        Authorization: token,
+      },
+    },
   );
   return res;
 };
 
-export const deleteAll = async () => {
-  const res = await basicRequest.delete(`${USER_SERVICE}/carts/all`, HEADERS);
+export const deleteCartAll = async (token: string) => {
+  const res = await basicRequest.delete(`${USER_SERVICE}/carts/all`, {
+    headers: {
+      Authorization: token,
+    },
+  });
   return res;
 };
