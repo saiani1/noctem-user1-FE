@@ -68,47 +68,13 @@ function myMenuItem({
   const cx = classNames.bind(styles);
 
   useEffect(() => {
+    console.log('isLogin:', isLogin);
     console.log('itemInfo:', itemInfo);
     getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
       setItemInfo(res.data.data);
       console.log('item', item);
-      // getMyMenuDetailData(item.sizeId, item.myMenuId).then(res => {
-      //   console.log('itemInfo', res.data.data);
-      //   setItemInfo(res.data.data);
-      //   setIsFetching(true);
-      //   setIsDeleteMyMenu(prev => !prev);
-      //   setIsChangeMyMenuName(prev => !prev);
     });
-
-    // if (item !== undefined && !isEmpty) {
-    //   getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
-    //     const resData = res.data.data;
-    //     const mymenuInfo = {
-    //       ...resData,
-    //       sizeId: item.sizeId,
-    //     };
-    //     setItemInfo(mymenuInfo);
-    //     setIsFetching(true);
-    //     setIsDeleteMyMenu(false);
-    //     setIsChangeMyMenuName(false);
-    //   });
-    // }ty
   }, [info]);
-
-  // const handleDeleteMenu = (
-  //   e: React.MouseEvent<HTMLElement, MouseEvent>,
-  // ): void => {
-  //   const name = (e.target as HTMLInputElement).name;
-  //   deleteMyMenu(name, token).then(res => {
-  //     setIsDeleteMyMenu(true);
-  //     setIsChangeMyMenuList(!isChangeMyMenuList);
-  //     toast.success('나만의 메뉴가 삭제되었습니다.');
-  //     // getMyMenuData().then(res => {
-  //     //   setInfo(res.data.data);
-  //     //   toast.success('나만의 메뉴가 삭제되었습니다.');
-  //     // });
-  //   });
-  // };
 
   const handleChangeMyMenuName = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
@@ -138,18 +104,21 @@ function myMenuItem({
   };
 
   const handleAddCart = () => {
+    console.log('담기');
     const sum = cartCount + 1;
     if (sum > 20) {
       toast.error('총 20개까지 담을 수 있습니다.');
       return;
     }
+    // 사이즈, 개수, 컵 종류, 온도
 
     const cartData: ICartData = {
-      sizeId: itemInfo?.sizeId || 0,
+      sizeId: item.sizeId,
       quantity: 1,
       personalOptionList: [],
     };
-
+    console.log('cartData : ', cartData);
+    console.log('cartdata출력');
     if (!isLogin) {
       // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
       sessionStorage.setItem(
@@ -200,7 +169,7 @@ function myMenuItem({
         {
           pathname: '/order',
           query: {
-            sizeId: itemInfo?.sizeId,
+            sizeId: item.sizeId,
             qty: 1,
             optionList: [],
             storeId: selectedStore.storeId,
@@ -219,26 +188,26 @@ function myMenuItem({
       {
         pathname: '/selectStore',
         query: {
-          sizeId: itemInfo?.sizeId,
+          sizeId: item.sizeId,
           qty: 1,
           optionList: [],
         },
       },
       '/selectStore',
     );
-    const cartData = {
-      sizeId: item.sizeId,
-      quantity: 1,
-      personalOptionList: item?.myPersonalOptionList,
-    };
+    // const cartData = {
+    //   sizeId: item.sizeId,
+    //   quantity: 1,
+    //   personalOptionList: item?.myPersonalOptionList,
+    // };
 
-    addCart(cartData, token).then(res => {
-      if (res.data.data) {
-        toast.success('상품이 장바구니에 담겼습니다!');
-      } else {
-        toast.error('실패하였습니다. 잠시 후 다시 시도해주세요.');
-      }
-    });
+    // addCart(cartData, token).then(res => {
+    //   if (res.data.data) {
+    //     toast.success('상품이 장바구니에 담겼습니다!');
+    //   } else {
+    //     toast.error('실패하였습니다. 잠시 후 다시 시도해주세요.');
+    //   }
+    // });
   };
 
   const handleTest = (test: number) => {
@@ -267,12 +236,12 @@ function myMenuItem({
           temperatureChoice={0}
         />
       )}
-      {isEmpty !== true ? (
+      {isEmpty !== true && itemInfo ? (
         <>
           <li className={cx('content-wrap')}>
             <img
-              src={itemInfo?.menuImg}
-              alt={itemInfo?.menuName}
+              src={itemInfo.menuImg}
+              alt={itemInfo.menuName}
               className={cx('img-wrap')}
             />
             <div className={cx('right')}>
@@ -280,13 +249,13 @@ function myMenuItem({
                 <button
                   type='button'
                   className={cx('close-btn')}
-                  name={itemInfo?.myMenuId}
+                  name={itemInfo.myMenuId}
                   onClick={handleDeleteMenu}
                 >
                   <img src='/assets/svg/icon-x-mark.svg' alt='삭제버튼' />
                 </button>
                 <div className={cx('menu-tit-wrap')}>
-                  <h3 className={cx('menu-tit')}>{item?.alias}</h3>
+                  <h3 className={cx('menu-tit')}>{item.alias}</h3>
                   <button
                     type='button'
                     className={cx('edit-nickname-btn')}
@@ -299,14 +268,13 @@ function myMenuItem({
                     />
                   </button>
                 </div>
-                <span className={cx('sub-tit')}>{itemInfo?.menuName}</span>
+                <span className={cx('sub-tit')}>{itemInfo.menuName}</span>
                 <strong className={cx('price')}>
-                  {itemInfo?.totalMenuPrice &&
-                    addComma(itemInfo?.totalMenuPrice)}
+                  {itemInfo.totalMenuPrice && addComma(itemInfo.totalMenuPrice)}
                   원
                 </strong>
                 <span className={cx('menu-option')}>
-                  {itemInfo?.temperature} | {itemInfo?.size}
+                  {itemInfo.temperature} | {itemInfo.size}
                 </span>
               </div>
               <div className={cx('btn-wrap')}>
