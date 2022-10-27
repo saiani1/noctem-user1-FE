@@ -45,19 +45,14 @@ function myMenuContent() {
   // }, [isDeleteMyMenu, isChangeMyMenuName]);
   useEffect(() => {
     getMyMenuData(token).then(res => {
-      console.log('삭제전', res.data.data);
       if (res.data.data.length !== 0) {
         setInfo(res.data.data);
-        console.log('최초', res.data.data);
       } else {
         setIsEmpty(true);
         setIsFetching(true);
       }
     });
   }, [isDeleteMyMenu, isChangeMyMenuList]);
-  useEffect(() => {
-    console.log('갱신', info);
-  }, [info]);
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeShowMainMyMenu(token).then(res => {
       console.log('res : ', res);
@@ -130,6 +125,7 @@ function myMenuContent() {
                 setIsDeleteMyMenu={setIsDeleteMyMenu}
                 setIsChangeMyMenuName={setIsChangeMyMenuName}
                 setInfo={setInfo}
+                info={info}
                 setIsChangeMyMenuList={setIsChangeMyMenuList}
                 isChangeMyMenuList={isChangeMyMenuList}
               />

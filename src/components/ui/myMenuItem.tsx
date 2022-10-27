@@ -38,6 +38,7 @@ interface IProps {
   setIsDeleteMyMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsChangeMyMenuName: React.Dispatch<React.SetStateAction<boolean>>;
   setInfo: React.Dispatch<React.SetStateAction<IMenuData1[]>>;
+  info: IMenuData1[];
   setIsChangeMyMenuList: React.Dispatch<React.SetStateAction<boolean>>;
   isChangeMyMenuList: boolean;
 }
@@ -50,6 +51,7 @@ function myMenuItem({
   setIsDeleteMyMenu,
   setIsChangeMyMenuName,
   setInfo,
+  info,
   setIsChangeMyMenuList,
   isChangeMyMenuList,
 }: IProps) {
@@ -66,38 +68,35 @@ function myMenuItem({
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    /// 밥먹고 여기 보기
-    console.log('asdf', item);
     if (item !== undefined && !isEmpty) {
       getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
-        const resData = res.data.data;
-        const mymenuInfo = {
-          ...resData,
-          sizeId: item.sizeId,
-        };
-        setItemInfo(mymenuInfo);
-        console.log('aaaa', mymenuInfo);
-        setIsFetching(true);
-        setIsDeleteMyMenu(false);
-        setIsChangeMyMenuName(false);
+        setItemInfo(res.data.data);
       });
     }
-  }, [isChangeMyMenuList]);
+
+    // if (item !== undefined && !isEmpty) {
+    //   getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
+    //     const resData = res.data.data;
+    //     const mymenuInfo = {
+    //       ...resData,
+    //       sizeId: item.sizeId,
+    //     };
+    //     setItemInfo(mymenuInfo);
+    //     setIsFetching(true);
+    //     setIsDeleteMyMenu(false);
+    //     setIsChangeMyMenuName(false);
+    //   });
+    // }ty
+  }, [info]);
 
   const handleDeleteMenu = (
     e: React.MouseEvent<HTMLElement, MouseEvent>,
   ): void => {
     const name = (e.target as HTMLInputElement).name;
-    // console.log('ID', name);
-    // deleteMyMenu(name).then(res => {
-    //   console.log(res);
-    //   setIsDeleteMyMenu(true);
-    //   toast.success('나만의 메뉴가 삭제되었습니다.');
-    // });
     deleteMyMenu(name, token).then(res => {
-      console.log('삭제 직후', res.data.data);
       setIsDeleteMyMenu(true);
       setIsChangeMyMenuList(!isChangeMyMenuList);
+      toast.success('나만의 메뉴가 삭제되었습니다.');
       // getMyMenuData().then(res => {
       //   setInfo(res.data.data);
       //   toast.success('나만의 메뉴가 삭제되었습니다.');
@@ -236,65 +235,68 @@ function myMenuItem({
           temperatureChoice={0}
         />
       )}
-      {isFetching && !isEmpty && (
-        <li className={cx('content-wrap')}>
-          <img
-            src={itemInfo?.menuImg}
-            alt={itemInfo?.menuName}
-            className={cx('img-wrap')}
-          />
-          <div className={cx('right')}>
-            <div className={cx('menu-contents-wrap')}>
-              <button
-                type='button'
-                className={cx('close-btn')}
-                name={itemInfo?.myMenuId}
-                onClick={handleDeleteMenu}
-              >
-                <img src='/assets/svg/icon-x-mark.svg' alt='삭제버튼' />
-              </button>
-              <div className={cx('menu-tit-wrap')}>
-                <h3 className={cx('menu-tit')}>{item?.alias}</h3>
+      {isEmpty !== true ? (
+        <>
+          <li className={cx('content-wrap')}>
+            <img
+              src={itemInfo?.menuImg}
+              alt={itemInfo?.menuName}
+              className={cx('img-wrap')}
+            />
+            <div className={cx('right')}>
+              <div className={cx('menu-contents-wrap')}>
                 <button
                   type='button'
-                  className={cx('edit-nickname-btn')}
-                  onClick={handleClickRename}
+                  className={cx('close-btn')}
+                  name={itemInfo?.myMenuId}
+                  onClick={handleDeleteMenu}
                 >
-                  <Image
-                    src='/assets/svg/icon-pencil.svg'
-                    width={10}
-                    height={10}
-                  />
+                  <img src='/assets/svg/icon-x-mark.svg' alt='삭제버튼' />
+                </button>
+                <div className={cx('menu-tit-wrap')}>
+                  <h3 className={cx('menu-tit')}>{item?.alias}</h3>
+                  <button
+                    type='button'
+                    className={cx('edit-nickname-btn')}
+                    onClick={handleClickRename}
+                  >
+                    <Image
+                      src='/assets/svg/icon-pencil.svg'
+                      width={10}
+                      height={10}
+                    />
+                  </button>
+                </div>
+                <span className={cx('sub-tit')}>{itemInfo?.menuName}</span>
+                <strong className={cx('price')}>
+                  {itemInfo?.totalMenuPrice &&
+                    addComma(itemInfo?.totalMenuPrice)}
+                  원
+                </strong>
+                <span className={cx('menu-option')}>
+                  {itemInfo?.temperature} | {itemInfo?.size}
+                </span>
+              </div>
+              <div className={cx('btn-wrap')}>
+                <button
+                  type='button'
+                  className={cx('cart-btn')}
+                  onClick={handleAddCart}
+                >
+                  담기
+                </button>
+                <button
+                  type='button'
+                  className={cx('order-btn')}
+                  onClick={handleOrder}
+                >
+                  주문하기
                 </button>
               </div>
-              <span className={cx('sub-tit')}>{itemInfo?.menuName}</span>
-              <strong className={cx('price')}>
-                {itemInfo?.totalMenuPrice && addComma(itemInfo?.totalMenuPrice)}
-                원
-              </strong>
-              <span className={cx('menu-option')}>
-                {itemInfo?.temperature} | {itemInfo?.size}
-              </span>
             </div>
-            <div className={cx('btn-wrap')}>
-              <button
-                type='button'
-                className={cx('cart-btn')}
-                onClick={handleAddCart}
-              >
-                담기
-              </button>
-              <button
-                type='button'
-                className={cx('order-btn')}
-                onClick={handleOrder}
-              >
-                주문하기
-              </button>
-            </div>
-          </div>
-        </li>
-      )}
+          </li>
+        </>
+      ) : undefined}
     </>
   );
 }
