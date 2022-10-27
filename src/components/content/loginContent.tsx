@@ -5,29 +5,43 @@ import classNames from 'classnames/bind';
 import Link from 'next/link';
 import styles from '../../../styles/content/login.module.scss';
 import { login } from '../../../src/store/api/login';
-import { setToken } from '../../store/utils/token';
 import { toast } from 'react-hot-toast';
+import { useRecoilState } from 'recoil';
+import { loginState, tokenState } from '../../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
 function loginContent() {
   const router = useRouter();
+  const [, setIsLogin] = useRecoilState(loginState);
+  const [, setToken] = useRecoilState(tokenState);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    const emailValue = emailInputRef.current?.value;
-    const passwordValue = passwordInputRef.current?.value;
+    const emailValue = emailInputRef.current?.value || '';
+    const passwordValue = passwordInputRef.current?.value || '';
 
     login(emailValue, passwordValue)
       .then(res => {
+        console.log('res', res);
+        toast(`환영합니다!`, {
+          icon: '🙌',
+        });
+        setIsLogin(true);
         setToken(res.headers.authorization);
-        router.push('/');
+
+        router.back();
       })
       .catch(err => {
-        let errCode = err.response.data.errorCode;
-        if (errCode === 2016 || errCode === 2017 || errCode === 2020) {
+        const ERR: { [key: number]: boolean } = {
+          2016: true,
+          2017: true,
+          2020: true,
+        };
+        let errCode: number = err.response.data.errorCode;
+        if (ERR[errCode]) {
           toast.error(
             '아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.',
           );

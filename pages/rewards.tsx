@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Header from '../src/components/common/header';
+import withAuth from '../src/components/common/withAuth';
 import RewardContent from '../src/components/content/rewardContent';
 
 function reward() {
@@ -12,4 +13,4 @@ function reward() {
   );
 }
 
-export default reward;
+export default withAuth(reward);

@@ -6,12 +6,11 @@ import Image from 'next/image';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryContent from './categoryContent';
 import { getMenuCategory } from '../../src/store/api/category';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
 import { getCount } from '../../src/store/api/cart';
-import { cartCntState } from '../store/atom/userStates';
+import { cartCntState, loginState, tokenState } from '../store/atom/userStates';
 import { addComma, getSessionCartCount } from '../store/utils/function';
-import { isExistToken } from './../store/utils/token';
 import { selectedStoreState } from '../store/atom/orderState';
 
 const cx = classNames.bind(styles);
@@ -36,6 +35,8 @@ function categoryListContent({
   setCategoryName: any;
 }) {
   const router = useRouter();
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
@@ -47,8 +48,8 @@ function categoryListContent({
     });
     console.log(categorySId);
 
-    if (isExistToken()) {
-      getCount().then(res => {
+    if (isLogin) {
+      getCount(token).then(res => {
         const resData = res.data.data === null ? 0 : res.data.data;
         setCartCount(resData);
       });

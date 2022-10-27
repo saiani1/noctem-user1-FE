@@ -14,8 +14,12 @@ import {
   IPriceList,
   IQtyList,
 } from '../../types/cart';
-import { useRecoilState } from 'recoil';
-import { cartCntState } from '../../store/atom/userStates';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  cartCntState,
+  loginState,
+  tokenState,
+} from '../../store/atom/userStates';
 import {
   addComma,
   getSessionCartCount,
@@ -23,9 +27,7 @@ import {
 } from '../../store/utils/function';
 import { useRouter } from 'next/router';
 import { selectedStoreState } from '../../store/atom/orderState';
-import { isExistToken } from './../../store/utils/token';
-import { IMenuList, IPurchaseData } from '../../types/order';
-import { IUserDetailInfo } from '../../types/user';
+import { IMenuList } from '../../types/order';
 import { orderInfoState } from './../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
@@ -33,7 +35,9 @@ const cx = classNames.bind(styles);
 function cartContent() {
   const router = useRouter();
   const [clickTab, setClickTab] = useState('food');
-  const [count, setCount] = useRecoilState(cartCntState);
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
+  const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo] = useRecoilState(orderInfoState);
 
@@ -79,7 +83,7 @@ function cartContent() {
       return;
     }
 
-    if (isExistToken()) {
+    if (isLogin) {
       console.log('회원 주문');
       router.push(
         {
@@ -113,16 +117,17 @@ function cartContent() {
   };
 
   useEffect(() => {
+    console.log('찍히나?', cartList);
     console.log('isChange', isChange);
-    if (isExistToken()) {
+    if (isLogin) {
       // 회원 조회
       console.log('회원 조회');
-      getCartList().then(res => {
+      getCartList(token).then(res => {
         setCartList(res.data.data);
       });
-      getCount().then(res => {
+      getCount(token).then(res => {
         const resData = res.data.data === null ? 0 : res.data.data;
-        setCount(resData);
+        setCartCount(resData);
       });
     } else {
       // 비회원 조회
@@ -133,7 +138,7 @@ function cartContent() {
           setCartList(getSessionCartList());
         }
       });
-      setCount(getSessionCartCount());
+      setCartCount(getSessionCartCount());
     }
   }, [isChange]);
 
@@ -234,7 +239,7 @@ function cartContent() {
           >
             <span className={cx('tit-wrap')}>
               음료/푸드
-              <span className={cx('cnt-wrap')}>{count}</span>
+              <span className={cx('cnt-wrap')}>{cartCount}</span>
             </span>
           </button>
           <button
@@ -275,7 +280,7 @@ function cartContent() {
                   <CartItem
                     key={cart.cartId}
                     cart={cart}
-                    count={count}
+                    cartCount={cartCount}
                     isChange={isChange}
                     setIsChange={setIsChange}
                     handleSetCartPrice={handleSetCartPrice}
@@ -286,7 +291,7 @@ function cartContent() {
             <div className={cx('footer')}>
               <div className={cx('price-wrap')}>
                 <span className={cx('check-cnt')}>
-                  총 <strong>{count}</strong>개 / 20개
+                  총 <strong>{cartCount}</strong>개 / 20개
                 </span>
                 <strong className={cx('total-price')}>
                   {addComma(total)}원

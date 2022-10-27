@@ -4,6 +4,8 @@ import classNames from 'classnames/bind';
 import styles from '../../../styles/content/settingContent.module.scss';
 import { getUserOptions, patchUserOptions } from '../../../src/store/api/user';
 import ToggleCheckbox from '../ui/toggleCheckbox';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from '../../store/atom/userStates';
 
 interface IInfo {
   isDarkmode: boolean;
@@ -14,6 +16,7 @@ interface IInfo {
 }
 
 function settingContent() {
+  const token = useRecoilValue(tokenState);
   const [info, setInfo] = useState<IInfo>({
     isDarkmode: false,
     pushNotificationAgreement: false,
@@ -25,7 +28,7 @@ function settingContent() {
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    getUserOptions().then(res => {
+    getUserOptions(token).then(res => {
       console.log('res : ', res);
       setInfo(res.data.data);
       setIsFetching(true);
@@ -36,7 +39,7 @@ function settingContent() {
     const value = e.target.value;
     const check = e.target.checked;
 
-    patchUserOptions(value).then(() => {
+    patchUserOptions(value, token).then(() => {
       setInfo({ ...info, [value]: check });
     });
   };

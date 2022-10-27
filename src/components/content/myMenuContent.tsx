@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
-import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/myMenuContent.module.scss';
 import {
   getMyMenuData,
-  deleteMyMenu,
   getShowMainMyMenu,
   changeShowMainMyMenu,
 } from '../../../src/store/api/myMenu';
@@ -15,8 +13,11 @@ import ToggleCheckbox from '../ui/toggleCheckbox';
 import EmptyMyMenu from '../content/emptyMyMenu';
 import MyMenuItem from '../ui/myMenuItem';
 import ChangeOrderMyMenuModal from './changeOrderMyMenuModal';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from '../../store/atom/userStates';
 
 function myMenuContent() {
+  const token = useRecoilValue(tokenState);
   const [isClickChangeOrderBtn, setIsClickChangeOrderBtn] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [info, setInfo] = useState<IMenuData1[]>([]);
@@ -24,39 +25,49 @@ function myMenuContent() {
   const [isDeleteMyMenu, setIsDeleteMyMenu] = useState(false);
   const [isChangeMyMenuName, setIsChangeMyMenuName] = useState(false);
   const [showMyMenu, setShowMyMenu] = useState(false);
+  const [isChangeMyMenuList, setIsChangeMyMenuList] = useState(false);
 
   const cx = classNames.bind(styles);
 
+  // useEffect(() => {
+  //   Promise.all([getShowMainMyMenu(), getMyMenuData()]).then(res => {
+  //     console.log(res);
+  //     setShowMyMenu(res[0].data.data);
+  //     if (res[1].data.data.length !== 0) {
+  //       setInfo(res[1].data.data);
+  //     } else {
+  //       setIsEmpty(true);
+  //       setIsFetching(true);
+  //     }
+  //   });
+  // }, [isDeleteMyMenu, isChangeMyMenuName]);
   useEffect(() => {
-    Promise.all([getShowMainMyMenu(), getMyMenuData()]).then(res => {
-      console.log(res);
-      setShowMyMenu(res[0].data.data);
-      if (res[1].data.data.length !== 0) {
-        setInfo(res[1].data.data);
+    getMyMenuData(token).then(res => {
+      if (res.data.data.length !== 0) {
+        setInfo(res.data.data);
       } else {
         setIsEmpty(true);
         setIsFetching(true);
       }
     });
-  }, [isDeleteMyMenu, isChangeMyMenuName]);
-
+  }, [isDeleteMyMenu, isChangeMyMenuList]);
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
-    changeShowMainMyMenu().then(res => {
+    changeShowMainMyMenu(token).then(res => {
       console.log('res : ', res);
     });
   };
 
-  const handleDeleteMenu = (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-  ): void => {
-    const name = (e.target as HTMLInputElement).name;
-    console.log('ID', name);
-    deleteMyMenu(name).then(res => {
-      console.log(res);
-      setIsDeleteMyMenu(true);
-      toast.success('나만의 메뉴가 삭제되었습니다.');
-    });
-  };
+  // const handleDeleteMenu = (
+  //   e: React.MouseEvent<HTMLElement, MouseEvent>,
+  // ): void => {
+  //   const name = (e.target as HTMLInputElement).name;
+  //   console.log('ID', name);
+  //   deleteMyMenu(name, token).then(res => {
+  //     console.log(res);
+  //     setIsDeleteMyMenu(true);
+  //     toast.success('나만의 메뉴가 삭제되었습니다.');
+  //   });
+  // };
 
   const handleClickChangeOrderBtn = () => {
     setIsClickChangeOrderBtn(prev => {
@@ -108,10 +119,13 @@ function myMenuContent() {
                 item={item}
                 isFetching={isFetching}
                 isEmpty={isEmpty}
-                handleDeleteMenu={handleDeleteMenu}
                 setIsFetching={setIsFetching}
                 setIsDeleteMyMenu={setIsDeleteMyMenu}
                 setIsChangeMyMenuName={setIsChangeMyMenuName}
+                setInfo={setInfo}
+                info={info}
+                setIsChangeMyMenuList={setIsChangeMyMenuList}
+                isChangeMyMenuList={isChangeMyMenuList}
               />
             ))}
         </ul>

@@ -36,7 +36,7 @@ function productOrder({
   setCupChoice: React.Dispatch<React.SetStateAction<string>>;
   cupChoice: string;
   setCartData: React.Dispatch<React.SetStateAction<ICartData>>;
-  handleAddMyMenu: (e: any) => void;
+  handleAddMyMenu: () => void;
   handleAddCart: () => void;
   handleOrder: () => void;
   count: number;
@@ -47,6 +47,7 @@ function productOrder({
 }) {
   //   const [count, setCount] = useState(1);
   const [drinkNickname, setDrinkNickname] = useState('');
+  const [extraCost, setExtraCost] = useState(0);
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
   };
@@ -106,6 +107,7 @@ function productOrder({
                         setSelectedSizeTxt={setSelectedSizeTxt}
                         cartData={cartData}
                         setCartData={setCartData}
+                        setExtraCost={setExtraCost}
                       />
                     ))}
                 </div>
@@ -164,7 +166,7 @@ function productOrder({
                       </div>
                     </div>
                     <div className={cx('total-price')}>
-                      {detailList && addComma(detailList.price)}원
+                      {detailList && addComma(detailList.price + extraCost)}원
                     </div>
                   </div>
                   <div className={cx('order-select')}>

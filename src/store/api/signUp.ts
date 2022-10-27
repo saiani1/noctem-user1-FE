@@ -1,26 +1,20 @@
 import { IParams } from "../../types/signUp";
-import { getToken } from "../utils/token";
 import { basicRequest } from "./base";
 
 const SERVICE = '/user-service';
-const HEADERS = {
-  headers: {
-    Authorization: JSON.parse(getToken())
-  }
-}
 
 export const getDuplicationCheck = async (name: string, value: string) => {
   const res = await basicRequest.get(`${SERVICE}/duplicationCheck/${name}/${value}`);
   return res;
 }
 
-export const patchNickname = async (value: string | undefined) => {
+export const patchNickname = async (value: string, token: string) => {
   console.log(`${SERVICE}/userAccount/nickname`);
   const res = await basicRequest.patch(`${SERVICE}/userAccount/nickname`, {
     nickname: value
   }, {
     headers: {
-      Authorization: JSON.parse(getToken())
+      Authorization: token,
     }
   });
   return res;

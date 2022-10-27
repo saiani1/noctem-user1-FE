@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
-import { isExistToken } from './../../store/utils/token';
-import { getUserLevel } from '../../../src/store/api/level';
 import styles from '../../../styles/content/myRewardTab.module.scss';
-import { useRecoilState } from 'recoil';
-import { userGradeState } from '../../store/atom/userStates';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { tokenState, userGradeState } from '../../store/atom/userStates';
+import { loginState } from './../../store/atom/userStates';
+import { getUserLevel } from '../../store/api/user';
 
 const cx = classNames.bind(styles);
 interface ILevel {
@@ -15,6 +15,8 @@ interface ILevel {
   requiredExpToNextGrade: number;
 }
 function myRewardTab() {
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
   const styles: { [key: string]: React.CSSProperties } = {
@@ -26,8 +28,8 @@ function myRewardTab() {
     },
   };
   useEffect(() => {
-    if (isExistToken()) {
-      getUserLevel().then(res => {
+    if (isLogin) {
+      getUserLevel(token).then(res => {
         setUserLevel(res.data.data);
       });
     }

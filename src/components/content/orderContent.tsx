@@ -15,14 +15,14 @@ import { IMenuList, IProps, IPurchaseData } from '../../types/order';
 import { addComma } from '../../store/utils/function';
 import toast from 'react-hot-toast';
 import { IUserDetailInfo } from '../../types/user';
-import { isExistToken } from '../../store/utils/token';
 import { getUserDetailInfo } from '../../../src/store/api/user';
 import {
   orderInfoState,
   selectedStoreState,
 } from '../../store/atom/orderState';
-import { useRecoilState } from 'recoil';
-import { deleteAll } from '../../../src/store/api/cart';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { deleteCartAll } from '../../../src/store/api/cart';
+import { loginState, tokenState } from './../../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
@@ -36,9 +36,10 @@ function orderContent(props: IProps) {
     setIsClickSubmitBtn,
   } = props;
   const router = useRouter();
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [orderInfo] = useRecoilState(orderInfoState);
-  const [, setOrderInfo] = useRecoilState(orderInfoState);
+  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
   const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
     userAge: 0,
@@ -52,6 +53,7 @@ function orderContent(props: IProps) {
     0;
   const discountPrice = 0;
   const finallPrice = totalPrice - discountPrice;
+  let orderCnt = 0;
 
   function onDismiss() {
     setIsClickPaymentBtn(false);
@@ -80,7 +82,6 @@ function orderContent(props: IProps) {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log('주문 ㄱㄱ');
     if (orderInfo.storeId !== 0) {
       toast('진행 중인 주문이 있습니다.', {
         icon: '📢',
@@ -102,16 +103,23 @@ function orderContent(props: IProps) {
         cardPaymentPrice: totalPrice,
         menuList: menuList,
       };
-      console.log('orderData', orderData);
-      addOrder(orderData).then(res => {
-        console.log('res', res);
-        toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
-        setOrderInfo(res.data.data);
-        deleteAll().then(res => {
-          console.log('전체 삭제', res);
+
+      if (orderCnt === 0) {
+        console.log('orderData', orderData);
+        addOrder(orderData, token).then(res => {
+          console.log('res', res);
+          toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
+          setOrderInfo(res.data.data);
+          if (router.query.menuList) {
+            // 장바구니 주문일 경우
+            deleteCartAll(token).then(res => {
+              console.log('전체 삭제', res);
+            });
+          }
+          router.push('/');
         });
-        router.push('/');
-      });
+        orderCnt++;
+      }
     }
   };
 
@@ -127,9 +135,9 @@ function orderContent(props: IProps) {
       return;
     }
 
-    if (isExistToken()) {
+    if (isLogin) {
       // 회원 주문
-      getUserDetailInfo().then(res => {
+      getUserDetailInfo(token).then(res => {
         setUserDetailInfo(res.data.data);
       });
     } else {
