@@ -171,7 +171,7 @@ function myMenuItem({
           query: {
             sizeId: item.sizeId,
             qty: 1,
-            cupType: info[0].cupType,
+            cupType: item.cupType,
             optionList: [],
             storeId: selectedStore.storeId,
             storeName: selectedStore.name,
@@ -191,7 +191,7 @@ function myMenuItem({
         query: {
           sizeId: item.sizeId,
           qty: 1,
-          cupType: info[0].cupType,
+          cupType: item.cupType,
           optionList: [],
         },
       },
@@ -236,7 +236,7 @@ function myMenuItem({
           handleClose={handleClose}
           handleAddMyMenuData={handleChangeMyMenuName}
           temperatureChoice={0}
-          cupChoice={info[0].cupType}
+          cupChoice={item.cupType}
         />
       )}
       {isEmpty !== true && itemInfo ? (
@@ -277,7 +277,7 @@ function myMenuItem({
                   원
                 </strong>
                 <span className={cx('menu-option')}>
-                  {itemInfo.temperature} | {itemInfo.size} | {info[0].cupType}
+                  {itemInfo.temperature} | {itemInfo.size} | {item.cupType}
                 </span>
               </div>
               <div className={cx('btn-wrap')}>
