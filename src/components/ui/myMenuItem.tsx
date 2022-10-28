@@ -114,6 +114,7 @@ function myMenuItem({
     const cartData: ICartData = {
       sizeId: item.sizeId,
       quantity: 1,
+      cupType: item.cupType,
       personalOptionList: [],
     };
     console.log('cartData : ', cartData);
