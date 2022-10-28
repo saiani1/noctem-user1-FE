@@ -173,6 +173,7 @@ function orderContent(props: IProps) {
             qty: qty,
             menuTotalPrice: qty * resData.menuTotalPrice,
             cartId: cartId,
+            cupType: query.cupType,
             optionList: [],
           },
         ]);
@@ -212,8 +213,8 @@ function orderContent(props: IProps) {
               <h3>주문 내역 ({menuList && menuList.length})</h3>
               <ul>
                 {menuList &&
-                  menuList.map(menu => (
-                    <OrderItem key={menu.sizeId} menu={menu} />
+                  menuList.map((menu, i) => (
+                    <OrderItem key={`order-${i}`} menu={menu} />
                   ))}
               </ul>
               <div className={cx('wide-bg')} />

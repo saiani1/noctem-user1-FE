@@ -26,7 +26,8 @@ export interface IMenuList {
   imgUrl: string;
   qty: number;
   menuTotalPrice: number;
-  optionList: [];
+  cupType: string | string[] | undefined;
+  optionList?: [];
 }
 
 export interface IPayment {

@@ -3,6 +3,7 @@ export interface ICart {
   cartId: number;
   sizeId: number;
   qty: number;
+  cupType: string;
   myPersonalOptionList?: IPersonalOptions;
 }
 

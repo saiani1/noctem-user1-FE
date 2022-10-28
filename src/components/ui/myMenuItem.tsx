@@ -37,7 +37,6 @@ interface IProps {
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleteMyMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsChangeMyMenuName: React.Dispatch<React.SetStateAction<boolean>>;
-  setInfo: React.Dispatch<React.SetStateAction<IMenuData1[]>>;
   info: IMenuData1[];
   setIsChangeMyMenuList: React.Dispatch<React.SetStateAction<boolean>>;
   isChangeMyMenuList: boolean;
@@ -50,7 +49,6 @@ function myMenuItem({
   setIsFetching,
   setIsDeleteMyMenu,
   setIsChangeMyMenuName,
-  setInfo,
   info,
   setIsChangeMyMenuList,
   isChangeMyMenuList,
@@ -74,6 +72,7 @@ function myMenuItem({
       setItemInfo(res.data.data);
       console.log('item', item);
     });
+    console.log('info', info);
   }, [info]);
 
   const handleChangeMyMenuName = () => {
@@ -171,6 +170,7 @@ function myMenuItem({
           query: {
             sizeId: item.sizeId,
             qty: 1,
+            cupType: info[0].cupType,
             optionList: [],
             storeId: selectedStore.storeId,
             storeName: selectedStore.name,
@@ -190,6 +190,7 @@ function myMenuItem({
         query: {
           sizeId: item.sizeId,
           qty: 1,
+          cupType: info[0].cupType,
           optionList: [],
         },
       },
@@ -234,6 +235,7 @@ function myMenuItem({
           handleClose={handleClose}
           handleAddMyMenuData={handleChangeMyMenuName}
           temperatureChoice={0}
+          cupChoice={info[0].cupType}
         />
       )}
       {isEmpty !== true && itemInfo ? (
@@ -274,7 +276,7 @@ function myMenuItem({
                   원
                 </strong>
                 <span className={cx('menu-option')}>
-                  {itemInfo.temperature} | {itemInfo.size}
+                  {itemInfo.temperature} | {itemInfo.size} | {info[0].cupType}
                 </span>
               </div>
               <div className={cx('btn-wrap')}>

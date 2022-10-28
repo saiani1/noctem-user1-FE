@@ -31,6 +31,7 @@ function orderItem({ menu }: { menu: IMenuList }) {
     qty,
     menuTotalPrice,
     optionList,
+    cupType,
   } = menu;
   const [myMenuInfo, setMyMenuInfo] = useState<IMenuList>();
 
@@ -62,17 +63,10 @@ function orderItem({ menu }: { menu: IMenuList }) {
             <span>{addComma(menuTotalPrice / qty)}원</span>
           </div>
           <div className={cx('order-option-wrap')}>
-            {optionList && (
-              <p>
-                {optionList.map(option => (
-                  <span>{option}</span>
-                ))}
-              </p>
-            )}
             {myMenuInfo && (
-              <p>
+              <p className={cx('order-option')}>
                 {temperatureName[myMenuInfo.menuShortName.slice(0, 1)]} |{' '}
-                {sizeName[myMenuInfo.menuShortName.slice(2, 3)]} | 개인 컵
+                {sizeName[myMenuInfo.menuShortName.slice(2, 3)]} | {cupType}
               </p>
             )}
             <span>{addComma(menuTotalPrice)}원</span>
