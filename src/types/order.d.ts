@@ -41,3 +41,8 @@ export interface IOrderInfo {
   storeId: number;
   purchaseId: number;
 }
+
+export interface ICardInfo {
+  company: string;
+  card: string;
+}

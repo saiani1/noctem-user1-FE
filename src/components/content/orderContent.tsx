@@ -10,7 +10,7 @@ import OrderPayingCompletionModal from '../../components/content/orderPayingComp
 import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
 import { addOrder, getMenuDetail } from '../../../src/store/api/order';
-import { IMenuList, IProps, IPurchaseData } from '../../types/order';
+import { IMenuList, IProps, IPurchaseData, ICardInfo } from '../../types/order';
 import { addComma } from '../../store/utils/function';
 import toast from 'react-hot-toast';
 import { IUserDetailInfo } from '../../types/user';
@@ -24,32 +24,6 @@ import { deleteCartAll } from '../../../src/store/api/cart';
 import { loginState, tokenState } from './../../store/atom/userStates';
 
 const cx = classNames.bind(styles);
-
-// const changeCardNum = (num) => {
-//   const cardNum = num;
-//   for (let i = 0; i < cardNum.length; i += 1) {
-//     if (i === 7 || i === 8 || i === 10 || i === 11 || i === 12 || i === 13) {
-//       cardNum[i] = '*';
-//     }
-//   }
-//   return cardNum.join('');
-// };
-
-{
-  /* <select
-id="creditCrdCdSelect"
-title="카드를 선택하세요."
-onChange={handleCardOption}
->
-<option value="">카드를 선택하세요.</option>
-{userPaymentData &&
-  userPaymentData.map((data, i) => (
-    <option key={`data-${i}`}>
-      {data.cardCompany} / {data.cardNumber}
-    </option>
-  ))}
-</select> */
-}
 
 function orderContent(props: IProps) {
   const {
@@ -66,7 +40,10 @@ function orderContent(props: IProps) {
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
-  const [cashReceipt, setCashReceipt] = useState('');
+  const [cardInfo, setCardInfo] = useState<ICardInfo>({
+    company: '',
+    card: '',
+  });
   const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
     userAge: 0,
     userSex: '남자',
@@ -78,7 +55,7 @@ function orderContent(props: IProps) {
       }, 0)) ||
     0;
   const discountPrice = 0;
-  const finallPrice = totalPrice - discountPrice;
+  const finalPrice = totalPrice - discountPrice;
   let orderCnt = 0;
 
   function onDismiss() {
@@ -101,9 +78,11 @@ function orderContent(props: IProps) {
 
   const handleOnSubmitModal = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setIsClickSubmitBtn(prev => {
-      return !prev;
-    });
+    if (cardInfo.company !== '')
+      setIsClickSubmitBtn(prev => {
+        return !prev;
+      });
+    else toast.error('결제수단을 등록해주세요.');
   };
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -125,7 +104,7 @@ function orderContent(props: IProps) {
         userAge: userDetailInfo.userAge,
         userSex: userDetailInfo.userSex,
         purchaseTotalPrice: totalPrice,
-        cardCorp: '신한카드',
+        cardCorp: cardInfo.company,
         cardPaymentPrice: totalPrice,
         menuList: menuList,
       };
@@ -215,16 +194,10 @@ function orderContent(props: IProps) {
                 onClick={handleClickPaymentBtn}
               >
                 <div className={cx('left')}>
-                  <Image
-                    src='/assets/svg/icon-card.svg'
-                    alt='card'
-                    width={30}
-                    height={20}
-                    className={cx('img')}
-                  />
-                  <div className={cx('txt-wrap')}>
-                    <p>신용카드</p>
-                  </div>
+                  <p>신용카드</p>
+                </div>
+                <div className={cx('card-info')}>
+                  {cardInfo && cardInfo.company} {cardInfo && cardInfo.card}
                 </div>
                 <Image
                   src='/assets/svg/icon-right-arrow.svg'
@@ -256,17 +229,21 @@ function orderContent(props: IProps) {
               </dl>
               <dl className={cx('total-price-wrap')}>
                 <dt>최종 결제 금액</dt>
-                <dd>{addComma(finallPrice)}원</dd>
+                <dd>{addComma(finalPrice)}원</dd>
               </dl>
             </li>
           </ul>
           <button type='submit' className={cx('btn')}>
-            {addComma(finallPrice)}원 결제하기
+            {addComma(finalPrice)}원 결제하기
           </button>
         </form>
       </div>
 
-      <ChoicePaymentModal onDismiss={onDismiss} isOpen={isClickPaymentBtn} />
+      <ChoicePaymentModal
+        onDismiss={onDismiss}
+        isOpen={isClickPaymentBtn}
+        setCardInfo={setCardInfo}
+      />
 
       <OrderPayingCompletionModal
         onDismiss={onDismiss}
