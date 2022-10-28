@@ -182,6 +182,7 @@ function productContent() {
             storeName: selectedStore.name,
             storeAddress: selectedStore.address,
             storeContactNumber: selectedStore.contactNumber,
+            cupType: cupChoice,
           },
         },
         '/order',
@@ -198,6 +199,7 @@ function productContent() {
         query: {
           sizeId: selectedSizeId,
           qty: count,
+          cupType: cupChoice,
           optionList: [],
         },
       },

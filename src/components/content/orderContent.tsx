@@ -28,10 +28,8 @@ const cx = classNames.bind(styles);
 function orderContent(props: IProps) {
   const {
     isClickPaymentBtn,
-    isClickCashReceiptBtn,
     isClickSubmitBtn,
     setIsClickPaymentBtn,
-    setIsClickCashReceiptBtn,
     setIsClickSubmitBtn,
   } = props;
   const router = useRouter();
@@ -60,18 +58,11 @@ function orderContent(props: IProps) {
 
   function onDismiss() {
     setIsClickPaymentBtn(false);
-    setIsClickCashReceiptBtn(false);
     setIsClickSubmitBtn(false);
   }
 
   const handleClickPaymentBtn = () => {
     setIsClickPaymentBtn(prev => {
-      return !prev;
-    });
-  };
-
-  const handleClickCashReceiptBtn = () => {
-    setIsClickCashReceiptBtn(prev => {
       return !prev;
     });
   };
@@ -160,7 +151,16 @@ function orderContent(props: IProps) {
       const sizeId = query.sizeId ? +query.sizeId + 0 : 0;
       const qty = query.qty ? +query.qty + 0 : 0;
       const cartId = query.cartId ? +query.cartId + 0 : 0;
-      console.log('sizeId', sizeId, ', cartId', cartId, ', qty', qty);
+      console.log(
+        'sizeId',
+        sizeId,
+        ', cartId',
+        cartId,
+        ', qty',
+        qty,
+        'cupType',
+        query.cupType,
+      );
       getMenuDetail(sizeId, 0).then(res => {
         let resData: IMenuList = res.data.data;
         console.log('orderContent resData', resData);
@@ -173,7 +173,7 @@ function orderContent(props: IProps) {
             qty: qty,
             menuTotalPrice: qty * resData.menuTotalPrice,
             cartId: cartId,
-            // optionList: [],
+            optionList: [],
           },
         ]);
       });

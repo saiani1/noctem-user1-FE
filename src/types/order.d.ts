@@ -1,9 +1,7 @@
 export interface IProps {
   isClickPaymentBtn: boolean;
-  isClickCashReceiptBtn: boolean;
   isClickSubmitBtn: boolean;
   setIsClickPaymentBtn: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsClickCashReceiptBtn: React.Dispatch<React.SetStateAction<boolean>>;
   setIsClickSubmitBtn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -28,7 +26,7 @@ export interface IMenuList {
   imgUrl: string;
   qty: number;
   menuTotalPrice: number;
-  optionList?: [];
+  optionList: [];
 }
 
 export interface IPayment {
