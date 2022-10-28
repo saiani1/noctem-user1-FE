@@ -49,6 +49,7 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
           query: {
             sizeId: item.sizeId,
             qty: 1,
+            cupType: item.cupType,
             optionList: [],
             storeId: selectedStore.storeId,
             storeName: selectedStore.name,
@@ -68,6 +69,7 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
         query: {
           sizeId: item.sizeId,
           qty: 1,
+          cupType: item.cupType,
           optionList: [],
         },
       },
@@ -83,6 +85,7 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
         sizeId: item.sizeId,
       };
       setMyMenuInfo(mymenuInfo);
+      console.log('마이메뉴카드', resData);
     });
   }, []);
 
@@ -94,8 +97,8 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
             <div className={cx('my-menu-title')}>{item.alias}</div>
             <div className={cx('my-menu-kind')}>{myMenuInfo?.menuName}</div>
             <div className={cx('my-menu-detail')}>
-              {myMenuInfo.temperature.toUpperCase()} | Tall | 매장 컵 |
-              에스프레소 샵1 | 얼음 적게 | 일반휘핑 많이 | 초콜릿 드리즐
+              {myMenuInfo.temperature.toUpperCase()} | {myMenuInfo.size} |{' '}
+              {item.cupType}
             </div>
           </div>
           <div className={cx('mymenu-order-wrap')}>
