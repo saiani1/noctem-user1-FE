@@ -104,20 +104,25 @@ function orderContent(props: IProps) {
 
       if (orderCnt === 0) {
         console.log('orderData', orderData);
-        addOrder(orderData, token).then(res => {
-          console.log('res', res);
-          toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
-          setOrderInfo(res.data.data);
-          setOrderStatus('주문확인중');
-          if (router.query.menuList) {
-            // 장바구니 주문일 경우
-            deleteCartAll(token).then(res => {
-              console.log('전체 삭제', res);
-            });
-          }
-          router.push('/');
-        });
-        orderCnt++;
+        addOrder(orderData, token)
+          .then(res => {
+            console.log('res', res);
+            toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
+            setOrderInfo(res.data.data);
+            setOrderStatus('주문확인중');
+            if (router.query.menuList) {
+              // 장바구니 주문일 경우
+              deleteCartAll(token).then(res => {
+                console.log('전체 삭제', res);
+              });
+            }
+            router.push('/');
+            orderCnt++;
+          })
+          .catch(err => {
+            console.log(err);
+            toast.error('주문이 불가능합니다. 잠시 후 다시 시도해주세요.');
+          });
       }
     }
   };
