@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 
 function loginContent() {
   const router = useRouter();
-  const [, setIsLogin] = useRecoilState(loginState);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [, setToken] = useRecoilState(tokenState);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -49,6 +49,13 @@ function loginContent() {
         }
       });
   };
+
+  if (isLogin) {
+    toast('이미 로그인된 상태입니다', {
+      icon: '📢',
+    });
+    router.back();
+  }
 
   return (
     <div className={cx('wrap')}>
