@@ -69,18 +69,21 @@ function productContent() {
   const [myMenuData, setMyMenuData] = useState<IParams>({
     sizeId: 2,
     alias: '',
+    cupType: '',
     personalOptionList: [],
   });
   const [cartData, setCartData] = useState<ICartData>({
     // 사이즈, 개수, 컵 종류, 온도
     sizeId: 1,
     quantity: 1,
+    cupType: '',
     personalOptionList: [],
   });
   const [nonMemberData, setNonMemberData] = useState<ICartNonMemberData>({
     options: {
       sizeId: 1,
       quantity: 1,
+      cupType: '',
       personalOptionList: [],
     },
     menuImg: '',
@@ -182,6 +185,7 @@ function productContent() {
             storeName: selectedStore.name,
             storeAddress: selectedStore.address,
             storeContactNumber: selectedStore.contactNumber,
+            cupType: cupChoice,
           },
         },
         '/order',
@@ -198,6 +202,7 @@ function productContent() {
         query: {
           sizeId: selectedSizeId,
           qty: count,
+          cupType: cupChoice,
           optionList: [],
         },
       },
@@ -260,10 +265,12 @@ function productContent() {
         ...myMenuData,
         alias: mymenuNameValue,
         sizeId: selectedSizeId,
+        cupType: cupChoice,
       });
       const value = {
         sizeId: selectedSizeId,
         alias: mymenuNameValue,
+        cupType: cupChoice,
         personalOptionList: myMenuData.personalOptionList,
       };
       addMyMenu(value, token).then(res => {
@@ -457,6 +464,7 @@ function productContent() {
           temperatureChoice={temperatureChoice}
           detailList={detailList}
           myMenuNameRef={myMenuNameRef}
+          cupChoice={cupChoice}
           handleClose={handleClose}
           handleAddMyMenuData={handleAddMyMenuData}
         />

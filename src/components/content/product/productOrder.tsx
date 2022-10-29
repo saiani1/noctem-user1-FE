@@ -52,6 +52,7 @@ function productOrder({
   const [extraCost, setExtraCost] = useState(0);
   const handleChoiceCup = (e: string) => {
     setCupChoice(e);
+    setCartData({ ...cartData, cupType: e });
   };
   const handleMinus = () => {
     if (count > 1) {

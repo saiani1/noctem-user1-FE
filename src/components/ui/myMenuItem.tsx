@@ -37,7 +37,6 @@ interface IProps {
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleteMyMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsChangeMyMenuName: React.Dispatch<React.SetStateAction<boolean>>;
-  setInfo: React.Dispatch<React.SetStateAction<IMenuData1[]>>;
   info: IMenuData1[];
   setIsChangeMyMenuList: React.Dispatch<React.SetStateAction<boolean>>;
   isChangeMyMenuList: boolean;
@@ -50,7 +49,6 @@ function myMenuItem({
   setIsFetching,
   setIsDeleteMyMenu,
   setIsChangeMyMenuName,
-  setInfo,
   info,
   setIsChangeMyMenuList,
   isChangeMyMenuList,
@@ -74,6 +72,7 @@ function myMenuItem({
       setItemInfo(res.data.data);
       console.log('item', item);
     });
+    console.log('info', info);
   }, [info]);
 
   const handleChangeMyMenuName = () => {
@@ -115,6 +114,7 @@ function myMenuItem({
     const cartData: ICartData = {
       sizeId: item.sizeId,
       quantity: 1,
+      cupType: item.cupType,
       personalOptionList: [],
     };
     console.log('cartData : ', cartData);
@@ -171,6 +171,7 @@ function myMenuItem({
           query: {
             sizeId: item.sizeId,
             qty: 1,
+            cupType: item.cupType,
             optionList: [],
             storeId: selectedStore.storeId,
             storeName: selectedStore.name,
@@ -190,6 +191,7 @@ function myMenuItem({
         query: {
           sizeId: item.sizeId,
           qty: 1,
+          cupType: item.cupType,
           optionList: [],
         },
       },
@@ -234,6 +236,7 @@ function myMenuItem({
           handleClose={handleClose}
           handleAddMyMenuData={handleChangeMyMenuName}
           temperatureChoice={0}
+          cupChoice={item.cupType}
         />
       )}
       {isEmpty !== true && itemInfo ? (
@@ -274,7 +277,7 @@ function myMenuItem({
                   원
                 </strong>
                 <span className={cx('menu-option')}>
-                  {itemInfo.temperature} | {itemInfo.size}
+                  {itemInfo.temperature} | {itemInfo.size} | {item.cupType}
                 </span>
               </div>
               <div className={cx('btn-wrap')}>

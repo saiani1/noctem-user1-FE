@@ -45,6 +45,7 @@ function myMenuContent() {
     getMyMenuData(token).then(res => {
       if (res.data.data.length !== 0) {
         setInfo(res.data.data);
+        console.log(res.data.data);
       } else {
         setIsEmpty(true);
         setIsFetching(true);
@@ -122,7 +123,6 @@ function myMenuContent() {
                 setIsFetching={setIsFetching}
                 setIsDeleteMyMenu={setIsDeleteMyMenu}
                 setIsChangeMyMenuName={setIsChangeMyMenuName}
-                setInfo={setInfo}
                 info={info}
                 setIsChangeMyMenuList={setIsChangeMyMenuList}
                 isChangeMyMenuList={isChangeMyMenuList}

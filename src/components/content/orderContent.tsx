@@ -28,10 +28,8 @@ const cx = classNames.bind(styles);
 function orderContent(props: IProps) {
   const {
     isClickPaymentBtn,
-    // isClickCashReceiptBtn,
     isClickSubmitBtn,
     setIsClickPaymentBtn,
-    // setIsClickCashReceiptBtn,
     setIsClickSubmitBtn,
   } = props;
   const router = useRouter();
@@ -60,7 +58,6 @@ function orderContent(props: IProps) {
 
   function onDismiss() {
     setIsClickPaymentBtn(false);
-    // setIsClickCashReceiptBtn(false);
     setIsClickSubmitBtn(false);
   }
 
@@ -69,12 +66,6 @@ function orderContent(props: IProps) {
       return !prev;
     });
   };
-
-  // const handleClickCashReceiptBtn = () => { // 현금영수증
-  //   setIsClickCashReceiptBtn(prev => {
-  //     return !prev;
-  //   });
-  // };
 
   const handleOnSubmitModal = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -160,7 +151,16 @@ function orderContent(props: IProps) {
       const sizeId = query.sizeId ? +query.sizeId + 0 : 0;
       const qty = query.qty ? +query.qty + 0 : 0;
       const cartId = query.cartId ? +query.cartId + 0 : 0;
-      console.log('sizeId', sizeId, ', cartId', cartId, ', qty', qty);
+      console.log(
+        'sizeId',
+        sizeId,
+        ', cartId',
+        cartId,
+        ', qty',
+        qty,
+        'cupType',
+        query.cupType,
+      );
       getMenuDetail(sizeId, 0).then(res => {
         let resData: IMenuList = res.data.data;
         console.log('orderContent resData', resData);
@@ -173,7 +173,8 @@ function orderContent(props: IProps) {
             qty: qty,
             menuTotalPrice: qty * resData.menuTotalPrice,
             cartId: cartId,
-            // optionList: [],
+            cupType: query.cupType,
+            optionList: [],
           },
         ]);
       });
@@ -212,8 +213,8 @@ function orderContent(props: IProps) {
               <h3>주문 내역 ({menuList && menuList.length})</h3>
               <ul>
                 {menuList &&
-                  menuList.map(menu => (
-                    <OrderItem key={menu.sizeId} menu={menu} />
+                  menuList.map((menu, i) => (
+                    <OrderItem key={`order-${i}`} menu={menu} />
                   ))}
               </ul>
               <div className={cx('wide-bg')} />

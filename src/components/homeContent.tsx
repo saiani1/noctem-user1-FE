@@ -95,6 +95,7 @@ function homeContent() {
       });
       getMyMenuData(token).then(res => {
         setMyMenu(res.data.data);
+        console.log('나만의메뉴', res.data.data);
       });
     } else {
       setIsFatching(false);

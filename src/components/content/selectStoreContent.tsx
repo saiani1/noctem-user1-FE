@@ -83,6 +83,7 @@ function selectStoreContent() {
             storeName: clickStoreInfo.name,
             storeAddress: clickStoreInfo.address,
             storeContactNumber: clickStoreInfo.contactNumber,
+            cupType: router.query.cupType,
           },
         },
         '/order',

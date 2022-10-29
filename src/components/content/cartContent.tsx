@@ -170,6 +170,7 @@ function cartContent() {
           imgUrl: menu.imgUrl,
           qty: qty,
           menuTotalPrice: menuTotalPrice * qty,
+          cupType: menu.cupType,
         };
       });
       setMenuList(totalMenuList);
