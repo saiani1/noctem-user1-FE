@@ -9,7 +9,8 @@ import {
 } from '../../../src/store/api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
-import { addComma, getSessionCartCount } from './../../store/utils/function';
+import { addComma } from './../../store/utils/function';
+import { getSessionCartCount } from '../../store/utils/cart';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
 // import { isExistToken } from '../../../store/utils/token';
 import { useRecoilState, useRecoilValue } from 'recoil';

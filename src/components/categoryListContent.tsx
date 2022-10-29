@@ -10,7 +10,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
 import { getCount } from '../../src/store/api/cart';
 import { cartCntState, loginState, tokenState } from '../store/atom/userStates';
-import { addComma, getSessionCartCount } from '../store/utils/function';
+import { addComma } from '../store/utils/function';
+import { getSessionCartCount } from '../store/utils/cart';
 import { selectedStoreState } from '../store/atom/orderState';
 
 const cx = classNames.bind(styles);

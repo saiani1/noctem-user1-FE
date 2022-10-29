@@ -13,12 +13,15 @@ import { getUserInfo } from '../../../src/store/api/user';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from './../customAlert';
 import { loginState } from './../../store/atom/userStates';
+import { orderInfoState, orderStatusState } from '../../store/atom/orderState';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
   const router = useRouter();
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [token, setToken] = useRecoilState(tokenState);
+  const [, setOrderInfo] = useRecoilState(orderInfoState);
+  const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [isFatching, setIsFatching] = useState(false);
   const [nickname, setNickname] = useRecoilState(nicknameState);
 
@@ -55,6 +58,12 @@ function myPageContent() {
     if (isLogin) {
       setToken('');
       setIsLogin(false);
+      setOrderInfo({
+        // api 요청한 값으로 수정
+        storeId: 0,
+        purchaseId: 0,
+      });
+      setOrderStatus('');
       setNickname('게스트');
       toast.success('로그아웃 되셨습니다.');
       router.push('/');

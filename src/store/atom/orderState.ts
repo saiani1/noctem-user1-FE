@@ -35,7 +35,7 @@ export const paymentState = atom<IPayment>({
   }
 })
 
-// 결제 정보
+// 주문 정보
 export const orderInfoState = atom<IOrderInfo>({
   key: 'orderInfoState',
   default: {
@@ -43,4 +43,11 @@ export const orderInfoState = atom<IOrderInfo>({
     purchaseId: 0,
   },
   effects_UNSTABLE: [persistAtom],
-})
+});
+
+// 주문 상태 정보
+export const orderStatusState = atom<string>({
+  key: 'orderStatusState',
+  default: '',
+  effects_UNSTABLE: [persistAtom],
+});

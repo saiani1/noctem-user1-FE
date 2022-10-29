@@ -17,6 +17,7 @@ import { IUserDetailInfo } from '../../types/user';
 import { getUserDetailInfo } from '../../../src/store/api/user';
 import {
   orderInfoState,
+  orderStatusState,
   selectedStoreState,
 } from '../../store/atom/orderState';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -37,6 +38,7 @@ function orderContent(props: IProps) {
   const token = useRecoilValue(tokenState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
+  const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
   const [cardInfo, setCardInfo] = useState<ICardInfo>({
     company: '',
@@ -78,7 +80,7 @@ function orderContent(props: IProps) {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (orderInfo.storeId !== 0) {
+    if (orderInfo.purchaseId !== 0) {
       toast('진행 중인 주문이 있습니다.', {
         icon: '📢',
       });
@@ -106,6 +108,7 @@ function orderContent(props: IProps) {
           console.log('res', res);
           toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
           setOrderInfo(res.data.data);
+          setOrderStatus('주문확인중');
           if (router.query.menuList) {
             // 장바구니 주문일 경우
             deleteCartAll(token).then(res => {

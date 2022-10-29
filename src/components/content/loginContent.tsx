@@ -8,13 +8,16 @@ import { login } from '../../../src/store/api/login';
 import { toast } from 'react-hot-toast';
 import { useRecoilState } from 'recoil';
 import { loginState, tokenState } from '../../store/atom/userStates';
+import { orderInfoState, orderStatusState } from '../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
 
 function loginContent() {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const [, setIsLogin] = useRecoilState(loginState);
   const [, setToken] = useRecoilState(tokenState);
+  const [, setOrderInfo] = useRecoilState(orderInfoState);
+  const [, setOrderStatus] = useRecoilState(orderStatusState);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
 
@@ -31,6 +34,12 @@ function loginContent() {
         });
         setIsLogin(true);
         setToken(res.headers.authorization);
+        setOrderInfo({
+          // api 요청한 값으로 수정
+          storeId: 0,
+          purchaseId: 0,
+        });
+        setOrderStatus('');
 
         router.back();
       })
@@ -49,13 +58,6 @@ function loginContent() {
         }
       });
   };
-
-  if (isLogin) {
-    toast('이미 로그인된 상태입니다', {
-      icon: '📢',
-    });
-    router.back();
-  }
 
   return (
     <div className={cx('wrap')}>
