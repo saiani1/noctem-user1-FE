@@ -28,10 +28,10 @@ const cx = classNames.bind(styles);
 function orderContent(props: IProps) {
   const {
     isClickPaymentBtn,
-    isClickCashReceiptBtn,
+    // isClickCashReceiptBtn,
     isClickSubmitBtn,
     setIsClickPaymentBtn,
-    setIsClickCashReceiptBtn,
+    // setIsClickCashReceiptBtn,
     setIsClickSubmitBtn,
   } = props;
   const router = useRouter();
@@ -60,7 +60,7 @@ function orderContent(props: IProps) {
 
   function onDismiss() {
     setIsClickPaymentBtn(false);
-    setIsClickCashReceiptBtn(false);
+    // setIsClickCashReceiptBtn(false);
     setIsClickSubmitBtn(false);
   }
 
@@ -70,11 +70,11 @@ function orderContent(props: IProps) {
     });
   };
 
-  const handleClickCashReceiptBtn = () => {
-    setIsClickCashReceiptBtn(prev => {
-      return !prev;
-    });
-  };
+  // const handleClickCashReceiptBtn = () => { // 현금영수증
+  //   setIsClickCashReceiptBtn(prev => {
+  //     return !prev;
+  //   });
+  // };
 
   const handleOnSubmitModal = (e: { preventDefault: () => void }) => {
     e.preventDefault();

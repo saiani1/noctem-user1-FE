@@ -1,6 +1,9 @@
 import { atom } from 'recoil';
 import { IOrderInfo, IPayment } from '../../types/order';
 import { IStore } from './../../types/store.d';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist();
 
 // 주문할 매장
 export const selectedStoreState = atom<IStore>({
@@ -38,5 +41,6 @@ export const orderInfoState = atom<IOrderInfo>({
   default: {
     storeId: 0,
     purchaseId: 0,
-  }
+  },
+  effects_UNSTABLE: [persistAtom],
 })

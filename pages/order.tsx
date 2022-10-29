@@ -6,7 +6,7 @@ import 'react-spring-bottom-sheet/dist/style.css';
 
 function order() {
   const [isClickPaymentBtn, setIsClickPaymentBtn] = useState(false);
-  const [isClickCashReceiptBtn, setIsClickCashReceiptBtn] = useState(false);
+  // const [isClickCashReceiptBtn, setIsClickCashReceiptBtn] = useState(false);
   const [isClickSubmitBtn, setIsClickSubmitBtn] = useState(false);
 
   return (
@@ -14,10 +14,10 @@ function order() {
       <Header isClose={false} isBack />
       <OrderContent
         isClickPaymentBtn={isClickPaymentBtn}
-        isClickCashReceiptBtn={isClickCashReceiptBtn}
+        // isClickCashReceiptBtn={isClickCashReceiptBtn}
         isClickSubmitBtn={isClickSubmitBtn}
         setIsClickPaymentBtn={setIsClickPaymentBtn}
-        setIsClickCashReceiptBtn={setIsClickCashReceiptBtn}
+        // setIsClickCashReceiptBtn={setIsClickCashReceiptBtn}
         setIsClickSubmitBtn={setIsClickSubmitBtn}
       />
     </>

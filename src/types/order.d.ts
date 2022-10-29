@@ -1,9 +1,9 @@
 export interface IProps {
   isClickPaymentBtn: boolean;
-  isClickCashReceiptBtn: boolean;
+  // isClickCashReceiptBtn: boolean;
   isClickSubmitBtn: boolean;
   setIsClickPaymentBtn: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsClickCashReceiptBtn: React.Dispatch<React.SetStateAction<boolean>>;
+  // setIsClickCashReceiptBtn: React.Dispatch<React.SetStateAction<boolean>>;
   setIsClickSubmitBtn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
