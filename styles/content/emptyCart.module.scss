@@ -3,7 +3,6 @@
 
 .cart-wrap {
   padding: 19px;
-  margin-bottom: 130px;
 
   h3 {
     font-size: variable.$FS-18;
@@ -16,12 +15,22 @@
   }
 
   button {
-    margin-top: 5px;
+    margin: 5px 0 10px;
     padding: 5px 15px;
     border-radius: 15px;
     background-color: variable.$POINT;
     font-size: variable.$FS-12;
     font-weight: 300;
     color: variable.$TXT-005;
+  }
+
+  .img-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .img {
+      width: calc(100vw - 40vw);
+    }
   }
 }
