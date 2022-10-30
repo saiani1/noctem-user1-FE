@@ -179,8 +179,9 @@ function homeContent() {
               </span>
               /
               <span className={cx('req-exp')}>
-                {}
-                {userLevel && userLevel.requiredExpToNextGrade}
+                {userLevel && userLevel.nextGrade !== null
+                  ? userLevel.requiredExpToNextGrade
+                  : 'MAX'}
               </span>
               {userLevel?.userGrade === 'Potion' ? (
                 <Image
