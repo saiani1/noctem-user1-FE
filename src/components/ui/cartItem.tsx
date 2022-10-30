@@ -134,7 +134,8 @@ function cartItem({
               <span className={cx('eng-name')}>{data.menuEngName}</span>
               <div className={cx('option-wrap')}>
                 <span className={cx('option')}>
-                  {data.temperature} | {data.size} | {cart.cupType}
+                  {data.temperature.toUpperCase()} | {data.size} |{' '}
+                  {cart.cupType}
                 </span>
                 <span className={cx('price')}>
                   {addComma(data.totalMenuPrice)}원

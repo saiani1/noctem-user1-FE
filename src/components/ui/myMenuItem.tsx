@@ -76,6 +76,23 @@ function myMenuItem({
     console.log('info', info);
   }, [info]);
 
+  const handleCustomAlert = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => (
+        <CustomAlert
+          title='장바구니에 담겼습니다!'
+          desc='장바구니로 이동하시겠습니까?'
+          btnTitle='이동'
+          // id={}
+          onAction={() => {
+            router.push('/cart');
+          }}
+          onClose={onClose}
+        />
+      ),
+    });
+  };
+
   const handleChangeMyMenuName = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
     if (mymenuNameValue && mymenuNameValue.length !== 0) {
@@ -127,12 +144,11 @@ function myMenuItem({
         JSON.stringify(cartData),
       );
       setCartCount(getSessionCartCount());
-      toast.success('장바구니에 담겼습니다!');
+      handleCustomAlert();
     } else {
       addCart(cartData, token).then(res => {
         if (res.data.data) {
-          console.log('mycartItem res', res);
-          toast.success('장바구니에 담겼습니다!');
+          handleCustomAlert();
         } else {
           toast.error(
             '장바구니에 담을 수 없습니다. 잠시 후 다시 시도해주세요.',
@@ -278,7 +294,8 @@ function myMenuItem({
                   원
                 </strong>
                 <span className={cx('menu-option')}>
-                  {itemInfo.temperature} | {itemInfo.size} | {item.cupType}
+                  {itemInfo.temperature.toUpperCase()} | {itemInfo.size} |{' '}
+                  {item.cupType}
                 </span>
               </div>
               <div className={cx('btn-wrap')}>
