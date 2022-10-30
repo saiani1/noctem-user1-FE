@@ -23,6 +23,7 @@ export const selectedStoreState = atom<IStore>({
     distance: '',
     contactNumber: '',
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 // 결제 수단
