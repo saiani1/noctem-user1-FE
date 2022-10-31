@@ -33,19 +33,17 @@ function storeInfo({ setClickStoreId, setOpen, data }: IProps) {
   }, []);
 
   const handleClickStore = () => {
-    if (isOpen) {
-      setOpen(prev => {
-        return !prev;
-      });
-      setClickStoreId(storeId);
-    }
+    setOpen(prev => {
+      return !prev;
+    });
+    setClickStoreId(storeId);
   };
 
   return (
     <>
       <li className={cx('store-wrap')}>
-        {!isOpen && <div className={cx('close-store')}></div>}
-        <button type='button' onClick={handleClickStore} disabled={!isOpen}>
+        <button type='button' onClick={handleClickStore}>
+          {!isOpen && <div className={cx('close-store')}></div>}
           <div className={cx('img-wrap')}>
             <img src={mainImg} alt={name} />
           </div>
