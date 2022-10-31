@@ -36,6 +36,7 @@ export interface IPayment {
   cardPaymentPrice: number;
 }
 
+// 주문 정보
 export interface IOrderInfo {
   storeId: number;
   purchaseId: number;

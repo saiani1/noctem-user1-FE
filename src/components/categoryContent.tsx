@@ -91,7 +91,7 @@ function categoryContent({
               </li>
             ))}
         </ul>
-        <div className={cx('search-bar')}>
+        {/* <div className={cx('search-bar')}>
           <div />
           <div className={cx('search-icon')}>
             <Image
@@ -101,7 +101,7 @@ function categoryContent({
               height={21}
             />
           </div>
-        </div>
+        </div> */}
         <div className={cx('cart-cnt-wrap')}>
           {cartCount !== 0 && <div className={cx('cnt')}>{cartCount}</div>}
           <Link href='/cart'>

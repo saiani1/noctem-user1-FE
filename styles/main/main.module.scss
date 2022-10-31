@@ -34,7 +34,7 @@
       }
 
       .req-exp {
-        margin-left: 2px;
+        margin: 0 2px;
       }
     }
   }
@@ -141,7 +141,7 @@
     border-radius: 3px;
     background-color: variable.$BG-003;
 
-    ~ .level-content-wrap {
+    ~.level-content-wrap {
       margin-top: 8px;
     }
 
@@ -281,7 +281,7 @@
     font-weight: bold;
   }
 
-  & > .card {
+  &>.card {
     background: #ffffff;
     box-shadow: 0px 2px 4px rgba(98, 98, 98, 0.25);
     border-radius: 5px;

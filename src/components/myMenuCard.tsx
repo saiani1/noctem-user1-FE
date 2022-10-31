@@ -5,7 +5,11 @@ import styles from '../../styles/main/main.module.scss';
 import { useRouter } from 'next/router';
 import { getMyMenuData } from '../../src/store/api/cart';
 import { IMenuData1, IMenuDetailData } from '../types/myMenu';
-import { orderInfoState, selectedStoreState } from '../store/atom/orderState';
+import {
+  orderInfoState,
+  orderStatusState,
+  selectedStoreState,
+} from '../store/atom/orderState';
 import { useRecoilState } from 'recoil';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from '../components/customAlert';
@@ -17,10 +21,11 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
   const router = useRouter();
   const [myMenuInfo, setMyMenuInfo] = useState<IMenuDetailData>();
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [orderInfo] = useRecoilState(orderInfoState);
+  const [, setOrderStatus] = useRecoilState(orderStatusState);
+  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
 
   const handleOrder = () => {
-    if (orderInfo.storeId !== 0) {
+    if (orderInfo.purchaseId !== 0) {
       toast('진행 중인 주문이 있습니다.', {
         icon: '📢',
       });

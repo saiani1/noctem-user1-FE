@@ -13,17 +13,26 @@ import { getUserInfo } from '../../../src/store/api/user';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from './../customAlert';
 import { loginState } from './../../store/atom/userStates';
+import { orderInfoState, orderStatusState } from '../../store/atom/orderState';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
   const router = useRouter();
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [token, setToken] = useRecoilState(tokenState);
+  const [, setOrderInfo] = useRecoilState(orderInfoState);
+  const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [isFatching, setIsFatching] = useState(false);
   const [nickname, setNickname] = useRecoilState(nicknameState);
 
   const onLogin = () => {
     router.push('/login');
+  };
+
+  const handleComingSoon = () => {
+    toast('준비 중인 서비스입니다!', {
+      icon: '📢',
+    });
   };
 
   const handleMyPage = (link: string) => {
@@ -49,6 +58,12 @@ function myPageContent() {
     if (isLogin) {
       setToken('');
       setIsLogin(false);
+      setOrderInfo({
+        // api 요청한 값으로 수정
+        storeId: 0,
+        purchaseId: 0,
+      });
+      setOrderStatus('');
       setNickname('게스트');
       toast.success('로그아웃 되셨습니다.');
       router.push('/');
@@ -118,14 +133,7 @@ function myPageContent() {
           </button>
         </li>
         <li className={cx('menu-btn-li')}>
-          <button
-            onClick={() => {
-              // handleMyPage('');
-              toast('준비 중인 서비스입니다.', {
-                icon: '📢',
-              });
-            }}
-          >
+          <button onClick={handleComingSoon}>
             <Image src='/assets/svg/icon-receipt.svg' width={35} height={35} />
             <span>전자영수증</span>
           </button>
@@ -183,16 +191,16 @@ function myPageContent() {
           <h3>Gift</h3>
           <ul className={cx('sub-menu-wrap')}>
             <li>
-              <Link href='/myPage'>기프티콘 등록</Link>
+              <span onClick={handleComingSoon}>기프티콘 등록</span>
             </li>
             <li>
-              <Link href='/myPage'>금액권 등록</Link>
+              <span onClick={handleComingSoon}>금액권 등록</span>
             </li>
             <li>
-              <Link href='/myPage'>기프티콘 사용</Link>
+              <span onClick={handleComingSoon}>기프티콘 사용</span>
             </li>
             <li>
-              <Link href='/myPage'>금액권 사용</Link>
+              <span onClick={handleComingSoon}>금액권 사용</span>
             </li>
           </ul>
         </li>
@@ -203,15 +211,15 @@ function myPageContent() {
               <Link href='/cart'>장바구니</Link>
             </li>
             <li>
-              <Link href='/myPage'>주문내역</Link>
+              <span onClick={handleComingSoon}>주문내역</span>
             </li>
           </ul>
         </li>
         <li className={cx('menu-wrap')}>
           <h3>고객지원</h3>
-          <Link href='/myPage'>
+          <span onClick={handleComingSoon}>
             <a className={cx('qna')}>문의사항</a>
-          </Link>
+          </span>
         </li>
       </ul>
 

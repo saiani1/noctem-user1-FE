@@ -118,8 +118,10 @@ function homeContent() {
   useEffect(() => {
     if (geolocation.latitude && geolocation.longitude) {
       getStoreList(geolocation.latitude, geolocation.longitude).then(res => {
-        setStore(res.data.data[0]);
-        getStoreWaitingTime(res.data.data[0].storeId).then(resData => {
+        const resData = res.data.data;
+        const nearbyStore = resData.find((v: IStore) => v.isOpen);
+        setStore(nearbyStore);
+        getStoreWaitingTime(nearbyStore.storeId).then(resData => {
           setStoreWaitingTime(Math.round(resData.data.data.waitingTime / 60));
         });
       });
@@ -179,8 +181,9 @@ function homeContent() {
               </span>
               /
               <span className={cx('req-exp')}>
-                {}
-                {userLevel && userLevel.requiredExpToNextGrade}
+                {userLevel && userLevel.nextGrade !== null
+                  ? userLevel.requiredExpToNextGrade
+                  : 'MAX'}
               </span>
               {userLevel?.userGrade === 'Potion' ? (
                 <Image

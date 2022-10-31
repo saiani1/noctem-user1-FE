@@ -32,10 +32,12 @@ import {
 } from '../../../types/productDetail';
 import { IParams } from '../../../types/myMenu';
 import { cartCntState, tokenState } from '../../../store/atom/userStates';
-import { addComma, getSessionCartCount } from '../../../store/utils/function';
+import { addComma } from '../../../store/utils/function';
+import { getSessionCartCount } from '../../../store/utils/cart';
 import MyMenuRenamePopUp from '../myMenuRenamePopUp';
 import {
   orderInfoState,
+  orderStatusState,
   selectedStoreState,
 } from '../../../store/atom/orderState';
 import { loginState } from './../../../store/atom/userStates';
@@ -47,10 +49,11 @@ function productContent() {
   const id = router.query.id ? +router.query.id : 1;
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
+  const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [orderInfo] = useRecoilState(orderInfoState);
+  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [open, setOpen] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
@@ -143,7 +146,7 @@ function productContent() {
   const myMenuNameRef = useRef<HTMLInputElement>(null);
 
   const handleOrder = () => {
-    if (orderInfo.storeId !== 0) {
+    if (orderInfo.purchaseId !== 0) {
       toast('진행 중인 주문이 있습니다.', {
         icon: '📢',
       });

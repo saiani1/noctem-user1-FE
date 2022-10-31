@@ -21,14 +21,17 @@ import {
   tokenState,
 } from '../../store/atom/userStates';
 import {
-  addComma,
   getSessionCartCount,
   getSessionCartList,
-} from '../../store/utils/function';
+} from '../../store/utils/cart';
 import { useRouter } from 'next/router';
-import { selectedStoreState } from '../../store/atom/orderState';
+import {
+  orderStatusState,
+  selectedStoreState,
+} from '../../store/atom/orderState';
 import { IMenuList } from '../../types/order';
 import { orderInfoState } from './../../store/atom/orderState';
+import { addComma } from '../../store/utils/function';
 
 const cx = classNames.bind(styles);
 
@@ -39,7 +42,8 @@ function cartContent() {
   const token = useRecoilValue(tokenState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [orderInfo] = useRecoilState(orderInfoState);
+  const [, setOrderStatus] = useRecoilState(orderStatusState);
+  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
 
   const [total, setTotal] = useState(0);
   const [cartList, setCartList] = useState<ICart[]>();
@@ -66,7 +70,7 @@ function cartContent() {
   };
 
   const handleOrder = () => {
-    if (orderInfo.storeId !== 0) {
+    if (orderInfo.purchaseId !== 0) {
       toast('진행 중인 주문이 있습니다.', {
         icon: '📢',
       });
