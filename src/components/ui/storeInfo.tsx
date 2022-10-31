@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/ui/storeInfo.module.scss';
 import { IProps } from '../../types/store';
+import { getStoreWaitingTime } from '../../../src/store/api/store';
 
 function storeInfo({ setClickStoreId, setOpen, data }: IProps) {
   const {
@@ -21,6 +22,15 @@ function storeInfo({ setClickStoreId, setOpen, data }: IProps) {
     distance,
   } = data;
   const cx = classNames.bind(styles);
+  const [storeWaitingTime, setStoreWaitingTime] = useState(0);
+
+  useEffect(() => {
+    if (isOpen) {
+      getStoreWaitingTime(storeId).then(res => {
+        setStoreWaitingTime(Math.round(res.data.data.waitingTime / 60));
+      });
+    }
+  }, []);
 
   const handleClickStore = () => {
     if (isOpen) {
@@ -48,16 +58,13 @@ function storeInfo({ setClickStoreId, setOpen, data }: IProps) {
                     <Image
                       src='/assets/svg/icon-ready.svg'
                       alt='준비'
-                      width={18}
-                      height={11}
+                      width={20}
+                      height={13}
                     />
                   </span>
                 )}
               </div>
-              <span className={cx('store-address')}>{address}</span>
-            </div>
-            <div className={cx('bottom-content-wrap')}>
-              <span className={cx('icon-wrap')}>
+              <div className={cx('icon-wrap')}>
                 {isParking && (
                   <span className={cx('icon')}>
                     <Image
@@ -88,7 +95,17 @@ function storeInfo({ setClickStoreId, setOpen, data }: IProps) {
                     />
                   </span>
                 )}
-              </span>
+              </div>
+            </div>
+            <div className={cx('store-address')}>{address}</div>
+            <div className={cx('bottom-content-wrap')}>
+              {isOpen && (
+                <div className={cx('waiting-time-wrap')}>
+                  <span>
+                    예상대기시간 <strong>{storeWaitingTime}</strong>분
+                  </span>
+                </div>
+              )}
               <span className={cx('distance')}>{distance}</span>
             </div>
           </div>
