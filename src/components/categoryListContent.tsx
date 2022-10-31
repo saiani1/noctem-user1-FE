@@ -13,6 +13,7 @@ import { cartCntState, loginState, tokenState } from '../store/atom/userStates';
 import { addComma } from '../store/utils/function';
 import { getSessionCartCount } from '../store/utils/cart';
 import { selectedStoreState } from '../store/atom/orderState';
+import { IStore } from '../types/store';
 
 const cx = classNames.bind(styles);
 interface IDrinkList {
@@ -39,10 +40,27 @@ function categoryListContent({
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
+  const [selectStore, setSelectStore] = useState<IStore>({
+    index: 0,
+    storeId: 0,
+    name: '',
+    mainImg: '',
+    address: '',
+    businessOpenHours: '',
+    businessCloseHours: '',
+    isOpen: false,
+    isParking: false,
+    isEcoStore: false,
+    isDriveThrough: false,
+    distance: '',
+    contactNumber: '',
+  });
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
+
   useEffect(() => {
+    setSelectStore(selectedStore);
     getMenuCategory(categorySId).then(res => {
       console.log(res);
       setMenuList(res.data.data);
@@ -114,9 +132,9 @@ function categoryListContent({
       >
         <div>
           <div>
-            {selectedStore.distance === ''
+            {selectStore.distance === ''
               ? '주문할 매장을 선택하세요'
-              : selectedStore.name}
+              : selectStore.name}
           </div>
           <div>
             <Image
