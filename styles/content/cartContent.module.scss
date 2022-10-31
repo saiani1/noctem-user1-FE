@@ -42,7 +42,7 @@
       align-items: center;
       width: 100%;
       padding-bottom: 8px;
-      border-bottom: 1px solid variable.$LINE-004;
+      border-bottom: 1px solid variable.$LINE-002;
 
       .tit {
         color: variable.$TXT-005;
@@ -164,7 +164,7 @@
           font-weight: 300;
           color: variable.$TXT-003;
 
-          ~button {
+          ~ button {
             margin-left: 15px;
           }
 

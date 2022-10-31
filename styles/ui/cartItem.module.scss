@@ -49,7 +49,7 @@
       margin-right: 20px;
       width: 100px;
       height: 100px;
-      border-radius: 50%;
+      border-radius: 5px;
       overflow: hidden;
       flex-shrink: 0;
     }
@@ -64,7 +64,9 @@
       }
 
       .eng-name {
-        font-size: variable.$FS-12;
+        display: block;
+        margin-top: -2px;
+        font-size: variable.$FS-11;
         font-weight: 300;
         color: variable.$TXT-003;
       }
@@ -75,7 +77,7 @@
         margin: 7px 0;
         font-size: variable.$FS-12;
         font-weight: 300;
-        color: variable.$TXT-003;
+        color: variable.$TXT-002;
 
         .price {
           font-weight: 500;

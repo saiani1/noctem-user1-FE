@@ -107,28 +107,24 @@ function categoryListContent({
             </Link>
           ))}
       </ul>
-      <button
-        type='button'
-        className={cx('choice-store')}
-        onClick={handleClickSelectStore}
-      >
-        <div>
-          <div>
+      <div className={cx('select-store-wrap')}>
+        <button
+          type='button'
+          className={cx('select-store')}
+          onClick={handleClickSelectStore}
+        >
+          <span className={cx('tit')}>
             {selectedStore.distance === ''
               ? '주문할 매장을 선택하세요'
               : selectedStore.name}
-          </div>
-          <div>
-            <Image
-              src='/assets/svg/icon-down-arrow.svg'
-              alt='down-arrow'
-              width={24}
-              height={21}
-            />
-          </div>
-        </div>
-        <hr />
-      </button>
+          </span>
+          <Image
+            src='/assets/svg/icon-down-arrow-white.svg'
+            width={12}
+            height={10}
+          />
+        </button>{' '}
+      </div>
     </>
   );
 }
