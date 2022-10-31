@@ -12,7 +12,7 @@ import {
 } from '../store/atom/userStates';
 import { getUserInfo, getUserLevel } from '../../src/store/api/user';
 import { useRouter } from 'next/router';
-import { getMyMenuData } from '../../src/store/api/myMenu';
+import { getMyMenuData, getShowMainMyMenu } from '../../src/store/api/myMenu';
 import { getPopularMenu } from '../store/api/popularMenu';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -37,9 +37,10 @@ function homeContent() {
   const geolocation = useGeolocation();
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const [isFatching, setIsFatching] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   const [myMenu, setMyMenu] = useState<IMenuData1[]>();
+  const [showMyMenu, setShowMyMenu] = useState(false);
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
   const [, setSelectedStore] = useRecoilState(selectedStoreState);
@@ -85,7 +86,7 @@ function homeContent() {
     getPopularMenu().then(res => setPopularMenuList(res.data.data));
 
     if (isLogin) {
-      setIsFatching(true);
+      setIsFetching(true);
       getUserInfo(token).then(res => {
         setNickname(res.data.data.nickname);
       });
@@ -93,12 +94,18 @@ function homeContent() {
         console.log('userLevel', res.data.data);
         setUserLevel(res.data.data);
       });
-      getMyMenuData(token).then(res => {
-        setMyMenu(res.data.data);
-        console.log('나만의메뉴', res.data.data);
+      getShowMainMyMenu(token).then(res => {
+        console.log('나만의메뉴 HOME에서 보기', res);
+        if (res.data.data === true) {
+          getMyMenuData(token).then(res => {
+            setMyMenu(res.data.data);
+            setShowMyMenu(true);
+            console.log('나만의메뉴', res.data.data);
+          });
+        } else setShowMyMenu(false);
       });
     } else {
-      setIsFatching(false);
+      setIsFetching(false);
       setNickname('게스트');
     }
   }, []);
@@ -134,7 +141,7 @@ function homeContent() {
         <div className={cx('title')}>
           <span>{nickname}</span> 님, 반갑습니다.
         </div>
-        {isFatching ? (
+        {isFetching ? (
           <div className={cx('point-bar')}>
             <div className={cx('progress-bar-space')}>
               <div>
@@ -246,7 +253,7 @@ function homeContent() {
         )}
       </div>
       <div className={cx('my-wrap')}>
-        {isFatching ? (
+        {showMyMenu && isLogin && (
           <div className={cx('my-menu')}>
             {myMenu && myMenu.length !== 0 ? (
               <>
@@ -288,7 +295,8 @@ function homeContent() {
               </>
             )}
           </div>
-        ) : (
+        )}
+        {!isLogin && (
           <div className={cx('info-wrap')}>
             <div className={cx('info')}>
               로그인 하여 모든 서비스를 이용해 보세요!

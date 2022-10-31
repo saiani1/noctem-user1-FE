@@ -15,6 +15,7 @@ import MyMenuItem from '../ui/myMenuItem';
 import ChangeOrderMyMenuModal from './changeOrderMyMenuModal';
 import { useRecoilValue } from 'recoil';
 import { tokenState } from '../../store/atom/userStates';
+import { toast } from 'react-hot-toast';
 
 function myMenuContent() {
   const token = useRecoilValue(tokenState);
@@ -59,6 +60,7 @@ function myMenuContent() {
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeShowMainMyMenu(token).then(res => {
       console.log('res : ', res);
+      toast.success('정상적으로 변경되었습니다.');
     });
   };
 
@@ -101,7 +103,7 @@ function myMenuContent() {
               />
             </div>
           )}
-          <button
+          {/* <button
             type='button'
             className={cx('sort-btn')}
             onClick={handleClickChangeOrderBtn}
@@ -113,7 +115,7 @@ function myMenuContent() {
               height={13}
             />
             순서변경
-          </button>
+          </button> */}
         </div>
         {isEmpty && <EmptyMyMenu />}
         <ul>
