@@ -9,7 +9,6 @@ import { getMenuCategory } from '../../src/store/api/category';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { categorySIdState } from '../store/atom/categoryState';
 import { getCount } from '../../src/store/api/cart';
-import { getPopularMenu } from '../store/api/popularMenu';
 import { cartCntState, loginState, tokenState } from '../store/atom/userStates';
 import { addComma } from '../store/utils/function';
 import { getSessionCartCount } from '../store/utils/cart';
@@ -44,14 +43,10 @@ function categoryListContent({
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
   useEffect(() => {
-    if (categorySId !== 2) {
-      getMenuCategory(categorySId).then(res => {
-        console.log('getMenuCategory', res.data.data);
-        setMenuList(res.data.data);
-      });
-    } else {
-      getPopularMenu().then(res => console.log(res.data.data));
-    }
+    getMenuCategory(categorySId).then(res => {
+      console.log(res);
+      setMenuList(res.data.data);
+    });
     console.log(categorySId);
 
     if (isLogin) {
