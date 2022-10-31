@@ -5,7 +5,7 @@ import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
 // import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
 import {
-  getLageCategory,
+  getLargeCategory,
   getSmallCategory,
 } from '../../src/store/api/category';
 import { useRecoilState } from 'recoil';
@@ -56,7 +56,7 @@ function categoryContent({
     });
   };
   useEffect(() => {
-    getLageCategory().then(res => {
+    getLargeCategory().then(res => {
       setCategoryL(res.data.data);
     });
 
