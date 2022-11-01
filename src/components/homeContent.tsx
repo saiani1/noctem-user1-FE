@@ -33,6 +33,7 @@ import { toast } from 'react-hot-toast';
 // import useEventSourceListener from 'react-sse-hooks/dts/useEventSourceListener';
 import { SSEProvider } from 'react-hooks-sse';
 import Test from './test';
+import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
 
 const cx = classNames.bind(styles);
 
@@ -104,6 +105,8 @@ function homeContent() {
 
     getPopularMenu().then(res => setPopularMenuList(res.data.data));
 
+    let ssEvents: EventSourcePolyfill = new EventSourcePolyfill('');
+
     if (isLogin) {
       setIsFetching(true);
       getUserInfo(token).then(res => {
@@ -124,10 +127,38 @@ function homeContent() {
           });
         } else setShowMyMenu(false);
       });
+
+      const STREAM_URL = `https://sse.noctem.click:33333/sse/alert-server/user`;
+      // const ssEvents = new EventSource(STREAM_URL, { withCredentials: true });
+      ssEvents = new EventSourcePolyfill(STREAM_URL, {
+        headers: {
+          Authorization: token,
+        },
+        withCredentials: true,
+      });
+
+      ssEvents.addEventListener('open', event => {
+        console.log('SSE OPEN!!!', event);
+      });
+
+      ssEvents.addEventListener('message', event => {
+        console.log('MESSAGE!!!', event);
+        const data = JSON.parse(event.data);
+        console.log('Data', data);
+      });
+
+      ssEvents.addEventListener('error', err => {
+        console.log('ERR', err);
+      });
     } else {
       setIsFetching(false);
       setNickname('게스트');
     }
+
+    return () => {
+      console.log('SSE 종료!!!');
+      ssEvents.close();
+    };
   }, []);
 
   useEffect(() => {
