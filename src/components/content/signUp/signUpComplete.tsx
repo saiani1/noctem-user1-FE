@@ -13,8 +13,8 @@ function signUpComplete({ nickname }: { nickname: string }) {
       <div className={cx('signUpCompalte-wrap')}>
         <div className={cx('logo-wrap')}>
           <Image
-            width={110}
-            height={150}
+            width={120}
+            height={120}
             alt='logo symbol'
             src='/assets/images/png/logo-symbol.png'
           />

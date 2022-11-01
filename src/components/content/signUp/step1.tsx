@@ -84,7 +84,7 @@ function step1({
           src='/assets/images/png/logo-symbol.png'
           alt='logo symbol'
           width={80}
-          height={100}
+          height={80}
         />
       </div>
       <div className={cx('welcome')}>
@@ -92,7 +92,7 @@ function step1({
         <br />
         환영합니다!
       </div>
-      <div>회원가입을 위해 약관에 동의해 주세요.</div>
+      <div className={cx('content')}>회원가입을 위해 약관에 동의해 주세요.</div>
 
       {/* 약관동의 */}
       <div className={cx('agreement-wrap')}>

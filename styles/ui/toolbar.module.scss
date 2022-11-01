@@ -49,7 +49,7 @@
 
     &:nth-child(n) {
       .toolbar-icon::after {
-        content: "";
+        content: '';
         display: inline-block;
         width: 23px;
         height: 20px;
@@ -74,30 +74,36 @@
     &:nth-child(2) {
       .toolbar-icon::after {
         background-image: url('/assets/svg/toolbar/icon-order.svg');
+        background-position: 2px 0;
       }
 
       .toolbar-icon.active::after {
         background-image: url('/assets/svg/toolbar/icon-order-active.svg');
+        background-position: 2px 0;
       }
     }
 
     &:nth-child(3) {
       .toolbar-icon::after {
-        background-image: url('/assets/svg/toolbar/icon-pay.svg');
+        background-image: url('/assets/svg/toolbar/icon-cart.svg');
+        background-position: 1px 0;
       }
 
       .toolbar-icon.active::after {
-        background-image: url('/assets/svg/toolbar/icon-pay-active.svg');
+        background-image: url('/assets/svg/toolbar/icon-cart-active.svg');
+        background-position: 1px 0;
       }
     }
 
     &:nth-child(4) {
       .toolbar-icon::after {
         background-image: url('/assets/svg/toolbar/icon-my.svg');
+        background-position: 2px 0;
       }
 
       .toolbar-icon.active::after {
         background-image: url('/assets/svg/toolbar/icon-my-active.svg');
+        background-position: 2px 0;
       }
     }
   }

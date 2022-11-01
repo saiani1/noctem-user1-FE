@@ -12,9 +12,9 @@ export const TOOL_LIST: Array<IList> = [
     txt: 'Order',
   },
   {
-    link: '/pay',
-    linkTxt: 'Pay',
-    txt: 'Pay',
+    link: '/cart',
+    linkTxt: 'Cart',
+    txt: 'Cart',
   },
   {
     link: '/myPage',
