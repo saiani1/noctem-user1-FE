@@ -106,12 +106,14 @@ function categoryContent({
         <div className={cx('cart-cnt-wrap')}>
           {cartCount !== 0 && <div className={cx('cnt')}>{cartCount}</div>}
           <Link href='/cart'>
-            <Image
-              src='/assets/svg/icon-cart.svg'
-              alt='cart'
-              width={24}
-              height={21}
-            />
+            <span>
+              <Image
+                src='/assets/svg/icon-cart.svg'
+                alt='cart'
+                width={24}
+                height={21}
+              />
+            </span>
           </Link>
         </div>
       </div>

@@ -87,6 +87,7 @@ function cartItem({
             {
               sizeId: sizeId,
               cartId: cartId,
+              categorySmall: resData.categorySmall,
               menuFullName: resData.menuFullName,
               menuShortName: resData.menuShortName,
               imgUrl: resData.imgUrl,

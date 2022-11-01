@@ -1,12 +1,14 @@
 @use '/styles/base/variable';
 
 .wrap {
+  height: calc(100vh - 100px);
   padding: 19px;
   background-color: variable.$BG-002;
 
   h2 {
     margin-bottom: 50px;
   }
+
   .info-wrap {
     padding: 15px 15px 20px;
     margin-bottom: 15px;
