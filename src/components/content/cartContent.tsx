@@ -185,6 +185,7 @@ function cartContent() {
         return {
           sizeId: sizeId,
           cartId: cartId,
+          categorySmall: menu.categorySmall,
           menuFullName: menu.menuFullName,
           menuShortName: menu.menuShortName,
           imgUrl: menu.imgUrl,

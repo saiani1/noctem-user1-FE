@@ -2,7 +2,7 @@
 @use '/styles/mixins/position';
 
 .cart-item-wrap {
-  padding: 19px;
+  padding: 14px 20px;
   border-bottom: 1px solid variable.$LINE-003;
 
   input[type='checkbox'] {

@@ -175,12 +175,13 @@ function orderContent(props: IProps) {
         setMenuList([
           {
             sizeId: sizeId,
+            cartId: cartId,
+            categorySmall: resData.categorySmall,
             menuFullName: resData.menuFullName,
             menuShortName: resData.menuShortName,
             imgUrl: resData.imgUrl,
             qty: qty,
             menuTotalPrice: qty * resData.menuTotalPrice,
-            cartId: cartId,
             cupType: query.cupType,
             optionList: [],
           },

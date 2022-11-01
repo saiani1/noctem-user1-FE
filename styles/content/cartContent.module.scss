@@ -118,7 +118,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
 
       h3 {
         font-size: variable.$FS-16;
@@ -164,7 +164,7 @@
           font-weight: 300;
           color: variable.$TXT-003;
 
-          ~ button {
+          ~button {
             margin-left: 15px;
           }
 
@@ -192,7 +192,7 @@
   }
 
   .footer {
-    @include position.fixed(auto 0 0 0);
+    @include position.fixed(auto 0 50px 0);
     height: 130px;
     padding: 24px 19px;
     background-color: variable.$BG-001;
