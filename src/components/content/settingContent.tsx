@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
+import { useTheme } from 'next-themes';
 
 import styles from '../../../styles/content/settingContent.module.scss';
 import { getUserOptions, patchUserOptions } from '../../../src/store/api/user';
@@ -17,6 +18,7 @@ interface IInfo {
 
 function settingContent() {
   const token = useRecoilValue(tokenState);
+  const { theme, setTheme } = useTheme();
   const [info, setInfo] = useState<IInfo>({
     isDarkmode: false,
     pushNotificationAgreement: false,
@@ -35,6 +37,8 @@ function settingContent() {
     });
   }, []);
 
+  console.log(localStorage.getItem('theme'));
+
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const check = e.target.checked;
@@ -42,6 +46,10 @@ function settingContent() {
     patchUserOptions(value, token).then(() => {
       setInfo({ ...info, [value]: check });
     });
+
+    if (value === 'darkmode') {
+      setTheme(theme === 'dark' ? 'light' : 'dark');
+    }
   };
 
   return (

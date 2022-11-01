@@ -1,34 +1,38 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
 import classNames from 'classnames/bind';
 import useGeolocation from 'react-hook-geolocation';
-import Image from 'next/image';
-import RecommendedMenu from './recommendedMenu';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { toast } from 'react-hot-toast';
+import { Carousel } from 'react-responsive-carousel';
+import { confirmAlert } from 'react-confirm-alert';
+
+import styles from '../../styles/main/main.module.scss';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import {
   userGradeState,
   nicknameState,
   loginState,
   tokenState,
 } from '../store/atom/userStates';
-import { getUserInfo, getUserLevel } from '../../src/store/api/user';
-import { useRouter } from 'next/router';
-import { getMyMenuData, getShowMainMyMenu } from '../../src/store/api/myMenu';
+import { selectedStoreState } from '../store/atom/orderState';
+import { darkmodeState } from '../store/atom/darkmodeState';
+import { getUserInfo, getUserLevel } from '../store/api/user';
+import { getMyMenuData, getShowMainMyMenu } from '../store/api/myMenu';
 import { getPopularMenu } from '../store/api/popularMenu';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Carousel } from 'react-responsive-carousel';
-import MyMenuCard from './myMenuCard';
-import Link from 'next/link';
-import { getStoreList, getStoreWaitingTime } from '../../src/store/api/store';
+import { getStoreList, getStoreWaitingTime } from '../store/api/store';
+import { getIsDark } from '../store/api/user';
 import { IStore } from '../types/store';
 import { IMenuData1 } from '../types/myMenu';
 import { ILevel } from '../types/user';
 import { IPopularMenuList } from '../types/popularMenu';
-import styles from '../../styles/main/main.module.scss';
-import { selectedStoreState } from '../store/atom/orderState';
-import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from '../components/customAlert';
-import { toast } from 'react-hot-toast';
+import RecommendedMenu from './recommendedMenu';
+import MyMenuCard from './myMenuCard';
 
 const cx = classNames.bind(styles);
 
@@ -37,13 +41,15 @@ function homeContent() {
   const geolocation = useGeolocation();
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const [isFetching, setIsFetching] = useState(false);
+  const { theme, setTheme } = useTheme();
 
+  const [isFetching, setIsFetching] = useState(false);
   const [myMenu, setMyMenu] = useState<IMenuData1[]>();
   const [showMyMenu, setShowMyMenu] = useState(false);
   const [userLevel, setUserLevel] = useState<ILevel>();
   const [progressState, setProgressState] = useRecoilState(userGradeState);
   const [, setSelectedStore] = useRecoilState(selectedStoreState);
+  const [darkMode, setDarkMode] = useRecoilState(darkmodeState);
   const styles: { [key: string]: React.CSSProperties } = {
     container: {
       width: `${progressState}%`,
@@ -80,6 +86,10 @@ function homeContent() {
         ),
       });
     }
+  };
+
+  const handleDarkMode = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   useEffect(() => {
@@ -141,6 +151,13 @@ function homeContent() {
         <div className={cx('title')}>
           <span>{nickname}</span> 님, 반갑습니다.
         </div>
+        <button
+          type='button'
+          onClick={handleDarkMode}
+          style={{ padding: '10px', backgroundColor: 'pink' }}
+        >
+          다크모드
+        </button>
         {isFetching ? (
           <div className={cx('point-bar')}>
             <div className={cx('progress-bar-space')}>
@@ -253,7 +270,7 @@ function homeContent() {
         )}
       </div>
       <div className={cx('my-wrap')}>
-        {showMyMenu && isLogin && (
+        {isLogin && (
           <div className={cx('my-menu')}>
             {myMenu && myMenu.length !== 0 ? (
               <>

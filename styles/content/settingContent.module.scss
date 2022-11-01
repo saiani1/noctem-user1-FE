@@ -2,6 +2,7 @@
 @use '/styles/mixins/position';
 
 .wrap {
+  background-color: var(--BG-001);
   padding: 19px;
   .setting-li-wrap {
     margin-top: 40px;
@@ -12,7 +13,7 @@
       align-items: center;
 
       & ~ .setting-li {
-        border-top: 1px solid variable.$LINE-003;
+        border-top: 1px solid var(--LINE-003);
       }
 
       label {

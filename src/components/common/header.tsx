@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useTheme } from 'next-themes';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -9,6 +10,7 @@ const cx = classNames.bind(styles);
 
 function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   const handleBack = () => {
     router.back();
@@ -46,7 +48,11 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
               width={93}
               height={21}
               alt='logo title image'
-              src='/assets/images/png/logo-title.png'
+              src={
+                theme === 'dark'
+                  ? '/assets/images/png/logo-title-darkmode.png'
+                  : '/assets/images/png/logo-title.png'
+              }
             />
           </a>
         </Link>

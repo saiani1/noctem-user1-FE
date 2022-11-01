@@ -1,0 +1,93 @@
+:root {
+  // 폰트 색상
+  --TXT-001: #222;
+  --TXT-002: #626262;
+  --TXT-003: #909090;
+  --TXT-004: #cbcbcb;
+  --TXT-005: #fff;
+  --TXT-006: #444;
+
+  --TXT-ERROR: #ff4a4a;
+  --TXT-SUCCESS: #4a7dff;
+
+  // 배경 색상
+  --BG-001: #fff;
+  --BG-002: #f9f9f9;
+  --BG-003: #f1f1f1;
+  --BG-004: #8d8d8d;
+  --BG-005: #e2e2e2;
+  --BG-006: #222222;
+  --BG-007: #dadada;
+  --BG-008: #f5f5f5;
+  --BG-009: #1b3c35;
+
+  --BG-ALPA-001: rgba(246, 246, 246, 0.12);
+  --BG-ALPA-002: rgba(0, 0, 0, 0.6);
+  --BG-ALPA-003: rgba(255, 255, 255, 0.6);
+
+  // 선 색상
+  --LINE-001: #fff;
+  --LINE-002: #eee;
+  --LINE-003: #dadada;
+  --LINE-004: #7a7a7a;
+  --LINE-005: #a6a6a6;
+
+  // 포인트 색상
+  --POINT: #536173;
+
+  // 그림자
+  --BOX-SHADOW-ITEM: 0px 2px 4px rgba(98, 98, 98, 0.25);
+  --BOX-SHADOW-TOOLBAR: 0px 0px 4px rgba(0, 0, 0, 0.2);
+
+  // 랭크
+  --RANK-001: #d9626b;
+  --RANK-002: #bf4968;
+  --RANK-003: #536173;
+}
+
+[data-theme='dark'] {
+  // 폰트 색상
+  --TXT-001: #f7dfff;
+  --TXT-002: #eeeeee;
+  --TXT-003: #dadada;
+  --TXT-004: #726b7c;
+  --TXT-005: #fff;
+  --TXT-006: #444;
+
+  --TXT-ERROR: #ff4a4a;
+  --TXT-SUCCESS: #4a7dff;
+
+  // 배경 색상
+  --BG-001: #0f0d1a;
+  --BG-002: #272a39;
+  --BG-003: #f1f1f1;
+  --BG-004: #8d8d8d;
+  --BG-005: #e2e2e2;
+  --BG-006: #222222;
+  --BG-007: #dadada;
+  --BG-008: #f5f5f5;
+  --BG-009: #1b3c35;
+
+  --BG-ALPA-001: rgba(246, 246, 246, 0.12);
+  --BG-ALPA-002: rgba(0, 0, 0, 0.6);
+  --BG-ALPA-003: rgba(255, 255, 255, 0.6);
+
+  // 선 색상
+  --LINE-001: #fff;
+  --LINE-002: #62596c;
+  --LINE-003: #62596c;
+  --LINE-004: #7a7a7a;
+  --LINE-005: #a6a6a6;
+
+  // 포인트 색상
+  --POINT: #d9626b;
+
+  // 그림자
+  --BOX-SHADOW-ITEM: 0px 2px 4px rgba(98, 98, 98, 0.25);
+  --BOX-SHADOW-TOOLBAR: 0px 0px 4px rgba(0, 0, 0, 0.2);
+
+  // 랭크
+  --RANK-001: #d9626b;
+  --RANK-002: #bf4968;
+  --RANK-003: #536173;
+}

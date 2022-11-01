@@ -1,7 +1,12 @@
 @use '/styles/base/variable';
 @use '/styles/mixins/position';
 
+.wrap {
+  background-color: var(--BG-001);
+}
+
 .point-box {
+  background-color: var(--BG-001);
   margin: 24px;
 
   .title {
@@ -19,10 +24,12 @@
 
     .progress-bar-space {
       flex: 5;
+      font-weight: variable.$FW-001;
+      color: var(--TXT-003);
     }
 
     .my-score {
-      color: variable.$POINT;
+      color: var(--TXT-004);
       line-height: 20px;
       flex: 1.5;
       text-align: right;
@@ -30,7 +37,7 @@
       .my-exp {
         margin-right: 2px;
         font-size: 22px;
-        color: variable.$TXT-001;
+        color: var(--TXT-002);
       }
 
       .req-exp {
@@ -43,8 +50,8 @@
 .info-wrap {
   padding: 15px 15px 20px;
   margin: 10px 24px 24px;
-  background-color: variable.$BG-001;
-  box-shadow: 1px 1px 5px rgba(variable.$BG-004, 0.3);
+  background-color: var(--BG-001);
+  box-shadow: 1px 1px 5px rgba(var(--BG-004), 0.3);
   border-radius: 10px;
 
   .info {
@@ -63,14 +70,14 @@
       font-size: variable.$FS-14;
       font-weight: 400;
       border-radius: 20px;
-      color: variable.$TXT-005;
-      background-color: variable.$POINT;
+      color: var(--TXT-005);
+      background-color: var(--POINT);
     }
 
     .login-btn {
-      border: 1px solid variable.$POINT;
-      color: variable.$POINT;
-      background-color: variable.$BG-001;
+      border: 1px solid var(--POINT);
+      color: var(--POINT);
+      background-color: var(--BG-001);
     }
   }
 }
@@ -81,7 +88,7 @@
   align-items: center;
   width: 98.5%;
   height: 12px;
-  border: 2px solid variable.$LINE-003;
+  border: 2px solid var(--LINE-003);
   border-radius: 2.5px;
 
   &::after {
@@ -89,21 +96,21 @@
     content: ' ';
     width: 2px;
     height: 7px;
-    background-color: variable.$LINE-003;
+    background-color: var(--LINE-003);
   }
 
   .progress-bar {
     width: 55%;
     height: 6px;
     margin: 0 1px;
-    background-color: variable.$POINT;
+    background-color: var(--POINT);
     border-radius: 0.5px;
   }
 }
 
 .level-wrap {
   padding: 19px 19px 25px 19px;
-  border-bottom: 1px solid variable.$LINE-003;
+  border-bottom: 1px solid var(--LINE-003);
 
   &.first {
     padding-top: 0;
@@ -116,14 +123,14 @@
     .level-tit {
       margin: 0 10px 10px 0;
       font-size: variable.$FS-21;
-      color: variable.$RANK-001;
+      color: var(--RANK-001);
 
       &.e {
-        color: variable.$RANK-002;
+        color: var(--RANK-002);
       }
 
       &.pe {
-        color: variable.$RANK-003;
+        color: var(--RANK-003);
       }
     }
 
@@ -139,7 +146,7 @@
     width: 100%;
     padding: 10px 20px;
     border-radius: 3px;
-    background-color: variable.$BG-003;
+    background-color: var(--BG-003);
 
     ~ .level-content-wrap {
       margin-top: 8px;
@@ -151,7 +158,7 @@
 
     .content {
       font-size: variable.$FS-12;
-      color: variable.$TXT-003;
+      color: var(--TXT-003);
     }
   }
 }
@@ -159,7 +166,6 @@
 .my-wrap {
   padding: 14px 0;
   margin-bottom: 20px;
-  background-color: variable.$BG-002;
 }
 
 .my-menu {
@@ -177,16 +183,16 @@
 
   .card {
     margin: 0 24px 50px;
-    background: #ffffff;
+    background: var(--BG-002);
     box-shadow: 0px 2px 4px rgba(98, 98, 98, 0.25);
     border-radius: 5px;
-    color: variable.$TXT-003;
+    color: var(--TXT-003);
     text-align: center;
     padding: 30px;
 
     .card-btn {
       margin-top: 10px;
-      color: variable.$TXT-004;
+      color: var(--TXT-004);
       text-decoration: underline;
     }
   }
@@ -213,7 +219,7 @@
     }
 
     .my-menu-true {
-      background: #ffffff;
+      background: var(--BG-001);
       box-shadow: 0px 2px 4px rgba(98, 98, 98, 0.25);
       border-radius: 5px;
       padding: 8px;
@@ -229,16 +235,16 @@
         .my-menu-title {
           font-weight: variable.$FW-002;
           font-size: variable.$FS-16;
-          color: variable.$TXT-001;
+          color: var(--TXT-001);
         }
 
         .my-menu-kind {
-          color: variable.$TXT-004;
+          color: var(--TXT-004);
           font-size: variable.$FS-12;
         }
 
         .my-menu-detail {
-          color: variable.$TXT-002;
+          color: var(--TXT-002);
           font-size: variable.$FS-12;
         }
       }
@@ -260,8 +266,8 @@
         }
 
         .order-button {
-          background-color: variable.$TXT-006;
-          color: variable.$TXT-005;
+          background-color: var(--TXT-006);
+          color: var(--TXT-005);
           font-size: variable.$FS-12;
           font-weight: variable.$FW-002;
           padding: 2px;
@@ -282,12 +288,12 @@
   }
 
   & > .card {
-    background: #ffffff;
+    background: var(--BG-002);
     box-shadow: 0px 2px 4px rgba(98, 98, 98, 0.25);
     border-radius: 5px;
     cursor: pointer;
 
-    color: variable.$TXT-003;
+    color: var(--TXT-003);
     text-align: center;
     padding: 8px;
 
@@ -317,11 +323,11 @@
       .store-name {
         font-size: variable.$FS-14;
         font-weight: variable.$FW-003;
-        color: variable.$TXT-001;
+        color: var(--TXT-002);
       }
 
       .store-address {
-        color: variable.$TXT-003;
+        color: var(--TXT-003);
         font-size: 12px;
       }
 
@@ -331,12 +337,15 @@
         align-items: flex-end;
         font-size: 12px;
         margin-top: auto;
-        color: variable.$TXT-002;
+        color: var(--TXT-002);
+        div {
+          color: var(--TXT-003);
+        }
 
         .waiting,
         .distance {
           display: inline-block;
-          color: variable.$TXT-001;
+          color: var(--TXT-001);
           font-size: variable.$FS-18;
           font-weight: variable.$FW-003;
         }
@@ -388,7 +397,7 @@
     }
 
     .recommended-menu-text {
-      color: variable.$TXT-002;
+      color: var(--TXT-002);
       font-size: 12px;
     }
   }

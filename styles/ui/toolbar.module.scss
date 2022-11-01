@@ -6,8 +6,8 @@
   right: 0;
   bottom: 0;
   z-index: variable.$TOOLBAR;
-  background: variable.$BG-003;
-  box-shadow: variable.$BOX-SHADOW-TOOLBAR;
+  background: var(--BG-002);
+  box-shadow: var(--BOX-SHADOW-TOOLBAR);
 }
 
 .blank {
@@ -43,7 +43,7 @@
     .toolbar-txt {
       display: block;
       padding-top: 33px;
-      color: variable.$TXT-003;
+      color: var(--TXT-004);
       font-size: 10px;
     }
 
@@ -57,7 +57,7 @@
       }
 
       .toolbar-txt.active {
-        color: variable.$POINT;
+        color: var(--POINT);
       }
     }
 

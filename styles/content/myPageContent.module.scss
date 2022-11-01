@@ -2,7 +2,7 @@
 
 .wrap {
   padding: 19px;
-  background-color: variable.$BG-002;
+  background-color: var(--BG-002);
 
   h2 {
     margin-bottom: 50px;
@@ -10,8 +10,8 @@
   .info-wrap {
     padding: 15px 15px 20px;
     margin-bottom: 15px;
-    background-color: variable.$BG-001;
-    box-shadow: 1px 1px 5px rgba(variable.$BG-004, 0.3);
+    background-color: var(--BG-001);
+    box-shadow: 1px 1px 5px rgba(var(--BG-004), 0.3);
     border-radius: 10px;
 
     .info {
@@ -30,14 +30,14 @@
         font-size: variable.$FS-14;
         font-weight: 400;
         border-radius: 20px;
-        color: variable.$TXT-005;
-        background-color: variable.$POINT;
+        color: var(--TXT-005);
+        background-color: var(--POINT);
       }
 
       .login-btn {
-        border: 1px solid variable.$POINT;
-        color: variable.$POINT;
-        background-color: variable.$BG-001;
+        border: 1px solid var(--POINT);
+        color: var(--POINT);
+        background-color: var(--BG-001);
       }
     }
   }
@@ -78,8 +78,8 @@
         width: 100%;
         height: 110px;
         border-radius: 10px;
-        background-color: variable.$BG-001;
-        box-shadow: 1px 1px 5px rgba(variable.$BG-004, 0.3);
+        background-color: var(--BG-001);
+        box-shadow: 1px 1px 5px rgba(var(--BG-004), 0.3);
 
         span {
           margin-top: 5px;
@@ -93,6 +93,6 @@
     margin-top: 20px;
     width: 100%;
     text-align: center;
-    color: variable.$TXT-003;
+    color: var(--TXT-003);
   }
 }

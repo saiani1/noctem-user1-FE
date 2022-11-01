@@ -9,7 +9,7 @@ module.exports = withPlugins([
   {
     images: {
       domains: ['image.istarbucks.co.kr', 'user-images.githubusercontent.com'],
-    }
-  }
+    },
+  },
   // 추가 플러그인
 ]);

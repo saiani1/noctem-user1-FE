@@ -10,7 +10,7 @@ textarea {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: variable.$FS-14;
   font-weight: $FW-001;
-  color: $TXT-001;
+  color: var(--TXT-001);
   line-height: 1.5;
   box-sizing: border-box;
   font-feature-settings: 'tnum';
@@ -25,13 +25,13 @@ h2 {
   margin-bottom: 20px;
   font-size: variable.$FS-16;
   font-weight: bold;
-  color: variable.$TXT-001;
+  color: var(--TXT-001);
 }
 
 h3 {
   font-size: variable.$FS-14;
   font-weight: bold;
-  color: variable.$TXT-001;
+  color: var(--TXT-001);
 }
 
 // button
@@ -44,8 +44,8 @@ h3 {
   font-size: variable.$FS-14;
   font-weight: 400;
   border-radius: 20px;
-  color: variable.$TXT-005;
-  background-color: variable.$POINT;
+  color: var(--TXT-005);
+  background-color: var(--POINT);
 }
 
 .btn-bottom {
@@ -53,11 +53,11 @@ h3 {
 }
 
 .btn-disable {
-  background-color: variable.$BG-004;
+  background-color: var(--BG-004);
   cursor: default;
 }
-.btn-fixed{
-  position:fixed!important;
+.btn-fixed {
+  position: fixed !important;
 }
 // layout
 .wrap {
@@ -69,7 +69,7 @@ h3 {
 .line {
   width: 100%;
   height: 1px;
-  background-color: variable.$LINE-002;
+  background-color: var(--LINE-002);
 }
 
 // input
@@ -79,14 +79,14 @@ h3 {
   padding: 10px;
   font-size: variable.$FS-14;
   border: none;
-  border-bottom: 1px solid variable.$LINE-003;
+  border-bottom: 1px solid var(--LINE-003);
 
   &::placeholder {
-    color: variable.$TXT-004;
+    color: var(--TXT-004);
   }
 
   &:focus {
-    border-bottom: 1px solid variable.$POINT;
+    border-bottom: 1px solid var(--POINT);
     // @include animation.animation(0, 0.5s, animation-slide-in-left, ease);
   }
 }
