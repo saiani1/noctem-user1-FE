@@ -314,8 +314,8 @@ function productContent() {
         setSelectedTempId(detailList.temperatureList[0].temperatureId);
         getSize(detailList.temperatureList[0].temperatureId).then(res => {
           setSizeOpt(res.data.data);
-          // setSelectedSizeId(res.data.data[0].sizeId);
-          // setSelectedSizeTxt(res.data.data[0].size);
+          setSelectedSizeId(res.data.data[0].sizeId);
+          setSelectedSizeTxt(res.data.data[0].size);
           setCartData({
             ...cartData,
             sizeId: res.data.data[0].sizeId,
@@ -328,8 +328,8 @@ function productContent() {
         }
         getSize(tempId).then(res => {
           setSizeOpt(res.data.data);
-          // setSelectedSizeTxt(res.data.data[0].size);
-          // setSelectedSizeId(res.data.data[0].sizeId);
+          setSelectedSizeTxt(res.data.data[0].size);
+          setSelectedSizeId(res.data.data[0].sizeId);
           setCartData({
             ...cartData,
             sizeId: res.data.data[0].sizeId,
@@ -450,7 +450,6 @@ function productContent() {
           <div>{detailList && detailList.allergy}</div>
         </div>
       )}
-      <hr className={cx('line')} />
       <div className={cx('button-box')}>
         <button
           className={cx('order-button')}

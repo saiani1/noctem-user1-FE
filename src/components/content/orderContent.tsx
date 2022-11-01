@@ -175,12 +175,13 @@ function orderContent(props: IProps) {
         setMenuList([
           {
             sizeId: sizeId,
+            cartId: cartId,
+            categorySmall: resData.categorySmall,
             menuFullName: resData.menuFullName,
             menuShortName: resData.menuShortName,
             imgUrl: resData.imgUrl,
             qty: qty,
             menuTotalPrice: qty * resData.menuTotalPrice,
-            cartId: cartId,
             cupType: query.cupType,
             optionList: [],
           },
@@ -216,7 +217,6 @@ function orderContent(props: IProps) {
                 />
               </button>
             </li>
-            <div className={cx('line')} />
             <li className={cx('order-info-wrap')}>
               <h3>주문 내역 ({menuList && menuList.length})</h3>
               <ul>

@@ -1,15 +1,14 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
   width: 100%;
   height: 90%;
   padding: 0 20px 75px;
-  z-index: variable.$MODAL;
+  z-index: var(--MODAL);
   position: absolute;
   bottom: 0;
   overflow: auto;
-  background-color: variable.$BG-001;
+  background-color: var(--BG-002);
 
   h2 {
     margin-bottom: 10px;
@@ -29,23 +28,23 @@
     flex-direction: column;
     margin: 10px 0 20px;
     padding-bottom: 15px;
-    border-bottom: 1px solid variable.$LINE-002;
+    border-bottom: 1px solid var(--LINE-002);
 
     .tit-wrap {
       display: flex;
       align-items: center;
-      color: variable.$TXT-001;
+      color: var(--TXT-001);
 
       h3 {
-        font-size: variable.$FS-16;
+        font-size: var(--FS-16);
         font-weight: 700;
-        color: variable.$POINT;
+        color: var(--TXT-001);
       }
 
       span {
         margin-left: 5px;
-        font-size: variable.$FS-10;
-        color: variable.$TXT-003;
+        font-size: var(--FS-10);
+        color: var(--TXT-003);
       }
     }
 
@@ -57,8 +56,8 @@
 
       p {
         margin-top: 5px;
-        font-size: variable.$FS-12;
-        color: variable.$TXT-002;
+        font-size: var(--FS-12);
+        color: var(--TXT-002);
       }
 
       button {
@@ -75,14 +74,14 @@
 
   .order-info-wrap {
     margin-bottom: 30px;
-    background-color: variable.$BG-003;
+    background-color: var(--BG-003);
     padding: 15px;
 
     li {
-      font-size: variable.$FS-12;
-      color: variable.$TXT-003;
+      font-size: var(--FS-12);
+      color: var(--TXT-003);
 
-      &~li {
+      & ~ li {
         margin-top: 20px;
       }
     }
@@ -92,7 +91,7 @@
     @include position.fixed(auto 10px 85px auto);
     padding: 10px 20px;
     border-radius: 15px;
-    background-color: variable.$POINT;
+    background-color: var(--POINT);
 
     &::after {
       @include position.fixed(auto 40px 68px auto);
@@ -101,40 +100,40 @@
       width: 0;
       height: 0;
       border-bottom: 10px solid transparent;
-      border-top: 10px solid variable.$POINT;
+      border-top: 10px solid var(--POINT);
       border-left: 10px solid transparent;
       border-right: 10px solid transparent;
     }
 
     p {
-      font-size: variable.$FS-12;
+      font-size: var(--FS-12);
       line-height: 1.5;
-      color: variable.$TXT-005;
+      color: var(--TXT-005);
     }
   }
 
   .btn-wrap {
     @include position.fixed(auto 0 0 0);
-    background-color: variable.$BG-001;
+    background-color: var(--BG-001);
     padding: 15px 19px 25px;
     display: flex;
     justify-content: space-between;
-    box-shadow: 4px 0 4px -4px variable.$BG-006;
+    box-shadow: 4px 0 4px -4px var(--BG-006);
 
     button {
       width: 48.5%;
       padding: 8px;
-      font-size: variable.$FS-13;
+      font-size: var(--FS-13);
       font-weight: 300;
       border-radius: 20px;
-      color: variable.$TXT-005;
-      background-color: variable.$POINT;
+      color: var(--TXT-005);
+      background-color: var(--POINT);
     }
 
     .cancel-btn {
-      color: variable.$POINT;
-      background-color: variable.$BG-001;
-      border: 1px solid variable.$POINT;
+      color: var(--POINT);
+      background-color: var(--BG-001);
+      border: 1px solid var(--POINT);
       box-sizing: border-box;
     }
   }

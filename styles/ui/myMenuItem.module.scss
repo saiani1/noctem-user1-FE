@@ -1,10 +1,9 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .content-wrap {
   padding: 19px;
   display: flex;
-  border-bottom: 1px solid variable.$LINE-003;
+  border-bottom: 1px solid var(--LINE-003);
 
   .img-wrap {
     flex-shrink: 0;
@@ -26,7 +25,7 @@
         align-items: center;
         width: 18px;
         height: 18px;
-        border: 1px solid variable.$LINE-003;
+        border: 1px solid var(--LINE-003);
         border-radius: 50%;
         img {
           width: 8px;
@@ -39,7 +38,7 @@
         align-items: center;
         column-gap: 5px;
         .menu-tit {
-          color: variable.$TXT-001;
+          color: var(--TXT-001);
         }
         .edit-nickname-btn {
           display: flex;
@@ -51,18 +50,18 @@
       }
       .sub-tit {
         font-size: 11px;
-        color: variable.$TXT-004;
+        color: var(--TXT-004);
       }
       .price {
         display: block;
         font-weight: 600;
-        color: variable.$TXT-001;
+        color: var(--TXT-001);
       }
       .menu-option {
         display: block;
         margin: 5px 0;
         font-size: 11px;
-        color: variable.$TXT-003;
+        color: var(--TXT-003);
       }
     }
     .btn-wrap {
@@ -74,13 +73,13 @@
         padding: 5px 20px;
         font-weight: 400;
         border-radius: 20px;
-        background-color: variable.$POINT;
-        color: variable.$TXT-005;
+        background-color: var(--POINT);
+        color: var(--TXT-005);
       }
       .cart-btn {
-        border: 1px solid variable.$POINT;
-        background-color: variable.$BG-001;
-        color: variable.$POINT;
+        border: 1px solid var(--POINT);
+        background-color: var(--BG-001);
+        color: var(--POINT);
       }
     }
   }

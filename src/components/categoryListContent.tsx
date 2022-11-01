@@ -15,6 +15,7 @@ import { cartCntState, loginState, tokenState } from '../store/atom/userStates';
 import { addComma } from '../store/utils/function';
 import { getSessionCartCount } from '../store/utils/cart';
 import { selectedStoreState } from '../store/atom/orderState';
+import { IStore } from '../types/store';
 import { IPopularMenuList } from '../types/popularMenu';
 import MenuItem from './ui/menuItem';
 
@@ -43,13 +44,32 @@ function categoryListContent({
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
-  const [selectedStore] = useRecoilState(selectedStoreState);
+  const [selectedStoreTemp, setSelectedStoreTemp] = useState<IStore>({
+    index: 0,
+    storeId: 0,
+    name: '',
+    mainImg: '',
+    address: '',
+    businessOpenHours: '',
+    businessCloseHours: '',
+    isOpen: false,
+    isParking: false,
+    isEcoStore: false,
+    isDriveThrough: false,
+    distance: '',
+    contactNumber: '',
+  });
+  const selectedStore = useRecoilValue(selectedStoreState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
   const [popularMenuInfo, setPopularMenuInfo] = useState<IPopularMenuList[]>(
     [],
   );
   const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
+    setSelectedStoreTemp(selectedStore);
+  }, []);
 
   useEffect(() => {
     if (categorySId === 2) {
@@ -141,9 +161,9 @@ function categoryListContent({
           onClick={handleClickSelectStore}
         >
           <span className={cx('tit')}>
-            {selectedStore.distance === ''
+            {selectedStoreTemp.distance === ''
               ? '주문할 매장을 선택하세요'
-              : selectedStore.name}
+              : selectedStoreTemp.name}
           </span>
           <Image
             src='/assets/svg/icon-down-arrow-white.svg'

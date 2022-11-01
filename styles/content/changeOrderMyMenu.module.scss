@@ -1,10 +1,9 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
   @include position.fixed(0 0 0 0);
-  background-color: variable.$BG-001;
-  z-index: variable.$MODAL;
+  background-color: var(--BG-001);
+  z-index: var(--MODAL);
 
   .tit-wrap {
     padding: 25px 0 15px;
@@ -15,7 +14,7 @@
 
     h2 {
       margin-bottom: 0;
-      color: variable.$TXT-001;
+      color: var(--TXT-001);
     }
     .close-btn {
       @include position.absolute(28px 22px auto auto);
@@ -32,19 +31,19 @@
     column-gap: 10px;
     padding-top: 15px;
     height: 80px;
-    background-color: variable.$BG-001;
+    background-color: var(--BG-001);
 
     button {
       width: 43%;
       height: 40px;
-      background-color: variable.$RANK-003;
-      color: variable.$TXT-005;
+      background-color: var(--RANK-003);
+      color: var(--TXT-005);
       border-radius: 30px;
 
       &.cancel-btn {
-        background-color: variable.$BG-001;
-        color: variable.$RANK-003;
-        border: 1px solid variable.$RANK-003;
+        background-color: var(--BG-001);
+        color: var(--RANK-003);
+        border: 1px solid var(--RANK-003);
       }
     }
   }

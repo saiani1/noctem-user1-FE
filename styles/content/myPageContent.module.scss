@@ -1,22 +1,21 @@
-@use '/styles/base/variable';
-
 .wrap {
+  height: calc(100vh - 100px);
   padding: 19px;
-  background-color: var(--BG-002);
+  background-color: var(--BG-001);
 
   h2 {
     margin-bottom: 50px;
   }
+
   .info-wrap {
     padding: 15px 15px 20px;
     margin-bottom: 15px;
-    background-color: var(--BG-001);
     box-shadow: 1px 1px 5px rgba(var(--BG-004), 0.3);
     border-radius: 10px;
 
     .info {
       margin-bottom: 10px;
-      font-size: variable.$FS-16;
+      font-size: var(--FS-16);
       font-weight: bold;
     }
 
@@ -27,7 +26,7 @@
         margin: 0 4px;
         padding: 4px 10px;
         text-align: center;
-        font-size: variable.$FS-14;
+        font-size: var(--FS-14);
         font-weight: 400;
         border-radius: 20px;
         color: var(--TXT-005);
@@ -43,7 +42,7 @@
   }
 
   .welcome-msg {
-    font-size: variable.$FS-24;
+    font-size: var(--FS-24);
     text-align: center;
     line-height: 1.2;
 
@@ -78,12 +77,13 @@
         width: 100%;
         height: 110px;
         border-radius: 10px;
-        background-color: var(--BG-001);
+        background-color: var(--BG-002);
         box-shadow: 1px 1px 5px rgba(var(--BG-004), 0.3);
 
         span {
           margin-top: 5px;
-          font-size: variable.$FS-13;
+          font-size: var(--FS-13);
+          color: var(--TXT-002);
         }
       }
     }

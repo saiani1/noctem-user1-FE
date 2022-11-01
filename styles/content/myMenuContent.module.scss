@@ -1,4 +1,3 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
@@ -12,7 +11,7 @@
     padding: 10px 20px;
     align-items: center;
     width: 100%;
-    background-color: variable.$BG-003;
+    background-color: var(--BG-003);
 
     .input-wrap {
       display: flex;
@@ -20,7 +19,7 @@
       label {
         margin-right: 8px;
         font-size: 13px;
-        color: variable.$TXT-002;
+        color: var(--TXT-002);
       }
     }
     .sort-btn {
@@ -28,7 +27,7 @@
       align-items: center;
       column-gap: 5px;
       font-size: 13px;
-      color: variable.$TXT-003;
+      color: var(--TXT-003);
     }
   }
 }

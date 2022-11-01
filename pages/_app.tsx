@@ -3,7 +3,7 @@ import { ThemeProvider } from 'next-themes';
 import { RecoilRoot } from 'recoil';
 import { Toaster } from 'react-hot-toast';
 
-import '../styles/base/_darkmode.scss';
+import '../styles/base/_variable.scss';
 import '../styles/index.scss';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {

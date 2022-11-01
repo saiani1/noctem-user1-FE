@@ -1,5 +1,3 @@
-@use '/styles/base/variable';
-
 .store-wrap {
   position: relative;
 
@@ -41,9 +39,9 @@
           display: flex;
 
           .store-name {
-            font-size: variable.$FS-13;
+            font-size: var(--FS-13);
             font-weight: bold;
-            color: variable.$TXT-002;
+            color: var(--TXT-001);
           }
 
           .is-open {
@@ -72,9 +70,9 @@
       .store-address {
         display: inline-block;
         margin-top: -10px;
-        font-size: variable.$FS-12;
+        font-size: var(--FS-12);
         font-weight: 300;
-        color: variable.$TXT-003;
+        color: var(--TXT-003);
         line-height: 1.4;
       }
 
@@ -84,32 +82,34 @@
         align-items: center;
         .waiting-time-wrap {
           span {
-            font-size: variable.$FS-12;
-            color: variable.$TXT-002;
+            font-size: var(--FS-11);
+            font-weight: var(--FW-001);
+            color: var(--TXT-002);
             strong {
-              font-size: variable.$FS-15;
-              font-weight: variable.$FW-003;
-              color: variable.$TXT-002;
+              font-size: var(--FS-15);
+              font-weight: var(--FW-003);
+              color: var(--TXT-001);
             }
           }
         }
       }
 
       .distance {
-        font-size: variable.$FS-13;
+        font-size: var(--FS-13);
         font-weight: 500;
-        color: variable.$TXT-002;
+        color: var(--TXT-002);
       }
     }
   }
 
   .close-store {
-    background-color: variable.$BG-ALPA-003;
+    background-color: var(--BG-ALPA-003);
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    border-radius: 5px;
     z-index: 1;
     // cursor: auto;
   }

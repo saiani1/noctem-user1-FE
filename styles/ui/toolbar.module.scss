@@ -1,11 +1,9 @@
-@use '/styles/base/variable';
-
 .toolbar-list-wrap {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: variable.$TOOLBAR;
+  z-index: var(--TOOLBAR);
   background: var(--BG-002);
   box-shadow: var(--BOX-SHADOW-TOOLBAR);
 }
@@ -43,7 +41,7 @@
     .toolbar-txt {
       display: block;
       padding-top: 33px;
-      color: var(--TXT-004);
+      color: var(--TXT-00);
       font-size: 10px;
     }
 

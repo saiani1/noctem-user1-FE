@@ -1,4 +1,3 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .signUpCompalte-wrap {
@@ -15,12 +14,12 @@
 
   .welcome {
     margin-bottom: 14px;
-    font-size: variable.$FS-24;
+    font-size: var(--FS-24);
     font-weight: bold;
   }
 
   .congratulations {
-    font-size: variable.$FS-18;
+    font-size: var(--FS-18);
     margin-bottom: 24px;
 
     .nickname {

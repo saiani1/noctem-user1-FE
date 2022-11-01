@@ -32,6 +32,7 @@ import {
 import { IMenuList } from '../../types/order';
 import { orderInfoState } from './../../store/atom/orderState';
 import { addComma } from '../../store/utils/function';
+import { IStore } from '../../types/store';
 
 const cx = classNames.bind(styles);
 
@@ -41,7 +42,22 @@ function cartContent() {
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
-  const [selectedStore] = useRecoilState(selectedStoreState);
+  const [selectedStoreTemp, setSelectedStoreTemp] = useState<IStore>({
+    index: 0,
+    storeId: 0,
+    name: '',
+    mainImg: '',
+    address: '',
+    businessOpenHours: '',
+    businessCloseHours: '',
+    isOpen: false,
+    isParking: false,
+    isEcoStore: false,
+    isDriveThrough: false,
+    distance: '',
+    contactNumber: '',
+  });
+  const selectedStore = useRecoilValue(selectedStoreState);
   const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
 
@@ -77,7 +93,7 @@ function cartContent() {
       return;
     }
 
-    if (selectedStore.distance === '') {
+    if (selectedStoreTemp.distance === '') {
       toast.error('매장을 선택해 주세요');
       return;
     }
@@ -94,10 +110,10 @@ function cartContent() {
           pathname: '/order',
           query: {
             menuList: JSON.stringify(menuList),
-            storeId: selectedStore.storeId,
-            storeName: selectedStore.name,
-            storeAddress: selectedStore.address,
-            storeContactNumber: selectedStore.contactNumber,
+            storeId: selectedStoreTemp.storeId,
+            storeName: selectedStoreTemp.name,
+            storeAddress: selectedStoreTemp.address,
+            storeContactNumber: selectedStoreTemp.contactNumber,
           },
         },
         '/order',
@@ -121,8 +137,8 @@ function cartContent() {
   };
 
   useEffect(() => {
-    console.log('찍히나?', cartList);
-    console.log('isChange', isChange);
+    setSelectedStoreTemp(selectedStore);
+
     if (isLogin) {
       // 회원 조회
       console.log('회원 조회');
@@ -169,6 +185,7 @@ function cartContent() {
         return {
           sizeId: sizeId,
           cartId: cartId,
+          categorySmall: menu.categorySmall,
           menuFullName: menu.menuFullName,
           menuShortName: menu.menuShortName,
           imgUrl: menu.imgUrl,
@@ -224,9 +241,9 @@ function cartContent() {
             onClick={handleClickSelectStore}
           >
             <span className={cx('tit')}>
-              {selectedStore.distance === ''
+              {selectedStoreTemp.distance === ''
                 ? '주문할 매장을 선택하세요'
-                : selectedStore.name}
+                : selectedStoreTemp.name}
             </span>
             <Image
               src='/assets/svg/icon-down-arrow-white.svg'

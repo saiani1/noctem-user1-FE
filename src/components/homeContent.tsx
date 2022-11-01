@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useTheme } from 'next-themes';
 import classNames from 'classnames/bind';
 import useGeolocation from 'react-hook-geolocation';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -41,7 +40,6 @@ function homeContent() {
   const geolocation = useGeolocation();
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const { theme, setTheme } = useTheme();
 
   const [isFetching, setIsFetching] = useState(false);
   const [myMenu, setMyMenu] = useState<IMenuData1[]>();
@@ -86,10 +84,6 @@ function homeContent() {
         ),
       });
     }
-  };
-
-  const handleDarkMode = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   useEffect(() => {
@@ -151,13 +145,6 @@ function homeContent() {
         <div className={cx('title')}>
           <span>{nickname}</span> 님, 반갑습니다.
         </div>
-        <button
-          type='button'
-          onClick={handleDarkMode}
-          style={{ padding: '10px', backgroundColor: 'pink' }}
-        >
-          다크모드
-        </button>
         {isFetching ? (
           <div className={cx('point-bar')}>
             <div className={cx('progress-bar-space')}>
@@ -270,7 +257,7 @@ function homeContent() {
         )}
       </div>
       <div className={cx('my-wrap')}>
-        {isLogin && (
+        {showMyMenu && isLogin && (
           <div className={cx('my-menu')}>
             {myMenu && myMenu.length !== 0 ? (
               <>

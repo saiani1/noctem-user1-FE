@@ -1,4 +1,3 @@
-@use '/styles//base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
@@ -6,9 +5,9 @@
 
   .title {
     margin: 25px 0 15px;
-    font-size: variable.$FS-16;
+    font-size: var(--FS-16);
     font-weight: bold;
-    color: variable.$TXT-001;
+    color: var(--TXT-001);
   }
 
   .search-input-wrap {
@@ -19,11 +18,11 @@
       border: none;
       padding: 5px 30px;
       border-radius: 2px;
-      background-color: variable.$BG-008;
+      background-color: var(--BG-003);
 
       &::placeholder {
-        font-size: variable.$FS-13;
-        color: variable.$TXT-004;
+        font-size: var(--FS-13);
+        color: var(--TXT-003);
       }
     }
 
@@ -43,12 +42,12 @@
     button {
       flex: 0 0 auto;
       padding: 5px 10px;
-      font-size: variable.$FS-12;
+      font-size: var(--FS-12);
       border-radius: 5px;
-      border: 1px solid variable.$LINE-003;
-      color: variable.$TXT-003;
+      border: 1px solid var(--LINE-003);
+      color: var(--TXT-003);
 
-      ~button {
+      ~ button {
         margin-left: 10px;
       }
     }
@@ -56,12 +55,12 @@
 
   .tab-wrap {
     padding-bottom: 10px;
-    border-bottom: 1px solid variable.$LINE-002;
+    border-bottom: 1px solid var(--LINE-002);
 
     button {
-      font-size: variable.$FS-13;
+      font-size: var(--FS-13);
       font-weight: 300;
-      color: variable.$TXT-003;
+      color: var(--TXT-003);
       margin-right: 8px;
 
       &:first-child::after {
@@ -70,11 +69,11 @@
         content: ' ';
         width: 1px;
         height: 10px;
-        background-color: variable.$BG-007;
+        background-color: var(--BG-007);
       }
 
       &.active {
-        color: variable.$TXT-002;
+        color: var(--TXT-002);
         font-weight: bold;
       }
     }
@@ -87,7 +86,7 @@
   z-index: 1001;
   height: 90%;
   width: 100vw;
-  background-color: variable.$BG-001;
+  background-color: var(--BG-001);
   bottom: 0;
   overflow: auto;
 }

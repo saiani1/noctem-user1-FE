@@ -1,9 +1,7 @@
-@use '../base/variable';
-
 .product-img {
   text-align: center;
   height: 170px;
-  background-color: variable.$BG-009;
+  background-color: var(--BG-009);
 
   img {
     height: 100%;
@@ -14,20 +12,27 @@
   padding: 16px;
 
   .product-name {
-    color: variable.$TXT-001;
-    font-size: variable.$FS-16;
-    font-weight: variable.$FW-003;
+    font-size: var(--FS-16);
+    font-weight: var(--FW-003);
+    color: var(--TXT-001);
   }
 
   .product-english-name {
-    color: variable.$TXT-003;
-    font-size: variable.$FS-10;
+    font-size: var(--FS-11);
+    color: var(--TXT-003);
   }
 
   .product-price {
-    color: variable.$TXT-001;
-    font-size: variable.$FS-16;
-    font-weight: variable.$FW-003;
+    font-size: var(--FS-16);
+    font-weight: var(--FW-003);
+    color: var(--TXT-001);
+  }
+
+  .product-content {
+    margin-top: 3px;
+    font-size: var(--FS-13);
+    font-weight: var(--FW-001);
+    color: var(--TXT-002);
   }
 
   .temp-button {
@@ -43,8 +48,8 @@
       justify-content: center;
       width: 100%;
       border-radius: 50px;
-      background-color: variable.$TXT-ERROR;
-      color: variable.$TXT-005;
+      background-color: var(--TXT-ERROR);
+      color: var(--TXT-005);
     }
 
     .only-ice {
@@ -53,8 +58,8 @@
       justify-content: center;
       width: 100%;
       border-radius: 50px;
-      background-color: variable.$TXT-SUCCESS;
-      color: variable.$TXT-005;
+      background-color: var(--TXT-SUCCESS);
+      color: var(--TXT-005);
     }
 
     .hot-unclicked {
@@ -62,7 +67,7 @@
       align-items: center;
       justify-content: center;
       border-radius: 50px 0 0 50px;
-      border: 1px solid variable.$LINE-002;
+      border: 1px solid var(--LINE-002);
       width: 50%;
     }
 
@@ -71,9 +76,9 @@
       align-items: center;
       justify-content: center;
       border-radius: 50px 0 0 50px;
-      background-color: variable.$TXT-ERROR;
+      background-color: var(--TXT-ERROR);
       width: 50%;
-      color: variable.$TXT-005;
+      color: var(--TXT-005);
     }
 
     .iced-unclicked {
@@ -81,7 +86,7 @@
       align-items: center;
       justify-content: center;
       border-radius: 0 50px 50px 0;
-      border: 1px solid #eee;
+      border: 1px solid var(--LINE-002);
       width: 50%;
     }
 
@@ -90,9 +95,9 @@
       align-items: center;
       justify-content: center;
       border-radius: 0 50px 50px 0;
-      background-color: variable.$TXT-SUCCESS;
+      background-color: var(--TXT-SUCCESS);
       width: 50%;
-      color: variable.$TXT-005;
+      color: var(--TXT-005);
     }
   }
 }
@@ -117,20 +122,20 @@
 
   .my-menu {
     position: absolute;
-    background-color: variable.$BG-001;
+    background-color: var(--BG-001);
     padding: 24px;
     border-radius: 10px;
     width: 80%;
     z-index: 150;
 
     h3 {
-      font-size: variable.$FS-16;
+      font-size: var(--FS-16);
       padding: 10px 0;
-      font-weight: variable.$FW-003;
+      font-weight: var(--FW-003);
     }
 
     .menu-info {
-      background-color: variable.$BG-003;
+      background-color: var(--BG-003);
       padding: 12px;
 
       h4 {
@@ -138,8 +143,8 @@
       }
 
       .menu-option {
-        font-size: variable.$FS-12;
-        color: variable.$TXT-003;
+        font-size: var(--FS-12);
+        color: var(--TXT-003);
       }
     }
 
@@ -147,12 +152,12 @@
       padding: 10px 0;
 
       p {
-        font-size: variable.$FS-12;
+        font-size: var(--FS-12);
       }
 
       input {
         border: none;
-        border-bottom: 1px solid variable.$LINE-003;
+        border-bottom: 1px solid var(--LINE-003);
         width: 100%;
         padding: 10px 0;
       }
@@ -170,13 +175,13 @@
       }
 
       :nth-child(1) {
-        color: variable.$POINT;
-        border: 1px solid variable.$POINT;
+        color: var(--POINT);
+        border: 1px solid var(--POINT);
       }
 
       :nth-child(2) {
-        background-color: variable.$POINT;
-        color: variable.$TXT-005;
+        background-color: var(--POINT);
+        color: var(--TXT-005);
       }
     }
   }
@@ -188,8 +193,8 @@
   justify-content: space-between;
 
   p {
-    font-size: variable.$FS-16;
-    font-weight: variable.$FW-003;
+    font-size: var(--FS-16);
+    font-weight: var(--FW-003);
   }
 }
 
@@ -197,25 +202,26 @@
   padding: 12px;
 
   p {
-    font-size: variable.$FS-16;
-    font-weight: variable.$FW-003;
+    font-size: var(--FS-16);
+    font-weight: var(--FW-003);
   }
 }
 
 .line {
-  border: 1px solid variable.$LINE-002;
+  border: 1px solid var(--LINE-002);
 }
 
 .button-box {
   padding: 16px;
+  background-color: var(--BG-003);
 
   .order-button {
     height: 30px;
-    background-color: variable.$POINT;
+    background-color: var(--POINT);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: variable.$TXT-005;
+    color: var(--TXT-005);
     border-radius: 50px;
     width: 100%;
   }
@@ -229,8 +235,8 @@
 
 .option-box {
   .menu-title {
-    color: variable.$TXT-001;
-    font-size: variable.$FS-18;
+    color: var(--TXT-001);
+    font-size: var(--FS-18);
     text-align: center;
     padding: 12px;
   }
@@ -242,23 +248,23 @@
     height: 90%;
     width: 100vw;
     overflow: auto;
-    background-color: variable.$BG-001;
+    background-color: var(--BG-002);
     bottom: 0;
 
     .bottom-order-bar {
       position: fixed;
       z-index: 1001;
       bottom: 0;
-      background-color: variable.$BG-001;
+      background-color: var(--BG-003);
       width: 100%;
 
-      &>div {
+      & > div {
         padding: 16px;
 
-        &>div {
+        & > div {
           display: flex;
           justify-content: space-between;
-          font-size: variable.$FS-20;
+          font-size: var(--FS-20);
           align-items: center;
         }
 
@@ -274,14 +280,14 @@
           }
 
           .total-price {
-            color: variable.$TXT-001;
-            font-size: variable.$FS-20;
-            font-weight: variable.$FW-003;
+            color: var(--TXT-001);
+            font-size: var(--FS-20);
+            font-weight: var(--FW-003);
           }
         }
 
         .order-select {
-          &>div {
+          & > div {
             display: flex;
 
             div {
@@ -289,15 +295,16 @@
             }
 
             .go-cart {
-              border: 1px solid variable.$TXT-001;
+              border: 1px solid var(--POINT);
               border-radius: 50px;
+              color: var(--POINT);
             }
 
             .go-order {
               margin-left: 8px;
               border-radius: 50px;
-              background-color: variable.$TXT-006;
-              color: variable.$TXT-005;
+              background-color: var(--POINT);
+              color: var(--TXT-005);
             }
           }
         }
@@ -307,9 +314,9 @@
 
   div {
     .option-title {
-      color: variable.$TXT-001;
-      font-size: variable.$FS-16;
-      font-weight: variable.$FW-003;
+      color: var(--TXT-001);
+      font-size: var(--FS-16);
+      font-weight: var(--FW-002);
       margin: 16px;
     }
 
@@ -323,9 +330,9 @@
         width: calc((100% - 20px) / 3);
         padding: 10px 10px;
         margin-right: 10px;
-        color: variable.$TXT-004;
+        color: var(--TXT-004);
         text-align: center;
-        border: 1px solid variable.$TXT-004;
+        border: 1px solid var(--TXT-004);
         border-radius: 10px;
 
         .cup-image-box {
@@ -342,8 +349,8 @@
       }
 
       .cup-card-click {
-        color: variable.$TXT-006;
-        border: 1px solid variable.$TXT-006;
+        border: 2px solid var(--POINT);
+        color: var(--TXT-001);
       }
     }
 
@@ -354,7 +361,7 @@
       text-align: center;
 
       div {
-        border: 1px solid variable.$TXT-006;
+        border: 1px solid var(--LINE-003);
         border-right: none;
         padding: 10px;
       }
@@ -369,12 +376,12 @@
 
       :nth-child(3) {
         border-radius: 0 50px 50px 0;
-        border-right: 1px solid variable.$TXT-006;
+        border-right: 1px solid var(--LINE-003);
       }
 
       .click-cup {
-        background-color: variable.$TXT-006;
-        color: variable.$TXT-005;
+        background-color: var(--POINT);
+        color: var(--TXT-005);
       }
     }
   }
@@ -383,16 +390,16 @@
 .nutrition-sheet {
   width: 100%;
   height: 90%;
-  z-index: variable.$MODAL;
+  z-index: var(--MODAL);
   position: absolute;
   bottom: 0;
   overflow: auto;
-  background-color: variable.$BG-001;
+  background-color: var(--BG-002);
 
   .title {
     padding: 24px;
     text-align: center;
-    font-size: variable.$FS-18;
+    font-size: var(--FS-18);
   }
 
   .cupsize {
@@ -400,7 +407,7 @@
 
     li {
       padding: 0 16px;
-      font-weight: variable.$FW-003;
+      font-weight: var(--FW-003);
     }
   }
 
@@ -409,7 +416,7 @@
     padding: 2px 28px;
     margin-top: 5px;
     transition: all 0.2s ease-in-out;
-    background-color: variable.$BG-006;
+    background-color: var(--BG-006);
   }
 
   .state-bar-grande {
@@ -418,7 +425,7 @@
     margin-top: 5px;
     margin-left: 60px;
     transition: all 0.2s ease-in-out;
-    background-color: variable.$BG-006;
+    background-color: var(--BG-006);
   }
 
   .state-bar-venti {
@@ -427,13 +434,13 @@
     margin-top: 5px;
     margin-left: 140px;
     transition: all 0.2s ease-in-out;
-    background-color: variable.$BG-006;
+    background-color: var(--BG-006);
   }
 
   .size {
     padding-left: 16px;
     padding-top: 24px;
-    color: variable.$TXT-003;
+    color: var(--TXT-003);
   }
 
   .nutrition-kind {
@@ -445,13 +452,13 @@
       justify-content: space-between;
 
       :nth-child(2) {
-        font-weight: variable.$FW-003;
+        font-weight: var(--FW-003);
       }
     }
 
     hr {
       height: 1px;
-      background-color: variable.$LINE-002;
+      background-color: var(--LINE-002);
       border-style: none;
     }
   }

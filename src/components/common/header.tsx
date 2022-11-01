@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+
 import styles from '../../../styles/common/header.module.scss';
 
 const cx = classNames.bind(styles);
@@ -14,6 +15,10 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
 
   const handleBack = () => {
     router.back();
+  };
+
+  const handleDarkMode = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   return (
@@ -57,6 +62,13 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
           </a>
         </Link>
       </div>
+      <button
+        type='button'
+        onClick={handleDarkMode}
+        style={{ padding: '10px', backgroundColor: 'pink' }}
+      >
+        다크모드
+      </button>
     </div>
   );
 }
