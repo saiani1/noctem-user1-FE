@@ -41,6 +41,7 @@ function homeContent() {
   const geolocation = useGeolocation();
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
+  const [isLoginTemp, setIsLoginTemp] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
   const [myMenu, setMyMenu] = useState<IMenuData1[]>();
@@ -99,6 +100,8 @@ function homeContent() {
   };
 
   useEffect(() => {
+    setIsLoginTemp(isLogin);
+
     getPopularMenu().then(res => setPopularMenuList(res.data.data));
 
     if (isLogin) {
@@ -272,7 +275,7 @@ function homeContent() {
         )}
       </div>
       <div className={cx('my-wrap')}>
-        {showMyMenu && isLogin && (
+        {showMyMenu && isLoginTemp && (
           <div className={cx('my-menu')}>
             {myMenu && myMenu.length !== 0 ? (
               <>
@@ -315,7 +318,7 @@ function homeContent() {
             )}
           </div>
         )}
-        {!isLogin && (
+        {!isLoginTemp && (
           <div className={cx('info-wrap')}>
             <div className={cx('info')}>
               로그인 하여 모든 서비스를 이용해 보세요!
