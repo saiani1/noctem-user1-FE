@@ -2,7 +2,7 @@ import { basicRequest } from './base';
 
 const SERVICE = '/menu-service';
 
-export const getLageCategory = async () => {
+export const getLargeCategory = async () => {
   const res = await basicRequest.get(`${SERVICE}/categoryL`);
   return res;
 };

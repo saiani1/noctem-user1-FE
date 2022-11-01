@@ -66,7 +66,7 @@ function loginContent() {
         <Image
           src='/assets/images/png/logo-symbol.png'
           alt='logo symbol'
-          width={80}
+          width={100}
           height={100}
         />
       </div>
