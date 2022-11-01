@@ -34,46 +34,63 @@
       text-align: left;
 
       .top-content-wrap {
+        display: flex;
+        justify-content: space-between;
+
         .store-name-wrap {
           display: flex;
 
           .store-name {
-            margin-bottom: 2px;
             font-size: variable.$FS-13;
             font-weight: bold;
             color: variable.$TXT-002;
           }
 
           .is-open {
-            margin-left: 3px;
+            margin: 1px 0 0 3px;
           }
         }
 
-        .store-address {
-          display: inline-block;
-          font-size: variable.$FS-11;
-          font-weight: 300;
-          color: variable.$TXT-003;
-          line-height: 1.4;
+        .icon-wrap {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 3px;
+
+          .icon {
+            & ~ .icon {
+              margin-left: 10px;
+            }
+          }
+
+          .icon-top {
+            margin-top: 3px;
+          }
         }
+      }
+
+      .store-address {
+        display: inline-block;
+        margin-top: -10px;
+        font-size: variable.$FS-12;
+        font-weight: 300;
+        color: variable.$TXT-003;
+        line-height: 1.4;
       }
 
       .bottom-content-wrap {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-        .icon-wrap {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          .icon {
-            margin-right: 10px;
-          }
-
-          .icon-top {
-            margin-top: 3px;
+        .waiting-time-wrap {
+          span {
+            font-size: variable.$FS-12;
+            color: variable.$TXT-002;
+            strong {
+              font-size: variable.$FS-15;
+              font-weight: variable.$FW-003;
+              color: variable.$TXT-002;
+            }
           }
         }
       }
@@ -94,6 +111,6 @@
     right: 0;
     bottom: 0;
     z-index: 1;
-    cursor: auto;
+    // cursor: auto;
   }
 }

@@ -15,9 +15,11 @@
     display: flex;
     width: 100%;
     overflow: hidden;
+    justify-content: center;
 
     img {
-      height: 250px;
+      width: 100%;
+      max-width: 600px;
     }
   }
 
@@ -103,5 +105,9 @@
     border-radius: 20px;
     color: variable.$TXT-005;
     background-color: variable.$POINT;
+
+    &.disable {
+      background-color: variable.$BG-007;
+    }
   }
 }

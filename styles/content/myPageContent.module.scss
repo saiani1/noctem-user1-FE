@@ -1,8 +1,13 @@
 @use '/styles/base/variable';
 
 .wrap {
+  height: calc(100vh - 100px);
   padding: 19px;
   background-color: variable.$BG-002;
+
+  h2 {
+    margin-bottom: 50px;
+  }
 
   .info-wrap {
     padding: 15px 15px 20px;
@@ -34,7 +39,7 @@
       .login-btn {
         border: 1px solid variable.$POINT;
         color: variable.$POINT;
-        background-color: variable.$BG-001
+        background-color: variable.$BG-001;
       }
     }
   }
@@ -50,7 +55,7 @@
   }
 
   .menu-btn-li-wrap {
-    margin: 20px 0;
+    margin: 30px 0 20px;
     display: flex;
     justify-content: space-between;
     row-gap: 15px;
@@ -82,37 +87,6 @@
           margin-top: 5px;
           font-size: variable.$FS-13;
         }
-      }
-    }
-  }
-
-  .menu-li-wrap {
-    .menu-wrap {
-      padding: 10px 0;
-
-      &~.menu-wrap {
-        border-top: 1px solid variable.$LINE-003;
-      }
-
-      h3 {
-        margin-bottom: 10px;
-      }
-
-      .sub-menu-wrap {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-
-        li {
-          width: 50%;
-          line-height: 2;
-          padding-left: 20px;
-          color: variable.$TXT-002;
-        }
-      }
-
-      .qna {
-        padding-left: 20px;
       }
     }
   }

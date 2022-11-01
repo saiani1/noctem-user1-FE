@@ -15,6 +15,7 @@ import MyMenuItem from '../ui/myMenuItem';
 import ChangeOrderMyMenuModal from './changeOrderMyMenuModal';
 import { useRecoilValue } from 'recoil';
 import { tokenState } from '../../store/atom/userStates';
+import { toast } from 'react-hot-toast';
 
 function myMenuContent() {
   const token = useRecoilValue(tokenState);
@@ -29,31 +30,37 @@ function myMenuContent() {
 
   const cx = classNames.bind(styles);
 
-  // useEffect(() => {
-  //   Promise.all([getShowMainMyMenu(), getMyMenuData()]).then(res => {
-  //     console.log(res);
-  //     setShowMyMenu(res[0].data.data);
-  //     if (res[1].data.data.length !== 0) {
-  //       setInfo(res[1].data.data);
-  //     } else {
-  //       setIsEmpty(true);
-  //       setIsFetching(true);
-  //     }
-  //   });
-  // }, [isDeleteMyMenu, isChangeMyMenuName]);
   useEffect(() => {
-    getMyMenuData(token).then(res => {
-      if (res.data.data.length !== 0) {
-        setInfo(res.data.data);
+    Promise.all([getShowMainMyMenu(token), getMyMenuData(token)]).then(res => {
+      console.log(res);
+      setShowMyMenu(res[0].data.data);
+      if (res[1].data.data.length !== 0) {
+        setInfo(res[1].data.data);
+        setIsFetching(true);
       } else {
         setIsEmpty(true);
         setIsFetching(true);
       }
     });
-  }, [isDeleteMyMenu, isChangeMyMenuList]);
+  }, [isDeleteMyMenu, isChangeMyMenuName]);
+
+  // useEffect(() => {
+  //   getMyMenuData(token).then(res => {
+  //     if (res.data.data.length !== 0) {
+  //       setInfo(res.data.data);
+  //       console.log(res.data.data);
+  //       setIsFetching(true);
+  //     } else {
+  //       setIsEmpty(true);
+  //       setIsFetching(true);
+  //     }
+  //   });
+  // }, [isDeleteMyMenu, isChangeMyMenuList]);
+
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeShowMainMyMenu(token).then(res => {
       console.log('res : ', res);
+      toast.success('정상적으로 변경되었습니다.');
     });
   };
 
@@ -96,7 +103,7 @@ function myMenuContent() {
               />
             </div>
           )}
-          <button
+          {/* <button
             type='button'
             className={cx('sort-btn')}
             onClick={handleClickChangeOrderBtn}
@@ -108,7 +115,7 @@ function myMenuContent() {
               height={13}
             />
             순서변경
-          </button>
+          </button> */}
         </div>
         {isEmpty && <EmptyMyMenu />}
         <ul>
@@ -122,7 +129,6 @@ function myMenuContent() {
                 setIsFetching={setIsFetching}
                 setIsDeleteMyMenu={setIsDeleteMyMenu}
                 setIsChangeMyMenuName={setIsChangeMyMenuName}
-                setInfo={setInfo}
                 info={info}
                 setIsChangeMyMenuList={setIsChangeMyMenuList}
                 isChangeMyMenuList={isChangeMyMenuList}

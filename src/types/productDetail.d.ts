@@ -42,6 +42,7 @@ export interface ISizeList {
 export interface ICartData {
   sizeId: ISize['sizeId'];
   quantity: number;
+  cupType: string;
   personalOptionList?: IPersonalOption[];
 }
 

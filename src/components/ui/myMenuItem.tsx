@@ -9,7 +9,8 @@ import {
 } from '../../../src/store/api/myMenu';
 import styles from '../../../styles/ui/myMenuItem.module.scss';
 import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
-import { addComma, getSessionCartCount } from './../../store/utils/function';
+import { addComma } from './../../store/utils/function';
+import { getSessionCartCount } from '../../store/utils/cart';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
 // import { isExistToken } from '../../../store/utils/token';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -37,7 +38,6 @@ interface IProps {
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleteMyMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsChangeMyMenuName: React.Dispatch<React.SetStateAction<boolean>>;
-  setInfo: React.Dispatch<React.SetStateAction<IMenuData1[]>>;
   info: IMenuData1[];
   setIsChangeMyMenuList: React.Dispatch<React.SetStateAction<boolean>>;
   isChangeMyMenuList: boolean;
@@ -50,7 +50,6 @@ function myMenuItem({
   setIsFetching,
   setIsDeleteMyMenu,
   setIsChangeMyMenuName,
-  setInfo,
   info,
   setIsChangeMyMenuList,
   isChangeMyMenuList,
@@ -74,7 +73,25 @@ function myMenuItem({
       setItemInfo(res.data.data);
       console.log('item', item);
     });
+    console.log('info', info);
   }, [info]);
+
+  const handleCustomAlert = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => (
+        <CustomAlert
+          title='장바구니에 담겼습니다!'
+          desc='장바구니로 이동하시겠습니까?'
+          btnTitle='이동'
+          // id={}
+          onAction={() => {
+            router.push('/cart');
+          }}
+          onClose={onClose}
+        />
+      ),
+    });
+  };
 
   const handleChangeMyMenuName = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
@@ -115,6 +132,7 @@ function myMenuItem({
     const cartData: ICartData = {
       sizeId: item.sizeId,
       quantity: 1,
+      cupType: item.cupType,
       personalOptionList: [],
     };
     console.log('cartData : ', cartData);
@@ -126,12 +144,11 @@ function myMenuItem({
         JSON.stringify(cartData),
       );
       setCartCount(getSessionCartCount());
-      toast.success('장바구니에 담겼습니다!');
+      handleCustomAlert();
     } else {
       addCart(cartData, token).then(res => {
         if (res.data.data) {
-          console.log('mycartItem res', res);
-          toast.success('장바구니에 담겼습니다!');
+          handleCustomAlert();
         } else {
           toast.error(
             '장바구니에 담을 수 없습니다. 잠시 후 다시 시도해주세요.',
@@ -171,6 +188,7 @@ function myMenuItem({
           query: {
             sizeId: item.sizeId,
             qty: 1,
+            cupType: item.cupType,
             optionList: [],
             storeId: selectedStore.storeId,
             storeName: selectedStore.name,
@@ -190,6 +208,7 @@ function myMenuItem({
         query: {
           sizeId: item.sizeId,
           qty: 1,
+          cupType: item.cupType,
           optionList: [],
         },
       },
@@ -234,6 +253,7 @@ function myMenuItem({
           handleClose={handleClose}
           handleAddMyMenuData={handleChangeMyMenuName}
           temperatureChoice={0}
+          cupChoice={item.cupType}
         />
       )}
       {isEmpty !== true && itemInfo ? (
@@ -274,7 +294,8 @@ function myMenuItem({
                   원
                 </strong>
                 <span className={cx('menu-option')}>
-                  {itemInfo.temperature} | {itemInfo.size}
+                  {itemInfo.temperature.toUpperCase()} | {itemInfo.size} |{' '}
+                  {item.cupType}
                 </span>
               </div>
               <div className={cx('btn-wrap')}>

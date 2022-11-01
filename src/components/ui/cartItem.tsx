@@ -87,11 +87,13 @@ function cartItem({
             {
               sizeId: sizeId,
               cartId: cartId,
+              categorySmall: resData.categorySmall,
               menuFullName: resData.menuFullName,
               menuShortName: resData.menuShortName,
               imgUrl: resData.imgUrl,
               qty: qty,
               menuTotalPrice: 0,
+              cupType: cart.cupType,
               optionList: [],
             },
           ];
@@ -132,9 +134,10 @@ function cartItem({
               <h4 className={cx('kor-name')}>{data.menuName}</h4>
               <span className={cx('eng-name')}>{data.menuEngName}</span>
               <div className={cx('option-wrap')}>
-                <span
-                  className={cx('option')}
-                >{`${data.temperature} | ${data.size} | 매장 컵`}</span>
+                <span className={cx('option')}>
+                  {data.temperature.toUpperCase()} | {data.size} |{' '}
+                  {cart.cupType}
+                </span>
                 <span className={cx('price')}>
                   {addComma(data.totalMenuPrice)}원
                 </span>

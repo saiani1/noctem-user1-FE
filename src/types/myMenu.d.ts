@@ -1,6 +1,7 @@
 export interface IParams {
   sizeId: number;
   alias: string;
+  cupType: string;
   personalOptionList: IOption[];
 }
 
@@ -14,6 +15,7 @@ export interface IMenuData1 {
   myMenuId: number;
   alias: string;
   sizeId: number;
+  cupType: string;
   myPersonalOptionList?: [];
 }
 

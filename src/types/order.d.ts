@@ -1,9 +1,7 @@
 export interface IProps {
   isClickPaymentBtn: boolean;
-  isClickCashReceiptBtn: boolean;
   isClickSubmitBtn: boolean;
   setIsClickPaymentBtn: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsClickCashReceiptBtn: React.Dispatch<React.SetStateAction<boolean>>;
   setIsClickSubmitBtn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -23,11 +21,13 @@ export interface IPurchaseData {
 export interface IMenuList {
   sizeId: number;
   cartId: number;
+  categorySmall: string;
   menuFullName: string;
   menuShortName: string;
   imgUrl: string;
   qty: number;
   menuTotalPrice: number;
+  cupType: string | string[] | undefined;
   optionList?: [];
 }
 
@@ -37,7 +37,13 @@ export interface IPayment {
   cardPaymentPrice: number;
 }
 
+// 주문 정보
 export interface IOrderInfo {
   storeId: number;
   purchaseId: number;
+}
+
+export interface ICardInfo {
+  company: string;
+  card: string;
 }

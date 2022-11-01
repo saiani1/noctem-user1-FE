@@ -5,7 +5,7 @@ import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
 // import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
 import {
-  getLageCategory,
+  getLargeCategory,
   getSmallCategory,
 } from '../../src/store/api/category';
 import { useRecoilState } from 'recoil';
@@ -45,8 +45,9 @@ function categoryContent({
     [],
   );
   const handleChangeCategory = (name: string, id: number) => {
-    console.log(name);
-    console.log(id);
+    // 음료, 푸드 변경 시에만 작동
+    console.log('name', name);
+    console.log('id', id);
     setCategoryLName(name);
     setCategorySId(id);
 
@@ -56,7 +57,7 @@ function categoryContent({
     });
   };
   useEffect(() => {
-    getLageCategory().then(res => {
+    getLargeCategory().then(res => {
       setCategoryL(res.data.data);
     });
 
@@ -91,7 +92,7 @@ function categoryContent({
               </li>
             ))}
         </ul>
-        <div className={cx('search-bar')}>
+        {/* <div className={cx('search-bar')}>
           <div />
           <div className={cx('search-icon')}>
             <Image
@@ -101,16 +102,18 @@ function categoryContent({
               height={21}
             />
           </div>
-        </div>
+        </div> */}
         <div className={cx('cart-cnt-wrap')}>
           {cartCount !== 0 && <div className={cx('cnt')}>{cartCount}</div>}
           <Link href='/cart'>
-            <Image
-              src='/assets/svg/icon-cart.svg'
-              alt='cart'
-              width={24}
-              height={21}
-            />
+            <span>
+              <Image
+                src='/assets/svg/icon-cart.svg'
+                alt='cart'
+                width={24}
+                height={21}
+              />
+            </span>
           </Link>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
@@ -71,8 +71,10 @@ function choiceStoreModal({
         </div>
         <button
           onClick={router.query.isStoreSelect ? handleSelect : handleOrder}
+          disabled={!isOpen}
+          className={cx(!isOpen ? 'disable' : '')}
         >
-          매장 내 직접 수령
+          {!isOpen ? '현재는 주문이 불가합니다' : '매장 내 직접 수령'}
         </button>
       </div>
     </>

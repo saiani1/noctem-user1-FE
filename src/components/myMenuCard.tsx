@@ -5,7 +5,11 @@ import styles from '../../styles/main/main.module.scss';
 import { useRouter } from 'next/router';
 import { getMyMenuData } from '../../src/store/api/cart';
 import { IMenuData1, IMenuDetailData } from '../types/myMenu';
-import { orderInfoState, selectedStoreState } from '../store/atom/orderState';
+import {
+  orderInfoState,
+  orderStatusState,
+  selectedStoreState,
+} from '../store/atom/orderState';
 import { useRecoilState } from 'recoil';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from '../components/customAlert';
@@ -17,10 +21,11 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
   const router = useRouter();
   const [myMenuInfo, setMyMenuInfo] = useState<IMenuDetailData>();
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [orderInfo] = useRecoilState(orderInfoState);
+  const [, setOrderStatus] = useRecoilState(orderStatusState);
+  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
 
   const handleOrder = () => {
-    if (orderInfo.storeId !== 0) {
+    if (orderInfo.purchaseId !== 0) {
       toast('진행 중인 주문이 있습니다.', {
         icon: '📢',
       });
@@ -49,6 +54,7 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
           query: {
             sizeId: item.sizeId,
             qty: 1,
+            cupType: item.cupType,
             optionList: [],
             storeId: selectedStore.storeId,
             storeName: selectedStore.name,
@@ -68,6 +74,7 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
         query: {
           sizeId: item.sizeId,
           qty: 1,
+          cupType: item.cupType,
           optionList: [],
         },
       },
@@ -83,6 +90,7 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
         sizeId: item.sizeId,
       };
       setMyMenuInfo(mymenuInfo);
+      console.log('마이메뉴카드', resData);
     });
   }, []);
 
@@ -94,8 +102,8 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
             <div className={cx('my-menu-title')}>{item.alias}</div>
             <div className={cx('my-menu-kind')}>{myMenuInfo?.menuName}</div>
             <div className={cx('my-menu-detail')}>
-              {myMenuInfo.temperature.toUpperCase()} | Tall | 매장 컵 |
-              에스프레소 샵1 | 얼음 적게 | 일반휘핑 많이 | 초콜릿 드리즐
+              {myMenuInfo.temperature.toUpperCase()} | {myMenuInfo.size} |{' '}
+              {item.cupType}
             </div>
           </div>
           <div className={cx('mymenu-order-wrap')}>

@@ -10,13 +10,14 @@ import OrderPayingCompletionModal from '../../components/content/orderPayingComp
 import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
 import { addOrder, getMenuDetail } from '../../../src/store/api/order';
-import { IMenuList, IProps, IPurchaseData } from '../../types/order';
+import { IMenuList, IProps, IPurchaseData, ICardInfo } from '../../types/order';
 import { addComma } from '../../store/utils/function';
 import toast from 'react-hot-toast';
 import { IUserDetailInfo } from '../../types/user';
 import { getUserDetailInfo } from '../../../src/store/api/user';
 import {
   orderInfoState,
+  orderStatusState,
   selectedStoreState,
 } from '../../store/atom/orderState';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -25,39 +26,11 @@ import { loginState, tokenState } from './../../store/atom/userStates';
 
 const cx = classNames.bind(styles);
 
-// const changeCardNum = (num) => {
-//   const cardNum = num;
-//   for (let i = 0; i < cardNum.length; i += 1) {
-//     if (i === 7 || i === 8 || i === 10 || i === 11 || i === 12 || i === 13) {
-//       cardNum[i] = '*';
-//     }
-//   }
-//   return cardNum.join('');
-// };
-
-{
-  /* <select
-id="creditCrdCdSelect"
-title="카드를 선택하세요."
-onChange={handleCardOption}
->
-<option value="">카드를 선택하세요.</option>
-{userPaymentData &&
-  userPaymentData.map((data, i) => (
-    <option key={`data-${i}`}>
-      {data.cardCompany} / {data.cardNumber}
-    </option>
-  ))}
-</select> */
-}
-
 function orderContent(props: IProps) {
   const {
     isClickPaymentBtn,
-    isClickCashReceiptBtn,
     isClickSubmitBtn,
     setIsClickPaymentBtn,
-    setIsClickCashReceiptBtn,
     setIsClickSubmitBtn,
   } = props;
   const router = useRouter();
@@ -65,8 +38,12 @@ function orderContent(props: IProps) {
   const token = useRecoilValue(tokenState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
+  const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
-  const [cashReceipt, setCashReceipt] = useState('');
+  const [cardInfo, setCardInfo] = useState<ICardInfo>({
+    company: '',
+    card: '',
+  });
   const [userDetailInfo, setUserDetailInfo] = useState<IUserDetailInfo>({
     userAge: 0,
     userSex: '남자',
@@ -78,12 +55,11 @@ function orderContent(props: IProps) {
       }, 0)) ||
     0;
   const discountPrice = 0;
-  const finallPrice = totalPrice - discountPrice;
+  const finalPrice = totalPrice - discountPrice;
   let orderCnt = 0;
 
   function onDismiss() {
     setIsClickPaymentBtn(false);
-    setIsClickCashReceiptBtn(false);
     setIsClickSubmitBtn(false);
   }
 
@@ -93,22 +69,18 @@ function orderContent(props: IProps) {
     });
   };
 
-  const handleClickCashReceiptBtn = () => {
-    setIsClickCashReceiptBtn(prev => {
-      return !prev;
-    });
-  };
-
   const handleOnSubmitModal = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setIsClickSubmitBtn(prev => {
-      return !prev;
-    });
+    if (cardInfo.company !== '')
+      setIsClickSubmitBtn(prev => {
+        return !prev;
+      });
+    else toast.error('결제수단을 등록해주세요.');
   };
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (orderInfo.storeId !== 0) {
+    if (orderInfo.purchaseId !== 0) {
       toast('진행 중인 주문이 있습니다.', {
         icon: '📢',
       });
@@ -125,26 +97,32 @@ function orderContent(props: IProps) {
         userAge: userDetailInfo.userAge,
         userSex: userDetailInfo.userSex,
         purchaseTotalPrice: totalPrice,
-        cardCorp: '신한카드',
+        cardCorp: cardInfo.company,
         cardPaymentPrice: totalPrice,
         menuList: menuList,
       };
 
       if (orderCnt === 0) {
         console.log('orderData', orderData);
-        addOrder(orderData, token).then(res => {
-          console.log('res', res);
-          toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
-          setOrderInfo(res.data.data);
-          if (router.query.menuList) {
-            // 장바구니 주문일 경우
-            deleteCartAll(token).then(res => {
-              console.log('전체 삭제', res);
-            });
-          }
-          router.push('/');
-        });
-        orderCnt++;
+        addOrder(orderData, token)
+          .then(res => {
+            console.log('res', res);
+            toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
+            setOrderInfo(res.data.data);
+            setOrderStatus('주문확인중');
+            if (router.query.menuList) {
+              // 장바구니 주문일 경우
+              deleteCartAll(token).then(res => {
+                console.log('전체 삭제', res);
+              });
+            }
+            router.push('/');
+            orderCnt++;
+          })
+          .catch(err => {
+            console.log(err);
+            toast.error('주문이 불가능합니다. 잠시 후 다시 시도해주세요.');
+          });
       }
     }
   };
@@ -181,20 +159,31 @@ function orderContent(props: IProps) {
       const sizeId = query.sizeId ? +query.sizeId + 0 : 0;
       const qty = query.qty ? +query.qty + 0 : 0;
       const cartId = query.cartId ? +query.cartId + 0 : 0;
-      console.log('sizeId', sizeId, ', cartId', cartId, ', qty', qty);
+      console.log(
+        'sizeId',
+        sizeId,
+        ', cartId',
+        cartId,
+        ', qty',
+        qty,
+        'cupType',
+        query.cupType,
+      );
       getMenuDetail(sizeId, 0).then(res => {
         let resData: IMenuList = res.data.data;
         console.log('orderContent resData', resData);
         setMenuList([
           {
             sizeId: sizeId,
+            cartId: cartId,
+            categorySmall: resData.categorySmall,
             menuFullName: resData.menuFullName,
             menuShortName: resData.menuShortName,
             imgUrl: resData.imgUrl,
             qty: qty,
             menuTotalPrice: qty * resData.menuTotalPrice,
-            cartId: cartId,
-            // optionList: [],
+            cupType: query.cupType,
+            optionList: [],
           },
         ]);
       });
@@ -215,16 +204,10 @@ function orderContent(props: IProps) {
                 onClick={handleClickPaymentBtn}
               >
                 <div className={cx('left')}>
-                  <Image
-                    src='/assets/svg/icon-card.svg'
-                    alt='card'
-                    width={30}
-                    height={20}
-                    className={cx('img')}
-                  />
-                  <div className={cx('txt-wrap')}>
-                    <p>신용카드</p>
-                  </div>
+                  <p>신용카드</p>
+                </div>
+                <div className={cx('card-info')}>
+                  {cardInfo && cardInfo.company} {cardInfo && cardInfo.card}
                 </div>
                 <Image
                   src='/assets/svg/icon-right-arrow.svg'
@@ -239,8 +222,8 @@ function orderContent(props: IProps) {
               <h3>주문 내역 ({menuList && menuList.length})</h3>
               <ul>
                 {menuList &&
-                  menuList.map(menu => (
-                    <OrderItem key={menu.sizeId} menu={menu} />
+                  menuList.map((menu, i) => (
+                    <OrderItem key={`order-${i}`} menu={menu} />
                   ))}
               </ul>
               <div className={cx('wide-bg')} />
@@ -256,17 +239,21 @@ function orderContent(props: IProps) {
               </dl>
               <dl className={cx('total-price-wrap')}>
                 <dt>최종 결제 금액</dt>
-                <dd>{addComma(finallPrice)}원</dd>
+                <dd>{addComma(finalPrice)}원</dd>
               </dl>
             </li>
           </ul>
           <button type='submit' className={cx('btn')}>
-            {addComma(finallPrice)}원 결제하기
+            {addComma(finalPrice)}원 결제하기
           </button>
         </form>
       </div>
 
-      <ChoicePaymentModal onDismiss={onDismiss} isOpen={isClickPaymentBtn} />
+      <ChoicePaymentModal
+        onDismiss={onDismiss}
+        isOpen={isClickPaymentBtn}
+        setCardInfo={setCardInfo}
+      />
 
       <OrderPayingCompletionModal
         onDismiss={onDismiss}

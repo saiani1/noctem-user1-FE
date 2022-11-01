@@ -8,6 +8,10 @@ import {
   IDuplValid,
 } from '../../../types/signUp.d';
 import { addUser, getDuplicationCheck } from '../../../../src/store/api/signUp';
+import { login } from '../../../store/api/login';
+import { useRecoilState } from 'recoil';
+import { loginState, tokenState } from '../../../store/atom/userStates';
+import { useRouter } from 'next/router';
 
 const cx = classNames.bind(styles);
 
@@ -51,6 +55,9 @@ function step2({
   setNickname: IStep2Props['setNickname'];
   setStep: IStep2Props['setStep'];
 }) {
+  const router = useRouter();
+  const [, setIsLogin] = useRecoilState(loginState);
+  const [, setToken] = useRecoilState(tokenState);
   const nameRef = useRef<HTMLInputElement>(null);
   const nicknameRef = useRef<HTMLInputElement>(null);
   const birthRef = useRef<HTMLInputElement>(null);
@@ -361,6 +368,19 @@ function step2({
           step2: false,
           step3: true,
         });
+
+        // 로그인 상태로 변경
+        const emailValue = emailRef.current?.value || '';
+        const passwordValue = passwordRef.current?.value || '';
+
+        login(emailValue, passwordValue)
+          .then(res => {
+            setIsLogin(true);
+            setToken(res.headers.authorization);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     });
   };
