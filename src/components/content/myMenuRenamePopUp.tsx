@@ -33,7 +33,7 @@ function myMenuRenamePopUp({
   const cx = classNames.bind(styles);
   const [temperature, setTemperature] = useState('ice');
 
-  console.log(temperatureChoice, temperature);
+  console.log(temperatureChoice, temperature, selectedSizeTxt);
   useEffect(() => {
     if (temperatureChoice === 0) setTemperature('ice');
     else setTemperature('hot');

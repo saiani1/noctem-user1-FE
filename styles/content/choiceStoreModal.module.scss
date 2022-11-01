@@ -105,5 +105,9 @@
     border-radius: 20px;
     color: variable.$TXT-005;
     background-color: variable.$POINT;
+
+    &.disable {
+      background-color: variable.$BG-007;
+    }
   }
 }
