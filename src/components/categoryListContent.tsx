@@ -44,7 +44,7 @@ function categoryListContent({
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
-  const [selectStore, setSelectStore] = useState<IStore>({
+  const [selectedStoreTemp, setSelectedStoreTemp] = useState<IStore>({
     index: 0,
     storeId: 0,
     name: '',
@@ -59,13 +59,17 @@ function categoryListContent({
     distance: '',
     contactNumber: '',
   });
-  const [selectedStore] = useRecoilState(selectedStoreState);
+  const selectedStore = useRecoilValue(selectedStoreState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [menuList, setMenuList] = useState<IDrinkList[]>([]);
   const [popularMenuInfo, setPopularMenuInfo] = useState<IPopularMenuList[]>(
     [],
   );
   const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
+    setSelectedStoreTemp(selectedStore);
+  }, []);
 
   useEffect(() => {
     if (categorySId === 2) {
@@ -157,9 +161,9 @@ function categoryListContent({
           onClick={handleClickSelectStore}
         >
           <span className={cx('tit')}>
-            {selectedStore.distance === ''
+            {selectedStoreTemp.distance === ''
               ? '주문할 매장을 선택하세요'
-              : selectedStore.name}
+              : selectedStoreTemp.name}
           </span>
           <Image
             src='/assets/svg/icon-down-arrow-white.svg'

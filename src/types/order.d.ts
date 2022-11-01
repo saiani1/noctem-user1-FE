@@ -21,6 +21,7 @@ export interface IPurchaseData {
 export interface IMenuList {
   sizeId: number;
   cartId: number;
+  categorySmall: string;
   menuFullName: string;
   menuShortName: string;
   imgUrl: string;

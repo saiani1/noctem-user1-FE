@@ -42,7 +42,7 @@ function cartContent() {
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
-  const [selectStore, setSelectStore] = useState<IStore>({
+  const [selectedStoreTemp, setSelectedStoreTemp] = useState<IStore>({
     index: 0,
     storeId: 0,
     name: '',
@@ -57,7 +57,7 @@ function cartContent() {
     distance: '',
     contactNumber: '',
   });
-  const [selectedStore] = useRecoilState(selectedStoreState);
+  const selectedStore = useRecoilValue(selectedStoreState);
   const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
 
@@ -93,7 +93,7 @@ function cartContent() {
       return;
     }
 
-    if (selectStore.distance === '') {
+    if (selectedStoreTemp.distance === '') {
       toast.error('매장을 선택해 주세요');
       return;
     }
@@ -110,10 +110,10 @@ function cartContent() {
           pathname: '/order',
           query: {
             menuList: JSON.stringify(menuList),
-            storeId: selectStore.storeId,
-            storeName: selectStore.name,
-            storeAddress: selectStore.address,
-            storeContactNumber: selectStore.contactNumber,
+            storeId: selectedStoreTemp.storeId,
+            storeName: selectedStoreTemp.name,
+            storeAddress: selectedStoreTemp.address,
+            storeContactNumber: selectedStoreTemp.contactNumber,
           },
         },
         '/order',
@@ -137,7 +137,7 @@ function cartContent() {
   };
 
   useEffect(() => {
-    setSelectStore(selectedStore);
+    setSelectedStoreTemp(selectedStore);
 
     if (isLogin) {
       // 회원 조회
@@ -185,6 +185,7 @@ function cartContent() {
         return {
           sizeId: sizeId,
           cartId: cartId,
+          categorySmall: menu.categorySmall,
           menuFullName: menu.menuFullName,
           menuShortName: menu.menuShortName,
           imgUrl: menu.imgUrl,
@@ -240,9 +241,9 @@ function cartContent() {
             onClick={handleClickSelectStore}
           >
             <span className={cx('tit')}>
-              {selectStore.distance === ''
+              {selectedStoreTemp.distance === ''
                 ? '주문할 매장을 선택하세요'
-                : selectStore.name}
+                : selectedStoreTemp.name}
             </span>
             <Image
               src='/assets/svg/icon-down-arrow-white.svg'
