@@ -1,4 +1,3 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
@@ -6,10 +5,9 @@
   height: 90%;
   padding: 0 20px;
   position: absolute;
-  z-index: variable.$MODAL;
+  z-index: var(--MODAL);
   bottom: 0;
   overflow: auto;
-  background-color: variable.$BG-001;
 
   .img-wrap {
     display: flex;
@@ -30,9 +28,9 @@
 
     h2 {
       margin: 10px 0 0;
-      font-size: variable.$FS-16;
+      font-size: var(--FS-16);
       font-weight: 700;
-      color: variable.$POINT;
+      color: var(--TXT-001);
     }
 
     .tit-address-wrap {
@@ -41,8 +39,8 @@
       align-items: baseline;
 
       p {
-        font-size: variable.$FS-13;
-        color: variable.$TXT-003;
+        font-size: var(--FS-13);
+        color: var(--TXT-003);
       }
     }
   }
@@ -56,8 +54,8 @@
 
       p {
         margin-left: 10px;
-        font-size: variable.$FS-13;
-        color: variable.$TXT-006;
+        font-size: var(--FS-13);
+        color: var(--TXT-002);
       }
     }
 
@@ -68,12 +66,13 @@
 
       span {
         margin-left: 6px;
-        font-size: variable.$FS-13;
-        color: variable.$TXT-003;
+        font-size: var(--FS-13);
+        font-weight: var(--FW-001);
+        color: var(--TXT-003);
 
         strong {
           margin-right: 7px;
-          color: variable.$TXT-006;
+          color: var(--TXT-002);
         }
       }
     }
@@ -81,16 +80,16 @@
 
   .location-wrap {
     margin: 10px 0;
-    font-size: variable.$FS-13;
+    font-size: var(--FS-13);
 
     p {
       margin-bottom: 3px;
       font-weight: bold;
-      color: variable.$TXT-006;
+      color: var(--TXT-006);
     }
 
     span {
-      color: variable.$TXT-003;
+      color: var(--TXT-003);
     }
   }
 
@@ -100,14 +99,14 @@
     margin: 0 19px;
     padding: 8px;
     text-align: center;
-    font-size: variable.$FS-13;
+    font-size: var(--FS-13);
     font-weight: 300;
     border-radius: 20px;
-    color: variable.$TXT-005;
-    background-color: variable.$POINT;
+    color: var(--TXT-005);
+    background-color: var(--POINT);
 
     &.disable {
-      background-color: variable.$BG-007;
+      background-color: var(--BG-007);
     }
   }
 }

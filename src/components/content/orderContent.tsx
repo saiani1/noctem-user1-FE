@@ -217,7 +217,6 @@ function orderContent(props: IProps) {
                 />
               </button>
             </li>
-            <div className={cx('line')} />
             <li className={cx('order-info-wrap')}>
               <h3>주문 내역 ({menuList && menuList.length})</h3>
               <ul>

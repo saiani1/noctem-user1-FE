@@ -1,71 +1,158 @@
-// 폰트 사이즈
-$FS-32: 32px;
-$FS-24: 24px;
-$FS-21: 21px;
-$FS-20: 20px;
-$FS-18: 18px;
-$FS-17: 17px;
-$FS-16: 16px;
-$FS-15: 15px;
-$FS-14: 14px;
-$FS-13: 13px;
-$FS-12: 12px;
-$FS-11: 11px;
-$FS-10: 10px;
+:root {
+  // 폰트 색상
+  --TXT-001: #222;
+  --TXT-002: #626262;
+  --TXT-003: #909090;
+  --TXT-004: #cbcbcb;
+  --TXT-005: #fff;
+  --TXT-006: #444;
 
-// 폰트 두께
-$FW-001: 400;
-$FW-002: 500;
-$FW-003: 600;
+  --TXT-ERROR: #ff4a4a;
+  --TXT-SUCCESS: #4a7dff;
 
-// 폰트 색상
-$TXT-001: #222;
-$TXT-002: #626262;
-$TXT-003: #909090;
-$TXT-004: #cbcbcb;
-$TXT-005: #fff;
-$TXT-006: #444;
+  // 배경 색상
+  --BG-001: #fff;
+  --BG-002: #f9f9f9;
+  --BG-003: #f1f1f1;
+  --BG-004: #8d8d8d;
+  --BG-005: #e2e2e2;
+  --BG-006: #222222;
+  --BG-007: #dadada;
+  --BG-008: #f5f5f5;
+  --BG-009: #1b3c35;
 
-$TXT-ERROR: #ff4a4a;
-$TXT-SUCCESS: #4a7dff;
+  --BG-ALPA-001: rgba(246, 246, 246, 0.12);
+  --BG-ALPA-002: rgba(0, 0, 0, 0.6);
+  --BG-ALPA-003: rgba(255, 255, 255, 0.6);
 
-// 배경 색상
-$BG-001: #fff;
-$BG-002: #f9f9f9;
-$BG-003: #f1f1f1;
-$BG-004: #8d8d8d;
-$BG-005: #e2e2e2;
-$BG-006: #222222;
-$BG-007: #dadada;
-$BG-008: #f5f5f5;
-$BG-009: #1b3c35;
+  // 선 색상
+  --LINE-001: #fff;
+  --LINE-002: #eee;
+  --LINE-003: #dadada;
+  --LINE-004: #7a7a7a;
+  --LINE-005: #a6a6a6;
 
-$BG-ALPA-001: rgba(246, 246, 246, 0.12);
-$BG-ALPA-002: rgba(0, 0, 0, 0.6);
-$BG-ALPA-003: rgba(255, 255, 255, 0.6);
+  // 포인트 색상
+  --POINT: #536173;
 
-// 선 색상
-$LINE-001: #fff;
-$LINE-002: #eee;
-$LINE-003: #dadada;
-$LINE-004: #7a7a7a;
-$LINE-005: #a6a6a6;
+  // 그림자
+  --BOX-SHADOW-ITEM: 0px 2px 4px rgba(98, 98, 98, 0.25);
+  --BOX-SHADOW-TOOLBAR: 0px 0px 4px rgba(0, 0, 0, 0.2);
 
-// 포인트 색상
-$POINT: #536173;
+  // 랭크
+  --RANK-001: #d9626b;
+  --RANK-002: #bf4968;
+  --RANK-003: #536173;
 
-// 그림자
-$BOX-SHADOW-ITEM: 0px 2px 4px rgba(98, 98, 98, 0.25);
-$BOX-SHADOW-TOOLBAR: 0px 0px 4px rgba(0, 0, 0, 0.2);
+  // 폰트 사이즈
+  --FS-32: 32px;
+  --FS-24: 24px;
+  --FS-21: 21px;
+  --FS-20: 20px;
+  --FS-18: 18px;
+  --FS-17: 17px;
+  --FS-16: 16px;
+  --FS-15: 15px;
+  --FS-14: 14px;
+  --FS-13: 13px;
+  --FS-12: 12px;
+  --FS-11: 11px;
+  --FS-10: 10px;
 
-// 레벨
-$TOOLBAR: 1000;
-$MODAL: 2000;
-$MODAL-BACK: 1500;
-$POPUP: 3000;
-$POPUP-BACK: 2500;
+  // 폰트 두께
+  --FW-001: 400;
+  --FW-002: 500;
+  --FW-003: 600;
 
-// 랭크
-$RANK-001: #d9626b;
-$RANK-002: #bf4968;
-$RANK-003: #536173;
+  // 레벨
+  --TOOLBAR: 1000;
+  --MODAL: 2000;
+  --MODAL-BACK: 1500;
+  --POPUP: 3000;
+  --POPUP-BACK: 2500;
+}
+
+[data-theme='dark'] body {
+  background-color: #1a202c;
+}
+
+[data-theme='dark'] {
+  // 폰트 색상
+  // --TXT-001: #f7dfff;
+  --TXT-001: #ffffff;
+  --TXT-002: #c5bebe;
+  --TXT-003: #bbb0b0;
+  --TXT-004: #655f6c;
+  --TXT-005: #fff;
+  --TXT-006: #444;
+
+  --TXT-ERROR: #ff4a4a;
+  --TXT-SUCCESS: #4a7dff;
+
+  // 배경 색상
+  --BG-001: #1a202c;
+  --BG-002: #272a39;
+  --BG-003: #242c34;
+  --BG-004: #8d8d8d;
+  --BG-005: #e2e2e2;
+  --BG-006: #222222;
+  --BG-007: #373540;
+  --BG-008: #f5f5f5;
+  --BG-009: #1b3c35;
+
+  --BG-ALPA-001: rgba(246, 246, 246, 0.12);
+  --BG-ALPA-002: rgba(53, 48, 48, 0.6);
+  --BG-ALPA-003: rgba(26, 32, 44, 0.5);
+
+  // 선 색상
+  --LINE-001: #fff;
+  --LINE-002: #595262;
+  --LINE-003: #62596c;
+  --LINE-004: #7a7a7a;
+  --LINE-005: #a6a6a6;
+
+  // 포인트 색상
+  --POINT: #d9626b;
+
+  // 그림자
+  --BOX-SHADOW-ITEM: 0px 2px 4px rgba(98, 98, 98, 0.25);
+  --BOX-SHADOW-TOOLBAR: 0px 0px 4px rgba(0, 0, 0, 0.2);
+
+  // 랭크
+  --RANK-001: #d9626b;
+  --RANK-002: #bf4968;
+  --RANK-003: #dadada;
+
+  // 폰트 사이즈
+  --FS-32: 32px;
+  --FS-24: 24px;
+  --FS-21: 21px;
+  --FS-20: 20px;
+  --FS-18: 18px;
+  --FS-17: 17px;
+  --FS-16: 16px;
+  --FS-15: 15px;
+  --FS-14: 14px;
+  --FS-13: 13px;
+  --FS-12: 12px;
+  --FS-11: 11px;
+  --FS-10: 10px;
+
+  // 폰트 두께
+  --FW-001: 400;
+  --FW-002: 500;
+  --FW-003: 600;
+  // 레벨
+  --TOOLBAR: 1000;
+  --MODAL: 2000;
+  --MODAL-BACK: 1500;
+  --POPUP: 3000;
+  --POPUP-BACK: 2500;
+
+  [data-rsbs-overlay] {
+    background-color: var(--BG-002);
+  }
+  [data-rsbs-header]:before {
+    background-color: var(--LINE-004);
+  }
+}

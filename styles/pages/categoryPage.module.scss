@@ -1,11 +1,9 @@
-@use '../base/variable';
-
 .menu-bar {
   display: flex;
   justify-content: space-between;
   // position: fixed;
   // top: 49px;
-  background-color: white;
+  background-color: var(--BG-001);
   width: 100vw;
 
   div {
@@ -26,7 +24,7 @@
     padding: 2px 25px;
     margin-top: 46px;
     transition: all 0.2s ease-in-out;
-    background-color: variable.$BG-006;
+    background-color: var(--POINT);
   }
 
   .state-bar-food {
@@ -35,12 +33,12 @@
     margin-top: 46px;
     margin-left: 50px;
     transition: all 0.2s ease-in-out;
-    background-color: variable.$BG-006;
+    background-color: var(--POINT);
   }
 
   .search-bar {
     width: 50%;
-    background-color: variable.$BG-003;
+    background-color: var(--BG-003);
     position: relative;
     margin: 8px;
     border-radius: 30px;
@@ -57,6 +55,9 @@
   .cart-cnt-wrap {
     position: relative;
 
+    .icon {
+      fill: var(--TXT-001);
+    }
     .cnt {
       width: 14px;
       height: 14px;
@@ -67,16 +68,16 @@
       right: 8px;
       z-index: 1;
       border-radius: 50%;
-      background-color: variable.$TXT-ERROR;
+      background-color: var(--TXT-ERROR);
       font-size: 8px;
-      color: variable.$TXT-005;
+      color: var(--TXT-005);
       text-align: center;
     }
   }
 }
 
 .product-list {
-  margin-bottom: 71px;
+  padding-bottom: 71px;
 }
 
 .menu-category {
@@ -86,16 +87,16 @@
     display: flex;
     overflow: auto;
     white-space: nowrap;
-    background-color: variable.$BG-003;
-    color: variable.$TXT-003;
+    background-color: var(--BG-003);
+    color: var(--TXT-003);
 
     li {
       padding: 12px;
     }
 
     .active-menu {
-      color: variable.$TXT-002;
-      font-weight: variable.$FW-003;
+      color: var(--TXT-001);
+      font-weight: var(--FW-003);
     }
   }
 }
@@ -118,19 +119,19 @@
     padding-left: 24px;
 
     .item-name {
-      font-size: variable.$FS-15;
-      color: variable.$TXT-001;
+      font-size: var(--FS-15);
+      color: var(--TXT-001);
     }
 
     .item-english-name {
-      font-size: variable.$FS-12;
-      color: variable.$TXT-003;
+      font-size: var(--FS-12);
+      color: var(--TXT-003);
     }
 
     .item-price {
-      font-size: variable.$FS-15;
-      font-weight: variable.$FW-003;
-      color: variable.$TXT-001;
+      font-size: var(--FS-15);
+      font-weight: var(--FW-003);
+      color: var(--TXT-001);
     }
   }
 }
@@ -141,8 +142,8 @@
 //     justify-content: space-between;
 //   }
 
-//   background-color: variable.$BG-006;
-//   color: variable.$TXT-005;
+//   background-color: var(--BG-006);
+//   color: var(--TXT-005);
 //   position: fixed;
 //   bottom: 50px;
 //   width: 100vw;
@@ -155,7 +156,7 @@
   bottom: 50px;
   padding: 10px 15px;
   width: 100%;
-  background-color: variable.$BG-006;
+  background-color: var(--BG-006);
 
   .select-store {
     display: flex;
@@ -163,10 +164,10 @@
     align-items: center;
     width: 100%;
     padding-bottom: 8px;
-    border-bottom: 1px solid variable.$LINE-004;
+    border-bottom: 1px solid var(--LINE-004);
   }
 
   .tit {
-    color: variable.$TXT-005;
+    color: var(--TXT-005);
   }
 }

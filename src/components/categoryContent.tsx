@@ -9,8 +9,13 @@ import {
   getSmallCategory,
 } from '../../src/store/api/category';
 import { useRecoilState } from 'recoil';
-import { categoryLState, categorySIdState } from '../store/atom/categoryState';
+import {
+  categoryLNameState,
+  categoryLState,
+  categorySIdState,
+} from '../store/atom/categoryState';
 import Link from 'next/link';
+import { CartBtn } from '../../public/assets/svg/toolbar';
 
 const cx = classNames.bind(styles);
 
@@ -30,13 +35,13 @@ function categoryContent({
   setCategorySId,
   cartCount,
 }: {
-  setCategoryName: any;
-  setCategorySId: any;
+  setCategoryName: React.Dispatch<React.SetStateAction<string>>;
+  setCategorySId: React.Dispatch<React.SetStateAction<number>>;
   cartCount: number;
 }) {
   const [isClick, setIsClick] = useRecoilState(categoryLState);
+  const [categoryLName, setCategoryLName] = useRecoilState(categoryLNameState);
   const [categoryL, setCategoryL] = useState<ICategory[]>([]);
-  const [categoryLName, setCategoryLName] = useState('음료');
   const [categoryLId, setCategoryLId] = useState(1);
   const [categoryDrinkList, setCategoryDrinkList] = useState<IDrinkCategory[]>(
     [],
@@ -46,10 +51,9 @@ function categoryContent({
   );
   const handleChangeCategory = (name: string, id: number) => {
     // 음료, 푸드 변경 시에만 작동
-    console.log('name', name);
-    console.log('id', id);
+    console.log('name', name, 'id', id);
     setCategoryLName(name);
-    setCategorySId(id);
+    setCategorySId(id === 1 ? 2 : 0);
 
     getSmallCategory(id).then(res => {
       setCategoryDrinkList(res.data.data);
@@ -106,14 +110,7 @@ function categoryContent({
         <div className={cx('cart-cnt-wrap')}>
           {cartCount !== 0 && <div className={cx('cnt')}>{cartCount}</div>}
           <Link href='/cart'>
-            <span>
-              <Image
-                src='/assets/svg/icon-cart.svg'
-                alt='cart'
-                width={24}
-                height={21}
-              />
-            </span>
+            <CartBtn className={cx('icon')} />
           </Link>
         </div>
       </div>

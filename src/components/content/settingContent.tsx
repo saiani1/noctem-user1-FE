@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
+import { useTheme } from 'next-themes';
 
 import styles from '../../../styles/content/settingContent.module.scss';
 import { getUserOptions, patchUserOptions } from '../../../src/store/api/user';
 import ToggleCheckbox from '../ui/toggleCheckbox';
 import { useRecoilValue } from 'recoil';
 import { tokenState } from '../../store/atom/userStates';
+import { toast } from 'react-hot-toast';
 
 interface IInfo {
   isDarkmode: boolean;
@@ -17,6 +19,7 @@ interface IInfo {
 
 function settingContent() {
   const token = useRecoilValue(tokenState);
+  const { theme, setTheme } = useTheme();
   const [info, setInfo] = useState<IInfo>({
     isDarkmode: false,
     pushNotificationAgreement: false,
@@ -35,13 +38,20 @@ function settingContent() {
     });
   }, []);
 
+  console.log(localStorage.getItem('theme'));
+
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const check = e.target.checked;
 
     patchUserOptions(value, token).then(() => {
       setInfo({ ...info, [value]: check });
+      toast.success('정상적으로 변경되었습니다.');
     });
+
+    if (value === 'darkmode') {
+      setTheme(theme === 'dark' ? 'light' : 'dark');
+    }
   };
 
   return (

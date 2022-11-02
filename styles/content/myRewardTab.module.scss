@@ -1,13 +1,12 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .content-wrap {
   .level-wrap {
     padding: 19px;
     .sub-tit {
-      font-size: variable.$FS-11;
+      font-size: var(--FS-11);
       font-weight: 300;
-      color: variable.$TXT-003;
+      color: var(--TXT-003);
     }
     .level-tit-wrap {
       display: flex;
@@ -18,35 +17,35 @@
       }
       .level-tit {
         margin: 0 10px 0 5px;
-        font-size: variable.$FS-21;
-        color: variable.$RANK-001;
+        font-size: var(--FS-21);
+        color: var(--RANK-001);
       }
-      .potion{
-        color: variable.$RANK-001;
+      .potion {
+        color: var(--RANK-001);
       }
-      .elixir{
-        color: variable.$RANK-002;
+      .elixir {
+        color: var(--RANK-002);
       }
-      .power-elixir{
-        color: variable.$RANK-003;
+      .power-elixir {
+        color: var(--RANK-003);
       }
     }
     .hp-info-wrap {
       .hp-info-content {
-        font-size: variable.$FS-12;
+        font-size: var(--FS-12);
         font-weight: 200;
-        color: variable.$TXT-004;
+        color: var(--TXT-004);
         .current-hp {
           margin-right: 3px;
-          font-size: variable.$FS-21;
+          font-size: var(--FS-21);
           font-weight: 500;
-          color: variable.$TXT-001;
+          color: var(--TXT-001);
         }
         .max-hp {
           margin: 0 5px;
-          font-size: variable.$FS-14;
+          font-size: var(--FS-14);
           font-weight: 400;
-          color: variable.$POINT;
+          color: var(--TXT-003);
         }
       }
     }
@@ -56,7 +55,7 @@
       align-items: center;
       width: 98.5%;
       height: 12px;
-      border: 2px solid variable.$LINE-003;
+      border: 2px solid var(--LINE-003);
       border-radius: 2.5px;
 
       &::after {
@@ -64,13 +63,13 @@
         content: ' ';
         width: 1.5px;
         height: 7px;
-        background-color: variable.$LINE-003;
+        background-color: var(--LINE-003);
       }
       .progress-bar {
         width: 5%;
         height: 6px;
         margin: 0 1px;
-        background-color: variable.$POINT;
+        background-color: var(--POINT);
         border-radius: 0.5px;
       }
     }
@@ -78,10 +77,10 @@
   .level-info-wrap {
     width: 100%;
     padding: 10px 0 10px 19px;
-    background-color: variable.$BG-003;
+    background-color: var(--BG-003);
     p {
-      font-size: variable.$FS-11;
-      color: variable.$TXT-002;
+      font-size: var(--FS-11);
+      color: var(--TXT-002);
     }
   }
   .favorite-wrap {
@@ -89,8 +88,8 @@
 
     span {
       display: block;
-      font-size: variable.$FS-14;
-      color: variable.$TXT-003;
+      font-size: var(--FS-14);
+      color: var(--TXT-003);
       strong {
         font-weight: bold;
       }
@@ -99,9 +98,9 @@
       display: inline-block;
       margin-top: 8px;
       padding: 1px 12px;
-      background-color: variable.$BG-003;
+      background-color: var(--BG-003);
       font-size: 22px;
-      color: variable.$TXT-002;
+      color: var(--TXT-002);
     }
     .img-wrap {
       margin-top: 20px;

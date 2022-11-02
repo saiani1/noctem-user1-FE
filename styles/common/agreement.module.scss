@@ -1,5 +1,3 @@
-@use '/styles/base/variable';
-
 .agree-label {
   display: flex;
   align-items: center;
@@ -13,7 +11,7 @@
     top: 30px;
     right: 0;
     left: 0;
-    background-color: variable.$LINE-003;
+    background-color: var(--LINE-003);
   }
 
   .more-wrap {
@@ -30,8 +28,8 @@
     flex-direction: column;
 
     .sub-desc {
-      font-size: variable.$FS-10;
-      color: variable.$TXT-002;
+      font-size: var(--FS-10);
+      color: var(--TXT-002);
     }
   }
 }
@@ -43,7 +41,7 @@
   position: relative;
   appearance: none;
   background-color: transparent;
-  border: 1px solid variable.$POINT;
+  border: 1px solid var(--POINT);
   border-radius: 50%;
 
   &[name='adChk'] {
@@ -51,7 +49,7 @@
   }
 
   &:checked {
-    background-color: variable.$POINT;
+    background-color: var(--POINT);
 
     &:checked::after {
       content: url('/assets/svg/icon-check.svg');

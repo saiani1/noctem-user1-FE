@@ -15,13 +15,6 @@ function emptyMyMenu() {
         <br />
         등록된 나만의 메뉴는 HOME 화면에서도 바로 주문하실 수 있습니다.
       </p>
-      <span className={cx('img-wrap')}>
-        <Image
-          src='/assets/images/jpg/cup-illust.jpg'
-          width={182}
-          height={200}
-        />
-      </span>
     </div>
   );
 }

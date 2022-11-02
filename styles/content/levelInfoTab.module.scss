@@ -1,17 +1,16 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .content-wrap {
   .sub-tit {
     display: inline-block;
     padding: 25px 0 0 19px;
-    font-size: variable.$FS-11;
+    font-size: var(--FS-11);
     font-weight: 300;
-    color: variable.$TXT-003;
+    color: var(--TXT-003);
   }
   .level-wrap {
     padding: 19px 19px 25px 19px;
-    border-bottom: 1px solid variable.$LINE-003;
+    border-bottom: 1px solid var(--LINE-003);
 
     &.first {
       padding-top: 0;
@@ -19,31 +18,33 @@
     .level-tit-wrap {
       display: flex;
       align-items: baseline;
+      margin-bottom: 7px;
 
-      .level-icon-wrap {
+      .icon {
         margin-top: 2px;
+        fill: var(--RANK-003);
       }
       .level-tit {
         margin: 0 5px;
-        font-size: variable.$FS-21;
-        color: variable.$RANK-001;
+        font-size: var(--FS-21);
+        color: var(--RANK-001);
         &.e {
-          color: variable.$RANK-002;
+          color: var(--RANK-002);
           ~ .kor-name {
-            color: variable.$RANK-002;
+            color: var(--RANK-002);
           }
         }
         &.pe {
-          color: variable.$RANK-003;
+          color: var(--RANK-003);
           ~ .kor-name {
-            color: variable.$RANK-003;
+            color: var(--RANK-003);
           }
         }
       }
       .kor-name {
         font-size: 12px;
         font-weight: 400;
-        color: variable.$RANK-001;
+        color: var(--RANK-001);
       }
     }
     .level-content-wrap {
@@ -53,17 +54,22 @@
       width: 100%;
       padding: 10px 20px;
       border-radius: 3px;
-      background-color: variable.$BG-003;
+      background-color: var(--BG-003);
       ~ .level-content-wrap {
         margin-top: 8px;
       }
-      .img-wrap {
+      .icon {
         margin-top: 2px;
-        color: variable.$RANK-003;
+        fill: var(--RANK-003);
+
+        &.money {
+          fill: none;
+          stroke: var(--RANK-003);
+        }
       }
       .content {
-        font-size: variable.$FS-12;
-        color: variable.$TXT-003;
+        font-size: var(--FS-12);
+        color: var(--TXT-002);
       }
     }
   }
