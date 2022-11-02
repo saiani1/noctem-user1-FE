@@ -24,7 +24,6 @@ const toolbarItem = ({
   const router = useRouter();
   const { link, linkTxt, txt } = list;
 
-  console.log('툴바에요!', list);
   const handleSelected: (link: string) => void = (link: string) => {
     const idx =
       link === '/'

@@ -20,7 +20,7 @@ export { default as MugBtn } from './icon-mug.svg';
 export { default as MyRewardBtn } from './icon-my-reward.svg';
 export { default as ParkBtn } from './icon-park.svg';
 export { default as PencilBtn } from './icon-pencil.svg';
-export { default as PlusBtn } from './icon-Plus.svg';
+export { default as PlusBtn } from './icon-plus.svg';
 export { default as PotionLevelBtn } from './icon-potion-level.svg';
 export { default as PowerElixirLevelUpBtn } from './icon-power-elixir-level-up.svg';
 export { default as PowerElixirLevelBtn } from './icon-power-elixir-level.svg';
