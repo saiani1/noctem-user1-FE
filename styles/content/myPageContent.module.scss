@@ -1,7 +1,9 @@
+@use '/styles/mixins/position';
+
 .wrap {
   height: calc(100vh - 100px);
   padding: 19px;
-  background-color: var(--BG-001);
+  background-color: var(--BG-003);
 
   h2 {
     margin-bottom: 50px;
@@ -10,8 +12,8 @@
   .info-wrap {
     padding: 15px 15px 20px;
     margin-bottom: 15px;
-    box-shadow: 1px 1px 5px rgba(var(--BG-004), 0.3);
     border-radius: 10px;
+    background-color: var(--BG-001);
 
     .info {
       margin-bottom: 10px;
@@ -70,20 +72,26 @@
 
       button,
       .button {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        row-gap: 5px;
         width: 100%;
-        height: 110px;
+        height: 100px;
         border-radius: 10px;
-        background-color: var(--BG-002);
-        box-shadow: 1px 1px 5px rgba(var(--BG-004), 0.3);
+        background-color: var(--BG-001);
+
+        .icon {
+          fill: var(--TXT-004);
+        }
 
         span {
+          // @include position.absolute(auto auto 10px auto);
           margin-top: 5px;
           font-size: var(--FS-13);
-          color: var(--TXT-002);
+          color: var(--TXT-001);
         }
       }
     }
@@ -93,6 +101,6 @@
     margin-top: 20px;
     width: 100%;
     text-align: center;
-    color: var(--TXT-003);
+    color: var(--TXT-002);
   }
 }

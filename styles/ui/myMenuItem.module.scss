@@ -27,9 +27,8 @@
         height: 18px;
         border: 1px solid var(--LINE-003);
         border-radius: 50%;
-        img {
-          width: 8px;
-          height: 8px;
+        .icon {
+          stroke: var(--LINE-003);
           pointer-events: none;
         }
       }

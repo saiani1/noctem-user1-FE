@@ -55,6 +55,9 @@
   .cart-cnt-wrap {
     position: relative;
 
+    .icon {
+      fill: var(--TXT-001);
+    }
     .cnt {
       width: 14px;
       height: 14px;
@@ -84,7 +87,7 @@
     display: flex;
     overflow: auto;
     white-space: nowrap;
-    background-color: var(--BG-002);
+    background-color: var(--BG-003);
     color: var(--TXT-003);
 
     li {
@@ -153,7 +156,7 @@
   bottom: 50px;
   padding: 10px 15px;
   width: 100%;
-  background-color: var(--BG-003);
+  background-color: var(--BG-006);
 
   .select-store {
     display: flex;

@@ -20,6 +20,7 @@ import {
 import { addCart, getCount } from '../../../../src/store/api/cart';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
+  categoryLNameState,
   categoryLState,
   categorySIdState,
 } from '../../../store/atom/categoryState';
@@ -50,6 +51,7 @@ function productContent() {
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const [, setOrderStatus] = useRecoilState(orderStatusState);
+  const [categoryLName] = useRecoilState(categoryLNameState);
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);

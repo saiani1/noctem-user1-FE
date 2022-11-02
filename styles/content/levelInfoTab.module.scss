@@ -20,8 +20,9 @@
       align-items: baseline;
       margin-bottom: 7px;
 
-      .level-icon-wrap {
+      .icon {
         margin-top: 2px;
+        fill: var(--RANK-003);
       }
       .level-tit {
         margin: 0 5px;
@@ -57,9 +58,14 @@
       ~ .level-content-wrap {
         margin-top: 8px;
       }
-      .img-wrap {
+      .icon {
         margin-top: 2px;
-        color: var(--RANK-003);
+        fill: var(--RANK-003);
+
+        &.money {
+          fill: none;
+          stroke: var(--RANK-003);
+        }
       }
       .content {
         font-size: var(--FS-12);

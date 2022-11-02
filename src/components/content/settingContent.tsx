@@ -7,6 +7,7 @@ import { getUserOptions, patchUserOptions } from '../../../src/store/api/user';
 import ToggleCheckbox from '../ui/toggleCheckbox';
 import { useRecoilValue } from 'recoil';
 import { tokenState } from '../../store/atom/userStates';
+import { toast } from 'react-hot-toast';
 
 interface IInfo {
   isDarkmode: boolean;
@@ -45,6 +46,7 @@ function settingContent() {
 
     patchUserOptions(value, token).then(() => {
       setInfo({ ...info, [value]: check });
+      toast.success('정상적으로 변경되었습니다.');
     });
 
     if (value === 'darkmode') {

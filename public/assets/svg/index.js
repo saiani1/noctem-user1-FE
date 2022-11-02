@@ -1,9 +1,0 @@
-export { ReactComponent as CheckBtn } from './check.svg';
-export { ReactComponent as EditBtn } from './edit.svg';
-export { ReactComponent as DeleteBtn } from './trash.svg';
-export { ReactComponent as CloseBtn } from './xmark.svg';
-export { ReactComponent as AddBtn } from './plus.svg';
-export { ReactComponent as BackBtn } from './left-arrow.svg';
-export { ReactComponent as CircleCheckBtn } from './circle-check.svg';
-export { ReactComponent as ContentBtn } from './search.svg';
-export { ReactComponent as MenuBtn } from './option.svg';

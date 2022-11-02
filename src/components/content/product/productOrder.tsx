@@ -3,12 +3,12 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../../common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 import styles from '../../../../styles/pages/productPage.module.scss';
 import CupSizeItem from '../../cupSizeItem';
 import { cupDatas } from '../../../../public/assets/datas/cupDatas';
 import { addComma } from '../../../store/utils/function';
 import { ISize, IDetail, ICartData } from '../../../types/productDetail';
+import { HeartBtn, MinusBtn, PlusBtn } from '../../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -144,28 +144,14 @@ function productOrder({
                   <div className={cx('total-cost')}>
                     <div className={cx('control-count')}>
                       <div onClick={handleMinus}>
-                        <Image
-                          src={
-                            count === 1
-                              ? '/assets/svg/icon-minus.svg'
-                              : '/assets/svg/icon-minus-active.svg'
-                          }
-                          alt='minus icon'
-                          width={20}
-                          height={20}
+                        <MinusBtn
+                          className={cx('icon', count === 1 ? '' : 'active')}
                         />
                       </div>
                       <div>{count}</div>
                       <div onClick={handlePlus}>
-                        <Image
-                          src={
-                            count === 20
-                              ? '/assets/svg/icon-plus.svg'
-                              : '/assets/svg/icon-plus-active.svg'
-                          }
-                          alt='plus icon'
-                          width={20}
-                          height={20}
+                        <PlusBtn
+                          className={cx('icon', count === 20 ? '' : 'active')}
                         />
                       </div>
                     </div>
@@ -179,14 +165,7 @@ function productOrder({
                       className={cx('add-heart')}
                       onClick={handleAddMyMenu}
                     >
-                      <span>
-                        <Image
-                          src='/assets/svg/icon-heart.svg'
-                          alt='heart'
-                          width={30}
-                          height={30}
-                        />
-                      </span>
+                      <HeartBtn classname={cx('icon')} />
                     </button>
                     <div>
                       <div className={cx('go-cart')} onClick={handleAddCart}>

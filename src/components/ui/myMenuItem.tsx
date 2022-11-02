@@ -29,6 +29,7 @@ import CustomAlert from '../customAlert';
 import { useRouter } from 'next/router';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { loginState } from './../../store/atom/userStates';
+import { CloseBtn } from '../../../public/assets/svg';
 
 interface IProps {
   item: IMenuData1;
@@ -272,7 +273,7 @@ function myMenuItem({
                   name={itemInfo.myMenuId}
                   onClick={handleDeleteMenu}
                 >
-                  <img src='/assets/svg/icon-x-mark.svg' alt='삭제버튼' />
+                  <CloseBtn className={cx('icon')} />
                 </button>
                 <div className={cx('menu-tit-wrap')}>
                   <h3 className={cx('menu-tit')}>{item.alias}</h3>

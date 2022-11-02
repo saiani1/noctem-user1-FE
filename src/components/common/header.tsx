@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import styles from '../../../styles/common/header.module.scss';
+import { CloseBtn, LeftArrowBtn } from '../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -28,22 +29,8 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
         onClick={handleBack}
         className={cx('header-back-arrow')}
       >
-        {isClose && (
-          <Image
-            width={19}
-            height={19}
-            alt='back button icon'
-            src='/assets/svg/icon-close.svg'
-          />
-        )}
-        {isBack && (
-          <Image
-            width={11}
-            height={19}
-            alt='back button icon'
-            src='/assets/svg/icon-back-arrow.svg'
-          />
-        )}
+        {isClose && <CloseBtn className={cx('icon')} />}
+        {isBack && <LeftArrowBtn className={cx('icon')} />}
       </button>
       <div className={cx('header-logo')}>
         <h1 className={cx('header-title')}>Cafe Noctem Order</h1>
@@ -62,13 +49,14 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
           </a>
         </Link>
       </div>
-      <button
+      {/* <button
         type='button'
         onClick={handleDarkMode}
+        className={cx('darkBtn')}
         style={{ padding: '10px', backgroundColor: 'pink' }}
       >
         다크모드
-      </button>
+      </button> */}
     </div>
   );
 }
