@@ -14,5 +14,5 @@
 .agreement-wrap {
   @include position.absolute(auto 0 72px 0);
   padding: 0 18px;
-  background-color: #fff;
+  background-color: var(--BG-001);
 }

@@ -42,6 +42,7 @@ import {
   selectedStoreState,
 } from '../../../store/atom/orderState';
 import { loginState } from './../../../store/atom/userStates';
+import { RightArrowBtn } from '../../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -444,7 +445,7 @@ function productContent() {
       <hr className={cx('line')} />
       <div className={cx('product-nutrition')} onClick={handleNutritionOpen}>
         <p>제품영양정보</p>
-        <Image src='/assets/svg/icon-more.svg' width={20} height={20} />
+        <RightArrowBtn className={cx('icon')} />
       </div>
       {detailList && detailList.allergy === '없음' ? undefined : (
         <div className={cx('product-allergy')}>

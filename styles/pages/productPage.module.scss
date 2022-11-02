@@ -249,7 +249,6 @@
     height: 90%;
     width: 100vw;
     overflow: auto;
-    background-color: var(--BG-002);
     bottom: 0;
 
     .bottom-order-bar {
@@ -405,7 +404,6 @@
   position: absolute;
   bottom: 0;
   overflow: auto;
-  background-color: var(--BG-002);
 
   .title {
     padding: 24px;
@@ -427,7 +425,7 @@
     padding: 2px 28px;
     margin-top: 5px;
     transition: all 0.2s ease-in-out;
-    background-color: var(--BG-006);
+    background-color: var(--POINT);
   }
 
   .state-bar-grande {
@@ -436,7 +434,7 @@
     margin-top: 5px;
     margin-left: 60px;
     transition: all 0.2s ease-in-out;
-    background-color: var(--BG-006);
+    background-color: var(--POINT);
   }
 
   .state-bar-venti {
@@ -445,7 +443,7 @@
     margin-top: 5px;
     margin-left: 140px;
     transition: all 0.2s ease-in-out;
-    background-color: var(--BG-006);
+    background-color: var(--POINT);
   }
 
   .size {

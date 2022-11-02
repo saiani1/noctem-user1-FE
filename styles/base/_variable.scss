@@ -72,6 +72,10 @@
   --POPUP-BACK: 2500;
 }
 
+[data-theme='dark'] body {
+  background-color: #1a202c;
+}
+
 [data-theme='dark'] {
   // 폰트 색상
   // --TXT-001: #f7dfff;
@@ -86,9 +90,9 @@
   --TXT-SUCCESS: #4a7dff;
 
   // 배경 색상
-  --BG-001: #0f0d1a;
+  --BG-001: #1a202c;
   --BG-002: #272a39;
-  --BG-003: #24292f;
+  --BG-003: #242c34;
   --BG-004: #8d8d8d;
   --BG-005: #e2e2e2;
   --BG-006: #222222;
@@ -98,7 +102,7 @@
 
   --BG-ALPA-001: rgba(246, 246, 246, 0.12);
   --BG-ALPA-002: rgba(53, 48, 48, 0.6);
-  --BG-ALPA-003: rgba(59, 54, 54, 0.5);
+  --BG-ALPA-003: rgba(26, 32, 44, 0.5);
 
   // 선 색상
   --LINE-001: #fff;
@@ -144,4 +148,11 @@
   --MODAL-BACK: 1500;
   --POPUP: 3000;
   --POPUP-BACK: 2500;
+
+  [data-rsbs-overlay] {
+    background-color: var(--BG-002);
+  }
+  [data-rsbs-header]:before {
+    background-color: var(--LINE-004);
+  }
 }

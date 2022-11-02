@@ -45,7 +45,7 @@
           }
 
           .is-open {
-            margin: 1px 0 0 3px;
+            margin-left: 5px;
           }
         }
 
@@ -53,12 +53,19 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          column-gap: 10px;
           margin-top: 3px;
 
-          .icon {
-            & ~ .icon {
-              margin-left: 10px;
-            }
+          .park-icon {
+            fill: var(--TXT-004);
+          }
+
+          .eco-icon {
+            fill: var(--TXT-004);
+          }
+          .car-icon {
+            margin-top: -2px;
+            fill: var(--TXT-004);
           }
 
           .icon-top {

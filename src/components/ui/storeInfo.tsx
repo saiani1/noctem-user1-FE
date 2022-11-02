@@ -5,6 +5,7 @@ import classNames from 'classnames/bind';
 import styles from '../../../styles/ui/storeInfo.module.scss';
 import { IProps } from '../../types/store';
 import { getStoreWaitingTime } from '../../../src/store/api/store';
+import { CarBtn, EcoBtn, ParkBtn, ReadyBtn } from '../../../public/assets/svg';
 
 function storeInfo({ setClickStoreId, setOpen, data }: IProps) {
   const {
@@ -51,48 +52,12 @@ function storeInfo({ setClickStoreId, setOpen, data }: IProps) {
             <div className={cx('top-content-wrap')}>
               <div className={cx('store-name-wrap')}>
                 <p className={cx('store-name')}>{name}</p>
-                {!isOpen && (
-                  <span className={cx('is-open')}>
-                    <Image
-                      src='/assets/svg/icon-ready.svg'
-                      alt='준비'
-                      width={20}
-                      height={13}
-                    />
-                  </span>
-                )}
+                {!isOpen && <ReadyBtn className={cx('is-open')} />}
               </div>
               <div className={cx('icon-wrap')}>
-                {isParking && (
-                  <span className={cx('icon')}>
-                    <Image
-                      src='/assets/svg/icon-park.svg'
-                      alt='park'
-                      width={15}
-                      height={15}
-                    />
-                  </span>
-                )}
-                {isEcoStore && (
-                  <span className={cx('icon')}>
-                    <Image
-                      src='/assets/svg/icon-eco.svg'
-                      alt='eco'
-                      width={15}
-                      height={15}
-                    />
-                  </span>
-                )}
-                {isDriveThrough && (
-                  <span className={cx('icon', 'icon-top')}>
-                    <Image
-                      src='/assets/svg/icon-car.svg'
-                      alt='eco'
-                      width={20}
-                      height={20}
-                    />
-                  </span>
-                )}
+                {isParking && <ParkBtn className={cx('park-icon')} />}
+                {isEcoStore && <EcoBtn className={cx('eco-icon')} />}
+                {isDriveThrough && <CarBtn className={cx('car-icon')} />}
               </div>
             </div>
             <div className={cx('store-address')}>{address}</div>

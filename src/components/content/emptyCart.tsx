@@ -29,16 +29,6 @@ function emptyCart(props: IProps) {
       <button type='button' onClick={handleToGo}>
         {title} 담으러 가기
       </button>
-      <div className={cx('img-wrap')}>
-        <span className={cx('img')}>
-          <Image
-            src='/assets/images/jpg/coffee-illust.jpg'
-            width={235}
-            height={280}
-            layout='responsive'
-          />
-        </span>
-      </div>
     </div>
   );
 }
