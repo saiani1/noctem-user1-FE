@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { IOrderInfo, IPayment } from '../../types/order';
+import { IMenuList, IOrderInfo, IPayment } from '../../types/order';
 import { IStore } from './../../types/store.d';
 import { recoilPersist } from 'recoil-persist';
 
@@ -50,5 +50,12 @@ export const orderInfoState = atom<IOrderInfo>({
 export const orderStatusState = atom<string>({
   key: 'orderStatusState',
   default: '',
+  effects_UNSTABLE: [persistAtom],
+});
+
+// 진행 중인 주문 메뉴 리스트
+export const orderDataState = atom<IMenuList[]>({
+  key: 'orderDataState',
+  default: [],
   effects_UNSTABLE: [persistAtom],
 });

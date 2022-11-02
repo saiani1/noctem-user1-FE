@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
-import OrderProgressModal from './orderProgressModal';
 import OrderCancelConfirmPopUp from './orderCancelConfirmPopUp';
 import styles from '../../../styles/content/orderPayingCompletionModal.module.scss';
 import { BottomSheet } from 'react-spring-bottom-sheet';
@@ -114,16 +113,6 @@ function orderPayingCompletionModal({
                 </div>
               </form>
             </div>
-          </SheetContent>
-        </BottomSheet>
-      )}
-      {isClickOrderProgressBtn && (
-        <BottomSheet open={isOpen} onDismiss={onDismiss}>
-          <SheetContent>
-            <OrderProgressModal
-              setIsClickOrderProgressBtn={setIsClickOrderProgressBtn}
-              handleClickMenuCancel={handleClickMenuCancel}
-            />
           </SheetContent>
         </BottomSheet>
       )}

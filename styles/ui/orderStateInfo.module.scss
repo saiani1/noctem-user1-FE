@@ -1,0 +1,46 @@
+@use '/styles/base/variable';
+
+.order-state-modal-wrap {
+  background: rgba(247, 247, 247, 0.12);
+  mix-blend-mode: normal;
+  backdrop-filter: blur(24px);
+  width: calc(100% - 20px);
+  // height: 80px;
+  padding: 10px 20px;
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  font-size: variable.$FS-12;
+
+  .wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .img-wrap {
+      width: 50px;
+      margin-right: 14px;
+
+      .img {
+        border-radius: 5px;
+      }
+    }
+
+    .info-wrap {
+      width: 100%;
+
+      .store-info {
+        color: variable.$TXT-002;
+      }
+
+      .order-info,
+      .number-info {
+        color: variable.$TXT-001;
+        font-size: variable.$FS-14;
+        font-weight: bold;
+      }
+    }
+  }
+}

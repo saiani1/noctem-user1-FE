@@ -1,6 +1,10 @@
 @use '/styles/base/variable';
 @use '/styles/mixins/position';
 
+.homeContent-wrap {
+  margin-bottom: 80px;
+}
+
 .point-box {
   margin: 24px;
 

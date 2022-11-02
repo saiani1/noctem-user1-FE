@@ -16,6 +16,7 @@ import toast from 'react-hot-toast';
 import { IUserDetailInfo } from '../../types/user';
 import { getUserDetailInfo } from '../../../src/store/api/user';
 import {
+  orderDataState,
   orderInfoState,
   orderStatusState,
   selectedStoreState,
@@ -39,6 +40,7 @@ function orderContent(props: IProps) {
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [, setOrderStatus] = useRecoilState(orderStatusState);
+  const [, setOrderData] = useRecoilState(orderDataState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
   const [cardInfo, setCardInfo] = useState<ICardInfo>({
     company: '',
@@ -108,6 +110,7 @@ function orderContent(props: IProps) {
           .then(res => {
             console.log('res', res);
             toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
+            setOrderData(orderData.menuList);
             setOrderInfo(res.data.data);
             setOrderStatus('주문확인중');
             if (router.query.menuList) {

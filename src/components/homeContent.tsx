@@ -25,15 +25,18 @@ import { IMenuData1 } from '../types/myMenu';
 import { ILevel } from '../types/user';
 import { IPopularMenuList } from '../types/popularMenu';
 import styles from '../../styles/main/main.module.scss';
-import { selectedStoreState } from '../store/atom/orderState';
+import {
+  orderInfoState,
+  orderStatusState,
+  selectedStoreState,
+} from '../store/atom/orderState';
 import { confirmAlert } from 'react-confirm-alert';
+import OrderStateInfo from './ui/orderStateInfo';
+import OrderProgressModal from './content/orderProgressModal';
+import ToolbarList from './ui/toolbarList';
 import CustomAlert from '../components/customAlert';
 import { toast } from 'react-hot-toast';
-// import useEventSource from 'react-sse-hooks/dts/useEventSource';
-// import useEventSourceListener from 'react-sse-hooks/dts/useEventSourceListener';
-import { SSEProvider } from 'react-hooks-sse';
-import Test from './test';
-import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
+import { getWaitingInfo } from '../store/api/order';
 
 const cx = classNames.bind(styles);
 
@@ -44,6 +47,14 @@ function homeContent() {
   const token = useRecoilValue(tokenState);
   const [isLoginTemp, setIsLoginTemp] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const orderInfo = useRecoilValue(orderInfoState);
+  const orderStatus = useRecoilValue(orderStatusState);
+  const [orderInfoTemp, setOrderInfoTemp] = useState({
+    storeId: 0,
+    purchaseId: 0,
+    status: '',
+  });
+  const [orderProgressModal, setOrderProgressModal] = useState(false);
 
   const [myMenu, setMyMenu] = useState<IMenuData1[]>();
   const [showMyMenu, setShowMyMenu] = useState(false);
@@ -64,18 +75,10 @@ function homeContent() {
   const [popularMenuList, setPopularMenuList] = useState<IPopularMenuList[]>(
     [],
   );
-  const [messages, setMessages] = useState<any>([]);
-  // const chatSource = useEventSource({
-  //   source: 'https://www.example.com/stream?token=blah',
-  // });
-  // const { startListening, stopListening } = useEventSourceListener({
-  //   source: chatSource,
-  //   startOnInit: true,
-  //   event: {
-  //     name: 'TEST',
-  //     listener: ({ data }) => setMessages([...messages, data]),
-  //   },
-  // });
+
+  const onDismiss = () => {
+    setOrderProgressModal(false);
+  };
 
   const handleStoreSelect = () => {
     if (store !== undefined) {
@@ -101,11 +104,21 @@ function homeContent() {
   };
 
   useEffect(() => {
+    console.log('orderInfo', orderInfo);
+    console.log('storeId', orderInfo.storeId);
+    console.log('purchaseId', orderInfo.purchaseId);
+
+    setOrderInfoTemp({
+      ...orderInfoTemp,
+      storeId: orderInfo.storeId,
+      purchaseId: orderInfo.purchaseId,
+      status: orderStatus,
+    });
     setIsLoginTemp(isLogin);
 
     getPopularMenu().then(res => setPopularMenuList(res.data.data));
 
-    let ssEvents: EventSourcePolyfill = new EventSourcePolyfill('');
+    let ssEvents: EventSource | null = null;
 
     if (isLogin) {
       setIsFetching(true);
@@ -128,14 +141,10 @@ function homeContent() {
         } else setShowMyMenu(false);
       });
 
-      const STREAM_URL = `https://sse.noctem.click:33333/sse/alert-server/user`;
-      // const ssEvents = new EventSource(STREAM_URL, { withCredentials: true });
-      ssEvents = new EventSourcePolyfill(STREAM_URL, {
-        headers: {
-          Authorization: token,
-        },
-        withCredentials: true,
-      });
+      const STREAM_URL = `https://sse.noctem.click:33333/sse/alert-server/user/jwt/${
+        token.split(' ')[1]
+      }`;
+      ssEvents = new EventSource(STREAM_URL, { withCredentials: true });
 
       ssEvents.addEventListener('open', event => {
         console.log('SSE OPEN!!!', event);
@@ -143,8 +152,20 @@ function homeContent() {
 
       ssEvents.addEventListener('message', event => {
         console.log('MESSAGE!!!', event);
+        getWaitingInfo(token)
+          .then(res => {
+            console.log('getWaitingInfo', res);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+
         const data = JSON.parse(event.data);
-        console.log('Data', data);
+
+        setOrderInfoTemp({
+          ...orderInfo,
+          status: data.data.orderStatus,
+        });
       });
 
       ssEvents.addEventListener('error', err => {
@@ -157,9 +178,15 @@ function homeContent() {
 
     return () => {
       console.log('SSE 종료!!!');
-      ssEvents.close();
+      if (ssEvents !== null) {
+        ssEvents.close();
+      }
     };
   }, []);
+
+  useEffect(() => {
+    console.log('주문상태', orderInfoTemp);
+  }, [orderInfoTemp]);
 
   useEffect(() => {
     if (userLevel) {
@@ -186,45 +213,102 @@ function homeContent() {
     }
   }, [geolocation]);
 
-  const [showComments, setShowComments] = useState(false);
-
   return (
     <>
-      <div className={cx('point-box')}>
-        <div className={cx('title')}>
-          <span>{nickname}</span> 님, 반갑습니다.
-        </div>
-        {isFetching ? (
-          <div className={cx('point-bar')}>
-            <div className={cx('progress-bar-space')}>
-              <div>
-                {userLevel?.userGrade === 'Power Elixir'
-                  ? userLevel.userExp
-                  : userLevel &&
-                    userLevel.requiredExpToNextGrade - userLevel.userExp}
+      <div className={cx(orderInfoTemp.purchaseId !== 0 && 'homeContent-wrap')}>
+        <div className={cx('point-box')}>
+          <div className={cx('title')}>
+            <span>{nickname}</span> 님, 반갑습니다.
+          </div>
+          {isFetching ? (
+            <div className={cx('point-bar')}>
+              <div className={cx('progress-bar-space')}>
+                <div>
+                  {userLevel?.userGrade === 'Power Elixir'
+                    ? userLevel.userExp
+                    : userLevel &&
+                      userLevel.requiredExpToNextGrade - userLevel.userExp}
 
-                <Image
-                  src='/assets/svg/icon-charge-battery.svg'
-                  alt='charge-battery'
-                  width={24}
-                  height={21}
-                />
-                {userLevel?.userGrade === 'Power Elixir' ? (
-                  <>Power Elixir</>
-                ) : (
-                  <>until {userLevel && userLevel.nextGrade} Level</>
-                )}
+                  <Image
+                    src='/assets/svg/icon-charge-battery.svg'
+                    alt='charge-battery'
+                    width={24}
+                    height={21}
+                  />
+                  {userLevel?.userGrade === 'Power Elixir' ? (
+                    <>Power Elixir</>
+                  ) : (
+                    <>until {userLevel && userLevel.nextGrade} Level</>
+                  )}
+                </div>
+                <div className={cx('progress-bar-wrap')}>
+                  {userLevel?.userGrade === 'Power Elixir' ? (
+                    <div
+                      className={cx('progress-bar')}
+                      role='progressbar'
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      style={styles.maxContainer}
+                    />
+                  ) : (
+                    <div
+                      className={cx('progress-bar')}
+                      role='progressbar'
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      style={styles.container}
+                    />
+                  )}
+                </div>
               </div>
-              <div className={cx('progress-bar-wrap')}>
-                {userLevel?.userGrade === 'Power Elixir' ? (
-                  <div
-                    className={cx('progress-bar')}
-                    role='progressbar'
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    style={styles.maxContainer}
+              <div className={cx('my-score')}>
+                <span className={cx('my-exp')}>
+                  {userLevel && userLevel.userExp}
+                </span>
+                /
+                <span className={cx('req-exp')}>
+                  {userLevel && userLevel.nextGrade !== null
+                    ? userLevel.requiredExpToNextGrade
+                    : 'MAX'}
+                </span>
+                {userLevel?.userGrade === 'Potion' ? (
+                  <Image
+                    src='/assets/svg/icon-potion-level.svg'
+                    alt='potion-level'
+                    width={24}
+                    height={21}
+                  />
+                ) : userLevel?.userGrade === 'Elixir' ? (
+                  <Image
+                    src='/assets/svg/icon-elixir-level.svg'
+                    alt='elixir-level'
+                    width={24}
+                    height={21}
                   />
                 ) : (
+                  <Image
+                    src='/assets/svg/icon-power-elixir-level.svg'
+                    alt='potion-level'
+                    width={24}
+                    height={21}
+                  />
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className={cx('point-bar')}>
+              <div className={cx('progress-bar-space')}>
+                <div>
+                  0
+                  <Image
+                    src='/assets/svg/icon-charge-battery.svg'
+                    alt='charge-battery'
+                    width={24}
+                    height={21}
+                  />
+                  until Elixir Level
+                </div>
+                <div className={cx('progress-bar-wrap')}>
                   <div
                     className={cx('progress-bar')}
                     role='progressbar'
@@ -232,183 +316,138 @@ function homeContent() {
                     aria-valuemax={100}
                     style={styles.container}
                   />
-                )}
+                </div>
               </div>
-            </div>
-            <div className={cx('my-score')}>
-              <span className={cx('my-exp')}>
-                {userLevel && userLevel.userExp}
-              </span>
-              /
-              <span className={cx('req-exp')}>
-                {userLevel && userLevel.nextGrade !== null
-                  ? userLevel.requiredExpToNextGrade
-                  : 'MAX'}
-              </span>
-              {userLevel?.userGrade === 'Potion' ? (
+              <div className={cx('my-score')}>
+                <span className={cx('my-exp')}>0</span>/
+                <span className={cx('req-exp')}>20</span>
                 <Image
                   src='/assets/svg/icon-potion-level.svg'
                   alt='potion-level'
                   width={24}
                   height={21}
                 />
-              ) : userLevel?.userGrade === 'Elixir' ? (
-                <Image
-                  src='/assets/svg/icon-elixir-level.svg'
-                  alt='elixir-level'
-                  width={24}
-                  height={21}
-                />
+              </div>
+            </div>
+          )}
+        </div>
+        <div className={cx('my-wrap')}>
+          {showMyMenu && isLoginTemp && (
+            <div className={cx('my-menu')}>
+              {myMenu && myMenu.length !== 0 ? (
+                <>
+                  <h2 className={cx('title')}>나만의 메뉴</h2>
+                  {myMenu.length === 1 && (
+                    <div className={cx('one-card')}>
+                      <MyMenuCard key={myMenu[0].index} item={myMenu[0]} />
+                    </div>
+                  )}
+                  {myMenu.length > 1 && (
+                    <Carousel
+                      showArrows={false}
+                      showStatus={false}
+                      showIndicators={false}
+                      showThumbs={false}
+                      autoPlay={false}
+                      verticalSwipe={'standard'}
+                    >
+                      {myMenu.map(item => (
+                        <MyMenuCard key={item.index} item={item} />
+                      ))}
+                    </Carousel>
+                  )}
+                </>
               ) : (
-                <Image
-                  src='/assets/svg/icon-power-elixir-level.svg'
-                  alt='potion-level'
-                  width={24}
-                  height={21}
-                />
+                <>
+                  <h2 className={cx('title')}>나만의 메뉴</h2>
+                  <div className={cx('card')}>
+                    <div>나만의 메뉴를 등록해 주세요!</div>
+                    <button
+                      onClick={() => {
+                        router.push('/category');
+                      }}
+                      className={cx('card-btn')}
+                    >
+                      찾으러 가기
+                    </button>
+                  </div>
+                </>
               )}
             </div>
-          </div>
-        ) : (
-          <div className={cx('point-bar')}>
-            <div className={cx('progress-bar-space')}>
-              <div>
-                0
-                <Image
-                  src='/assets/svg/icon-charge-battery.svg'
-                  alt='charge-battery'
-                  width={24}
-                  height={21}
-                />
-                until Elixir Level
+          )}
+          {!isLoginTemp && (
+            <div className={cx('info-wrap')}>
+              <div className={cx('info')}>
+                로그인 하여 모든 서비스를 이용해 보세요!
               </div>
-              <div className={cx('progress-bar-wrap')}>
-                <div
-                  className={cx('progress-bar')}
-                  role='progressbar'
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  style={styles.container}
-                />
+              <div className={cx('btn-box')}>
+                <button
+                  className={cx('btn', 'signUp-btn')}
+                  onClick={() => {
+                    router.push('/signUp');
+                  }}
+                >
+                  회원가입
+                </button>
+                <button
+                  className={cx('btn', 'login-btn')}
+                  onClick={() => {
+                    router.push('/login');
+                  }}
+                >
+                  <Link href='/login'>로그인</Link>
+                </button>
               </div>
             </div>
-            <div className={cx('my-score')}>
-              <span className={cx('my-exp')}>0</span>/
-              <span className={cx('req-exp')}>20</span>
-              <Image
-                src='/assets/svg/icon-potion-level.svg'
-                alt='potion-level'
-                width={24}
-                height={21}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-      <div className={cx('my-wrap')}>
-        {showMyMenu && isLoginTemp && (
-          <div className={cx('my-menu')}>
-            {myMenu && myMenu.length !== 0 ? (
+          )}
+          <div className={cx('nearly-store')}>
+            {store && (
               <>
-                <h2 className={cx('title')}>나만의 메뉴</h2>
-                {myMenu.length === 1 && (
-                  <div className={cx('one-card')}>
-                    <MyMenuCard key={myMenu[0].index} item={myMenu[0]} />
+                <h2 className={cx('title')}>가까운 매장</h2>
+                <div className={cx('card')} onClick={handleStoreSelect}>
+                  <div className={cx('store-img')}>
+                    <img src={store.mainImg} alt={store.name} />
                   </div>
-                )}
-                {myMenu.length > 1 && (
-                  <Carousel
-                    showArrows={false}
-                    showStatus={false}
-                    showIndicators={false}
-                    showThumbs={false}
-                    autoPlay={false}
-                    verticalSwipe={'standard'}
-                  >
-                    {myMenu.map(item => (
-                      <MyMenuCard key={item.index} item={item} />
-                    ))}
-                  </Carousel>
-                )}
-              </>
-            ) : (
-              <>
-                <h2 className={cx('title')}>나만의 메뉴</h2>
-                <div className={cx('card')}>
-                  <div>나만의 메뉴를 등록해 주세요!</div>
-                  <button
-                    onClick={() => {
-                      router.push('/category');
-                    }}
-                    className={cx('card-btn')}
-                  >
-                    찾으러 가기
-                  </button>
+                  <div className={cx('text-space')}>
+                    <div className={cx('store-name')}>{store.name}</div>
+                    <div className={cx('store-address')}>{store.address}</div>
+                    <div className={cx('info')}>
+                      <div>
+                        예상대기시간
+                        <span className={cx('waiting')}>
+                          {storeWaitingTime && storeWaitingTime}
+                        </span>
+                        분
+                      </div>
+                      <span className={cx('distance')}>{store.distance}</span>
+                    </div>
+                  </div>
                 </div>
               </>
             )}
           </div>
-        )}
-        {!isLoginTemp && (
-          <div className={cx('info-wrap')}>
-            <div className={cx('info')}>
-              로그인 하여 모든 서비스를 이용해 보세요!
-            </div>
-            <div className={cx('btn-box')}>
-              <button
-                className={cx('btn', 'signUp-btn')}
-                onClick={() => {
-                  router.push('/signUp');
-                }}
-              >
-                회원가입
-              </button>
-              <button
-                className={cx('btn', 'login-btn')}
-                onClick={() => {
-                  router.push('/login');
-                }}
-              >
-                <Link href='/login'>로그인</Link>
-              </button>
-            </div>
-          </div>
-        )}
-        <div className={cx('nearly-store')}>
-          {store && (
-            <>
-              <h2 className={cx('title')}>가까운 매장</h2>
-              <div className={cx('card')} onClick={handleStoreSelect}>
-                <div className={cx('store-img')}>
-                  <img src={store.mainImg} alt={store.name} />
-                </div>
-                <div className={cx('text-space')}>
-                  <div className={cx('store-name')}>{store.name}</div>
-                  <div className={cx('store-address')}>{store.address}</div>
-                  <div className={cx('info')}>
-                    <div>
-                      예상대기시간
-                      <span className={cx('waiting')}>
-                        {storeWaitingTime && storeWaitingTime}
-                      </span>
-                      분
-                    </div>
-                    <span className={cx('distance')}>{store.distance}</span>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
         </div>
+        <div className={cx('recommend-menu')}>
+          <h2 className={cx('title')}>추천 메뉴</h2>
+          <ul className={cx('recommended')}>
+            {popularMenuList.map(menu => (
+              <RecommendedMenu key={menu.index} popularMenuList={menu} />
+            ))}
+          </ul>
+        </div>
+        {orderInfoTemp.purchaseId !== 0 && (
+          <OrderStateInfo setOrderProgressModal={setOrderProgressModal} />
+        )}
       </div>
-      <div className={cx('recommend-menu')}>
-        <h2 className={cx('title')}>추천 메뉴</h2>
-        <ul className={cx('recommended')}>
-          {popularMenuList.map(menu => (
-            <RecommendedMenu key={menu.index} popularMenuList={menu} />
-          ))}
-        </ul>
-      </div>
+
+      {!orderProgressModal && <ToolbarList />}
+
+      <OrderProgressModal
+        onDismiss={onDismiss}
+        isOpen={orderProgressModal}
+        orderInfoStatus={orderInfoTemp.status}
+        // setOrderCancel={setOrderCancel}
+      />
     </>
   );
 }
