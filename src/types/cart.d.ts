@@ -53,12 +53,15 @@ export interface IPriceList {
 }
 
 export interface IDetailMenuInfo {
+  index: number;
   menuId: number;
   cartId: number;
   menuName: string;
   menuEngName: string;
   menuImg: string;
+  menuTemperatureId: number;
   temperature: string;
   totalMenuPrice: number;
+  price: number;
   size: string;
 }

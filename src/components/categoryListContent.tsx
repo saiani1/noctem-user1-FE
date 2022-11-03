@@ -11,27 +11,19 @@ import {
   categorySIdState,
 } from '../store/atom/categoryState';
 import { getPopularMenu } from '../store/api/popularMenu';
-import { getCount, getCartMenuData } from '../store/api/cart';
+import { getCount } from '../store/api/cart';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { cartCntState, loginState, tokenState } from '../store/atom/userStates';
-import { addComma } from '../store/utils/function';
 import { getSessionCartCount } from '../store/utils/cart';
 import { selectedStoreState } from '../store/atom/orderState';
 import { IStore } from '../types/store';
 import { IPopularMenuList } from '../types/popularMenu';
 import MenuItem from './ui/menuItem';
 import { DownArrowBtn } from '../../public/assets/svg';
+import { IDetailMenuInfo } from '../types/cart';
 
 const cx = classNames.bind(styles);
-interface IDrinkList {
-  index: number;
-  menuId: number;
-  menuTemperatureId: number;
-  menuName: string;
-  menuEngName: string;
-  menuImg: string;
-  price: number;
-}
+
 interface ITemp {
   query: number;
 }
@@ -65,7 +57,7 @@ function categoryListContent({
   });
   const selectedStore = useRecoilValue(selectedStoreState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
-  const [menuList, setMenuList] = useState<IDrinkList[]>([]);
+  const [menuList, setMenuList] = useState<IDetailMenuInfo[]>([]);
   const [popularMenuInfo, setPopularMenuInfo] = useState<IPopularMenuList[]>(
     [],
   );
@@ -75,7 +67,7 @@ function categoryListContent({
     setSelectedStoreTemp(selectedStore);
   }, []);
 
-  console.log('categoryLName', categoryLName, 'categorySId', categorySId);
+  console.log('categoryName', categoryName, 'categorySId', categorySId);
   useEffect(() => {
     if (categorySId === 2 && categoryLName === '음료') {
       getPopularMenu().then(res => {
@@ -125,37 +117,24 @@ function categoryListContent({
       />
       <ul className={cx('product-list')}>
         {categorySId !== 2
-          ? menuList.map(item => (
-              <Link
-                href={{
-                  pathname: `/product/${item.menuId}`,
-                }}
-                key={item.index}
-              >
-                <a>
-                  <li key={item.menuTemperatureId} className={cx('menu-item')}>
-                    <div className={cx('menu-img')}>
-                      <img src={item.menuImg} alt='' />
-                    </div>
-                    <div className={cx('menu-detail')}>
-                      <div className={cx('item-name')}>{item.menuName}</div>
-                      <div className={cx('item-english-name')}>
-                        {item.menuEngName}
-                      </div>
-                      <div className={cx('item-price')}>
-                        {addComma(item.price)}원
-                      </div>
-                    </div>
-                  </li>
-                </a>
-              </Link>
+          ? menuList.map((item: IDetailMenuInfo) => (
+              <MenuItem
+                key={`menu-${item.index}`}
+                listName='menu'
+                item={item}
+                isFetching={isFetching}
+                setIsFetching={setIsFetching}
+                categoryName={categoryName}
+              />
             ))
           : popularMenuInfo.map(item => (
               <MenuItem
                 key={`popular-${item.index}`}
+                listName='popular'
                 item={item}
                 isFetching={isFetching}
                 setIsFetching={setIsFetching}
+                categoryName={categoryName}
               />
             ))}
       </ul>
