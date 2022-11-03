@@ -8,7 +8,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'react-hot-toast';
 import { Carousel } from 'react-responsive-carousel';
 import { confirmAlert } from 'react-confirm-alert';
-import { useTheme } from 'next-themes';
 
 import styles from '../../styles/main/main.module.scss';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -20,7 +19,6 @@ import {
   tokenState,
 } from '../store/atom/userStates';
 import { selectedStoreState } from '../store/atom/orderState';
-import { darkmodeState } from '../store/atom/darkmodeState';
 import { getUserInfo, getUserLevel } from '../store/api/user';
 import { getMyMenuData, getShowMainMyMenu } from '../store/api/myMenu';
 import { getPopularMenu } from '../store/api/popularMenu';
@@ -39,7 +37,6 @@ const cx = classNames.bind(styles);
 function homeContent() {
   const router = useRouter();
   const geolocation = useGeolocation();
-  const { theme, setTheme } = useTheme();
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
 
@@ -86,14 +83,6 @@ function homeContent() {
       });
     }
   };
-
-  useEffect(() => {
-    if (localStorage.getItem('theme') === null)
-      getIsDark(token).then(res => {
-        const resData = res.data.data;
-        setTheme(resData === true ? 'dark' : 'light');
-      });
-  }, []);
 
   useEffect(() => {
     getPopularMenu().then(res => setPopularMenuList(res.data.data));

@@ -183,9 +183,15 @@ function myPageContent() {
           />
         </li>
       </ul>
-      <button type='button' className={cx('logout-btn')} onClick={handleLogout}>
-        로그아웃
-      </button>
+      {isLogin && (
+        <button
+          type='button'
+          className={cx('logout-btn')}
+          onClick={handleLogout}
+        >
+          로그아웃
+        </button>
+      )}
     </div>
   );
 }
