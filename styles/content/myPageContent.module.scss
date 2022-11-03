@@ -87,6 +87,11 @@
           fill: var(--TXT-004);
         }
 
+        .noctem {
+          width: 40px;
+          pointer-events: none;
+        }
+
         span {
           // @include position.absolute(auto auto 10px auto);
           margin-top: 5px;
