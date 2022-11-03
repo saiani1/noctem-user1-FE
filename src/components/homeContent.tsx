@@ -48,8 +48,8 @@ function homeContent() {
   const token = useRecoilValue(tokenState);
   const [isLoginTemp, setIsLoginTemp] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const orderInfo = useRecoilValue(orderInfoState);
-  const orderStatus = useRecoilValue(orderStatusState);
+  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
+  const [orderStatus, setOrderStatus] = useRecoilState(orderStatusState);
   const [orderInfoTemp, setOrderInfoTemp] = useState({
     storeId: 0,
     purchaseId: 0,
@@ -118,7 +118,7 @@ function homeContent() {
     setIsLoginTemp(isLogin);
 
     window.addEventListener('shake', shakeEventDidOccur, false);
-  }, []);
+  }, [orderStatus]);
 
   function shakeEventDidOccur() {
     alert('흔들림 감지');
@@ -171,10 +171,13 @@ function homeContent() {
 
         const data = JSON.parse(event.data);
 
-        setOrderInfoTemp({
-          ...orderInfo,
-          status: data.data.orderStatus,
-        });
+        console.log('data', data);
+
+        setOrderStatus(data.data.orderStatus);
+        // setOrderInfo({
+        //   ...orderInfo,
+        //   purchaseId: data.data.purchaseId,
+        // });
       });
 
       ssEvents.addEventListener('error', err => {
