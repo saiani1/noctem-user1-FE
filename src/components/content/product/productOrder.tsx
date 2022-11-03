@@ -170,7 +170,7 @@ function productOrder({
                       </div>
                     </div>
                     <div className={cx('total-price')}>
-                      {detailList && addComma(detailList.price + extraCost)}원
+                      {detailList && addComma(count * (detailList.price + extraCost))}원
                     </div>
                   </div>
                   <div className={cx('order-select')}>
