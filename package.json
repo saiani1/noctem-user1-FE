@@ -25,7 +25,8 @@
     "react-router-dom": "^6.4.1",
     "react-spring-bottom-sheet": "^3.4.1",
     "recoil": "^0.7.5",
-    "recoil-persist": "^4.2.0"
+    "recoil-persist": "^4.2.0",
+    "shake.js": "^1.2.2"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",
