@@ -43,7 +43,7 @@ export const orderInfoState = atom<IOrderInfo>({
     storeId: 0,
     purchaseId: 0,
   },
-  effects_UNSTABLE: [persistAtom],
+  // effects_UNSTABLE: [persistAtom],
 });
 
 // 주문 상태 정보
