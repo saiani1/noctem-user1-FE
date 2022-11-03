@@ -64,11 +64,6 @@ function homeContent() {
     [],
   );
 
-  window.addEventListener('shake', shakeEventDidOccur, false);
-  function shakeEventDidOccur() {
-    alert('흔들림 감지');
-  }
-
   const handleStoreSelect = () => {
     if (store !== undefined) {
       confirmAlert({
@@ -98,7 +93,11 @@ function homeContent() {
         const resData = res.data.data;
         setTheme(resData === true ? 'dark' : 'light');
       });
+    window.addEventListener('shake', shakeEventDidOccur, false);
   }, []);
+  function shakeEventDidOccur() {
+    alert('흔들림 감지');
+  }
 
   useEffect(() => {
     getPopularMenu().then(res => setPopularMenuList(res.data.data));
