@@ -183,9 +183,15 @@ function myPageContent() {
           />
         </li>
       </ul>
-      <button type='button' className={cx('logout-btn')} onClick={handleLogout}>
-        로그아웃
-      </button>
+      {isFatching ? (
+        <button
+          type='button'
+          className={cx('logout-btn')}
+          onClick={handleLogout}
+        >
+          로그아웃
+        </button>
+      ) : undefined}
     </div>
   );
 }
