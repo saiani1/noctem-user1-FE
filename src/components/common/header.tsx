@@ -1,26 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import classNames from 'classnames/bind';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRecoilValue } from 'recoil';
 
 import styles from '../../../styles/common/header.module.scss';
 import { CloseBtn, LeftArrowBtn } from '../../../public/assets/svg';
+import { loginState, tokenState } from '../../store/atom/userStates';
+import { getIsDark } from '../../store/api/user';
 
 const cx = classNames.bind(styles);
 
 function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
   const router = useRouter();
+  const isLogin = useRecoilValue(loginState);
+  const token = useRecoilValue(tokenState);
   const { theme, setTheme } = useTheme();
 
   const handleBack = () => {
     router.back();
   };
 
-  const handleDarkMode = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  };
+  useEffect(() => {
+    if (isLogin) {
+      getIsDark(token).then(res => {
+        const resData = res.data.data;
+        setTheme(resData === true ? 'dark' : 'light');
+      });
+    } else {
+      setTheme('light');
+    }
+  }, []);
 
   return (
     <div className={cx('header-wrap')}>
@@ -49,14 +61,6 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
           </a>
         </Link>
       </div>
-      {/* <button
-        type='button'
-        onClick={handleDarkMode}
-        className={cx('darkBtn')}
-        style={{ padding: '10px', backgroundColor: 'pink' }}
-      >
-        다크모드
-      </button> */}
     </div>
   );
 }

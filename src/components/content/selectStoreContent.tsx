@@ -23,7 +23,7 @@ function selectStoreContent() {
   const [storeList, setStoreList] = useState<IStore[]>();
   const [clickStoreId, setClickStoreId] = useState(0);
   const [clickStoreInfo, setClickStoreInfo] = useState<IStore>();
-  const [selectedStore, setSelectedStore] = useRecoilState(selectedStoreState);
+  const [, setSelectedStore] = useRecoilState(selectedStoreState);
   const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -113,6 +113,7 @@ function selectStoreContent() {
       const clickStore = storeList.find(
         store => store.storeId === clickStoreId,
       );
+      console.log('selectStore', clickStore);
       setClickStoreInfo(clickStore);
     }
   }, [clickStoreId]);
