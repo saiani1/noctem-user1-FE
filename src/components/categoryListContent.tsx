@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryContent from './categoryContent';
 import { getMenuCategory } from '../store/api/category';
-import { categorySIdState } from '../store/atom/categoryState';
+import {
+  categoryLNameState,
+  categorySIdState,
+} from '../store/atom/categoryState';
 import { getPopularMenu } from '../store/api/popularMenu';
 import { getCount, getCartMenuData } from '../store/api/cart';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -18,6 +20,7 @@ import { selectedStoreState } from '../store/atom/orderState';
 import { IStore } from '../types/store';
 import { IPopularMenuList } from '../types/popularMenu';
 import MenuItem from './ui/menuItem';
+import { DownArrowBtn } from '../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 interface IDrinkList {
@@ -44,6 +47,7 @@ function categoryListContent({
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
+  const [categoryLName, setCategoryLName] = useRecoilState(categoryLNameState);
   const [selectedStoreTemp, setSelectedStoreTemp] = useState<IStore>({
     index: 0,
     storeId: 0,
@@ -71,8 +75,9 @@ function categoryListContent({
     setSelectedStoreTemp(selectedStore);
   }, []);
 
+  console.log('categoryLName', categoryLName, 'categorySId', categorySId);
   useEffect(() => {
-    if (categorySId === 2) {
+    if (categorySId === 2 && categoryLName === '음료') {
       getPopularMenu().then(res => {
         setPopularMenuInfo(res.data.data);
       });
@@ -165,11 +170,7 @@ function categoryListContent({
               ? '주문할 매장을 선택하세요'
               : selectedStoreTemp.name}
           </span>
-          <Image
-            src='/assets/svg/icon-down-arrow-white.svg'
-            width={12}
-            height={10}
-          />
+          <DownArrowBtn />
         </button>{' '}
       </div>
     </>

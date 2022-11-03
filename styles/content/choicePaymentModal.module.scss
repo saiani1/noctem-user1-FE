@@ -1,20 +1,18 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
   width: 100%;
   height: 90%;
-  z-index: variable.$MODAL;
+  z-index: var(--MODAL);
   position: absolute;
   bottom: 0;
   overflow: auto;
-  background-color: variable.$BG-001;
 
   h2 {
     margin-bottom: 10px;
-    font-size: variable.$FS-16;
+    font-size: var(--FS-16);
     font-weight: 700;
-    color: variable.$TXT-001;
+    color: var(--TXT-001);
     text-align: center;
   }
 
@@ -26,18 +24,19 @@
 
     input[type='radio'] {
       margin-right: 5px;
+      accent-color: var(--POINT);
     }
 
     label {
       font-weight: bold;
-      color: variable.$TXT-001;
+      color: var(--TXT-001);
     }
   }
 
   .card-info-wrap {
     padding: 30px 20px;
     margin-bottom: 20px;
-    background-color: variable.$BG-003;
+    background-color: var(--BG-003);
     display: flex;
     flex-direction: column;
     row-gap: 10px;
@@ -59,9 +58,10 @@
         height: 35px;
         font-size: 13px;
         line-height: 15px;
-        color: #222;
-        border: 1px solid #e0e0e0;
+        color: var(--TXT-003);
+        border: 1px solid var(--LINE-003);
         border-radius: 0;
+        background-color: var(--BG-002);
 
         option {
           font-weight: normal;
@@ -87,16 +87,17 @@
     }
 
     label {
-      color: variable.$TXT-002;
+      color: var(--TXT-002);
     }
 
     input[type='text'] {
       width: 100%;
       height: 35px;
       padding: 10px 36px 10px 15px;
-      color: #222;
-      border: 1px solid #e0e0e0;
+      color: var(--TXT-003);
+      border: 1px solid var(--LINE-003);
       border-radius: 0;
+      background-color: var(--BG-002);
       font-size: 13px;
       line-height: 15px;
       -webkit-appearance: none;
@@ -104,7 +105,7 @@
       appearance: none;
 
       &::placeholder {
-        color: variable.$TXT-003;
+        color: var(--TXT-003);
       }
     }
   }

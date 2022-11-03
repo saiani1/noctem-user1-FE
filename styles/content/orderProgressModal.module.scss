@@ -1,14 +1,22 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
-  width: 100vw;
-  height: 90%;
-  z-index: variable.$MODAL;
-  position: absolute;
-  bottom: 0;
-  overflow: auto;
-  background-color: variable.$BG-001;
+  @include position.fixed(50px 0 0 0);
+  background-color: var(--BG-001);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  z-index: 2500;
+
+  &::after {
+    @include position.absolute(7.5px 50% auto 50%);
+    content: '';
+    display: inline-block;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 4px;
+    border-radius: 3.5px;
+    background-color: var(--BG-004);
+  }
 
   .top-wrap {
     padding: 20px;
@@ -17,42 +25,42 @@
       position: relative;
 
       .store {
-        font-size: variable.$FS-16;
+        font-size: var(--FS-16);
         font-weight: 500;
-        color: variable.$POINT;
+        color: var(--POINT);
       }
 
       .order-status {
-        color: variable.$TXT-001;
-        font-size: variable.$FS-26;
+        color: var(--TXT-001);
+        font-size: var(--FS-26);
         word-break: keep-all;
         line-height: 1.3;
       }
 
       .remain-time-wrap {
         width: fit-content;
-        border-radius: 16px;
-        background-color: variable.$POINT;
+        border-radius: 10px;
+        background-color: var(--BG-004);
         padding: 0 10px;
         margin-bottom: 10px;
 
         p {
           line-height: 1.6;
           text-align: center;
-          font-size: variable.$FS-12;
+          font-size: var(--FS-12);
           font-weight: 300;
-          color: variable.$TXT-005;
+          color: var(--TXT-005);
 
           strong {
             font-weight: bold;
-            font-size: variable.$FS-14;
+            font-size: var(--FS-14);
           }
         }
       }
 
       .content {
-        font-size: variable.$FS-16;
-        color: variable.$TXT-003;
+        font-size: var(--FS-16);
+        color: var(--TXT-003);
       }
     }
 
@@ -65,12 +73,12 @@
         margin-bottom: 3px;
 
         li {
-          font-size: variable.$FS-12;
-          color: variable.$TXT-003;
+          font-size: var(--FS-12);
+          color: var(--TXT-003);
 
           &.active {
             font-weight: bold;
-            color: variable.$TXT-001;
+            color: var(--TXT-001);
           }
         }
       }
@@ -82,7 +90,7 @@
           width: 100%;
           height: 8px;
           border-radius: 4px;
-          background-color: variable.$BG-003;
+          background-color: var(--BG-003);
         }
 
         .progress-bar {
@@ -90,7 +98,7 @@
           width: 33.3%;
           height: 8px;
           border-radius: 4px;
-          background-color: variable.$POINT;
+          background-color: var(--POINT);
 
           &.prepare {
             width: 66.6%;
@@ -105,23 +113,12 @@
   }
 
   .bottom-wrap {
-    background-color: variable.$BG-003;
+    background-color: var(--BG-003);
     padding: 19px;
 
     h3 {
       margin-bottom: 10px;
-      font-size: variable.$FS-17;
-    }
-
-    .take-out-option {
-      width: 100%;
-      padding: 5px 15px;
-      background-color: variable.$BG-005;
-
-      p {
-        font-size: variable.$FS-13;
-        color: variable.$TXT-006;
-      }
+      font-size: var(--FS-17);
     }
 
     .menu-list-wrap {
@@ -148,14 +145,14 @@
           width: calc(100% - 80px);
 
           .order-tit {
-            font-size: variable.$FS-17;
+            font-size: var(--FS-17);
             font-weight: bold;
-            color: variable.$TXT-001;
+            color: var(--TXT-001);
           }
 
           .order-option {
-            font-size: variable.$FS-12;
-            color: variable.$TXT-001;
+            font-size: var(--FS-12);
+            color: var(--TXT-001);
           }
         }
       }
@@ -169,22 +166,22 @@
         flex: 1;
         padding: 8px;
         text-align: center;
-        font-size: variable.$FS-13;
+        font-size: var(--FS-13);
         font-weight: 300;
         border-radius: 20px;
-        background-color: variable.$POINT;
+        background-color: var(--POINT);
       }
 
       .btn-cancel {
         margin-right: 10px;
-        color: variable.$POINT;
-        border: 1px solid variable.$POINT;
+        color: var(--POINT);
+        border: 1px solid var(--POINT);
         background-color: transparent;
       }
 
       .btn-confirm {
-        color: variable.$TXT-005;
-        background-color: variable.$POINT;
+        color: var(--TXT-005);
+        background-color: var(--POINT);
       }
     }
   }

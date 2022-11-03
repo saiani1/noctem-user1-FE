@@ -1,4 +1,3 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
@@ -9,17 +8,17 @@
   .tab-wrap {
     position: relative;
     width: 100%;
-    border-bottom: 3px solid variable.$LINE-003;
+    border-bottom: 3px solid var(--LINE-003);
 
     button {
       width: 110px;
       padding: 5px 19px;
-      font-size: variable.$FS-12;
+      font-size: var(--FS-12);
       font-weight: bold;
-      color: variable.$TXT-003;
+      color: var(--TXT-003);
 
       &.active {
-        color: variable.$TXT-001;
+        color: var(--TXT-001);
         &:nth-child(2) ~ .bar {
           margin-left: 110px;
         }
@@ -29,7 +28,7 @@
       @include position.absolute(auto auto 0 0);
       width: 110px;
       height: 3px;
-      background-color: variable.$POINT;
+      background-color: var(--POINT);
       transition: all 0.2s ease-in-out;
     }
   }

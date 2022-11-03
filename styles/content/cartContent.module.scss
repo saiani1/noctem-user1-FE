@@ -1,4 +1,3 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
@@ -9,7 +8,7 @@
   .store-header {
     width: 100%;
     position: absolute;
-    background-color: variable.$BG-001;
+    background-color: var(--BG-001);
     top: -75px;
     left: 0;
 
@@ -28,12 +27,12 @@
   }
 
   .top-wrap {
-    background-color: rgba(variable.$BG-006, 0.8);
+    background-color: var(--BG-006);
     padding: 19px;
 
     h2 {
-      font-size: variable.$FS-20;
-      color: variable.$TXT-005;
+      font-size: var(--FS-20);
+      color: var(--TXT-005);
     }
 
     .select-store-wrap {
@@ -42,10 +41,10 @@
       align-items: center;
       width: 100%;
       padding-bottom: 8px;
-      border-bottom: 1px solid variable.$LINE-002;
+      border-bottom: 1px solid var(--LINE-004);
 
       .tit {
-        color: variable.$TXT-005;
+        color: var(--TXT-005);
       }
     }
   }
@@ -53,7 +52,7 @@
   .tab-wrap {
     position: relative;
     display: flex;
-    border-bottom: 3px solid variable.$LINE-003;
+    border-bottom: 3px solid var(--LINE-003);
 
     button {
       display: flex;
@@ -64,13 +63,13 @@
 
       &.active {
         margin-bottom: -3px;
-        border-bottom: 3px solid variable.$POINT;
+        border-bottom: 3px solid var(--POINT);
       }
 
       .tit-wrap {
         pointer-events: none;
         position: relative;
-        font-size: variable.$FS-13;
+        font-size: var(--FS-13);
         font-weight: 500;
 
         .cnt-wrap {
@@ -80,11 +79,11 @@
           align-items: center;
           width: 15px;
           height: 15px;
-          background-color: variable.$POINT;
+          background-color: var(--POINT);
           border-radius: 50%;
-          font-size: variable.$FS-10;
+          font-size: var(--FS-10);
           font-weight: 300;
-          color: variable.$TXT-005;
+          color: var(--TXT-005);
         }
       }
     }
@@ -99,11 +98,11 @@
       -webkit-appearance: none;
       width: 17px;
       height: 17px;
-      border: 1px solid variable.$POINT;
+      border: 1px solid var(--POINT);
       border-radius: 3px;
 
       &:checked {
-        background-color: variable.$POINT;
+        background-color: var(--POINT);
       }
 
       &::after {
@@ -121,17 +120,17 @@
       margin-bottom: 12px;
 
       h3 {
-        font-size: variable.$FS-16;
+        font-size: var(--FS-16);
       }
 
       span {
-        font-size: variable.$FS-12;
-        color: variable.$TXT-003;
+        font-size: var(--FS-12);
+        color: var(--TXT-003);
 
         strong {
-          font-size: variable.$FS-14;
+          font-size: var(--FS-14);
           font-weight: bold;
-          color: variable.$POINT;
+          color: var(--POINT);
         }
       }
     }
@@ -151,20 +150,20 @@
 
         label {
           margin-left: 25px;
-          font-size: variable.$FS-12;
+          font-size: var(--FS-12);
           font-weight: 300;
-          color: variable.$TXT-003;
+          color: var(--TXT-003);
         }
       }
 
       .delete-btn-wrap {
         button {
           position: relative;
-          font-size: variable.$FS-12;
+          font-size: var(--FS-12);
           font-weight: 300;
-          color: variable.$TXT-003;
+          color: var(--TXT-003);
 
-          ~button {
+          ~ button {
             margin-left: 15px;
           }
 
@@ -174,7 +173,7 @@
             content: ' ';
             height: 10px;
             width: 1px;
-            background-color: variable.$LINE-004;
+            background-color: var(--LINE-004);
           }
         }
       }
@@ -187,7 +186,7 @@
       bottom: 0;
       width: 100%;
       height: 8px;
-      background-color: variable.$BG-003;
+      background-color: var(--BG-003);
     }
   }
 
@@ -195,8 +194,8 @@
     @include position.fixed(auto 0 50px 0);
     height: 130px;
     padding: 24px 19px;
-    background-color: variable.$BG-001;
-    border-top: 1px solid variable.$LINE-002;
+    background-color: var(--BG-002);
+    border-top: 1px solid var(--LINE-002);
 
     .price-wrap {
       display: flex;
@@ -204,20 +203,20 @@
       margin-bottom: 15px;
 
       .check-cnt {
-        font-size: variable.$FS-14;
+        font-size: var(--FS-14);
         font-weight: 500;
-        color: variable.$TXT-003;
+        color: var(--TXT-003);
 
         strong {
-          font-size: variable.$FS-16;
-          color: variable.$POINT;
+          font-size: var(--FS-16);
+          color: var(--POINT);
         }
       }
 
       .total-price {
-        font-size: variable.$FS-18;
+        font-size: var(--FS-18);
         font-weight: 500;
-        color: variable.$TXT-001;
+        color: var(--TXT-001);
       }
     }
 
@@ -226,11 +225,11 @@
       width: 100%;
       padding: 8px;
       text-align: center;
-      font-size: variable.$FS-13;
+      font-size: var(--FS-13);
       font-weight: 300;
       border-radius: 20px;
-      color: variable.$TXT-005;
-      background-color: variable.$POINT;
+      color: var(--TXT-005);
+      background-color: var(--POINT);
     }
   }
 }

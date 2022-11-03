@@ -1,4 +1,3 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/animation';
 
 .logo-wrap {
@@ -7,54 +6,51 @@
 
 .welcome {
   margin-bottom: 4px;
-  font-size: variable.$FS-20;
+  font-size: var(--FS-20);
   font-weight: bold;
-  color: variable.$TXT-001;
+  color: var(--TXT-001);
 }
 
 .desc {
   margin-bottom: 30px;
-  font-size: variable.$FS-14;
-  color: variable.$TXT-002;
+  font-size: var(--FS-14);
+  color: var(--TXT-002);
 }
 
 .link-box {
   text-align: center;
-  color: variable.$TXT-003;
-  font-size: variable.$FS-10;
+  color: var(--TXT-003);
+  font-size: var(--FS-10);
 
-  &>a {
+  & > a {
     margin: 0 10px;
     position: relative;
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 3px;
       left: -10px;
       width: 1px;
       height: 10px;
-      background-color: variable.$LINE-003;
+      background-color: var(--LINE-003);
     }
 
     &:first-child::after {
-      content: "";
+      content: '';
       display: none;
     }
   }
 }
-.login-button{
+.login-button {
   display: block;
   width: 100%;
   margin: 50px 0;
   padding: 8px;
   text-align: center;
-  font-size: variable.$FS-14;
+  font-size: var(--FS-14);
   font-weight: 400;
   border-radius: 20px;
-  color: variable.$TXT-005;
-  background-color: variable.$POINT;
+  color: var(--TXT-005);
+  background-color: var(--POINT);
 }
-
-
-

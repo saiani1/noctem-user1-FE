@@ -2,6 +2,15 @@ import { basicRequest } from './base';
 
 const SERVICE = '/user-service';
 
+export const getIsDark = async (token: string) => {
+  const res = await basicRequest.get(`${SERVICE}/optionalInfo/darkmode`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return res;
+};
+
 export const getUserInfo = async (token: string) => {
   const res = await basicRequest.get(`${SERVICE}/userAccount`, {
     headers: {
@@ -14,7 +23,7 @@ export const getUserInfo = async (token: string) => {
 export const getUserLevel = async (token: string) => {
   const res = await basicRequest.get(`${SERVICE}/userAccount/grade`, {
     headers: {
-      Authorization: token
+      Authorization: token,
     },
   });
   return res;

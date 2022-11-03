@@ -15,6 +15,7 @@ import { IMenuList } from './../../types/order.d';
 import { useRecoilValue } from 'recoil';
 import { tokenState } from '../../store/atom/userStates';
 import { loginState } from './../../store/atom/userStates';
+import { CloseBtn, MinusBtn, PlusBtn } from '../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -123,7 +124,8 @@ function cartItem({
                 handleDelete(cartId);
               }}
             >
-              <Image src='/assets/svg/icon-x-mark.svg' width={8} height={8} />
+              <CloseBtn className={cx('icon')} />
+              {/* <Image src='/assets/svg/icon-x-mark.svg' width={8} height={8} /> */}
             </button>
           </div>
           <div className={cx('second-wrap')}>
@@ -153,16 +155,9 @@ function cartItem({
                       handleCountChange('sub', cartId, qty);
                     }}
                   >
-                    <Image
-                      src={
-                        qty > 1
-                          ? '/assets/svg/icon-minus-active.svg'
-                          : '/assets/svg/icon-minus.svg'
-                      }
-                      alt='minus icon'
-                      width={20}
-                      height={20}
-                    />
+                    <MinusBtn
+                      className={cx('icon', qty === 1 ? 'disable' : '')}
+                    />{' '}
                   </div>
                   <strong>{qty}</strong>
                   <div
@@ -171,12 +166,7 @@ function cartItem({
                       handleCountChange('add', cartId, qty);
                     }}
                   >
-                    <Image
-                      src='/assets/svg/icon-plus-active.svg'
-                      alt='plus icon'
-                      width={20}
-                      height={20}
-                    />
+                    <PlusBtn className={cx('icon')} />
                   </div>
                 </div>
                 <span>{addComma(data.totalMenuPrice * qty)}원</span>

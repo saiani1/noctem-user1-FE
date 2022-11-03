@@ -1,8 +1,6 @@
-@use '/styles/base/variable';
-
 .content-wrap {
   .title {
-    font-size: variable.$FS-20;
+    font-size: var(--FS-20);
     margin-bottom: 10px;
   }
 
@@ -17,11 +15,11 @@
 
     .error {
       padding-left: 10px;
-      color: variable.$TXT-ERROR;
+      color: var(--TXT-ERROR);
     }
 
     .success {
-      color: variable.$TXT-SUCCESS;
+      color: var(--TXT-SUCCESS);
     }
   }
 
@@ -36,10 +34,10 @@
       margin-left: 10px;
       margin-bottom: 4px;
       padding: 10px;
-      color: variable.$TXT-005;
-      border: 1px solid variable.$POINT;
+      color: var(--TXT-005);
+      border: 1px solid var(--POINT);
       border-radius: 10px;
-      background-color: variable.$POINT;
+      background-color: var(--POINT);
     }
   }
 
@@ -50,11 +48,12 @@
 
     .bar {
       padding: 18px 4px;
-      color: variable.$TXT-004;
+      color: var(--TXT-004);
     }
 
     .gender {
-      background: url('/assets/svg/icon-regi-masking.svg') no-repeat center center;
+      background: url('/assets/svg/icon-regi-masking.svg') no-repeat center
+        center;
     }
   }
 }

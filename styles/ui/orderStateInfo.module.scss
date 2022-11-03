@@ -1,5 +1,3 @@
-@use '/styles/base/variable';
-
 .order-state-modal-wrap {
   background: rgba(247, 247, 247, 0.12);
   mix-blend-mode: normal;
@@ -12,7 +10,7 @@
   left: 50%;
   transform: translateX(-50%);
   border-radius: 5px;
-  font-size: variable.$FS-12;
+  font-size: var(--FS-12);
 
   .wrap {
     display: flex;
@@ -32,13 +30,13 @@
       width: 100%;
 
       .store-info {
-        color: variable.$TXT-002;
+        color: var(--TXT-002);
       }
 
       .order-info,
       .number-info {
-        color: variable.$TXT-001;
-        font-size: variable.$FS-14;
+        color: var(--TXT-001);
+        font-size: var(--FS-14);
         font-weight: bold;
       }
     }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import classNames from 'classnames/bind';
 import toast from 'react-hot-toast';
 
@@ -14,6 +13,14 @@ import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from './../customAlert';
 import { loginState } from './../../store/atom/userStates';
 import { orderInfoState, orderStatusState } from '../../store/atom/orderState';
+import {
+  MugBtn,
+  MyRewardBtn,
+  ReceiptBtn,
+  SettingBtn,
+  UserBtn,
+} from '../../../public/assets/svg';
+import { randomMessage } from '../../../public/assets/datas/randomMessage';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
@@ -22,8 +29,9 @@ function myPageContent() {
   const [token, setToken] = useRecoilState(tokenState);
   const [, setOrderInfo] = useRecoilState(orderInfoState);
   const [, setOrderStatus] = useRecoilState(orderStatusState);
-  const [isFatching, setIsFatching] = useState(false);
   const [nickname, setNickname] = useRecoilState(nicknameState);
+  const [isFatching, setIsFatching] = useState(false);
+  const [theme, setTheme] = useState('');
 
   const onLogin = () => {
     router.push('/login');
@@ -54,6 +62,13 @@ function myPageContent() {
     }
   };
 
+  const handleMessage = () => {
+    const randomNumber = Math.floor(
+      Math.random() * Math.floor(randomMessage.length),
+    );
+    toast(randomMessage[randomNumber], { icon: '🧙' });
+  };
+
   const handleLogout = () => {
     if (isLogin) {
       setToken('');
@@ -79,6 +94,8 @@ function myPageContent() {
     } else {
       setIsFatching(false);
     }
+    const getTheme = String(localStorage.getItem('theme'));
+    setTheme(getTheme);
   }, []);
 
   return (
@@ -122,19 +139,13 @@ function myPageContent() {
               handleMyPage('/rewards');
             }}
           >
-            <a className={cx('button')}>
-              <Image
-                src='/assets/svg/icon-my-reward.svg'
-                width={35}
-                height={35}
-              />
-              <span>등급 조회</span>
-            </a>
+            <MyRewardBtn className={cx('icon')} />
+            <span>등급 조회</span>
           </button>
         </li>
         <li className={cx('menu-btn-li')}>
           <button onClick={handleComingSoon}>
-            <Image src='/assets/svg/icon-receipt.svg' width={35} height={35} />
+            <ReceiptBtn className={cx('icon')} />
             <span>주문내역</span>
           </button>
         </li>
@@ -145,7 +156,7 @@ function myPageContent() {
             }}
           >
             <a className={cx('button')}>
-              <Image src='/assets/svg/icon-mug.svg' width={35} height={35} />
+              <MugBtn className={cx('icon')} />
               <span>나만의 메뉴</span>
             </a>
           </button>
@@ -157,7 +168,7 @@ function myPageContent() {
             }}
           >
             <a className={cx('button')}>
-              <Image src='/assets/svg/icon-user.svg' width={35} height={35} />
+              <UserBtn className={cx('icon')} />
               <span>개인정보 관리</span>
             </a>
           </button>
@@ -169,26 +180,34 @@ function myPageContent() {
             }}
           >
             <a className={cx('button')}>
-              <Image
-                src='/assets/svg/icon-settings.svg'
-                width={35}
-                height={35}
-              />
+              <SettingBtn className={cx('icon')} />
               <span>설정</span>
             </a>
           </button>
         </li>
         <li className={cx('menu-btn-li')}>
-          <Image
-            src='/assets/images/png/logo-symbol.png'
-            width={75}
-            height={75}
-          />
+          <button onClick={handleMessage}>
+            <img
+              src={
+                theme === 'dark'
+                  ? '/assets/images/png/noctem-dark.png'
+                  : '/assets/images/png/noctem-light.png'
+              }
+              alt='녹템'
+              className={cx('noctem')}
+            />
+          </button>
         </li>
       </ul>
-      <button type='button' className={cx('logout-btn')} onClick={handleLogout}>
-        로그아웃
-      </button>
+      {isLogin && (
+        <button
+          type='button'
+          className={cx('logout-btn')}
+          onClick={handleLogout}
+        >
+          로그아웃
+        </button>
+      )}
     </div>
   );
 }

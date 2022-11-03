@@ -20,6 +20,7 @@ import {
 import { addCart, getCount } from '../../../../src/store/api/cart';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
+  categoryLNameState,
   categoryLState,
   categorySIdState,
 } from '../../../store/atom/categoryState';
@@ -41,6 +42,7 @@ import {
   selectedStoreState,
 } from '../../../store/atom/orderState';
 import { loginState } from './../../../store/atom/userStates';
+import { RightArrowBtn } from '../../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -50,6 +52,7 @@ function productContent() {
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const [, setOrderStatus] = useRecoilState(orderStatusState);
+  const [categoryLName] = useRecoilState(categoryLNameState);
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
@@ -442,7 +445,7 @@ function productContent() {
       <hr className={cx('line')} />
       <div className={cx('product-nutrition')} onClick={handleNutritionOpen}>
         <p>제품영양정보</p>
-        <Image src='/assets/svg/icon-more.svg' width={20} height={20} />
+        <RightArrowBtn className={cx('icon')} />
       </div>
       {detailList && detailList.allergy === '없음' ? undefined : (
         <div className={cx('product-allergy')}>
@@ -450,7 +453,6 @@ function productContent() {
           <div>{detailList && detailList.allergy}</div>
         </div>
       )}
-      <hr className={cx('line')} />
       <div className={cx('button-box')}>
         <button
           className={cx('order-button')}

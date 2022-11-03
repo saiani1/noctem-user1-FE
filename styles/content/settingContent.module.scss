@@ -1,8 +1,10 @@
-@use '/styles/base/variable';
 @use '/styles/mixins/position';
 
 .wrap {
   padding: 19px;
+  color: var(--TXT-001);
+  transition: all 0.2s;
+
   .setting-li-wrap {
     margin-top: 40px;
     .setting-li {
@@ -12,11 +14,11 @@
       align-items: center;
 
       & ~ .setting-li {
-        border-top: 1px solid variable.$LINE-003;
+        border-top: 1px solid var(--LINE-003);
       }
 
       label {
-        font-size: variable.$FS-15;
+        font-size: var(--FS-15);
       }
     }
   }

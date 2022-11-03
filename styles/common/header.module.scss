@@ -1,9 +1,8 @@
-@use '/styles/base/variable';
-
 .header-wrap {
-  height: 50px;
   position: relative;
-  border-bottom: 1px solid variable.$LINE-002;
+  height: 50px;
+  border-bottom: 1px solid var(--LINE-002);
+  background-color: var(--BG-002);
 
   .header-back-arrow {
     height: 19px;
@@ -11,6 +10,7 @@
     left: 24px;
     top: 50%;
     transform: translateY(-50%);
+    stroke: var(--BG-004);
   }
 
   .header-title {
@@ -27,4 +27,8 @@
     top: 50%;
     transform: translate(-50%, -50%);
   }
+}
+
+.darkBtn {
+  margin-left: 60px;
 }

@@ -33,6 +33,7 @@ import { IMenuList } from '../../types/order';
 import { orderInfoState } from './../../store/atom/orderState';
 import { addComma } from '../../store/utils/function';
 import { IStore } from '../../types/store';
+import { DownArrowBtn } from '../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -245,11 +246,7 @@ function cartContent() {
                 ? '주문할 매장을 선택하세요'
                 : selectedStoreTemp.name}
             </span>
-            <Image
-              src='/assets/svg/icon-down-arrow-white.svg'
-              width={12}
-              height={10}
-            />
+            <DownArrowBtn className={cx('icon')} />
           </button>
         </div>
         <div className={cx('tab-wrap')}>

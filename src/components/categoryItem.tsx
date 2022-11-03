@@ -20,7 +20,7 @@ function categoryItem({
   setCategorySId: any;
 }) {
   const handleChoice = () => {
-    console.log(list.categorySName);
+    console.log('categoryItem', list.categorySName, list.categorySId);
     setIsClick(list.categorySName);
     setCategoryName(list.categorySName);
     setCategorySId(list.categorySId);

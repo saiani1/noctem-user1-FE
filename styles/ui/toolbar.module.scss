@@ -1,13 +1,11 @@
-@use '/styles/base/variable';
-
 .toolbar-list-wrap {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: variable.$TOOLBAR;
-  background: variable.$BG-003;
-  box-shadow: variable.$BOX-SHADOW-TOOLBAR;
+  z-index: var(--TOOLBAR);
+  background: var(--BG-002);
+  box-shadow: var(--BOX-SHADOW-TOOLBAR);
 }
 
 .blank {
@@ -36,74 +34,23 @@
     .toolbar-icon {
       position: absolute;
       left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      top: 16%;
+      transform: translateX(-50%);
+      fill: var(--TXT-004);
+
+      &.active {
+        fill: var(--POINT);
+      }
     }
 
     .toolbar-txt {
       display: block;
-      padding-top: 33px;
-      color: variable.$TXT-003;
+      padding-top: 25px;
+      color: var(--TXT-004);
       font-size: 10px;
-    }
 
-    &:nth-child(n) {
-      .toolbar-icon::after {
-        content: '';
-        display: inline-block;
-        width: 23px;
-        height: 20px;
-        background-repeat: no-repeat;
-      }
-
-      .toolbar-txt.active {
-        color: variable.$POINT;
-      }
-    }
-
-    &:nth-child(1) {
-      .toolbar-icon::after {
-        background-image: url('/assets/svg/toolbar/icon-home.svg');
-      }
-
-      .toolbar-icon.active::after {
-        background-image: url('/assets/svg/toolbar/icon-home-active.svg');
-      }
-    }
-
-    &:nth-child(2) {
-      .toolbar-icon::after {
-        background-image: url('/assets/svg/toolbar/icon-order.svg');
-        background-position: 2px 0;
-      }
-
-      .toolbar-icon.active::after {
-        background-image: url('/assets/svg/toolbar/icon-order-active.svg');
-        background-position: 2px 0;
-      }
-    }
-
-    &:nth-child(3) {
-      .toolbar-icon::after {
-        background-image: url('/assets/svg/toolbar/icon-cart.svg');
-        background-position: 1px 0;
-      }
-
-      .toolbar-icon.active::after {
-        background-image: url('/assets/svg/toolbar/icon-cart-active.svg');
-        background-position: 1px 0;
-      }
-    }
-
-    &:nth-child(4) {
-      .toolbar-icon::after {
-        background-image: url('/assets/svg/toolbar/icon-my.svg');
-        background-position: 2px 0;
-      }
-
-      .toolbar-icon.active::after {
-        background-image: url('/assets/svg/toolbar/icon-my-active.svg');
-        background-position: 2px 0;
+      &.active {
+        color: var(--POINT);
       }
     }
   }
