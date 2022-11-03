@@ -112,6 +112,7 @@ function orderContent(props: IProps) {
             toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
             setOrderData(orderData.menuList);
             setOrderInfo(res.data.data);
+            console.log('setOrderInfo', res.data.data);
             setOrderStatus('주문확인중');
             if (router.query.menuList) {
               // 장바구니 주문일 경우
