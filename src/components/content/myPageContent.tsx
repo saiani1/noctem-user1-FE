@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import classNames from 'classnames/bind';
 import toast from 'react-hot-toast';
 
@@ -21,6 +20,7 @@ import {
   SettingBtn,
   UserBtn,
 } from '../../../public/assets/svg';
+import { randomMessage } from '../../../public/assets/datas/randomMessage';
 
 function myPageContent() {
   const cx = classNames.bind(styles);
@@ -29,8 +29,9 @@ function myPageContent() {
   const [token, setToken] = useRecoilState(tokenState);
   const [, setOrderInfo] = useRecoilState(orderInfoState);
   const [, setOrderStatus] = useRecoilState(orderStatusState);
-  const [isFatching, setIsFatching] = useState(false);
   const [nickname, setNickname] = useRecoilState(nicknameState);
+  const [isFatching, setIsFatching] = useState(false);
+  const [theme, setTheme] = useState('');
 
   const onLogin = () => {
     router.push('/login');
@@ -61,6 +62,13 @@ function myPageContent() {
     }
   };
 
+  const handleMessage = () => {
+    const randomNumber = Math.floor(
+      Math.random() * Math.floor(randomMessage.length),
+    );
+    toast(randomMessage[randomNumber], { icon: '🧙' });
+  };
+
   const handleLogout = () => {
     if (isLogin) {
       setToken('');
@@ -86,6 +94,8 @@ function myPageContent() {
     } else {
       setIsFatching(false);
     }
+    const getTheme = String(localStorage.getItem('theme'));
+    setTheme(getTheme);
   }, []);
 
   return (
@@ -176,14 +186,20 @@ function myPageContent() {
           </button>
         </li>
         <li className={cx('menu-btn-li')}>
-          <Image
-            src='/assets/images/png/logo-symbol.png'
-            width={75}
-            height={75}
-          />
+          <button onClick={handleMessage}>
+            <img
+              src={
+                theme === 'dark'
+                  ? '/assets/images/png/noctem-dark.png'
+                  : '/assets/images/png/noctem-light.png'
+              }
+              alt='녹템'
+              className={cx('noctem')}
+            />
+          </button>
         </li>
       </ul>
-      {isFatching ? (
+      {isLogin && (
         <button
           type='button'
           className={cx('logout-btn')}
@@ -191,7 +207,7 @@ function myPageContent() {
         >
           로그아웃
         </button>
-      ) : undefined}
+      )}
     </div>
   );
 }
