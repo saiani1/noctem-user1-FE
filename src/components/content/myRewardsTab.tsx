@@ -127,11 +127,15 @@ function myRewardTab() {
         </div>
       </div>
       <div className={cx('level-info-wrap')}>
-        <p>
-          다음 레벨까지{' '}
-          {userLevel && userLevel.requiredExpToNextGrade - userLevel.userExp}
-          개의 HP가 남았습니다.
-        </p>
+        {userLevel?.userGrade === 'Power Elixir' ? (
+          <p>최종 레벨에 도달하였습니다.</p>
+        ) : (
+          <p>
+            다음 레벨까지{' '}
+            {userLevel && userLevel.requiredExpToNextGrade - userLevel.userExp}
+            개의 HP가 남았습니다.
+          </p>
+        )}
       </div>
       <div className={cx('favorite-wrap')}>
         <span>
