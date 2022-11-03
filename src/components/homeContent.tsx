@@ -224,7 +224,12 @@ function homeContent() {
 
   return (
     <>
-      <div className={cx(orderInfoTemp.purchaseId !== 0 && 'homeContent-wrap')}>
+      <div
+        className={cx(
+          'wrap',
+          orderInfoTemp.purchaseId !== 0 && 'homeContent-wrap',
+        )}
+      >
         <div className={cx('point-box')}>
           <div className={cx('title')}>
             <span>{nickname}</span> 님, 반갑습니다.
@@ -289,14 +294,14 @@ function homeContent() {
                   />
                 ) : userLevel?.userGrade === 'Elixir' ? (
                   <Image
-                    src='/assets/svg/icon-elixir-level.svg'
+                    src='/assets/svg/icon-power-elixir-level.svg'
                     alt='elixir-level'
                     width={24}
                     height={21}
                   />
                 ) : (
                   <Image
-                    src='/assets/svg/icon-power-elixir-level.svg'
+                    src='/assets/svg/icon-elixir-level.svg'
                     alt='potion-level'
                     width={24}
                     height={21}
