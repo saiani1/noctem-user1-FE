@@ -10,6 +10,7 @@ export interface ICart {
 export interface IData {
   sizeId: number;
   cartId: number;
+  menuId: number;
   qty: number;
   menuName: string;
   menuEngName: string;

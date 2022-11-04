@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FocusEvent, useRef } from 'react';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -48,6 +47,7 @@ const cx = classNames.bind(styles);
 
 function productContent() {
   const router = useRouter();
+  const isSoldOut = router.query.isSoldOut;
   const id = router.query.id ? +router.query.id : 1;
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
@@ -59,6 +59,7 @@ function productContent() {
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const [open, setOpen] = useState(false);
+  const [soldOutMenu, setSoldOutMenu] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
   const [selectedSizeId, setSelectedSizeId] = useState(0);
@@ -293,6 +294,12 @@ function productContent() {
   };
 
   useEffect(() => {
+    console.log('품절, 매장', isSoldOut, selectedStore);
+    if (isSoldOut && selectedStore.storeId !== 0) setSoldOutMenu(true);
+    else setSoldOutMenu(false);
+  }, []);
+
+  useEffect(() => {
     getProduct(id).then(res => {
       setdetailList(res.data.data);
     });
@@ -455,11 +462,12 @@ function productContent() {
       )}
       <div className={cx('button-box')}>
         <button
-          className={cx('order-button')}
+          className={cx('order-button', soldOutMenu ? 'disable' : '')}
           type='button'
           onClick={handleOptionOpen}
+          disabled={soldOutMenu}
         >
-          주문하기
+          {soldOutMenu ? '주문 불가능한 상품입니다.' : '주문하기'}
         </button>
       </div>
       {myMenuAlert && (

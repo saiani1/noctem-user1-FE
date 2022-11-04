@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 
 import styles from '../../../styles/ui/cartItem.module.scss';
 import { ICart, IData } from '../../types/cart';
@@ -11,11 +10,13 @@ import {
 } from '../../../src/store/api/cart';
 import { addComma } from '../../store/utils/function';
 import { getMenuDetail } from '../../store/api/order';
+import { getSoldOutMenu } from '../../store/api/store';
 import { IMenuList } from './../../types/order.d';
 import { useRecoilValue } from 'recoil';
 import { tokenState } from '../../store/atom/userStates';
 import { loginState } from './../../store/atom/userStates';
 import { CloseBtn, MinusBtn, PlusBtn } from '../../../public/assets/svg';
+import { selectedStoreState } from '../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
 
@@ -37,7 +38,10 @@ function cartItem({
   const { index, cartId, sizeId, qty } = cart;
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
+  const selectedStore = useRecoilValue(selectedStoreState);
   const [data, setData] = useState<IData>();
+  const [isSoldOut, setIsSoldOut] = useState(false);
+  const [menuId, setMenuId] = useState(0);
 
   const handleCountChange = (type: string, id: number, qty: number) => {
     let isSuccess = false;
@@ -66,6 +70,7 @@ function cartItem({
         const resData = menu.data.data;
         handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
         setIsChange(!isChange);
+        setMenuId(resData.menuId);
       });
     });
   };
@@ -75,10 +80,17 @@ function cartItem({
       getCartMenuData(sizeId, cartId).then(res => {
         const resData = res.data.data;
         setData(resData);
-        console.log('cartMenu', resData);
-        handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
+        if (selectedStore.name !== '') {
+          getSoldOutMenu(selectedStore.storeId).then(res => {
+            const soldOut = res.data.data.find(
+              (menu: any) => menu.soldOutMenuId === menuId,
+            );
+            if (soldOut !== undefined) setIsSoldOut(true);
+          });
+        } else handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
         // setIsChange(!isChange);
       });
+      console.log(isSoldOut);
 
       getMenuDetail(sizeId, cartId).then(res => {
         const resData = res.data.data;
