@@ -14,27 +14,18 @@ import { SoldOutBtn } from '../../../public/assets/svg';
 const cx = classNames.bind(styles);
 
 interface IProps {
-  categoryName: string;
   listName: string;
   item: any;
-  isFetching: boolean;
-  setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function menuItem({
-  categoryName,
-  listName,
-  item,
-  isFetching,
-  setIsFetching,
-}: IProps) {
+function menuItem({ listName, item }: IProps) {
   const selectedStore = useRecoilValue(selectedStoreState);
   const [info, setInfo] = useState<IDetailMenuInfo>();
   const [isSoldOut, setIsSoldOut] = useState(false);
 
   useEffect(() => {
-    setIsFetching(false);
     console.log(item);
+    setIsSoldOut(false);
 
     if (listName === 'popular') {
       getCartMenuData(item.sizeId, 0).then(res => {
@@ -48,7 +39,6 @@ function menuItem({
               (menu: any) => menu.soldOutMenuId === selectMenuId,
             );
             if (soldOut !== undefined) setIsSoldOut(true);
-            setIsFetching(true);
           });
         }
       });
@@ -60,15 +50,14 @@ function menuItem({
             (menu: any) => menu.soldOutMenuId === item.menuId,
           );
           if (soldOut !== undefined) setIsSoldOut(true);
-          setIsFetching(true);
         });
       }
     }
-  }, [categoryName]);
+  }, [item]);
 
   return (
     <>
-      {isFetching && info && (
+      {info && (
         <Link
           key={info.menuId}
           href={{

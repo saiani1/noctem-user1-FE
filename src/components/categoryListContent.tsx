@@ -61,7 +61,6 @@ function categoryListContent({
   const [popularMenuInfo, setPopularMenuInfo] = useState<IPopularMenuList[]>(
     [],
   );
-  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     setSelectedStoreTemp(selectedStore);
@@ -122,9 +121,6 @@ function categoryListContent({
                 key={`menu-${item.index}`}
                 listName='menu'
                 item={item}
-                isFetching={isFetching}
-                setIsFetching={setIsFetching}
-                categoryName={categoryName}
               />
             ))
           : popularMenuInfo.map(item => (
@@ -132,9 +128,6 @@ function categoryListContent({
                 key={`popular-${item.index}`}
                 listName='popular'
                 item={item}
-                isFetching={isFetching}
-                setIsFetching={setIsFetching}
-                categoryName={categoryName}
               />
             ))}
       </ul>
