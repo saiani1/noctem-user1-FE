@@ -12,7 +12,10 @@ import { getUserInfo } from '../../../src/store/api/user';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from './../customAlert';
 import { loginState } from './../../store/atom/userStates';
-import { orderInfoState, orderStatusState } from '../../store/atom/orderState';
+import {
+  orderInfoState,
+  orderProductDataState,
+} from '../../store/atom/orderState';
 import {
   MugBtn,
   MyRewardBtn,
@@ -28,7 +31,7 @@ function myPageContent() {
   const [isLogin, setIsLogin] = useRecoilState(loginState);
   const [token, setToken] = useRecoilState(tokenState);
   const [, setOrderInfo] = useRecoilState(orderInfoState);
-  const [, setOrderStatus] = useRecoilState(orderStatusState);
+  const [, setOrderProductData] = useRecoilState(orderProductDataState);
   const [nickname, setNickname] = useRecoilState(nicknameState);
   const [isFatching, setIsFatching] = useState(false);
   const [theme, setTheme] = useState('');
@@ -74,11 +77,15 @@ function myPageContent() {
       setToken('');
       setIsLogin(false);
       setOrderInfo({
-        // api 요청한 값으로 수정
         storeId: 0,
+        storeName: '',
         purchaseId: 0,
+        orderNumber: '',
+        turnNumber: 0,
+        waitingTime: 0,
+        state: '',
       });
-      setOrderStatus('');
+      setOrderProductData([]);
       setNickname('게스트');
       toast.success('로그아웃 되셨습니다.');
       router.push('/');

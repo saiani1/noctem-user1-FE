@@ -1,0 +1,30 @@
+.menu-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 0;
+
+  .img-wrap {
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 10px;
+  }
+
+  .order-contents-wrap {
+    width: calc(100% - 80px);
+
+    .order-tit {
+      font-size: var(--FS-14);
+      font-weight: bold;
+      color: var(--TXT-001);
+    }
+
+    .order-option {
+      font-size: var(--FS-12);
+      color: var(--TXT-001);
+    }
+  }
+}

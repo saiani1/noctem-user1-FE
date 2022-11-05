@@ -27,19 +27,23 @@ import { IMenuData1 } from '../types/myMenu';
 import { ILevel } from '../types/user';
 import { IPopularMenuList } from '../types/popularMenu';
 import {
+  orderProductDataState,
   orderInfoState,
-  orderStatusState,
   selectedStoreState,
 } from '../store/atom/orderState';
 import OrderStateInfo from './ui/orderStateInfo';
 import OrderProgressModal from './content/orderProgressModal';
 import ToolbarList from './ui/toolbarList';
-import { getWaitingInfo } from '../store/api/order';
 import CustomAlert from '../components/customAlert';
 import RecommendedMenu from './recommendedMenu';
 import MyMenuCard from './myMenuCard';
+import { getWaitingInfo } from '../store/api/order';
 
 const cx = classNames.bind(styles);
+
+function shakeEventDidOccur() {
+  alert('흔들림 감지');
+}
 
 function homeContent() {
   const router = useRouter();
@@ -49,11 +53,15 @@ function homeContent() {
   const [isLoginTemp, setIsLoginTemp] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
-  const [orderStatus, setOrderStatus] = useRecoilState(orderStatusState);
+  const orderProductData = useRecoilValue(orderProductDataState);
   const [orderInfoTemp, setOrderInfoTemp] = useState({
     storeId: 0,
+    storeName: '',
     purchaseId: 0,
-    status: '',
+    orderNumber: '',
+    turnNumber: 0,
+    waitingTime: 0,
+    state: '',
   });
   const [orderProgressModal, setOrderProgressModal] = useState(false);
 
@@ -105,27 +113,27 @@ function homeContent() {
   };
 
   useEffect(() => {
-    console.log('orderInfo', orderInfo);
-    console.log('storeId', orderInfo.storeId);
-    console.log('purchaseId', orderInfo.purchaseId);
-
     setOrderInfoTemp({
       ...orderInfoTemp,
       storeId: orderInfo.storeId,
+      storeName: orderInfo.storeName,
       purchaseId: orderInfo.purchaseId,
-      status: orderStatus,
+      orderNumber: orderInfo.orderNumber,
+      turnNumber: orderInfo.turnNumber,
+      waitingTime: orderInfo.waitingTime,
+      state: orderInfo.state,
     });
     setIsLoginTemp(isLogin);
-
-    window.addEventListener('shake', shakeEventDidOccur, false);
-  }, [orderStatus]);
-
-  function shakeEventDidOccur() {
-    alert('흔들림 감지');
-  }
+  }, [orderInfo]);
 
   useEffect(() => {
+    window.addEventListener('shake', shakeEventDidOccur, false);
+
     getPopularMenu().then(res => setPopularMenuList(res.data.data));
+
+    if ('Notification' in window) {
+      Notification.requestPermission(); // 알림 권한 요청
+    }
 
     let ssEvents: EventSource | null = null;
 
@@ -152,7 +160,7 @@ function homeContent() {
 
       const STREAM_URL = `https://sse.noctem.click:33333/sse/alert-server/user/jwt/${
         token.split(' ')[1]
-      }`;
+      }/${orderInfo.storeId}`;
       ssEvents = new EventSource(STREAM_URL, { withCredentials: true });
 
       ssEvents.addEventListener('open', event => {
@@ -160,24 +168,24 @@ function homeContent() {
       });
 
       ssEvents.addEventListener('message', event => {
-        console.log('MESSAGE!!!', event);
-        getWaitingInfo(token)
-          .then(res => {
-            console.log('getWaitingInfo', res);
-          })
-          .catch(e => {
-            console.log(e);
-          });
-
         const data = JSON.parse(event.data);
 
-        console.log('data', data);
-
-        setOrderStatus(data.data.orderStatus);
-        // setOrderInfo({
-        //   ...orderInfo,
-        //   purchaseId: data.data.purchaseId,
-        // });
+        if (data.alertCode !== 6) {
+          console.log('상태변경됨');
+          setOrderInfo({
+            ...orderInfo,
+            state: data.data.orderStatus,
+          });
+        } else {
+          getWaitingInfo(token).then(res => {
+            console.log('waiting', res);
+            setOrderInfo({
+              ...orderInfo,
+              turnNumber: res.data.data.turnNumber,
+              waitingTime: res.data.data.waitingTime,
+            });
+          });
+        }
       });
 
       ssEvents.addEventListener('error', err => {
@@ -195,10 +203,6 @@ function homeContent() {
       }
     };
   }, []);
-
-  useEffect(() => {
-    console.log('주문상태', orderInfoTemp);
-  }, [orderInfoTemp]);
 
   useEffect(() => {
     if (userLevel) {
@@ -452,8 +456,11 @@ function homeContent() {
             ))}
           </ul>
         </div>
-        {orderInfoTemp.purchaseId !== 0 && (
-          <OrderStateInfo setOrderProgressModal={setOrderProgressModal} />
+        {orderInfoTemp.purchaseId !== 0 && orderProductData.length !== 0 && (
+          <OrderStateInfo
+            setOrderProgressModal={setOrderProgressModal}
+            orderInfoTemp={orderInfoTemp}
+          />
         )}
       </div>
 
@@ -462,7 +469,7 @@ function homeContent() {
       <OrderProgressModal
         onDismiss={onDismiss}
         isOpen={orderProgressModal}
-        orderInfoStatus={orderInfoTemp.status}
+        orderInfoTemp={orderInfoTemp}
         // setOrderCancel={setOrderCancel}
       />
     </>

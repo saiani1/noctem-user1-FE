@@ -41,21 +41,19 @@ export const orderInfoState = atom<IOrderInfo>({
   key: 'orderInfoState',
   default: {
     storeId: 0,
+    storeName: '',
     purchaseId: 0,
+    orderNumber: '',
+    turnNumber: 0,
+    waitingTime: 0,
+    state: '',
   },
-  // effects_UNSTABLE: [persistAtom],
-});
-
-// 주문 상태 정보
-export const orderStatusState = atom<string>({
-  key: 'orderStatusState',
-  default: '',
   effects_UNSTABLE: [persistAtom],
 });
 
 // 진행 중인 주문 메뉴 리스트
-export const orderDataState = atom<IMenuList[]>({
-  key: 'orderDataState',
+export const orderProductDataState = atom<IMenuList[]>({
+  key: 'orderProductDataState',
   default: [],
   effects_UNSTABLE: [persistAtom],
 });

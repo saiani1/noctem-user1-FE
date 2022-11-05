@@ -2,14 +2,32 @@ import React from 'react';
 import classNames from 'classnames/bind';
 import styles from '../../../styles/ui/orderStateInfo.module.scss';
 import Image from 'next/image';
+import { IOrderInfo } from '../../types/order';
+import { nicknameState } from '../../store/atom/userStates';
+import { useRecoilValue } from 'recoil';
+import { orderProductDataState } from '../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
 
 function orderStateInfo({
   setOrderProgressModal,
+  orderInfoTemp,
 }: {
   setOrderProgressModal: React.Dispatch<React.SetStateAction<boolean>>;
+  orderInfoTemp: IOrderInfo;
 }) {
+  const {
+    storeId,
+    storeName,
+    purchaseId,
+    orderNumber,
+    turnNumber,
+    waitingTime,
+    state,
+  } = orderInfoTemp;
+  const nickname = useRecoilValue(nicknameState);
+  const orderProductData = useRecoilValue(orderProductDataState);
+
   return (
     <>
       <div
@@ -21,8 +39,8 @@ function orderStateInfo({
         <div className={cx('wrap')}>
           <div className={cx('img-wrap')}>
             <Image
-              src='/assets/images/jpg/cup-illust.jpg'
-              alt='test'
+              src={orderProductData[0].imgUrl}
+              alt={orderProductData[0].menuFullName}
               width={100}
               height={100}
               layout='responsive'
@@ -30,11 +48,15 @@ function orderStateInfo({
             />
           </div>
           <div className={cx('info-wrap')}>
-            <div className={cx('store-info')}>센텀드림월드점에서</div>
+            <div className={cx('store-info')}>{storeName}에서</div>
             <div className={cx('order-info')}>
-              녹템님의 주문을 9번째 메뉴로 준비중입니다
+              {state === '주문확인중' &&
+                `${nickname} 님의 주문을 확인중입니다! ( ${orderNumber} )`}
+              {state === '제조중' &&
+                `${nickname} 님의 주문을 ${turnNumber}번째 메뉴로 준비중입니다! ( ${orderNumber} )`}
+              {state === '제조완료' &&
+                `${nickname} 님의 주문이 완료되었습니다! 픽업대에서 확인해주세요! ( ${orderNumber} )`}
             </div>
-            <div className={cx('number-info')}>( A-43 )</div>
           </div>
         </div>
       </div>

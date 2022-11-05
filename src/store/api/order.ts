@@ -40,3 +40,12 @@ export const getWaitingInfo = async (token: string) => {
 
   return res;
 }
+
+export const getProgressOrder = async (token: string) => {
+  const res = await basicRequest.get(`${STORE_SERVICE}/order/orderMenuInProgress`, {
+    headers: {
+      Authorization: token,
+    }
+  });
+  return res;
+}

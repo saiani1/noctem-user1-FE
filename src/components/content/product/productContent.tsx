@@ -1,6 +1,5 @@
-import React, { useState, useEffect, FocusEvent, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -38,7 +37,6 @@ import { getSessionCartCount } from '../../../store/utils/cart';
 import MyMenuRenamePopUp from '../myMenuRenamePopUp';
 import {
   orderInfoState,
-  orderStatusState,
   selectedStoreState,
 } from '../../../store/atom/orderState';
 import { loginState } from './../../../store/atom/userStates';
@@ -51,13 +49,12 @@ function productContent() {
   const id = router.query.id ? +router.query.id : 1;
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [categoryLName] = useRecoilState(categoryLNameState);
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
+  const orderInfo = useRecoilValue(orderInfoState);
   const [open, setOpen] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();

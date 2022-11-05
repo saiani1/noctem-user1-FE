@@ -1,9 +1,8 @@
 .order-state-modal-wrap {
-  background: rgba(247, 247, 247, 0.12);
+  background: rgba(200, 200, 200, 0.12);
   mix-blend-mode: normal;
   backdrop-filter: blur(24px);
   width: calc(100% - 20px);
-  // height: 80px;
   padding: 10px 20px;
   position: fixed;
   bottom: 60px;
@@ -33,10 +32,9 @@
         color: var(--TXT-002);
       }
 
-      .order-info,
-      .number-info {
+      .order-info {
         color: var(--TXT-001);
-        font-size: var(--FS-14);
+        font-size: var(--FS-15);
         font-weight: bold;
       }
     }
