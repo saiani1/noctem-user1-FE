@@ -123,8 +123,6 @@ function categoryContent({
                   <CategoryItem
                     key={item.categorySName}
                     list={item}
-                    setIsClick={setIsClick}
-                    isClick={isClick}
                     setCategoryName={setCategoryName}
                     setCategorySId={setCategorySId}
                   />
@@ -139,8 +137,6 @@ function categoryContent({
                   <CategoryItem
                     key={item.categorySName}
                     list={item}
-                    setIsClick={setIsClick}
-                    isClick={isClick}
                     setCategoryName={setCategoryName}
                     setCategorySId={setCategorySId}
                   />

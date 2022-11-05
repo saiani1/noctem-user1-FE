@@ -102,8 +102,21 @@
 }
 
 .menu-item {
+  position: relative;
   display: flex;
   margin: 24px;
+
+  .close-store {
+    background-color: var(--BG-ALPA-003);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 5px;
+    z-index: 1;
+    // cursor: auto;
+  }
 
   .menu-img {
     flex-shrink: 0;
@@ -121,6 +134,11 @@
     .item-name {
       font-size: var(--FS-15);
       color: var(--TXT-001);
+
+      .icon {
+        padding-top: 7px;
+        margin-left: 5px;
+      }
     }
 
     .item-english-name {

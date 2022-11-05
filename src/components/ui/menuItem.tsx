@@ -8,44 +8,56 @@ import { getCartMenuData } from '../../store/api/cart';
 import { getSoldOutMenu } from '../../store/api/store';
 import { addComma } from '../../store/utils/function';
 import { IDetailMenuInfo } from '../../types/cart';
-import { IPopularMenuList } from '../../types/popularMenu';
 import { selectedStoreState } from '../../store/atom/orderState';
+import { SoldOutBtn } from '../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
 interface IProps {
-  item: IPopularMenuList;
-  isFetching: boolean;
-  setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
+  listName: string;
+  item: any;
 }
 
-function menuItem({ item, isFetching, setIsFetching }: IProps) {
-  const [info, setInfo] = useState<IDetailMenuInfo>();
+function menuItem({ listName, item }: IProps) {
   const selectedStore = useRecoilValue(selectedStoreState);
+  const [info, setInfo] = useState<IDetailMenuInfo>();
+  const [isSoldOut, setIsSoldOut] = useState(false);
 
   useEffect(() => {
-    setIsFetching(false);
-    getCartMenuData(item.sizeId, 0).then(res => {
-      const resData = res.data.data;
-      const selectMenuId = resData.menuId;
-      setInfo(resData);
+    console.log(item);
+    setIsSoldOut(false);
 
+    if (listName === 'popular') {
+      getCartMenuData(item.sizeId, 0).then(res => {
+        const resData = res.data.data;
+        const selectMenuId = resData.menuId;
+        setInfo(resData);
+
+        if (selectedStore.name !== '') {
+          getSoldOutMenu(selectedStore.storeId).then(res => {
+            const soldOut = res.data.data.find(
+              (menu: any) => menu.soldOutMenuId === selectMenuId,
+            );
+            if (soldOut !== undefined) setIsSoldOut(true);
+          });
+        }
+      });
+    } else {
+      setInfo(item);
       if (selectedStore.name !== '') {
         getSoldOutMenu(selectedStore.storeId).then(res => {
-          const resData2 = res.data.data;
-          const isSoldOut = resData2.find(
-            (menu: any) => menu.soldOutMenuId === selectMenuId,
+          const soldOut = res.data.data.find(
+            (menu: any) => menu.soldOutMenuId === item.menuId,
           );
-          if (isSoldOut === undefined) setIsFetching(true);
-          else setInfo(undefined);
+          if (soldOut !== undefined) setIsSoldOut(true);
         });
       }
-    });
-  }, []);
+    }
+  }, [item]);
 
   return (
     <>
-      {isFetching && info && (
+      {info && (
         <Link
           key={info.menuId}
           href={{
@@ -54,16 +66,23 @@ function menuItem({ item, isFetching, setIsFetching }: IProps) {
         >
           <a>
             <li className={cx('menu-item')}>
+              <div className={cx(isSoldOut ? 'close-store' : '')} />
               <div className={cx('menu-img')}>
                 <img src={info.menuImg} alt='' />
               </div>
               <div className={cx('menu-detail')}>
-                <div className={cx('item-name')}>{info.menuName}</div>
+                <div className={cx('item-name')}>
+                  {info.menuName}
+                  {isSoldOut && <SoldOutBtn className={cx('icon')} />}
+                </div>
                 <div className={cx('item-english-name')}>
                   {info.menuEngName}
                 </div>
                 <div className={cx('item-price')}>
-                  {addComma(info.totalMenuPrice)}원
+                  {listName === 'popular'
+                    ? addComma(info.totalMenuPrice)
+                    : addComma(info.price)}
+                  원
                 </div>
               </div>
             </li>
