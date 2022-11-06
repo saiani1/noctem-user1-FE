@@ -56,6 +56,7 @@ function orderStateInfo({
                 `${nickname} 님의 주문을 ${turnNumber}번째 메뉴로 준비중입니다! ( ${orderNumber} )`}
               {state === '제조완료' &&
                 `${nickname} 님의 주문이 완료되었습니다! 픽업대에서 확인해주세요! ( ${orderNumber} )`}
+              {state === '거절됨' && `재료 부족으로 주문이 거절되었습니다.`}
             </div>
           </div>
         </div>

@@ -20,10 +20,12 @@ function orderProgressModal({
   onDismiss,
   isOpen,
   orderInfoTemp,
+  handleClose,
 }: {
   onDismiss: () => void;
   isOpen: boolean;
   orderInfoTemp: IOrderInfo;
+  handleClose: () => void;
 }) {
   const {
     storeId,
@@ -114,6 +116,14 @@ function orderProgressModal({
                     </p>
                   </>
                 )}
+                {state === '거절됨' && (
+                  <>
+                    <h2 className={cx('order-status')}>
+                      {nickname} 님, 재료가 부족하여 주문이 거절되었습니다. 😥
+                    </h2>
+                    <p className={cx('content')}>조속히 준비하겠습니다.</p>
+                  </>
+                )}
               </div>
               <div className={cx('progress-bar-wrap')}>
                 <ul className={cx('content-wrap')}>
@@ -198,6 +208,18 @@ function orderProgressModal({
                       확인
                     </button>
                   </>
+                )}
+                {state === '거절됨' && (
+                  <button
+                    type='button'
+                    className={cx('btn', 'btn-confirm')}
+                    onClick={() => {
+                      handleClose();
+                      onDismiss();
+                    }}
+                  >
+                    확인
+                  </button>
                 )}
               </div>
             </div>

@@ -53,7 +53,9 @@ function homeContent() {
   const [isLoginTemp, setIsLoginTemp] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
-  const orderProductData = useRecoilValue(orderProductDataState);
+  const [orderProductData, setOrderProductData] = useRecoilState(
+    orderProductDataState,
+  );
   const [orderInfoTemp, setOrderInfoTemp] = useState({
     storeId: 0,
     storeName: '',
@@ -84,6 +86,7 @@ function homeContent() {
   const [popularMenuList, setPopularMenuList] = useState<IPopularMenuList[]>(
     [],
   );
+  let ssEvents: EventSource | null = null;
 
   const onDismiss = () => {
     setOrderProgressModal(false);
@@ -112,6 +115,20 @@ function homeContent() {
     }
   };
 
+  const handleClose = () => {
+    setOrderInfo({
+      storeId: 0,
+      storeName: '',
+      purchaseId: 0,
+      orderNumber: '',
+      turnNumber: 0,
+      waitingTime: 0,
+      state: '',
+    });
+    setOrderProductData([]);
+    ssEvents?.close();
+  };
+
   useEffect(() => {
     setOrderInfoTemp({
       ...orderInfoTemp,
@@ -134,8 +151,6 @@ function homeContent() {
     if ('Notification' in window) {
       Notification.requestPermission(); // 알림 권한 요청
     }
-
-    let ssEvents: EventSource | null = null;
 
     if (isLogin) {
       setIsFetching(true);
@@ -168,7 +183,17 @@ function homeContent() {
       });
 
       ssEvents.addEventListener('message', event => {
+        console.log('데이터', event);
         const data = JSON.parse(event.data);
+
+        if (data.alertCode === 5) {
+          console.log('거절당함', event);
+          setOrderInfo({
+            ...orderInfo,
+            state: '거절됨',
+          });
+          return;
+        }
 
         if (data.alertCode !== 6) {
           console.log('상태변경됨');
@@ -471,6 +496,7 @@ function homeContent() {
         isOpen={orderProgressModal}
         orderInfoTemp={orderInfoTemp}
         // setOrderCancel={setOrderCancel}
+        handleClose={handleClose}
       />
     </>
   );
