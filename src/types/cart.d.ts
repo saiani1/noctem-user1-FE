@@ -62,7 +62,7 @@ export interface IDetailMenuInfo {
   menuImg: string;
   menuTemperatureId: number;
   temperature: string;
-  totalMenuPrice: number;
+  menuPrice: number;
   price: number;
   size: string;
 }

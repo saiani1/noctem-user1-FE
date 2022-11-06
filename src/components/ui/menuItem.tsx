@@ -4,8 +4,8 @@ import classNames from 'classnames/bind';
 import { useRecoilValue } from 'recoil';
 
 import styles from '../../../styles/pages/categoryPage.module.scss';
-import { getCartMenuData } from '../../store/api/cart';
 import { getSoldOutMenu } from '../../store/api/store';
+import { getPopularMenuInfo } from '../../store/api/popularMenu';
 import { addComma } from '../../store/utils/function';
 import { IDetailMenuInfo } from '../../types/cart';
 import { selectedStoreState } from '../../store/atom/orderState';
@@ -29,10 +29,11 @@ function menuItem({ listName, item }: IProps) {
     setIsSoldOut(false);
 
     if (listName === 'popular') {
-      getCartMenuData(item.sizeId, 0).then(res => {
+      getPopularMenuInfo(item.sizeId).then(res => {
         const resData = res.data.data;
         const selectMenuId = resData.menuId;
         setInfo(resData);
+        console.log('추천메뉴', resData);
 
         if (selectedStore.name !== '') {
           getSoldOutMenu(selectedStore.storeId).then(res => {
@@ -82,7 +83,7 @@ function menuItem({ listName, item }: IProps) {
               <div className={cx('item-english-name')}>{info.menuEngName}</div>
               <div className={cx('item-price')}>
                 {listName === 'popular'
-                  ? addComma(info.totalMenuPrice)
+                  ? addComma(info.menuPrice)
                   : addComma(info.price)}
                 원
               </div>

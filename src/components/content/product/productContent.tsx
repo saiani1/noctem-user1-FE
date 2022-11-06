@@ -294,14 +294,16 @@ function productContent() {
   };
 
   useEffect(() => {
-    console.log('품절, 매장', isSoldOut, selectedStore);
-    if (isSoldOut && selectedStore.storeId !== 0) setSoldOutMenu(true);
+    setSoldOutMenu(false);
+    if (isSoldOut === 'true' && selectedStore.storeId !== 0)
+      setSoldOutMenu(true);
     else setSoldOutMenu(false);
-  }, []);
+  }, [soldOutMenu]);
 
   useEffect(() => {
     getProduct(id).then(res => {
       setdetailList(res.data.data);
+      console.log('getProduct', res.data.data);
     });
     getNutrition(id).then(res => {
       setNutritionInfo(res.data.data);

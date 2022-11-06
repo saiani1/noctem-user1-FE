@@ -163,7 +163,7 @@
           font-weight: 300;
           color: var(--TXT-003);
 
-          ~ button {
+          ~button {
             margin-left: 15px;
           }
 
@@ -230,6 +230,10 @@
       border-radius: 20px;
       color: var(--TXT-005);
       background-color: var(--POINT);
+
+      &.disable {
+        background-color: var(--BG-007);
+      }
     }
   }
 }
