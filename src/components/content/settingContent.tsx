@@ -55,7 +55,6 @@ function settingContent() {
       setTheme(theme === 'dark' ? 'light' : 'dark');
     } else if (value === 'shakeToPay') {
       setShakeState(!shakeState);
-      console.log(shakeState);
     }
   };
 
