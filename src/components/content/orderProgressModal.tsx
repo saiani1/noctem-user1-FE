@@ -190,24 +190,13 @@ function orderProgressModal({
                   </button>
                 )}
                 {state === '제조완료' && (
-                  <>
-                    <button
-                      type='button'
-                      className={cx('btn', 'btn-confirm', 'm-r-10')}
-                      onClick={handleOrderClear}
-                    >
-                      수령 완료
-                    </button>
-                    <button
-                      type='button'
-                      className={cx('btn', 'btn-success')}
-                      onClick={() => {
-                        onDismiss();
-                      }}
-                    >
-                      확인
-                    </button>
-                  </>
+                  <button
+                    type='button'
+                    className={cx('btn', 'btn-confirm', 'm-r-10')}
+                    onClick={handleOrderClear}
+                  >
+                    수령 완료
+                  </button>
                 )}
                 {state === '거절됨' && (
                   <button
