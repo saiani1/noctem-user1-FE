@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import useGeolocation from 'react-hook-geolocation';
@@ -13,18 +12,16 @@ import styles from '../../styles/main/main.module.scss';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import {
-  userGradeState,
   nicknameState,
   loginState,
   tokenState,
 } from '../store/atom/userStates';
-import { getUserInfo, getUserLevel } from '../store/api/user';
+import { getUserInfo } from '../store/api/user';
 import { getMyMenuData, getShowMainMyMenu } from '../store/api/myMenu';
 import { getPopularMenu } from '../store/api/popularMenu';
 import { getStoreList, getStoreWaitingTime } from '../store/api/store';
 import { IStore } from '../types/store';
 import { IMenuData1 } from '../types/myMenu';
-import { ILevel } from '../types/user';
 import { IPopularMenuList } from '../types/popularMenu';
 import {
   orderProductDataState,
@@ -39,6 +36,7 @@ import RecommendedMenu from './recommendedMenu';
 import MyMenuCard from './myMenuCard';
 import { getWaitingInfo } from '../store/api/order';
 import { ISSEData } from '../types/order';
+import UserLevel from './ui/userLevel';
 
 const cx = classNames.bind(styles);
 
@@ -51,12 +49,11 @@ function homeContent() {
   const geolocation = useGeolocation();
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const [isLoginTemp, setIsLoginTemp] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [orderProductData, setOrderProductData] = useRecoilState(
     orderProductDataState,
   );
+  const [isLoginTemp, setIsLoginTemp] = useState(false);
   const [orderInfoTemp, setOrderInfoTemp] = useState({
     storeId: 0,
     storeName: '',
@@ -66,22 +63,11 @@ function homeContent() {
     waitingTime: 0,
     state: '',
   });
+  const [, setSelectedStore] = useRecoilState(selectedStoreState);
+  const [nickname, setNickname] = useRecoilState(nicknameState);
   const [orderProgressModal, setOrderProgressModal] = useState(false);
-
   const [myMenu, setMyMenu] = useState<IMenuData1[]>();
   const [showMyMenu, setShowMyMenu] = useState(false);
-  const [userLevel, setUserLevel] = useState<ILevel>();
-  const [progressState, setProgressState] = useRecoilState(userGradeState);
-  const [, setSelectedStore] = useRecoilState(selectedStoreState);
-  const styles: { [key: string]: React.CSSProperties } = {
-    container: {
-      width: `${progressState}%`,
-    },
-    maxContainer: {
-      width: '100%',
-    },
-  };
-  const [nickname, setNickname] = useRecoilState(nicknameState);
   const [store, setStore] = useState<IStore>();
   const [storeWaitingTime, setStoreWaitingTime] = useState<number>();
   const [popularMenuList, setPopularMenuList] = useState<IPopularMenuList[]>(
@@ -127,7 +113,6 @@ function homeContent() {
       waitingTime: 0,
       state: '',
     });
-
     setOrderProductData([]);
     if (ssEvents !== null) {
       console.log('SSE 종료!!!');
@@ -136,17 +121,15 @@ function homeContent() {
     }
   };
 
+  const handleOrderCancel = () => {
+    console.log('주문 취소');
+    // handleClose();
+  };
+
   useEffect(() => {
     // console.log('orderInfo 변경!!!!!!!!!!!!!!!!!', orderInfo);
     setOrderInfoTemp({
-      ...orderInfoTemp,
-      storeId: orderInfo.storeId,
-      storeName: orderInfo.storeName,
-      purchaseId: orderInfo.purchaseId,
-      orderNumber: orderInfo.orderNumber,
-      turnNumber: orderInfo.turnNumber,
-      waitingTime: orderInfo.waitingTime,
-      state: orderInfo.state,
+      ...orderInfo,
     });
     setIsLoginTemp(isLogin);
   }, [orderInfo]);
@@ -161,22 +144,15 @@ function homeContent() {
     }
 
     if (isLogin) {
-      setIsFetching(true);
       getUserInfo(token).then(res => {
         console.log('userInfo', res);
         setNickname(res.data.data.nickname);
       });
-      getUserLevel(token).then(res => {
-        console.log('userLevel', res.data.data);
-        setUserLevel(res.data.data);
-      });
       getShowMainMyMenu(token).then(res => {
-        console.log('나만의메뉴 HOME에서 보기', res);
         if (res.data.data === true) {
           getMyMenuData(token).then(res => {
             setMyMenu(res.data.data);
             setShowMyMenu(true);
-            console.log('나만의메뉴', res.data.data);
           });
         } else setShowMyMenu(false);
       });
@@ -184,24 +160,28 @@ function homeContent() {
       const STREAM_URL = `https://sse.noctem.click:33333/sse/alert-server/user/jwt/${
         token.split(' ')[1]
       }/${orderInfo.storeId}`;
-      ssEvents = new EventSource(STREAM_URL, { withCredentials: true });
 
-      ssEvents.addEventListener('open', event => {
-        console.log('SSE OPEN!!!', event);
-      });
+      if (orderInfo.purchaseId !== 0) {
+        ssEvents = new EventSource(STREAM_URL, { withCredentials: true });
+      }
 
-      ssEvents.addEventListener('message', event => {
-        console.log('데이터', event);
-        const data = JSON.parse(event.data);
+      if (ssEvents !== null) {
+        ssEvents.addEventListener('open', event => {
+          console.log('SSE OPEN!!!', event);
+        });
 
-        setSSEData(data);
-      });
+        ssEvents.addEventListener('message', event => {
+          console.log('데이터', event);
+          const data = JSON.parse(event.data);
 
-      ssEvents.addEventListener('error', err => {
-        console.log('ERR', err);
-      });
+          setSSEData(data);
+        });
+
+        ssEvents.addEventListener('error', err => {
+          console.log('ERR', err);
+        });
+      }
     } else {
-      setIsFetching(false);
       setNickname('게스트');
     }
 
@@ -219,20 +199,6 @@ function homeContent() {
       if (SSEData.alertCode === 3 || SSEData.alertCode === 4) {
         // console.log('제조중 OR 제조완료', SSEData, SSEData.data.orderStatus);
         getWaitingInfo(token).then(res => {
-          // console.log('기존 데이터', orderInfo);
-          // console.log('임시 데이터', orderInfoTemp);
-          // console.log('바뀐 데이터', {
-          //   // ...orderInfo,
-          //   state: SSEData.data.orderStatus,
-          //   turnNumber: res.data.data.turnNumber,
-          //   waitingTime: res.data.data.waitingTime,
-          // });
-          // console.log('합친 데이터', {
-          //   ...orderInfo,
-          //   state: SSEData.data.orderStatus,
-          //   turnNumber: res.data.data.turnNumber,
-          //   waitingTime: res.data.data.waitingTime,
-          // });
           setOrderInfo({
             ...orderInfo,
             state: SSEData.data.orderStatus,
@@ -243,7 +209,7 @@ function homeContent() {
       }
 
       if (SSEData.alertCode === 5) {
-        console.log('거절당함', event);
+        console.log('거절당함', SSEData);
         setOrderInfo({
           ...orderInfo,
           state: '거절됨',
@@ -254,17 +220,6 @@ function homeContent() {
       if (SSEData.alertCode === 6) {
         // console.log('순서에 변화가 있을 경우', SSEData);
         getWaitingInfo(token).then(res => {
-          // console.log('기존 데이터', orderInfo);
-          // console.log('임시 데이터', orderInfoTemp);
-          // console.log('바뀐 데이터', {
-          //   turnNumber: res.data.data.turnNumber,
-          //   waitingTime: res.data.data.waitingTime,
-          // });
-          // console.log('합친 데이터', {
-          //   ...orderInfo,
-          //   turnNumber: res.data.data.turnNumber,
-          //   waitingTime: res.data.data.waitingTime,
-          // });
           setOrderInfo({
             ...orderInfo,
             turnNumber: res.data.data.turnNumber,
@@ -274,18 +229,6 @@ function homeContent() {
       }
     }
   }, [SSEData]);
-
-  useEffect(() => {
-    if (userLevel) {
-      let exp =
-        userLevel.userExp === 0
-          ? 0
-          : (userLevel.userExp / userLevel.requiredExpToNextGrade) * 100;
-      setProgressState(exp);
-    } else {
-      setProgressState(0);
-    }
-  }, [userLevel]);
 
   useEffect(() => {
     if (geolocation.latitude && geolocation.longitude) {
@@ -312,116 +255,7 @@ function homeContent() {
           <div className={cx('title')}>
             <span>{nickname}</span> 님, 반갑습니다.
           </div>
-          {isFetching ? (
-            <div className={cx('point-bar')}>
-              <div className={cx('progress-bar-space')}>
-                <div>
-                  {userLevel?.userGrade === 'Power Elixir'
-                    ? userLevel.userExp
-                    : userLevel &&
-                      userLevel.requiredExpToNextGrade - userLevel.userExp}
-
-                  <Image
-                    src='/assets/svg/icon-charge-battery.svg'
-                    alt='charge-battery'
-                    width={24}
-                    height={21}
-                  />
-                  {userLevel?.userGrade === 'Power Elixir' ? (
-                    <>Power Elixir</>
-                  ) : (
-                    <>until {userLevel && userLevel.nextGrade} Level</>
-                  )}
-                </div>
-                <div className={cx('progress-bar-wrap')}>
-                  {userLevel?.userGrade === 'Power Elixir' ? (
-                    <div
-                      className={cx('progress-bar')}
-                      role='progressbar'
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      style={styles.maxContainer}
-                    />
-                  ) : (
-                    <div
-                      className={cx('progress-bar')}
-                      role='progressbar'
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      style={styles.container}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className={cx('my-score')}>
-                <span className={cx('my-exp')}>
-                  {userLevel && userLevel.userExp}
-                </span>
-                /
-                <span className={cx('req-exp')}>
-                  {userLevel && userLevel.nextGrade !== null
-                    ? userLevel.requiredExpToNextGrade
-                    : 'MAX'}
-                </span>
-                {userLevel?.userGrade === 'Potion' ? (
-                  <Image
-                    src='/assets/svg/icon-potion-level.svg'
-                    alt='potion-level'
-                    width={24}
-                    height={21}
-                  />
-                ) : userLevel?.userGrade === 'Elixir' ? (
-                  <Image
-                    src='/assets/svg/icon-power-elixir-level.svg'
-                    alt='elixir-level'
-                    width={24}
-                    height={21}
-                  />
-                ) : (
-                  <Image
-                    src='/assets/svg/icon-elixir-level.svg'
-                    alt='potion-level'
-                    width={24}
-                    height={21}
-                  />
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className={cx('point-bar')}>
-              <div className={cx('progress-bar-space')}>
-                <div>
-                  0
-                  <Image
-                    src='/assets/svg/icon-charge-battery.svg'
-                    alt='charge-battery'
-                    width={24}
-                    height={21}
-                  />
-                  until Elixir Level
-                </div>
-                <div className={cx('progress-bar-wrap')}>
-                  <div
-                    className={cx('progress-bar')}
-                    role='progressbar'
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    style={styles.container}
-                  />
-                </div>
-              </div>
-              <div className={cx('my-score')}>
-                <span className={cx('my-exp')}>0</span>/
-                <span className={cx('req-exp')}>20</span>
-                <Image
-                  src='/assets/svg/icon-potion-level.svg'
-                  alt='potion-level'
-                  width={24}
-                  height={21}
-                />
-              </div>
-            </div>
-          )}
+          <UserLevel />
         </div>
         <div className={cx('my-wrap')}>
           {showMyMenu && isLoginTemp && (
@@ -541,7 +375,7 @@ function homeContent() {
         onDismiss={onDismiss}
         isOpen={orderProgressModal}
         orderInfoTemp={orderInfoTemp}
-        // setOrderCancel={setOrderCancel}
+        handleOrderCancel={handleOrderCancel}
         handleClose={handleClose}
       />
     </>
