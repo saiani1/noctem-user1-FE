@@ -20,11 +20,13 @@ function orderProgressModal({
   onDismiss,
   isOpen,
   orderInfoTemp,
+  handleOrderCancel,
   handleClose,
 }: {
   onDismiss: () => void;
   isOpen: boolean;
   orderInfoTemp: IOrderInfo;
+  handleOrderCancel: () => void;
   handleClose: () => void;
 }) {
   const {
@@ -41,10 +43,6 @@ function orderProgressModal({
   const [orderProductData, setOrderProductData] = useRecoilState(
     orderProductDataState,
   );
-
-  const handleOrderCancel = () => {
-    console.log('주문 취소');
-  };
 
   const handleOrderClear = () => {
     console.log('수령 완료');
@@ -154,7 +152,9 @@ function orderProgressModal({
               <div>
                 <ul className={cx('menu-list-wrap')}>
                   {orderProductData &&
-                    orderProductData.map(data => <OrderMenuItem data={data} />)}
+                    orderProductData.map(data => (
+                      <OrderMenuItem key={data.cartId} data={data} />
+                    ))}
                 </ul>
               </div>
               <div className={cx('btn-wrap')}>
@@ -190,24 +190,13 @@ function orderProgressModal({
                   </button>
                 )}
                 {state === '제조완료' && (
-                  <>
-                    <button
-                      type='button'
-                      className={cx('btn', 'btn-confirm', 'm-r-10')}
-                      onClick={handleOrderClear}
-                    >
-                      수령 완료
-                    </button>
-                    <button
-                      type='button'
-                      className={cx('btn', 'btn-success')}
-                      onClick={() => {
-                        onDismiss();
-                      }}
-                    >
-                      확인
-                    </button>
-                  </>
+                  <button
+                    type='button'
+                    className={cx('btn', 'btn-confirm')}
+                    onClick={handleOrderClear}
+                  >
+                    수령 완료
+                  </button>
                 )}
                 {state === '거절됨' && (
                   <button

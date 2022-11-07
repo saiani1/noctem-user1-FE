@@ -52,3 +52,17 @@ export interface ICardInfo {
   company: string;
   card: string;
 }
+
+export interface ISSEData {
+  message: string,
+  alertCode: number,
+  data: Data,
+  dateTime: Date,
+  errorCode: number | null,
+}
+
+export interface Data {
+  userAccountId: number,
+  purchaseId: number,
+  orderStatus: string,
+}

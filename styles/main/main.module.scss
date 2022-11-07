@@ -17,36 +17,6 @@
         font-size: 22px;
       }
     }
-
-    .point-bar {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-
-      .progress-bar-space {
-        font-size: var(--FS-12);
-        font-weight: var(--FW-001);
-        color: var(--TXT-003);
-        flex: 0.64;
-      }
-
-      .my-score {
-        color: var(--TXT-004);
-        line-height: 20px;
-        flex: 0.36;
-        text-align: right;
-
-        .my-exp {
-          margin-right: 2px;
-          font-size: 22px;
-          color: var(--TXT-002);
-        }
-
-        .req-exp {
-          margin: 0 2px;
-        }
-      }
-    }
   }
 
   .info-wrap {
@@ -80,32 +50,6 @@
         color: var(--POINT);
         background-color: var(--BG-001);
       }
-    }
-  }
-
-  .progress-bar-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 98.5%;
-    height: 12px;
-    border: 2px solid var(--LINE-003);
-    border-radius: 2.5px;
-
-    &::after {
-      @include position.absolute(0 -4.5px auto auto);
-      content: ' ';
-      width: 2px;
-      height: 7px;
-      background-color: var(--LINE-003);
-    }
-
-    .progress-bar {
-      width: 55%;
-      height: 6px;
-      margin: 0 1px;
-      background-color: var(--POINT);
-      border-radius: 0.5px;
     }
   }
 
@@ -149,7 +93,7 @@
       border-radius: 3px;
       background-color: var(--BG-003);
 
-      ~.level-content-wrap {
+      ~ .level-content-wrap {
         margin-top: 8px;
       }
 
@@ -287,7 +231,7 @@
       font-weight: bold;
     }
 
-    &>.card {
+    & > .card {
       background: var(--BG-001);
       border-radius: 5px;
       cursor: pointer;

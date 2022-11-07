@@ -137,15 +137,14 @@ function cartContent() {
   };
 
   useEffect(() => {
+    setIsSoldOutCart(false);
     if (isSoldOutCartItem) {
       setIsSoldOutCart(true);
-      setIsSoldOutCartItem(false);
+      // setIsSoldOutCartItem(false);
     } else {
       setIsSoldOutCart(false);
-      setIsSoldOutCartItem(false);
     }
 
-    console.log('isChange발동!');
     setSelectedStoreTemp(selectedStore);
 
     if (isLogin) {
@@ -173,11 +172,6 @@ function cartContent() {
   }, [isChange]);
 
   useEffect(() => {
-    if (isSoldOutCartItem) {
-      setIsSoldOutCart(true);
-      setIsSoldOutCartItem(false);
-    }
-
     console.log('cartList', cartList);
     if (cartList && cartList.length !== 0) {
       const qtyList = cartList.map(cart => {
@@ -212,12 +206,11 @@ function cartContent() {
       setMenuList(totalMenuList);
     }
     console.log('나는 품절인가요? cartList', isSoldOutCartItem, isSoldOutCart);
-  }, [cartList, isSoldOutCartItem]);
-  console.log('나는 품절인가요? cartContent', isSoldOutCartItem, isSoldOutCart);
+  }, [cartList]);
 
   useEffect(() => {
-    console.log('priceList', priceList);
-    console.log('qtyList', qtyList);
+    // console.log('priceList', priceList);
+    // console.log('qtyList', qtyList);
     if (
       priceList &&
       qtyList &&
@@ -235,7 +228,7 @@ function cartContent() {
         };
       });
 
-      console.log('totalAmountList', totalAmountList);
+      // console.log('totalAmountList', totalAmountList);
       const total = totalAmountList.reduce(
         (acc: number, curr: ICartTotalPriceList) => {
           return acc + curr.qty * curr.amount;
