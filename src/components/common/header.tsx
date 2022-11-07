@@ -13,10 +13,6 @@ import { getIsDark } from '../../store/api/user';
 import { shakeToPayState } from '../../store/atom/optionState';
 
 const cx = classNames.bind(styles);
-function shakeEventDidOccur() {
-  //put your own code here etc.
-  alert('shake!');
-}
 
 function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
   const router = useRouter();
@@ -38,15 +34,6 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
       });
     } else {
       setTheme('light');
-    }
-    var myShakeEvent = new Shake({
-      threshold: 15,
-      timeout: 1000,
-    });
-
-    if (shakeState === true) {
-      myShakeEvent.start();
-      window.addEventListener('shake', shakeEventDidOccur, false);
     }
   }, []);
 

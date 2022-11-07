@@ -16,7 +16,10 @@ import { useRecoilState } from 'recoil';
 import { selectedStoreState } from './../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
-
+function shakeEventDidOccur() {
+  //put your own code here etc.
+  alert('shake!');
+}
 function selectStoreContent() {
   const geolocation = useGeolocation();
   const [open, setOpen] = useState(false);
@@ -26,6 +29,7 @@ function selectStoreContent() {
   const [, setSelectedStore] = useRecoilState(selectedStoreState);
   const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  var Shake = require('shake.js');
 
   function onDismiss() {
     setOpen(false);
@@ -94,6 +98,13 @@ function selectStoreContent() {
   useEffect(() => {
     console.log(router);
     console.log(router.query);
+    var myShakeEvent = new Shake({
+      threshold: 15,
+      timeout: 1000,
+    });
+    myShakeEvent.start();
+    window.addEventListener('shake', shakeEventDidOccur, false);
+    s;
   }, [router]);
 
   useEffect(() => {
