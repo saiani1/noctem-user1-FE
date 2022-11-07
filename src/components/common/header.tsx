@@ -44,9 +44,9 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
       timeout: 1000,
     });
     myShakeEvent.start();
-    if (shakeState === true) {
-      window.addEventListener('shake', shakeEventDidOccur, false);
-    }
+    window.addEventListener('shake', shakeEventDidOccur, false);
+    // if (shakeState === true) {
+    // }
   }, []);
 
   return (
