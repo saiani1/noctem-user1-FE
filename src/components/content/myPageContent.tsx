@@ -30,7 +30,7 @@ function myPageContent() {
   const [, setOrderInfo] = useRecoilState(orderInfoState);
   const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [nickname, setNickname] = useRecoilState(nicknameState);
-  const [isFatching, setIsFatching] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const [theme, setTheme] = useState('');
 
   const onLogin = () => {
@@ -90,9 +90,9 @@ function myPageContent() {
       getUserInfo(token).then(res => {
         setNickname(res.data.data.nickname);
       });
-      setIsFatching(true);
+      setIsFetching(true);
     } else {
-      setIsFatching(false);
+      setIsFetching(false);
     }
     const getTheme = String(localStorage.getItem('theme'));
     setTheme(getTheme);
@@ -101,7 +101,7 @@ function myPageContent() {
   return (
     <div className={cx('wrap')}>
       <h2>My Page</h2>
-      {isFatching ? (
+      {isFetching ? (
         <p className={cx('welcome-msg')}>
           <strong>{nickname}</strong> 님<br />
           환영합니다! 🙌

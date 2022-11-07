@@ -20,3 +20,10 @@ export interface IUserDetailInfo {
   userAge: number;
   userSex: string;
 }
+
+export interface IPreferCatergory {
+  id: string;
+  label: string;
+  value: number;
+  color: string;
+}

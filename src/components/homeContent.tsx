@@ -23,7 +23,6 @@ import { getUserInfo, getUserLevel } from '../store/api/user';
 import { getMyMenuData, getShowMainMyMenu } from '../store/api/myMenu';
 import { getPopularMenu } from '../store/api/popularMenu';
 import { getStoreList, getStoreWaitingTime } from '../store/api/store';
-import { getIsDark } from '../store/api/user';
 import { IStore } from '../types/store';
 import { IMenuData1 } from '../types/myMenu';
 import { ILevel } from '../types/user';
@@ -31,6 +30,11 @@ import { IPopularMenuList } from '../types/popularMenu';
 import CustomAlert from '../components/customAlert';
 import RecommendedMenu from './recommendedMenu';
 import MyMenuCard from './myMenuCard';
+import {
+  ElixirLevelBtn,
+  PotionLevelBtn,
+  PowerElixirLevelBtn,
+} from '../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -202,26 +206,11 @@ function homeContent() {
                   : 'MAX'}
               </span>
               {userLevel?.userGrade === 'Potion' ? (
-                <Image
-                  src='/assets/svg/icon-potion-level.svg'
-                  alt='potion-level'
-                  width={24}
-                  height={21}
-                />
+                <PotionLevelBtn />
               ) : userLevel?.userGrade === 'Elixir' ? (
-                <Image
-                  src='/assets/svg/icon-elixir-level.svg'
-                  alt='elixir-level'
-                  width={24}
-                  height={21}
-                />
+                <ElixirLevelBtn />
               ) : (
-                <Image
-                  src='/assets/svg/icon-power-elixir-level.svg'
-                  alt='potion-level'
-                  width={24}
-                  height={21}
-                />
+                <PowerElixirLevelBtn className={cx('power-elixir')} />
               )}
             </div>
           </div>
