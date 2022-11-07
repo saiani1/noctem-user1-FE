@@ -20,11 +20,13 @@ function orderProgressModal({
   onDismiss,
   isOpen,
   orderInfoTemp,
+  handleOrderCancel,
   handleClose,
 }: {
   onDismiss: () => void;
   isOpen: boolean;
   orderInfoTemp: IOrderInfo;
+  handleOrderCancel: () => void;
   handleClose: () => void;
 }) {
   const {
@@ -41,10 +43,6 @@ function orderProgressModal({
   const [orderProductData, setOrderProductData] = useRecoilState(
     orderProductDataState,
   );
-
-  const handleOrderCancel = () => {
-    console.log('주문 취소');
-  };
 
   const handleOrderClear = () => {
     console.log('수령 완료');
@@ -154,7 +152,9 @@ function orderProgressModal({
               <div>
                 <ul className={cx('menu-list-wrap')}>
                   {orderProductData &&
-                    orderProductData.map(data => <OrderMenuItem data={data} />)}
+                    orderProductData.map(data => (
+                      <OrderMenuItem key={data.cartId} data={data} />
+                    ))}
                 </ul>
               </div>
               <div className={cx('btn-wrap')}>
@@ -192,7 +192,7 @@ function orderProgressModal({
                 {state === '제조완료' && (
                   <button
                     type='button'
-                    className={cx('btn', 'btn-confirm', 'm-r-10')}
+                    className={cx('btn', 'btn-confirm')}
                     onClick={handleOrderClear}
                   >
                     수령 완료
