@@ -72,6 +72,7 @@ function categoryListContent({
         setPopularMenuInfo(res.data.data);
       });
     } else {
+      console.log('asdfasdf', categorySId);
       getMenuCategory(categorySId).then(res => {
         console.log(
           'getMenuCategory',
@@ -110,7 +111,6 @@ function categoryListContent({
     <>
       <CategoryContent
         setCategoryName={setCategoryName}
-        setCategorySId={setCategorySId}
         cartCount={cartCount}
       />
       <ul className={cx('product-list')}>

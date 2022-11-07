@@ -32,11 +32,9 @@ interface IDrinkCategory {
 
 function categoryContent({
   setCategoryName,
-  setCategorySId,
   cartCount,
 }: {
   setCategoryName: React.Dispatch<React.SetStateAction<string>>;
-  setCategorySId: React.Dispatch<React.SetStateAction<number>>;
   cartCount: number;
 }) {
   const [isClick, setIsClick] = useRecoilState(categoryLState);
@@ -49,6 +47,7 @@ function categoryContent({
   const [categoryFoodList, setCategoryFoodList] = useState<IDrinkCategory[]>(
     [],
   );
+  const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
   const handleChangeCategory = (name: string, id: number) => {
     // 음료, 푸드 변경 시에만 작동
     console.log('name', name, 'id', id);
@@ -124,7 +123,6 @@ function categoryContent({
                     key={item.categorySName}
                     list={item}
                     setCategoryName={setCategoryName}
-                    setCategorySId={setCategorySId}
                   />
                 );
               })}
@@ -138,7 +136,6 @@ function categoryContent({
                     key={item.categorySName}
                     list={item}
                     setCategoryName={setCategoryName}
-                    setCategorySId={setCategorySId}
                   />
                 );
               })}

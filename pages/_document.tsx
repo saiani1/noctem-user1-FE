@@ -28,6 +28,7 @@ class MyDocument extends Document {
           />
           <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
           <link rel='manifest' href='/manifest.json' />
+          <script src='shake.js'></script>
         </Head>
         <body>
           <Main />

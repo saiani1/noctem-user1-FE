@@ -5,12 +5,8 @@ import styles from '../../styles/main/main.module.scss';
 import { useRouter } from 'next/router';
 import { getMyMenuData } from '../../src/store/api/cart';
 import { IMenuData1, IMenuDetailData } from '../types/myMenu';
-import {
-  orderInfoState,
-  orderStatusState,
-  selectedStoreState,
-} from '../store/atom/orderState';
-import { useRecoilState } from 'recoil';
+import { orderInfoState, selectedStoreState } from '../store/atom/orderState';
+import { useRecoilValue } from 'recoil';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from '../components/customAlert';
 import toast from 'react-hot-toast';
@@ -20,9 +16,8 @@ const cx = classNames.bind(styles);
 function myMenuCard({ item }: { item: IMenuData1 }) {
   const router = useRouter();
   const [myMenuInfo, setMyMenuInfo] = useState<IMenuDetailData>();
-  const [selectedStore] = useRecoilState(selectedStoreState);
-  const [, setOrderStatus] = useRecoilState(orderStatusState);
-  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
+  const selectedStore = useRecoilValue(selectedStoreState);
+  const orderInfo = useRecoilValue(orderInfoState);
 
   const handleOrder = () => {
     if (orderInfo.purchaseId !== 0) {

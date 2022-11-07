@@ -10,18 +10,25 @@ import styles from '../../../styles/common/header.module.scss';
 import { CloseBtn, LeftArrowBtn } from '../../../public/assets/svg';
 import { loginState, tokenState } from '../../store/atom/userStates';
 import { getIsDark } from '../../store/api/user';
+import { shakeToPayState } from '../../store/atom/optionState';
 
 const cx = classNames.bind(styles);
+function shakeEventDidOccur() {
+  //put your own code here etc.
+  alert('shake!');
+}
 
 function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
   const router = useRouter();
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const { theme, setTheme } = useTheme();
+  const shakeState = useRecoilValue(shakeToPayState);
 
   const handleBack = () => {
     router.back();
   };
+  var Shake = require('shake.js');
 
   useEffect(() => {
     if (isLogin) {
@@ -31,6 +38,14 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
       });
     } else {
       setTheme('light');
+    }
+    var myShakeEvent = new Shake({
+      threshold: 15,
+      timeout: 1000,
+    });
+    myShakeEvent.start();
+    if (shakeState === true) {
+      window.addEventListener('shake', shakeEventDidOccur, false);
     }
   }, []);
 
