@@ -195,13 +195,20 @@ function homeContent() {
           return;
         }
 
-        if (data.alertCode !== 6) {
+        if (data.alertCode === 3 || data.alertCode === 4) {
           console.log('상태변경됨');
-          setOrderInfo({
-            ...orderInfo,
-            state: data.data.orderStatus,
+          getWaitingInfo(token).then(res => {
+            console.log('waiting', res);
+            setOrderInfo({
+              ...orderInfo,
+              state: data.data.orderStatus,
+              turnNumber: res.data.data.turnNumber,
+              waitingTime: res.data.data.waitingTime,
+            });
           });
-        } else {
+        }
+
+        if (data.alertCode === 6) {
           getWaitingInfo(token).then(res => {
             console.log('waiting', res);
             setOrderInfo({
