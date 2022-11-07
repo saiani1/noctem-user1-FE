@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/cartContent.module.scss';
@@ -25,10 +24,7 @@ import {
   getSessionCartList,
 } from '../../store/utils/cart';
 import { useRouter } from 'next/router';
-import {
-  orderStatusState,
-  selectedStoreState,
-} from '../../store/atom/orderState';
+import { selectedStoreState } from '../../store/atom/orderState';
 import { IMenuList } from '../../types/order';
 import { orderInfoState } from './../../store/atom/orderState';
 import { addComma } from '../../store/utils/function';
@@ -59,8 +55,11 @@ function cartContent() {
     contactNumber: '',
   });
   const selectedStore = useRecoilValue(selectedStoreState);
-  const [, setOrderStatus] = useRecoilState(orderStatusState);
+  // const orderInfo = useRecoilValue(orderInfoState);
+  // const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
+  const [isSoldOutCart, setIsSoldOutCart] = useState(false);
+  const [isSoldOutCartItem, setIsSoldOutCartItem] = useState(false);
 
   const [total, setTotal] = useState(0);
   const [cartList, setCartList] = useState<ICart[]>();
@@ -138,6 +137,15 @@ function cartContent() {
   };
 
   useEffect(() => {
+    if (isSoldOutCartItem) {
+      setIsSoldOutCart(true);
+      setIsSoldOutCartItem(false);
+    } else {
+      setIsSoldOutCart(false);
+      setIsSoldOutCartItem(false);
+    }
+
+    console.log('isChange발동!');
     setSelectedStoreTemp(selectedStore);
 
     if (isLogin) {
@@ -149,6 +157,7 @@ function cartContent() {
       getCount(token).then(res => {
         const resData = res.data.data === null ? 0 : res.data.data;
         setCartCount(resData);
+        console.log('isChange useEffect', resData);
       });
     } else {
       // 비회원 조회
@@ -164,6 +173,11 @@ function cartContent() {
   }, [isChange]);
 
   useEffect(() => {
+    if (isSoldOutCartItem) {
+      setIsSoldOutCart(true);
+      setIsSoldOutCartItem(false);
+    }
+
     console.log('cartList', cartList);
     if (cartList && cartList.length !== 0) {
       const qtyList = cartList.map(cart => {
@@ -197,7 +211,9 @@ function cartContent() {
       });
       setMenuList(totalMenuList);
     }
-  }, [cartList]);
+    console.log('나는 품절인가요? cartList', isSoldOutCartItem, isSoldOutCart);
+  }, [cartList, isSoldOutCartItem]);
+  console.log('나는 품절인가요? cartContent', isSoldOutCartItem, isSoldOutCart);
 
   useEffect(() => {
     console.log('priceList', priceList);
@@ -304,6 +320,8 @@ function cartContent() {
                     setIsChange={setIsChange}
                     handleSetCartPrice={handleSetCartPrice}
                     setMenuList={setMenuList}
+                    isSoldOutCartItem={isSoldOutCartItem}
+                    setIsSoldOutCartItem={setIsSoldOutCartItem}
                   />
                 ))}
             </div>
@@ -316,8 +334,13 @@ function cartContent() {
                   {addComma(total)}원
                 </strong>
               </div>
-              <button type='button' className={cx('btn')} onClick={handleOrder}>
-                주문하기
+              <button
+                type='button'
+                className={cx('btn', isSoldOutCart ? 'disable' : '')}
+                onClick={handleOrder}
+                disabled={isSoldOutCart}
+              >
+                {isSoldOutCart ? '주문할 수 없는 메뉴가 있습니다.' : '주문하기'}
               </button>
             </div>
           </>

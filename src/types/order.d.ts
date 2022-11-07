@@ -40,7 +40,12 @@ export interface IPayment {
 // 주문 정보
 export interface IOrderInfo {
   storeId: number;
+  storeName: string;
   purchaseId: number;
+  orderNumber: string;
+  turnNumber: number;
+  waitingTime: number;
+  state: string;
 }
 
 export interface ICardInfo {

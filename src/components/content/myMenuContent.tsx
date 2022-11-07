@@ -31,31 +31,18 @@ function myMenuContent() {
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    Promise.all([getShowMainMyMenu(token), getMyMenuData(token)]).then(res => {
-      console.log(res);
-      setShowMyMenu(res[0].data.data);
-      if (res[1].data.data.length !== 0) {
-        setInfo(res[1].data.data);
-        setIsFetching(true);
+    getMyMenuData(token).then(res => {
+      if (res.data.data.length !== 0) {
+        setInfo(res.data.data);
       } else {
         setIsEmpty(true);
-        setIsFetching(true);
       }
     });
-  }, [isDeleteMyMenu, isChangeMyMenuName]);
-
-  // useEffect(() => {
-  //   getMyMenuData(token).then(res => {
-  //     if (res.data.data.length !== 0) {
-  //       setInfo(res.data.data);
-  //       console.log(res.data.data);
-  //       setIsFetching(true);
-  //     } else {
-  //       setIsEmpty(true);
-  //       setIsFetching(true);
-  //     }
-  //   });
-  // }, [isDeleteMyMenu, isChangeMyMenuList]);
+    getShowMainMyMenu(token).then(res => {
+      setShowMyMenu(res.data.data);
+      setIsFetching(true);
+    });
+  }, [isDeleteMyMenu, isChangeMyMenuList]);
 
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeShowMainMyMenu(token).then(res => {

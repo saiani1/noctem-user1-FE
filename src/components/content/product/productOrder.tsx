@@ -165,7 +165,7 @@ function productOrder({
                       className={cx('add-heart')}
                       onClick={handleAddMyMenu}
                     >
-                      <HeartBtn classname={cx('icon')} />
+                      <HeartBtn className={cx('icon')} />
                     </button>
                     <div>
                       <div className={cx('go-cart')} onClick={handleAddCart}>

@@ -46,6 +46,7 @@
 
   // 폰트 사이즈
   --FS-32: 32px;
+  --FS-26: 26px;
   --FS-24: 24px;
   --FS-21: 21px;
   --FS-20: 20px;
@@ -152,6 +153,7 @@
   [data-rsbs-overlay] {
     background-color: var(--BG-002);
   }
+
   [data-rsbs-header]:before {
     background-color: var(--LINE-004);
   }

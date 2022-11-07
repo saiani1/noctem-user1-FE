@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
-
 import styles from '../../../styles/content/orderContent.module.scss';
 import 'react-spring-bottom-sheet/dist/style.css';
 
@@ -9,15 +8,19 @@ import ChoicePaymentModal from '../../components/content/choicePaymentModal';
 import OrderPayingCompletionModal from '../../components/content/orderPayingCompletionModal';
 import { useRouter } from 'next/router';
 import OrderItem from '../ui/orderItem';
-import { addOrder, getMenuDetail } from '../../../src/store/api/order';
+import {
+  addOrder,
+  getMenuDetail,
+  getWaitingInfo,
+} from '../../../src/store/api/order';
 import { IMenuList, IProps, IPurchaseData, ICardInfo } from '../../types/order';
 import { addComma } from '../../store/utils/function';
 import toast from 'react-hot-toast';
 import { IUserDetailInfo } from '../../types/user';
 import { getUserDetailInfo } from '../../../src/store/api/user';
 import {
+  orderProductDataState,
   orderInfoState,
-  orderStatusState,
   selectedStoreState,
 } from '../../store/atom/orderState';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -38,7 +41,7 @@ function orderContent(props: IProps) {
   const token = useRecoilValue(tokenState);
   const [selectedStore] = useRecoilState(selectedStoreState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
-  const [, setOrderStatus] = useRecoilState(orderStatusState);
+  const [, setOrderProductData] = useRecoilState(orderProductDataState);
   const [menuList, setMenuList] = useState<IMenuList[]>();
   const [cardInfo, setCardInfo] = useState<ICardInfo>({
     company: '',
@@ -89,7 +92,7 @@ function orderContent(props: IProps) {
 
     // 유효성 검사 추가 : 매장 있을 때, 메뉴 리스트 있을 때, 카드 있을 때, 현금영수증 있을 때
     if (menuList) {
-      const orderData: IPurchaseData = {
+      const orderProductData: IPurchaseData = {
         storeId: selectedStore.storeId,
         storeName: selectedStore.name,
         storeAddress: selectedStore.address,
@@ -103,21 +106,42 @@ function orderContent(props: IProps) {
       };
 
       if (orderCnt === 0) {
-        console.log('orderData', orderData);
-        addOrder(orderData, token)
+        addOrder(orderProductData, token)
           .then(res => {
             console.log('res', res);
             toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
-            setOrderInfo(res.data.data);
-            setOrderStatus('주문확인중');
+            setOrderProductData(orderProductData.menuList);
+            const idData = res.data.data;
+            console.log('idData', idData);
+
+            getWaitingInfo(token).then(getWaitingRes => {
+              const timeData = getWaitingRes.data.data;
+              console.log('timeData', timeData);
+
+              setOrderInfo({
+                ...orderInfo,
+                storeId: idData.storeId,
+                storeName: selectedStore.name,
+                purchaseId: idData.purchaseId,
+                state: '주문확인중',
+                orderNumber: timeData.orderNumber,
+                turnNumber: timeData.turnNumber,
+                waitingTime: timeData.waitingTime,
+              });
+
+              router.push('/');
+              orderCnt++;
+            });
+
             if (router.query.menuList) {
               // 장바구니 주문일 경우
               deleteCartAll(token).then(res => {
                 console.log('전체 삭제', res);
               });
+
+              router.push('/');
+              orderCnt++;
             }
-            router.push('/');
-            orderCnt++;
           })
           .catch(err => {
             console.log(err);
@@ -171,7 +195,6 @@ function orderContent(props: IProps) {
       );
       getMenuDetail(sizeId, 0).then(res => {
         let resData: IMenuList = res.data.data;
-        console.log('orderContent resData', resData);
         setMenuList([
           {
             sizeId: sizeId,

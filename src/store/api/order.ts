@@ -30,3 +30,22 @@ export const getOrderStatus = async (purchaseId: number) => {
   const res = await basicRequest.get(`${STORE_SERVICE}/order/${purchaseId}`);
   return res;
 };
+
+export const getWaitingInfo = async (token: string) => {
+  const res = await basicRequest.get(`${STORE_SERVICE}/order/waitingTime/user`, {
+    headers: {
+      Authorization: token,
+    }
+  });
+
+  return res;
+}
+
+export const getProgressOrder = async (token: string) => {
+  const res = await basicRequest.get(`${STORE_SERVICE}/order/orderMenuInProgress`, {
+    headers: {
+      Authorization: token,
+    }
+  });
+  return res;
+}

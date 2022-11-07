@@ -10,6 +10,7 @@ export interface ICart {
 export interface IData {
   sizeId: number;
   cartId: number;
+  menuId: number;
   qty: number;
   menuName: string;
   menuEngName: string;
@@ -53,12 +54,15 @@ export interface IPriceList {
 }
 
 export interface IDetailMenuInfo {
+  index: number;
   menuId: number;
   cartId: number;
   menuName: string;
   menuEngName: string;
   menuImg: string;
+  menuTemperatureId: number;
   temperature: string;
-  totalMenuPrice: number;
+  menuPrice: number;
+  price: number;
   size: string;
 }

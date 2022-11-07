@@ -27,16 +27,6 @@ function choicePaymentModal({
     plan: false,
   });
 
-  // const changeCardNum = (num: any) => {
-  //   const cardNum = num;
-  //   for (let i = 0; i < cardNum.length; i += 1) {
-  //     if (i === 7 || i === 8 || i === 10 || i === 11 || i === 12 || i === 13) {
-  //       cardNum[i] = '*';
-  //     }
-  //   }
-  //   return cardNum;
-  // };
-
   const handleInputCardNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (Number.isNaN(Number(value))) return;
@@ -65,7 +55,12 @@ function choicePaymentModal({
     if (Object.values(isValid).every(v => v === true) === true) {
       setCardInfo({
         company: selectCardCompany,
-        card: enterCardNumber.replace(/(?<=.{4})./gi, '*'),
+        card: enterCardNumber
+          .split('')
+          .map((letter, idx) =>
+            idx < enterCardNumber.length - 4 ? '*' : letter,
+          )
+          .join(''),
       });
       onDismiss();
     } else {

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, FocusEvent, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -38,7 +37,6 @@ import { getSessionCartCount } from '../../../store/utils/cart';
 import MyMenuRenamePopUp from '../myMenuRenamePopUp';
 import {
   orderInfoState,
-  orderStatusState,
   selectedStoreState,
 } from '../../../store/atom/orderState';
 import { loginState } from './../../../store/atom/userStates';
@@ -48,17 +46,18 @@ const cx = classNames.bind(styles);
 
 function productContent() {
   const router = useRouter();
+  const isSoldOut = router.query.isSoldOut;
   const id = router.query.id ? +router.query.id : 1;
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const [, setOrderStatus] = useRecoilState(orderStatusState);
   const [categoryLName] = useRecoilState(categoryLNameState);
   const [, setCategoryName] = useRecoilState(categoryLState);
   const [, setCategorySId] = useRecoilState(categorySIdState);
   const [selectedStore] = useRecoilState(selectedStoreState);
-  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
+  const orderInfo = useRecoilValue(orderInfoState);
   const [open, setOpen] = useState(false);
+  const [soldOutMenu, setSoldOutMenu] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
   const [selectedSizeId, setSelectedSizeId] = useState(0);
@@ -293,8 +292,16 @@ function productContent() {
   };
 
   useEffect(() => {
+    setSoldOutMenu(false);
+    if (isSoldOut === 'true' && selectedStore.storeId !== 0)
+      setSoldOutMenu(true);
+    else setSoldOutMenu(false);
+  }, [soldOutMenu]);
+
+  useEffect(() => {
     getProduct(id).then(res => {
       setdetailList(res.data.data);
+      console.log('getProduct', res.data.data);
     });
     getNutrition(id).then(res => {
       setNutritionInfo(res.data.data);
@@ -314,16 +321,19 @@ function productContent() {
   useEffect(() => {
     if (detailList) {
       if (detailList.temperatureList.length === 1) {
-        setSelectedTempId(detailList.temperatureList[0].temperatureId);
-        getSize(detailList.temperatureList[0].temperatureId).then(res => {
-          setSizeOpt(res.data.data);
-          setSelectedSizeId(res.data.data[0].sizeId);
-          setSelectedSizeTxt(res.data.data[0].size);
-          setCartData({
-            ...cartData,
-            sizeId: res.data.data[0].sizeId,
+        console.log(detailList.temperatureList[0].temperatureId);
+        if (detailList.temperatureList[0].temperatureId < 66) {
+          setSelectedTempId(detailList.temperatureList[0].temperatureId);
+          getSize(detailList.temperatureList[0].temperatureId).then(res => {
+            setSizeOpt(res.data.data);
+            setSelectedSizeId(res.data.data[0].sizeId);
+            setSelectedSizeTxt(res.data.data[0].size);
+            setCartData({
+              ...cartData,
+              sizeId: res.data.data[0].sizeId,
+            });
           });
-        });
+        }
       } else {
         let tempId = selectedTempId;
         if (tempId === 0) {
@@ -353,7 +363,6 @@ function productContent() {
     <>
       <CategoryContent
         setCategoryName={setCategoryName}
-        setCategorySId={setCategorySId}
         cartCount={cartCount}
       />
       {detailList && (
@@ -377,8 +386,7 @@ function productContent() {
             <div className={cx('product-price')}>
               {addComma(detailList.price)}원
             </div>
-
-            {
+            {detailList.temperatureList[0].temperatureId < 66 ? (
               <div className={cx('temp-button')}>
                 {detailList.temperatureList.length === 1 ? (
                   <div
@@ -437,7 +445,7 @@ function productContent() {
                   </>
                 )}
               </div>
-            }
+            ) : undefined}
           </div>
         </>
       )}
@@ -455,11 +463,12 @@ function productContent() {
       )}
       <div className={cx('button-box')}>
         <button
-          className={cx('order-button')}
+          className={cx('order-button', soldOutMenu ? 'disable' : '')}
           type='button'
           onClick={handleOptionOpen}
+          disabled={soldOutMenu}
         >
-          주문하기
+          {soldOutMenu ? '주문 불가능한 상품입니다.' : '주문하기'}
         </button>
       </div>
       {myMenuAlert && (
