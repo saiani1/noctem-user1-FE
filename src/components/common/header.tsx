@@ -10,6 +10,7 @@ import styles from '../../../styles/common/header.module.scss';
 import { CloseBtn, LeftArrowBtn } from '../../../public/assets/svg';
 import { loginState, tokenState } from '../../store/atom/userStates';
 import { getIsDark } from '../../store/api/user';
+import { shakeToPayState } from '../../store/atom/optionState';
 
 const cx = classNames.bind(styles);
 function shakeEventDidOccur() {
@@ -22,6 +23,7 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const { theme, setTheme } = useTheme();
+  const shakeState = useRecoilValue(shakeToPayState);
 
   const handleBack = () => {
     router.back();
@@ -42,8 +44,10 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
       timeout: 1000,
     });
 
-    myShakeEvent.start();
-    window.addEventListener('shake', shakeEventDidOccur, false);
+    if (shakeState) {
+      myShakeEvent.start();
+      window.addEventListener('shake', shakeEventDidOccur, false);
+    }
   }, []);
 
   return (

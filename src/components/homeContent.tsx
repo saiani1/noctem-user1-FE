@@ -41,10 +41,6 @@ import { getWaitingInfo } from '../store/api/order';
 
 const cx = classNames.bind(styles);
 
-function shakeEventDidOccur() {
-  alert('흔들림 감지');
-}
-
 function homeContent() {
   const router = useRouter();
   const geolocation = useGeolocation();
@@ -144,8 +140,6 @@ function homeContent() {
   }, [orderInfo]);
 
   useEffect(() => {
-    window.addEventListener('shake', shakeEventDidOccur, false);
-
     getPopularMenu().then(res => setPopularMenuList(res.data.data));
 
     if ('Notification' in window) {
