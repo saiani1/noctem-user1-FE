@@ -5,10 +5,7 @@ import styles from '../../../styles/content/orderProgressModal.module.scss';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
-import {
-  orderInfoState,
-  orderProductDataState,
-} from '../../store/atom/orderState';
+import { orderProductDataState } from '../../store/atom/orderState';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { IOrderInfo } from '../../types/order';
 import { nicknameState } from '../../store/atom/userStates';
@@ -39,7 +36,6 @@ function orderProgressModal({
     state,
   } = orderInfoTemp;
   const nickname = useRecoilValue(nicknameState);
-  const [, setOrderInfo] = useRecoilState(orderInfoState);
   const [orderProductData, setOrderProductData] = useRecoilState(
     orderProductDataState,
   );

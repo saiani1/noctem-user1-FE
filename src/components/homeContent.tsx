@@ -17,7 +17,11 @@ import OrderStateInfo from './ui/orderStateInfo';
 import OrderProgressModal from './content/orderProgressModal';
 import ToolbarList from './ui/toolbarList';
 import RecommendedMenu from './recommendedMenu';
-import { getWaitingInfo, patchOrderCancel } from '../store/api/order';
+import {
+  getLastSSEMessage,
+  getWaitingInfo,
+  patchOrderCancel,
+} from '../store/api/order';
 import { ISSEData } from '../types/order';
 import UserLevel from './ui/userLevel';
 import CustomAlert from './customAlert';
@@ -59,7 +63,9 @@ function homeContent() {
   };
 
   const handleClose = () => {
-    console.log('주문 종료');
+    console.log('handleClose 주문 종료');
+    console.log('orderInfo 초기화', orderInfo);
+    console.log('orderProductData 초기화', orderProductData);
     setOrderInfo({
       storeId: 0,
       storeName: '',
@@ -89,10 +95,13 @@ function homeContent() {
   };
 
   useEffect(() => {
-    // console.log('orderInfo 변경!!!!!!!!!!!!!!!!!', orderInfo);
+    console.log('orderInfo', orderInfo);
+    console.log('orderInfoTemp', orderInfoTemp);
+
     setOrderInfoTemp({
       ...orderInfo,
     });
+
     setIsLoginTemp(isLogin);
   }, [orderInfo]);
 
@@ -107,6 +116,27 @@ function homeContent() {
       }/${orderInfo.storeId}`;
 
       if (orderInfo.purchaseId !== 0 || ssEvents === null) {
+        getLastSSEMessage(token).then(res => {
+          console.log('getLastSSEMessage res', res);
+          const data = res.data;
+
+          getWaitingInfo(token).then(timeRes => {
+            console.log('setorderInfoTemp', orderInfoTemp);
+            console.log('setorderInfo Before', orderInfo);
+            console.log('setorderInfo After', {
+              ...orderInfo,
+              state: data.data.orderStatus,
+              turnNumber: timeRes.data.data.turnNumber,
+              waitingTime: timeRes.data.data.waitingTime,
+            });
+            setOrderInfo({
+              ...orderInfo,
+              state: data.data.orderStatus,
+              turnNumber: timeRes.data.data.turnNumber,
+              waitingTime: timeRes.data.data.waitingTime,
+            });
+          });
+        });
         ssEvents = new EventSource(STREAM_URL, { withCredentials: true });
       }
 
@@ -116,23 +146,35 @@ function homeContent() {
         });
 
         ssEvents.addEventListener('message', event => {
-          console.log('데이터', event);
           const data = JSON.parse(event.data);
+          console.log('SSE MESSAGE DATA', data);
 
           if (data.alertCode === 3 || data.alertCode === 4) {
             console.log('제조중 OR 제조완료', data, data.data.orderStatus);
-            getWaitingInfo(token).then(res => {
+            getWaitingInfo(token).then(timeRes => {
+              console.log('ssEvents setorderInfo Before', orderInfo);
+              console.log('ssEvents setorderInfo After', {
+                ...orderInfo,
+                state: data.data.orderStatus,
+                turnNumber: timeRes.data.data.turnNumber,
+                waitingTime: timeRes.data.data.waitingTime,
+              });
               setOrderInfo({
                 ...orderInfo,
                 state: data.data.orderStatus,
-                turnNumber: res.data.data.turnNumber,
-                waitingTime: res.data.data.waitingTime,
+                turnNumber: timeRes.data.data.turnNumber,
+                waitingTime: timeRes.data.data.waitingTime,
               });
             });
           }
 
           if (data.alertCode === 5) {
             console.log('거절당함', data);
+            console.log('ssEvents setorderInfo Before', orderInfo);
+            console.log('ssEvents setorderInfo After', {
+              ...orderInfo,
+              state: '거절됨',
+            });
             setOrderInfo({
               ...orderInfo,
               state: '거절됨',
@@ -143,6 +185,12 @@ function homeContent() {
           if (data.alertCode === 6) {
             console.log('순서에 변화가 있을 경우', data);
             getWaitingInfo(token).then(res => {
+              console.log('ssEvents setorderInfo Before', orderInfo);
+              console.log('ssEvents setorderInfo After', {
+                ...orderInfo,
+                turnNumber: res.data.data.turnNumber,
+                waitingTime: res.data.data.waitingTime,
+              });
               setOrderInfo({
                 ...orderInfo,
                 turnNumber: res.data.data.turnNumber,
@@ -165,7 +213,6 @@ function homeContent() {
           console.log('ERR', err);
         });
       }
-    } else {
     }
 
     return () => {
