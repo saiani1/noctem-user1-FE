@@ -12,6 +12,10 @@ import { loginState, tokenState } from '../../store/atom/userStates';
 import { getIsDark } from '../../store/api/user';
 
 const cx = classNames.bind(styles);
+function shakeEventDidOccur() {
+  //put your own code here etc.
+  alert('shake!');
+}
 
 function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
   const router = useRouter();
@@ -22,6 +26,7 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
   const handleBack = () => {
     router.back();
   };
+  var Shake = require('shake.js');
 
   useEffect(() => {
     if (isLogin) {
@@ -32,6 +37,13 @@ function header({ isClose, isBack }: { isClose: boolean; isBack: boolean }) {
     } else {
       setTheme('light');
     }
+    var myShakeEvent = new Shake({
+      threshold: 15,
+      timeout: 1000,
+    });
+
+    myShakeEvent.start();
+    window.addEventListener('shake', shakeEventDidOccur, false);
   }, []);
 
   return (
