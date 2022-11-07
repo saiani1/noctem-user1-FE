@@ -104,7 +104,6 @@ function selectStoreContent() {
     });
     myShakeEvent.start();
     window.addEventListener('shake', shakeEventDidOccur, false);
-    s;
   }, [router]);
 
   useEffect(() => {
