@@ -311,16 +311,19 @@ function productContent() {
   useEffect(() => {
     if (detailList) {
       if (detailList.temperatureList.length === 1) {
-        setSelectedTempId(detailList.temperatureList[0].temperatureId);
-        getSize(detailList.temperatureList[0].temperatureId).then(res => {
-          setSizeOpt(res.data.data);
-          setSelectedSizeId(res.data.data[0].sizeId);
-          setSelectedSizeTxt(res.data.data[0].size);
-          setCartData({
-            ...cartData,
-            sizeId: res.data.data[0].sizeId,
+        console.log(detailList.temperatureList[0].temperatureId);
+        if (detailList.temperatureList[0].temperatureId < 66) {
+          setSelectedTempId(detailList.temperatureList[0].temperatureId);
+          getSize(detailList.temperatureList[0].temperatureId).then(res => {
+            setSizeOpt(res.data.data);
+            setSelectedSizeId(res.data.data[0].sizeId);
+            setSelectedSizeTxt(res.data.data[0].size);
+            setCartData({
+              ...cartData,
+              sizeId: res.data.data[0].sizeId,
+            });
           });
-        });
+        }
       } else {
         let tempId = selectedTempId;
         if (tempId === 0) {
@@ -350,7 +353,6 @@ function productContent() {
     <>
       <CategoryContent
         setCategoryName={setCategoryName}
-        setCategorySId={setCategorySId}
         cartCount={cartCount}
       />
       {detailList && (
@@ -374,8 +376,7 @@ function productContent() {
             <div className={cx('product-price')}>
               {addComma(detailList.price)}원
             </div>
-
-            {
+            {detailList.temperatureList[0].temperatureId < 66 ? (
               <div className={cx('temp-button')}>
                 {detailList.temperatureList.length === 1 ? (
                   <div
@@ -434,7 +435,7 @@ function productContent() {
                   </>
                 )}
               </div>
-            }
+            ) : undefined}
           </div>
         </>
       )}
