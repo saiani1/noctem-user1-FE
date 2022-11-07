@@ -1,0 +1,52 @@
+@use '/styles/mixins/position';
+
+.wrap {
+  @include position.absolute(50% auto auto 50%);
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 450px;
+  z-index: 100;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: var(--BG-002);
+  box-shadow: 4px 4px 4px rgba(#555, 0.4);
+  transition: all 0.2s;
+
+  .top {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+
+    button {
+      width: 20px;
+      height: 20px;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        stroke: var(--LINE-005);
+        pointer-events: none;
+      }
+    }
+  }
+  .comment {
+    font-size: var(--FS-15);
+    font-weight: bold;
+    text-align: center;
+    color: var(--TXT-002);
+    margin-bottom: 10px;
+
+    span {
+      font-weight: 300;
+      font-size: var(--FS-11);
+      color: var(--TXT-003);
+    }
+  }
+  .img-wrap {
+    height: 305px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+}

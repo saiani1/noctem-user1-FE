@@ -19,26 +19,23 @@
 
 .link-box {
   text-align: center;
-  color: var(--TXT-003);
-  font-size: var(--FS-10);
 
-  & > a {
-    margin: 0 10px;
+  button {
     position: relative;
+    color: var(--TXT-003);
+    font-size: var(--FS-10);
 
-    &::after {
+    & ~ button {
+      margin-left: 8px;
+    }
+    & ~ ::after {
       content: '';
       position: absolute;
-      top: 3px;
-      left: -10px;
-      width: 1px;
-      height: 10px;
+      top: 4px;
+      left: -4px;
+      width: 0.5px;
+      height: 8px;
       background-color: var(--LINE-003);
-    }
-
-    &:first-child::after {
-      content: '';
-      display: none;
     }
   }
 }
