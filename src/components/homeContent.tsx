@@ -38,6 +38,7 @@ import CustomAlert from '../components/customAlert';
 import RecommendedMenu from './recommendedMenu';
 import MyMenuCard from './myMenuCard';
 import { getWaitingInfo } from '../store/api/order';
+import { ISSEData } from '../types/order';
 
 const cx = classNames.bind(styles);
 
@@ -86,6 +87,7 @@ function homeContent() {
   const [popularMenuList, setPopularMenuList] = useState<IPopularMenuList[]>(
     [],
   );
+  const [SSEData, setSSEData] = useState<ISSEData | null>(null);
   let ssEvents: EventSource | null = null;
 
   const onDismiss = () => {
@@ -125,11 +127,17 @@ function homeContent() {
       waitingTime: 0,
       state: '',
     });
+
     setOrderProductData([]);
-    ssEvents?.close();
+    if (ssEvents !== null) {
+      console.log('SSE 종료!!!');
+      setSSEData(null);
+      ssEvents.close();
+    }
   };
 
   useEffect(() => {
+    // console.log('orderInfo 변경!!!!!!!!!!!!!!!!!', orderInfo);
     setOrderInfoTemp({
       ...orderInfoTemp,
       storeId: orderInfo.storeId,
@@ -186,38 +194,7 @@ function homeContent() {
         console.log('데이터', event);
         const data = JSON.parse(event.data);
 
-        if (data.alertCode === 5) {
-          console.log('거절당함', event);
-          setOrderInfo({
-            ...orderInfo,
-            state: '거절됨',
-          });
-          return;
-        }
-
-        if (data.alertCode === 3 || data.alertCode === 4) {
-          console.log('상태변경됨');
-          getWaitingInfo(token).then(res => {
-            console.log('waiting', res);
-            setOrderInfo({
-              ...orderInfo,
-              state: data.data.orderStatus,
-              turnNumber: res.data.data.turnNumber,
-              waitingTime: res.data.data.waitingTime,
-            });
-          });
-        }
-
-        if (data.alertCode === 6) {
-          getWaitingInfo(token).then(res => {
-            console.log('waiting', res);
-            setOrderInfo({
-              ...orderInfo,
-              turnNumber: res.data.data.turnNumber,
-              waitingTime: res.data.data.waitingTime,
-            });
-          });
-        }
+        setSSEData(data);
       });
 
       ssEvents.addEventListener('error', err => {
@@ -229,12 +206,74 @@ function homeContent() {
     }
 
     return () => {
-      console.log('SSE 종료!!!');
       if (ssEvents !== null) {
+        console.log('SSE 종료!!!');
+        setSSEData(null);
         ssEvents.close();
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (SSEData !== null) {
+      if (SSEData.alertCode === 3 || SSEData.alertCode === 4) {
+        // console.log('제조중 OR 제조완료', SSEData, SSEData.data.orderStatus);
+        getWaitingInfo(token).then(res => {
+          // console.log('기존 데이터', orderInfo);
+          // console.log('임시 데이터', orderInfoTemp);
+          // console.log('바뀐 데이터', {
+          //   // ...orderInfo,
+          //   state: SSEData.data.orderStatus,
+          //   turnNumber: res.data.data.turnNumber,
+          //   waitingTime: res.data.data.waitingTime,
+          // });
+          // console.log('합친 데이터', {
+          //   ...orderInfo,
+          //   state: SSEData.data.orderStatus,
+          //   turnNumber: res.data.data.turnNumber,
+          //   waitingTime: res.data.data.waitingTime,
+          // });
+          setOrderInfo({
+            ...orderInfo,
+            state: SSEData.data.orderStatus,
+            turnNumber: res.data.data.turnNumber,
+            waitingTime: res.data.data.waitingTime,
+          });
+        });
+      }
+
+      if (SSEData.alertCode === 5) {
+        console.log('거절당함', event);
+        setOrderInfo({
+          ...orderInfo,
+          state: '거절됨',
+        });
+        return;
+      }
+
+      if (SSEData.alertCode === 6) {
+        // console.log('순서에 변화가 있을 경우', SSEData);
+        getWaitingInfo(token).then(res => {
+          // console.log('기존 데이터', orderInfo);
+          // console.log('임시 데이터', orderInfoTemp);
+          // console.log('바뀐 데이터', {
+          //   turnNumber: res.data.data.turnNumber,
+          //   waitingTime: res.data.data.waitingTime,
+          // });
+          // console.log('합친 데이터', {
+          //   ...orderInfo,
+          //   turnNumber: res.data.data.turnNumber,
+          //   waitingTime: res.data.data.waitingTime,
+          // });
+          setOrderInfo({
+            ...orderInfo,
+            turnNumber: res.data.data.turnNumber,
+            waitingTime: res.data.data.waitingTime,
+          });
+        });
+      }
+    }
+  }, [SSEData]);
 
   useEffect(() => {
     if (userLevel) {
