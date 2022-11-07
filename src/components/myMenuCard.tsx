@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-import styles from '../../styles/main/main.module.scss';
+import styles from '../../styles/ui/userMenu.module.scss';
 import { useRouter } from 'next/router';
 import { getMyMenuData } from '../../src/store/api/cart';
 import { IMenuData1, IMenuDetailData } from '../types/myMenu';
 import { orderInfoState, selectedStoreState } from '../store/atom/orderState';
 import { useRecoilValue } from 'recoil';
-import { confirmAlert } from 'react-confirm-alert';
-import CustomAlert from '../components/customAlert';
+import CustomAlert from './customAlert';
 import toast from 'react-hot-toast';
 
 const cx = classNames.bind(styles);
@@ -28,19 +26,14 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
     }
 
     if (selectedStore.distance === '') {
-      confirmAlert({
-        customUI: ({ onClose }) => (
-          <>
-            <CustomAlert
-              title='주문할 매장을 선택해주세요.'
-              desc='매장을 선택하신 후 주문해주세요! 품절된 상품은 주문하실 수 없습니다.'
-              btnTitle='매장 선택하기'
-              // id={}
-              onAction={onSelectStore}
-              onClose={onClose}
-            />
-          </>
-        ),
+      CustomAlert({
+        title: '주문할 매장을 선택해주세요.',
+        desc: '매장을 선택하신 후 주문해주세요! 품절된 상품은 주문하실 수 없습니다.',
+        btnTitle: '매장 선택하기',
+        id: 0,
+        onAction: () => {
+          onSelectStore();
+        },
       });
     } else {
       router.push(
@@ -85,7 +78,6 @@ function myMenuCard({ item }: { item: IMenuData1 }) {
         sizeId: item.sizeId,
       };
       setMyMenuInfo(mymenuInfo);
-      console.log('마이메뉴카드', resData);
     });
   }, []);
 

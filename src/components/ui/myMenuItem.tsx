@@ -12,22 +12,19 @@ import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma } from './../../store/utils/function';
 import { getSessionCartCount } from '../../store/utils/cart';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
-// import { isExistToken } from '../../../store/utils/token';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { cartCntState, tokenState } from '../../store/atom/userStates';
 import { ICartData } from '../../types/productDetail';
 
 import { addCart } from '../../../src/store/api/cart';
 
-import { getMyMenuData, deleteMyMenu } from '../../../src/store/api/myMenu';
+import { deleteMyMenu } from '../../../src/store/api/myMenu';
 import {
   orderInfoState,
   selectedStoreState,
 } from '../../store/atom/orderState';
-import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from '../customAlert';
 import { useRouter } from 'next/router';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import { loginState } from './../../store/atom/userStates';
 import { CloseBtn } from '../../../public/assets/svg';
 
@@ -78,19 +75,14 @@ function myMenuItem({
   }, [info]);
 
   const handleCustomAlert = () => {
-    confirmAlert({
-      customUI: ({ onClose }) => (
-        <CustomAlert
-          title='장바구니에 담겼습니다!'
-          desc='장바구니로 이동하시겠습니까?'
-          btnTitle='이동'
-          // id={}
-          onAction={() => {
-            router.push('/cart');
-          }}
-          onClose={onClose}
-        />
-      ),
+    CustomAlert({
+      title: '장바구니에 담겼습니다!',
+      desc: '장바구니로 이동하시겠습니까?',
+      btnTitle: '장바구니로 이동',
+      id: 0,
+      onAction: () => {
+        router.push('/cart');
+      },
     });
   };
 
@@ -168,19 +160,14 @@ function myMenuItem({
     }
 
     if (selectedStore.distance === '') {
-      confirmAlert({
-        customUI: ({ onClose }) => (
-          <>
-            <CustomAlert
-              title='주문할 매장을 선택해주세요.'
-              desc='매장을 선택하신 후 주문해주세요! 품절된 상품은 주문하실 수 없습니다.'
-              btnTitle='매장 선택하기'
-              // id={}
-              onAction={onSelectStore}
-              onClose={onClose}
-            />
-          </>
-        ),
+      CustomAlert({
+        title: '주문할 매장을 선택해주세요.',
+        desc: '매장을 선택하신 후 주문해주세요! 품절된 상품은 주문하실 수 없습니다.',
+        btnTitle: '주문 취소하기',
+        id: 0,
+        onAction: () => {
+          onSelectStore();
+        },
       });
     } else {
       router.push(
