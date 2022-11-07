@@ -47,25 +47,28 @@ function categoryContent({
   const [categoryFoodList, setCategoryFoodList] = useState<IDrinkCategory[]>(
     [],
   );
+
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
-  const handleChangeCategory = (name: string, id: number) => {
+  const handleChangeLCategory = (name: string, id: number) => {
     // 음료, 푸드 변경 시에만 작동
     console.log('name', name, 'id', id);
     setCategoryLName(name);
-    setCategorySId(id === 1 ? 2 : 0);
+    if (name === '음료') {
+      setCategorySId(2);
+    } else {
+      setCategorySId(14);
+    }
 
     getSmallCategory(id).then(res => {
       setCategoryDrinkList(res.data.data);
       setCategoryFoodList(res.data.data);
-      console.log('이거임!', res.data.data);
-      setIsClick(res.data.data);
     });
   };
   useEffect(() => {
     getLargeCategory().then(res => {
       setCategoryL(res.data.data);
+      setCategoryLId(categorySId);
     });
-
     getSmallCategory(categoryLId).then(res => {
       setCategoryDrinkList(res.data.data);
       setCategoryFoodList(res.data.data);
@@ -88,10 +91,10 @@ function categoryContent({
                 key={item.id}
                 role='menuitem'
                 onClick={() => {
-                  handleChangeCategory(item.categoryLName, item.id);
+                  handleChangeLCategory(item.categoryLName, item.id);
                 }}
                 onKeyDown={() => {
-                  handleChangeCategory(item.categoryLName, item.id);
+                  handleChangeLCategory(item.categoryLName, item.id);
                 }}
               >
                 {item.categoryLName}
