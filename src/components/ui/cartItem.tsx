@@ -100,9 +100,11 @@ function cartItem({
             if (soldOut !== undefined) {
               setIsSoldOut(true);
               setIsSoldOutCartItem(true);
-              console.log('나는 품절이라네');
+              console.log('나는 품절이라네', menuId);
+              setIsChange(!isChange);
             } else {
               setIsSoldOut(false);
+              setIsSoldOutCartItem(false);
             }
           });
         }
@@ -128,14 +130,14 @@ function cartItem({
             },
           ];
         });
-        setIsChange(!isChange);
+        // setIsChange(!isChange);
       });
     } else {
       getCartMenuData(sizeId, 0).then(res => {
         const resData = res.data.data;
         console.log('res', resData);
         setData(resData);
-        setIsChange(!isChange);
+        // setIsChange(!isChange);
       });
     }
   }, [cartCount]);
