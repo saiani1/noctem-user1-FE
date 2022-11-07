@@ -11,6 +11,15 @@ export const getIsDark = async (token: string) => {
   return res;
 };
 
+export const getISShake = async (token: string) => {
+  const res = await basicRequest.get(`${SERVICE}/optionalInfo/shakeToPay`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return res;
+};
+
 export const getUserInfo = async (token: string) => {
   const res = await basicRequest.get(`${SERVICE}/userAccount`, {
     headers: {
