@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import Image from 'next/image';
 import styles from '../../../styles/common/agreement.module.scss';
 import { IAgreeData } from '../../types/signUp.d';
+import { RightArrowBtn } from '../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -38,12 +39,7 @@ function agreementList({
         />
         <span>이용약관 동의(필수)</span>
         <div className={cx('more-wrap')}>
-          <Image
-            width={10}
-            height={12}
-            src='/assets/svg/icon-more.svg'
-            alt='more'
-          />
+          <RightArrowBtn />
         </div>
       </label>
 
@@ -58,12 +54,7 @@ function agreementList({
         />
         <span>개인정보 수집 및 이용동의(필수)</span>
         <div className={cx('more-wrap')}>
-          <Image
-            width={10}
-            height={12}
-            src='/assets/svg/icon-more.svg'
-            alt='more'
-          />
+          <RightArrowBtn />
         </div>
       </label>
 
