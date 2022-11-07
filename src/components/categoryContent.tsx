@@ -56,7 +56,9 @@ function categoryContent({
 
     getSmallCategory(id).then(res => {
       setCategoryDrinkList(res.data.data);
+      console.log('음료', res.data.data);
       setCategoryFoodList(res.data.data);
+      console.log('푸드', res.data.data);
     });
   };
   useEffect(() => {
@@ -66,6 +68,7 @@ function categoryContent({
 
     getSmallCategory(categoryLId).then(res => {
       setCategoryDrinkList(res.data.data);
+      setCategoryFoodList(res.data.data);
     });
   }, []);
   return (
