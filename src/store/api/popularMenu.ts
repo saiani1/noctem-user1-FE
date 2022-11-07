@@ -14,3 +14,12 @@ export const getPopularMenuInfo = async (sizeId: number) => {
   );
   return res;
 };
+
+export const getPreferCategory = async (token: string) => {
+  const res = await basicRequest.get(`${P_SERVICE}/statistics/preferredMenu`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return res;
+};

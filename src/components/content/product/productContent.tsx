@@ -463,12 +463,24 @@ function productContent() {
       )}
       <div className={cx('button-box')}>
         <button
-          className={cx('order-button', soldOutMenu ? 'disable' : '')}
+          className={cx(
+            'order-button',
+            soldOutMenu ? 'disable' : '',
+            detailList && detailList.temperatureList[0].temperatureId > 66
+              ? 'disable'
+              : '',
+          )}
           type='button'
           onClick={handleOptionOpen}
-          disabled={soldOutMenu}
+          disabled={
+            soldOutMenu ||
+            (detailList && detailList.temperatureList[0].temperatureId > 66)
+          }
         >
-          {soldOutMenu ? '주문 불가능한 상품입니다.' : '주문하기'}
+          {soldOutMenu ||
+          (detailList && detailList.temperatureList[0].temperatureId > 66)
+            ? '주문 불가능한 상품입니다.'
+            : '주문하기'}
         </button>
       </div>
       {myMenuAlert && (

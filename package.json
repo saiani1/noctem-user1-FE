@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nivo/core": "^0.80.0",
+    "@nivo/pie": "^0.80.0",
     "axios": "^0.27.2",
     "classnames": "^2.3.2",
     "event-source-polyfill": "^1.0.31",
