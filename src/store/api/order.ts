@@ -49,3 +49,12 @@ export const getProgressOrder = async (token: string) => {
   });
   return res;
 }
+
+export const patchOrderCancel = async (token: string, purchaseId: number) => {
+  const res = await basicRequest.patch(`${STORE_SERVICE}/order/user/${purchaseId}/cancel`, {}, {
+    headers: {
+      Authorization: token,
+    }
+  });
+  return res;
+}

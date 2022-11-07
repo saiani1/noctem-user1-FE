@@ -44,21 +44,6 @@ function orderProgressModal({
     orderProductDataState,
   );
 
-  const handleOrderClear = () => {
-    console.log('수령 완료');
-    onDismiss();
-    setOrderInfo({
-      storeId: 0,
-      storeName: '',
-      purchaseId: 0,
-      orderNumber: '',
-      turnNumber: 0,
-      waitingTime: 0,
-      state: '',
-    });
-    setOrderProductData([]);
-  };
-
   return (
     <>
       <BottomSheet open={isOpen} onDismiss={onDismiss}>
@@ -90,7 +75,7 @@ function orderProgressModal({
                   <>
                     <h2 className={cx('order-status')}>
                       {nickname} 님의 주문을 {turnNumber}번째 메뉴로 준비
-                      중입니다. (A-04) 🏃‍♀️
+                      중입니다. ({orderInfoTemp.orderNumber}) 🏃‍♀️
                     </h2>
                     <div className={cx('remain-time-wrap')}>
                       <p>
@@ -193,7 +178,10 @@ function orderProgressModal({
                   <button
                     type='button'
                     className={cx('btn', 'btn-confirm')}
-                    onClick={handleOrderClear}
+                    onClick={() => {
+                      handleClose();
+                      onDismiss();
+                    }}
                   >
                     수령 완료
                   </button>
