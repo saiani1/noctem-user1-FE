@@ -46,6 +46,7 @@ const cx = classNames.bind(styles);
 
 function productContent() {
   const router = useRouter();
+  const isSoldOut = router.query.isSoldOut;
   const id = router.query.id ? +router.query.id : 1;
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
@@ -56,6 +57,7 @@ function productContent() {
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
   const orderInfo = useRecoilValue(orderInfoState);
   const [open, setOpen] = useState(false);
+  const [soldOutMenu, setSoldOutMenu] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
   const [selectedSizeId, setSelectedSizeId] = useState(0);
@@ -290,8 +292,16 @@ function productContent() {
   };
 
   useEffect(() => {
+    setSoldOutMenu(false);
+    if (isSoldOut === 'true' && selectedStore.storeId !== 0)
+      setSoldOutMenu(true);
+    else setSoldOutMenu(false);
+  }, [soldOutMenu]);
+
+  useEffect(() => {
     getProduct(id).then(res => {
       setdetailList(res.data.data);
+      console.log('getProduct', res.data.data);
     });
     getNutrition(id).then(res => {
       setNutritionInfo(res.data.data);
@@ -453,11 +463,12 @@ function productContent() {
       )}
       <div className={cx('button-box')}>
         <button
-          className={cx('order-button')}
+          className={cx('order-button', soldOutMenu ? 'disable' : '')}
           type='button'
           onClick={handleOptionOpen}
+          disabled={soldOutMenu}
         >
-          주문하기
+          {soldOutMenu ? '주문 불가능한 상품입니다.' : '주문하기'}
         </button>
       </div>
       {myMenuAlert && (

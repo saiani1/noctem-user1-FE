@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useRecoilValue } from 'recoil';
 
 import styles from '../../../styles/pages/categoryPage.module.scss';
-import { getCartMenuData } from '../../store/api/cart';
 import { getSoldOutMenu } from '../../store/api/store';
+import { getPopularMenuInfo } from '../../store/api/popularMenu';
 import { addComma } from '../../store/utils/function';
 import { IDetailMenuInfo } from '../../types/cart';
 import { selectedStoreState } from '../../store/atom/orderState';
@@ -19,6 +19,7 @@ interface IProps {
 }
 
 function menuItem({ listName, item }: IProps) {
+  const router = useRouter();
   const selectedStore = useRecoilValue(selectedStoreState);
   const [info, setInfo] = useState<IDetailMenuInfo>();
   const [isSoldOut, setIsSoldOut] = useState(false);
@@ -28,10 +29,11 @@ function menuItem({ listName, item }: IProps) {
     setIsSoldOut(false);
 
     if (listName === 'popular') {
-      getCartMenuData(item.sizeId, 0).then(res => {
+      getPopularMenuInfo(item.sizeId).then(res => {
         const resData = res.data.data;
         const selectMenuId = resData.menuId;
         setInfo(resData);
+        console.log('추천메뉴', resData);
 
         if (selectedStore.name !== '') {
           getSoldOutMenu(selectedStore.storeId).then(res => {
@@ -58,36 +60,36 @@ function menuItem({ listName, item }: IProps) {
   return (
     <>
       {info && (
-        <Link
-          key={info.menuId}
-          href={{
-            pathname: `/product/${info.menuId}`,
-          }}
-        >
-          <a>
-            <li className={cx('menu-item')}>
-              <div className={cx(isSoldOut ? 'close-store' : '')} />
-              <div className={cx('menu-img')}>
-                <img src={info.menuImg} alt='' />
+        <li className={cx('menu-item')}>
+          <button
+            type='button'
+            key={info.menuId}
+            onClick={() =>
+              router.push({
+                pathname: `/product/${info.menuId}`,
+                query: {
+                  isSoldOut: isSoldOut,
+                },
+              })
+            }
+          >
+            <div className={cx(isSoldOut ? 'close-item' : '')} />
+            <img src={info.menuImg} alt='' className={cx('menu-img')} />
+            <div className={cx('menu-detail')}>
+              <div className={cx('item-name')}>
+                {info.menuName}
+                {isSoldOut && <SoldOutBtn className={cx('icon')} />}
               </div>
-              <div className={cx('menu-detail')}>
-                <div className={cx('item-name')}>
-                  {info.menuName}
-                  {isSoldOut && <SoldOutBtn className={cx('icon')} />}
-                </div>
-                <div className={cx('item-english-name')}>
-                  {info.menuEngName}
-                </div>
-                <div className={cx('item-price')}>
-                  {listName === 'popular'
-                    ? addComma(info.totalMenuPrice)
-                    : addComma(info.price)}
-                  원
-                </div>
+              <div className={cx('item-english-name')}>{info.menuEngName}</div>
+              <div className={cx('item-price')}>
+                {listName === 'popular'
+                  ? addComma(info.menuPrice)
+                  : addComma(info.price)}
+                원
               </div>
-            </li>
-          </a>
-        </Link>
+            </div>
+          </button>
+        </li>
       )}
     </>
   );
