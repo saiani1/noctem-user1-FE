@@ -7,7 +7,11 @@ import {
   getSmallCategory,
 } from '../../src/store/api/category';
 import { useRecoilState } from 'recoil';
-import { categoryLNameState } from '../store/atom/categoryState';
+import {
+  categoryLIdState,
+  categoryLNameState,
+  categorySIdState,
+} from '../store/atom/categoryState';
 import Link from 'next/link';
 import { CartBtn } from '../../public/assets/svg/toolbar';
 
@@ -26,25 +30,31 @@ interface IDrinkCategory {
 
 function categoryContent({
   setCategoryName,
-  setCategorySId,
   cartCount,
 }: {
   setCategoryName: React.Dispatch<React.SetStateAction<string>>;
-  setCategorySId: React.Dispatch<React.SetStateAction<number>>;
   cartCount: number;
 }) {
   const [categoryLName, setCategoryLName] = useRecoilState(categoryLNameState);
   const [categoryL, setCategoryL] = useState<ICategory[]>([]);
-  const [categoryLId] = useState(1);
+  const [categoryLId, setCategoryLId] = useRecoilState(categoryLIdState);
   const [categoryDrinkList, setCategoryDrinkList] = useState<IDrinkCategory[]>(
     [],
   );
   const [categoryFoodList, setCategoryFoodList] = useState<IDrinkCategory[]>(
     [],
   );
-  const handleChangeCategory = (name: string, id: number) => {
+
+  const [, setCategorySId] = useRecoilState(categorySIdState);
+  const handleChangeLCategory = (name: string, id: number) => {
+    // 음료, 푸드 변경 시에만 작동
     setCategoryLName(name);
-    setCategorySId(id === 1 ? 2 : 0);
+    setCategoryLId(id);
+    if (name === '음료') {
+      setCategorySId(2);
+    } else {
+      setCategorySId(14);
+    }
 
     getSmallCategory(id).then(res => {
       setCategoryDrinkList(res.data.data);
@@ -55,9 +65,9 @@ function categoryContent({
     getLargeCategory().then(res => {
       setCategoryL(res.data.data);
     });
-
     getSmallCategory(categoryLId).then(res => {
       setCategoryDrinkList(res.data.data);
+      setCategoryFoodList(res.data.data);
     });
   }, []);
   return (
@@ -77,27 +87,16 @@ function categoryContent({
                 key={item.id}
                 role='menuitem'
                 onClick={() => {
-                  handleChangeCategory(item.categoryLName, item.id);
+                  handleChangeLCategory(item.categoryLName, item.id);
                 }}
                 onKeyDown={() => {
-                  handleChangeCategory(item.categoryLName, item.id);
+                  handleChangeLCategory(item.categoryLName, item.id);
                 }}
               >
                 {item.categoryLName}
               </li>
             ))}
         </ul>
-        {/* <div className={cx('search-bar')}>
-          <div />
-          <div className={cx('search-icon')}>
-            <Image
-              src='/assets/svg/icon-search.svg'
-              alt='search'
-              width={24}
-              height={21}
-            />
-          </div>
-        </div> */}
         <div className={cx('cart-cnt-wrap')}>
           {cartCount !== 0 && <div className={cx('cnt')}>{cartCount}</div>}
           <Link href='/cart'>
@@ -115,7 +114,6 @@ function categoryContent({
                     key={item.categorySName}
                     list={item}
                     setCategoryName={setCategoryName}
-                    setCategorySId={setCategorySId}
                   />
                 );
               })}
@@ -129,7 +127,6 @@ function categoryContent({
                     key={item.categorySName}
                     list={item}
                     setCategoryName={setCategoryName}
-                    setCategorySId={setCategorySId}
                   />
                 );
               })}

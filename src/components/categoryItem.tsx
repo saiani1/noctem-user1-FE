@@ -4,20 +4,19 @@ import Router from 'next/router';
 import { IProps } from '../types/category.d';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import { useRecoilState } from 'recoil';
-import { categoryLState } from '../store/atom/categoryState';
+import { categoryLState, categorySIdState } from '../store/atom/categoryState';
 
 const cx = classNames.bind(styles);
 
 function categoryItem({
   list,
   setCategoryName,
-  setCategorySId,
 }: {
   list: IProps['list'];
   setCategoryName: any;
-  setCategorySId: any;
 }) {
   const [isClick, setIsClick] = useRecoilState(categoryLState);
+  const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
 
   const handleChoice = () => {
     setIsClick(list.categorySName);
@@ -27,7 +26,11 @@ function categoryItem({
   };
 
   useEffect(() => {
-    setIsClick('추천');
+    if (categorySId === 2) {
+      setIsClick('추천');
+    } else if (categorySId === 14) {
+      setIsClick('브레드');
+    }
   }, []);
 
   return (

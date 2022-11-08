@@ -139,7 +139,9 @@ function orderContent(props: IProps) {
           })
           .catch(err => {
             console.log(err);
-            toast.error('주문이 불가능합니다. 잠시 후 다시 시도해주세요.');
+            toast.error(
+              '비회원은 주문이 불가능합니다. 로그인 후 다시 시도해주세요.',
+            );
           });
       }
     }

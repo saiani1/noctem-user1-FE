@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 
 import styles from '../../../styles/ui/cartItem.module.scss';
 import { ICart, IData } from '../../types/cart';

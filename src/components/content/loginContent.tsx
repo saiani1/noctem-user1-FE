@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
-import Link from 'next/link';
 import styles from '../../../styles/content/login.module.scss';
 import { login } from '../../../src/store/api/login';
 import { toast } from 'react-hot-toast';
@@ -24,6 +23,12 @@ function loginContent() {
   const [, setOrderProductData] = useRecoilState(orderProductDataState);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
+
+  const handleNotService = () => {
+    toast('준비 중인 서비스입니다!', {
+      icon: '📢',
+    });
+  };
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -65,7 +70,7 @@ function loginContent() {
     <div className={cx('wrap')}>
       <h2>Login</h2>
       <div className={cx('logo-wrap')}>
-        <Image
+        <img
           src='/assets/images/png/logo-symbol.png'
           alt='logo symbol'
           width={100}
@@ -99,9 +104,15 @@ function loginContent() {
           ref={passwordInputRef}
         />
         <div className={cx('link-box')}>
-          <Link href='/'>이메일 찾기</Link>
-          <Link href='/'>비밀번호 찾기</Link>
-          <Link href='/signUp'>회원가입</Link>
+          <button type='button' onClick={handleNotService}>
+            이메일 찾기
+          </button>
+          <button type='button' onClick={handleNotService}>
+            비밀번호 찾기
+          </button>
+          <button type='button' onClick={() => router.push('/signUp')}>
+            회원가입
+          </button>
         </div>
         <button type='submit' className={cx('login-button')}>
           로그인 하기

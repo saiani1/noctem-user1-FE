@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 import useGeolocation from 'react-hook-geolocation';
+import { toast } from 'react-hot-toast';
 
 import styles from '../../../styles/content/selectStoreContent.module.scss';
 import StoreInfo from '../ui/storeInfo';
@@ -16,7 +17,10 @@ import { useRecoilState } from 'recoil';
 import { selectedStoreState } from './../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
-
+function shakeEventDidOccur() {
+  //put your own code here etc.
+  alert('shake!');
+}
 function selectStoreContent() {
   const geolocation = useGeolocation();
   const [open, setOpen] = useState(false);
@@ -26,10 +30,17 @@ function selectStoreContent() {
   const [, setSelectedStore] = useRecoilState(selectedStoreState);
   const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  var Shake = require('shake.js');
 
   function onDismiss() {
     setOpen(false);
   }
+
+  const handleNotService = () => {
+    toast('준비 중인 서비스입니다!', {
+      icon: '📢',
+    });
+  };
 
   const handleSelect = () => {
     if (clickStoreInfo !== undefined) {
@@ -118,29 +129,13 @@ function selectStoreContent() {
     <>
       <div className={cx('wrap')}>
         <h1 className={cx('title')}>매장 설정</h1>
-        <div className={cx('search-input-wrap')}>
-          <input type='text' placeholder='검색' />
-          <span className={cx('img-wrap')}>
-            <Image
-              src='/assets/svg/icon-search.svg'
-              alt='search'
-              width={14}
-              height={13}
-            />
-          </span>
-        </div>
-        <div className={cx('filter-wrap')}>
-          <button type='button'>DT</button>
-          <button type='button'>리저브</button>
-          <button type='button'>블론드</button>
-          <button type='button'>나이트로 콜드브루</button>
-          <button type='button'>주차가능</button>
-        </div>
         <div className={cx('tab-wrap')}>
           <button type='button' className={cx('active')}>
             가까운 매장
           </button>
-          <button type='button'>자주 가는 매장</button>
+          <button type='button' onClick={handleNotService}>
+            자주 가는 매장
+          </button>
         </div>
         <ul>
           {storeList &&

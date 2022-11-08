@@ -10,6 +10,7 @@ import {
   getDuplicationCheck,
   patchNickname,
 } from '../../../src/store/api/signUp';
+import PopUp from '../ui/popUp';
 
 interface IInfo {
   email: string;
@@ -37,6 +38,7 @@ function userInfoContent() {
   });
   const [isValid, setIsValid] = useState(false);
   const [error, setError] = useState('');
+  const [open, setOpen] = useState(false);
   const cx = classNames.bind(styles);
 
   useEffect(() => {
@@ -92,66 +94,74 @@ function userInfoContent() {
     } else if (!isValid) setError('닉네임 중복확인을 진행해주세요.');
   };
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+
   return (
-    <div className={cx('wrap')}>
-      <h2>개인정보 관리</h2>
-      <ul className={cx('user-info-wrap')}>
-        <li className={cx('email-wrap')}>
-          <h3>메일</h3>
-          <span>{info?.email}</span>
-        </li>
-        <li className={cx('name-wrap')}>
-          <h3>이름</h3>
-          <div className={cx('name-info-wrap')}>
-            <span>{info?.name}</span>
-            <div className={cx('gender-wrap')}>
-              <span className={cx(info?.sex === '여자' ? 'active' : '')}>
-                여자
-              </span>
-              <span className={cx(info?.sex === '남자' ? 'active' : '')}>
-                남자
-              </span>
+    <>
+      {open && <PopUp index={0} setOpen={setOpen} />}
+      <div className={cx('wrap')}>
+        <h2>개인정보 관리</h2>
+        <ul className={cx('user-info-wrap')}>
+          <li className={cx('email-wrap')}>
+            <h3>메일</h3>
+            <span>{info?.email}</span>
+          </li>
+          <li className={cx('name-wrap')}>
+            <h3 onClick={handleClick}>이름</h3>
+            <div className={cx('name-info-wrap')}>
+              <span>{info?.name}</span>
+              <div className={cx('gender-wrap')}>
+                <span className={cx(info?.sex === '여자' ? 'active' : '')}>
+                  여자
+                </span>
+                <span className={cx(info?.sex === '남자' ? 'active' : '')}>
+                  남자
+                </span>
+              </div>
             </div>
-          </div>
-        </li>
-        <li className={cx('birth-wrap')}>
-          <h3>생년월일</h3>
-          <span>
-            {info?.birthdayYear}년 {info?.birthdayMonth}월 {info?.birthdayDay}일
-          </span>
-        </li>
-        <li className={cx('phone-wrap')}>
-          <h3>휴대폰</h3>
-          <span>
-            {info?.phoneNumber === null
-              ? '휴대폰 번호를 등록해주세요.'
-              : info?.phoneNumber}
-          </span>
-        </li>
-        <li className={cx('nickname-wrap')}>
-          <h3>닉네임</h3>
-          <div className={cx('input-wrap')}>
-            <input
-              type='text'
-              defaultValue={info?.nickname}
-              ref={nicknameInputRef}
-            />
-            <button type='button' onClick={handleDuplChk}>
-              중복확인
-            </button>
-          </div>
-          {error && (
-            <span className={cx('msg', !isValid ? 'err' : '')}>{error}</span>
-          )}
-        </li>
-        <button type='button' className={cx('btn')} onClick={handleSubmit}>
-          개인정보 수정
-        </button>
-        <button type='button' className={cx('withdrawal')}>
-          회원탈퇴
-        </button>
-      </ul>
-    </div>
+          </li>
+          <li className={cx('birth-wrap')}>
+            <h3>생년월일</h3>
+            <span>
+              {info?.birthdayYear}년 {info?.birthdayMonth}월 {info?.birthdayDay}
+              일
+            </span>
+          </li>
+          <li className={cx('phone-wrap')}>
+            <h3>휴대폰</h3>
+            <span>
+              {info?.phoneNumber === null
+                ? '휴대폰 번호를 등록해주세요.'
+                : info?.phoneNumber}
+            </span>
+          </li>
+          <li className={cx('nickname-wrap')}>
+            <h3>닉네임</h3>
+            <div className={cx('input-wrap')}>
+              <input
+                type='text'
+                defaultValue={info?.nickname}
+                ref={nicknameInputRef}
+              />
+              <button type='button' onClick={handleDuplChk}>
+                중복확인
+              </button>
+            </div>
+            {error && (
+              <span className={cx('msg', !isValid ? 'err' : '')}>{error}</span>
+            )}
+          </li>
+          <button type='button' className={cx('btn')} onClick={handleSubmit}>
+            개인정보 수정
+          </button>
+          <button type='button' className={cx('withdrawal')}>
+            회원탈퇴
+          </button>
+        </ul>
+      </div>
+    </>
   );
 }
 

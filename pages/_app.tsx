@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 
 import '../styles/base/_variable.scss';
 import '../styles/index.scss';
+import { useEffect } from 'react';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
