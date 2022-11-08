@@ -63,6 +63,7 @@ function productContent() {
   const [selectedSizeId, setSelectedSizeId] = useState(0);
   const [selectedSizeTxt, setSelectedSizeTxt] = useState('');
   const [cupChoice, setCupChoice] = useState('');
+  const [isClick, setIsClick] = useRecoilState(categoryLState);
   const [count, setCount] = useState(1);
   const [detailList, setdetailList] = useState<IDetail>();
   const [selectedTempId, setSelectedTempId] = useState<number>(0);

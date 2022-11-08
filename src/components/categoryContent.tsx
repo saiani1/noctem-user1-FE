@@ -10,6 +10,7 @@ import {
 } from '../../src/store/api/category';
 import { useRecoilState } from 'recoil';
 import {
+  categoryLIdState,
   categoryLNameState,
   categoryLState,
   categorySIdState,
@@ -37,10 +38,9 @@ function categoryContent({
   setCategoryName: React.Dispatch<React.SetStateAction<string>>;
   cartCount: number;
 }) {
-  const [isClick, setIsClick] = useRecoilState(categoryLState);
   const [categoryLName, setCategoryLName] = useRecoilState(categoryLNameState);
   const [categoryL, setCategoryL] = useState<ICategory[]>([]);
-  const [categoryLId, setCategoryLId] = useState(1);
+  const [categoryLId, setCategoryLId] = useRecoilState(categoryLIdState);
   const [categoryDrinkList, setCategoryDrinkList] = useState<IDrinkCategory[]>(
     [],
   );
@@ -53,6 +53,7 @@ function categoryContent({
     // 음료, 푸드 변경 시에만 작동
     console.log('name', name, 'id', id);
     setCategoryLName(name);
+    setCategoryLId(id);
     if (name === '음료') {
       setCategorySId(2);
     } else {
@@ -67,7 +68,6 @@ function categoryContent({
   useEffect(() => {
     getLargeCategory().then(res => {
       setCategoryL(res.data.data);
-      setCategoryLId(categorySId);
     });
     getSmallCategory(categoryLId).then(res => {
       setCategoryDrinkList(res.data.data);
@@ -101,17 +101,6 @@ function categoryContent({
               </li>
             ))}
         </ul>
-        {/* <div className={cx('search-bar')}>
-          <div />
-          <div className={cx('search-icon')}>
-            <Image
-              src='/assets/svg/icon-search.svg'
-              alt='search'
-              width={24}
-              height={21}
-            />
-          </div>
-        </div> */}
         <div className={cx('cart-cnt-wrap')}>
           {cartCount !== 0 && <div className={cx('cnt')}>{cartCount}</div>}
           <Link href='/cart'>
