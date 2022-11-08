@@ -8,6 +8,7 @@
   z-index: var(--MODAL);
   bottom: 0;
   overflow: auto;
+  margin-bottom: 30px;
 
   .img-wrap {
     display: flex;
@@ -78,23 +79,8 @@
     }
   }
 
-  .location-wrap {
-    margin: 10px 0;
-    font-size: var(--FS-13);
-
-    p {
-      margin-bottom: 3px;
-      font-weight: bold;
-      color: var(--TXT-006);
-    }
-
-    span {
-      color: var(--TXT-003);
-    }
-  }
-
   button {
-    @include position.absolute(auto 0 35px 0);
+    @include position.absolute(auto 0 0 0);
     display: block;
     margin: 0 19px;
     padding: 8px;

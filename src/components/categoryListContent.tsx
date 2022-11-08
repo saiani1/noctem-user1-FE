@@ -65,14 +65,13 @@ function categoryListContent({
     setSelectedStoreTemp(selectedStore);
   }, []);
 
-  console.log('categoryName', categoryName, 'categorySId', categorySId);
   useEffect(() => {
+    console.log('categoryName', categoryName, 'categorySId', categorySId);
     if (categorySId === 2 && categoryLName === '음료') {
       getPopularMenu().then(res => {
         setPopularMenuInfo(res.data.data);
       });
     } else {
-      console.log('asdfasdf', categorySId);
       getMenuCategory(categorySId).then(res => {
         console.log(
           'getMenuCategory',
