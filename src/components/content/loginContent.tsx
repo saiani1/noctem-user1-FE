@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
@@ -12,20 +12,15 @@ import {
   orderInfoState,
   orderProductDataState,
 } from '../../store/atom/orderState';
-import { IMenuList } from './../../types/order.d';
-import {
-  getLastSSEMessage,
-  getProgressOrder,
-  getWaitingInfo,
-} from '../../store/api/order';
+import { getProgressOrder } from '../../store/api/order';
 
 const cx = classNames.bind(styles);
 
 function loginContent() {
   const router = useRouter();
-  const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const [token, setToken] = useRecoilState(tokenState);
-  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
+  const [, setIsLogin] = useRecoilState(loginState);
+  const [, setToken] = useRecoilState(tokenState);
+  const [, setOrderInfo] = useRecoilState(orderInfoState);
   const [, setOrderProductData] = useRecoilState(orderProductDataState);
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -37,12 +32,16 @@ function loginContent() {
 
     login(emailValue, passwordValue)
       .then(res => {
-        console.log('res', res);
         toast(`환영합니다!`, {
           icon: '🙌',
         });
         setIsLogin(true);
         setToken(res.headers.authorization);
+
+        getProgressOrder(res.headers.authorization).then(orderRes => {
+          const orderProductData = orderRes.data.data;
+          setOrderProductData(orderProductData);
+        });
 
         router.back();
       })
@@ -61,103 +60,6 @@ function loginContent() {
         }
       });
   };
-
-  useEffect(() => {
-    if (isLogin && token !== '') {
-      getLastSSEMessage(token).then(res => {
-        console.log('getLastSSEMessage res', res);
-        const data = res.data.data;
-        console.log('data.data', data.orderStatus, data.purchaseId);
-
-        getProgressOrder(token).then(orderDataRes => {
-          console.log('getProgressOrder', orderDataRes);
-          const orderData = orderDataRes.data.data;
-          let temp: IMenuList[] = [
-            {
-              sizeId: 10,
-              cartId: 0,
-              categorySmall: '콜드 브루',
-              menuFullName: '돌체 콜드 브루', // 필수
-              menuShortName: 'I-T)돌체콜드브루', // 필수
-              imgUrl:
-                'https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[9200000002081]_20210415133656839.jpg',
-              qty: 1, // 필수
-              menuTotalPrice: 6000,
-              optionList: [],
-              cupType: '매장컵', // 필수
-            },
-          ];
-
-          setOrderProductData(temp);
-        });
-
-        getWaitingInfo(token).then(timeRes => {
-          console.log('getWaitingInfo res', timeRes);
-          const timeResData = timeRes.data.data;
-
-          console.log('지금 데이터', orderInfo);
-          console.log('바뀔 데이터', {
-            purchaseId: data.purchaseId,
-            state: data.orderStatus,
-            orderNumber: timeResData.orderNumber,
-            turnNumber: timeResData.turnNumber,
-            waitingTime: timeResData.waitingTime,
-          });
-          console.log('합친 데이터', {
-            ...orderInfo,
-            purchaseId: data.purchaseId,
-            state: data.orderStatus,
-            orderNumber: timeResData.orderNumber,
-            turnNumber: timeResData.turnNumber,
-            waitingTime: timeResData.waitingTime,
-          });
-
-          if (
-            timeResData.orderNumber === null ||
-            timeResData.turnNumber === null ||
-            timeResData.waitingTime === null
-          ) {
-            console.log('NULL orderInfo 덮어씌우기', {
-              ...orderInfo,
-              purchaseId: data.purchaseId,
-              state: data.orderStatus,
-            });
-            setOrderInfo({
-              purchaseId: data.purchaseId,
-              state: data.orderStatus,
-              storeId: 1,
-              storeName: '본점',
-              orderNumber: timeResData.orderNumber,
-              turnNumber: timeResData.turnNumber,
-              waitingTime: timeResData.waitingTime,
-            });
-          } else {
-            console.log('orderInfo 덮어씌우기', {
-              ...orderInfo,
-              purchaseId: data.purchaseId,
-              state: data.orderStatus,
-              orderNumber: timeResData.orderNumber,
-              turnNumber: timeResData.turnNumber,
-              waitingTime: timeResData.waitingTime,
-            });
-            setOrderInfo({
-              storeId: 1,
-              storeName: '본점',
-              purchaseId: data.purchaseId,
-              state: data.orderStatus,
-              orderNumber: timeResData.orderNumber,
-              turnNumber: timeResData.turnNumber,
-              waitingTime: timeResData.waitingTime,
-            });
-          }
-        });
-      });
-    }
-  }, [isLogin]);
-
-  useEffect(() => {
-    console.log('orderInfo', orderInfo);
-  }, [orderInfo]);
 
   return (
     <div className={cx('wrap')}>

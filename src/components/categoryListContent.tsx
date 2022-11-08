@@ -66,7 +66,6 @@ function categoryListContent({
     setSelectedStoreTemp(selectedStore);
   }, []);
 
-  console.log('categoryName', categoryName, 'categorySId', categorySId);
   useEffect(() => {
     if (categorySId === 2 && categoryLName === '음료') {
       getPopularMenu().then(res => {
@@ -74,12 +73,6 @@ function categoryListContent({
       });
     } else {
       getMenuCategory(categorySId).then(res => {
-        console.log(
-          'getMenuCategory',
-          res.data.data,
-          'categorySId',
-          categorySId,
-        );
         setMenuList(res.data.data);
       });
     }

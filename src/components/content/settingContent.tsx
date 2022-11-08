@@ -32,13 +32,10 @@ function settingContent() {
 
   useEffect(() => {
     getUserOptions(token).then(res => {
-      console.log('res : ', res);
       setInfo(res.data.data);
       setIsFetching(true);
     });
   }, []);
-
-  console.log(localStorage.getItem('theme'));
 
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

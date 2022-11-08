@@ -45,12 +45,6 @@ function choicePaymentModal({
     }
   };
 
-  const handleSelectInstallmentPlan = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    console.log(e.target.value);
-  };
-
   const handleSubmit = () => {
     if (Object.values(isValid).every(v => v === true) === true) {
       setCardInfo({
@@ -98,10 +92,7 @@ function choicePaymentModal({
                 </div>
                 <div className={cx('installment-plan-wrap')}>
                   <label>할부선택</label>
-                  <select
-                    title='카드 할부를 선택하세요.'
-                    onChange={handleSelectInstallmentPlan}
-                  >
+                  <select title='카드 할부를 선택하세요.' onChange={() => {}}>
                     <option>일시불</option>
                     <option>2개월 무이자</option>
                     <option>3개월 무이자</option>

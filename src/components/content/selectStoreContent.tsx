@@ -33,7 +33,6 @@ function selectStoreContent() {
 
   const handleSelect = () => {
     if (clickStoreInfo !== undefined) {
-      console.log('선택된 매장', clickStoreInfo);
       setSelectedStore({
         index: 0,
         storeId: clickStoreInfo.storeId,
@@ -92,14 +91,8 @@ function selectStoreContent() {
   };
 
   useEffect(() => {
-    console.log(router);
-    console.log(router.query);
-  }, [router]);
-
-  useEffect(() => {
     if (geolocation.latitude && geolocation.longitude) {
       getStoreList(geolocation.latitude, geolocation.longitude).then(res => {
-        console.log(res.data.data);
         setStoreList(res.data.data);
         setLoading(false);
       });
@@ -113,7 +106,6 @@ function selectStoreContent() {
       const clickStore = storeList.find(
         store => store.storeId === clickStoreId,
       );
-      console.log('selectStore', clickStore);
       setClickStoreInfo(clickStore);
     }
   }, [clickStoreId]);

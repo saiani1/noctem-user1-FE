@@ -24,7 +24,6 @@ function menuItem({ listName, item }: IProps) {
   const [isSoldOut, setIsSoldOut] = useState(false);
 
   useEffect(() => {
-    console.log(item);
     setIsSoldOut(false);
 
     if (listName === 'popular') {

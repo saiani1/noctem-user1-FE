@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
-// import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
 import {
   getLargeCategory,
   getSmallCategory,
 } from '../../src/store/api/category';
 import { useRecoilState } from 'recoil';
-import {
-  categoryLNameState,
-  categoryLState,
-  categorySIdState,
-} from '../store/atom/categoryState';
+import { categoryLNameState } from '../store/atom/categoryState';
 import Link from 'next/link';
 import { CartBtn } from '../../public/assets/svg/toolbar';
 
@@ -39,10 +33,9 @@ function categoryContent({
   setCategorySId: React.Dispatch<React.SetStateAction<number>>;
   cartCount: number;
 }) {
-  const [isClick, setIsClick] = useRecoilState(categoryLState);
   const [categoryLName, setCategoryLName] = useRecoilState(categoryLNameState);
   const [categoryL, setCategoryL] = useState<ICategory[]>([]);
-  const [categoryLId, setCategoryLId] = useState(1);
+  const [categoryLId] = useState(1);
   const [categoryDrinkList, setCategoryDrinkList] = useState<IDrinkCategory[]>(
     [],
   );
@@ -50,8 +43,6 @@ function categoryContent({
     [],
   );
   const handleChangeCategory = (name: string, id: number) => {
-    // 음료, 푸드 변경 시에만 작동
-    console.log('name', name, 'id', id);
     setCategoryLName(name);
     setCategorySId(id === 1 ? 2 : 0);
 

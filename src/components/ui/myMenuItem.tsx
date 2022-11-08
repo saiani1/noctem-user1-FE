@@ -32,7 +32,6 @@ interface IProps {
   item: IMenuData1;
   isEmpty: boolean;
   isFetching: boolean;
-  // handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleteMyMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsChangeMyMenuName: React.Dispatch<React.SetStateAction<boolean>>;
@@ -65,13 +64,9 @@ function myMenuItem({
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    console.log('isLogin:', isLogin);
-    console.log('itemInfo:', itemInfo);
     getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
       setItemInfo(res.data.data);
-      console.log('item', item);
     });
-    console.log('info', info);
   }, [info]);
 
   const handleCustomAlert = () => {
@@ -90,7 +85,6 @@ function myMenuItem({
     const mymenuNameValue = myMenuNameRef.current?.value;
     if (mymenuNameValue && mymenuNameValue.length !== 0) {
       changeMyMenuNickName(item?.myMenuId, mymenuNameValue, token).then(res => {
-        console.log(res);
         setClickRenameBtn(prev => {
           return !prev;
         });
@@ -107,14 +101,12 @@ function myMenuItem({
   };
 
   const handleClose = () => {
-    console.log('click');
     setClickRenameBtn(prev => {
       return !prev;
     });
   };
 
   const handleAddCart = () => {
-    console.log('담기');
     const sum = cartCount + 1;
     if (sum > 20) {
       toast.error('총 20개까지 담을 수 있습니다.');
@@ -128,8 +120,6 @@ function myMenuItem({
       cupType: item.cupType,
       personalOptionList: [],
     };
-    console.log('cartData : ', cartData);
-    console.log('cartdata출력');
     if (!isLogin) {
       // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
       sessionStorage.setItem(
@@ -202,29 +192,10 @@ function myMenuItem({
       },
       '/selectStore',
     );
-    // const cartData = {
-    //   sizeId: item.sizeId,
-    //   quantity: 1,
-    //   personalOptionList: item?.myPersonalOptionList,
-    // };
-
-    // addCart(cartData, token).then(res => {
-    //   if (res.data.data) {
-    //     toast.success('상품이 장바구니에 담겼습니다!');
-    //   } else {
-    //     toast.error('실패하였습니다. 잠시 후 다시 시도해주세요.');
-    //   }
-    // });
-  };
-
-  const handleTest = (test: number) => {
-    console.log('Test', test);
   };
 
   const handleDeleteMenu = (): void => {
-    console.log('Delete ItemInfo', itemInfo);
     deleteMyMenu(item.myMenuId, token).then(res => {
-      console.log(res);
       setIsDeleteMyMenu(prev => !prev);
       toast.success('나만의 메뉴가 삭제되었습니다.');
     });

@@ -9,7 +9,6 @@ export const getDuplicationCheck = async (name: string, value: string) => {
 }
 
 export const patchNickname = async (value: string, token: string) => {
-  console.log(`${SERVICE}/userAccount/nickname`);
   const res = await basicRequest.patch(`${SERVICE}/userAccount/nickname`, {
     nickname: value
   }, {

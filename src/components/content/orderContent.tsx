@@ -108,16 +108,12 @@ function orderContent(props: IProps) {
       if (orderCnt === 0) {
         addOrder(orderProductData, token)
           .then(res => {
-            console.log('res', res);
             toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
             setOrderProductData(orderProductData.menuList);
             const idData = res.data.data;
-            console.log('idData', idData);
 
             getWaitingInfo(token).then(getWaitingRes => {
               const timeData = getWaitingRes.data.data;
-              console.log('timeData', timeData);
-
               setOrderInfo({
                 ...orderInfo,
                 storeId: idData.storeId,
@@ -135,9 +131,7 @@ function orderContent(props: IProps) {
 
             if (router.query.menuList) {
               // 장바구니 주문일 경우
-              deleteCartAll(token).then(res => {
-                console.log('전체 삭제', res);
-              });
+              deleteCartAll(token);
 
               router.push('/');
               orderCnt++;
@@ -153,11 +147,8 @@ function orderContent(props: IProps) {
 
   useEffect(() => {
     const query = router.query;
-    console.log('router', router);
-    console.log('query', query);
 
     if (Object.keys(router.query).length === 0) {
-      console.log('잘못된 접근');
       toast.error('잘못된 접근입니다. 이전 페이지로 돌아갑니다.');
       router.back();
       return;
@@ -175,24 +166,12 @@ function orderContent(props: IProps) {
     }
 
     if (query.menuList) {
-      console.log('장바구니 주문');
       const menuList = JSON.parse(query.menuList + '');
       setMenuList(menuList);
     } else {
-      console.log('메뉴 즉시 주문');
       const sizeId = query.sizeId ? +query.sizeId + 0 : 0;
       const qty = query.qty ? +query.qty + 0 : 0;
       const cartId = query.cartId ? +query.cartId + 0 : 0;
-      console.log(
-        'sizeId',
-        sizeId,
-        ', cartId',
-        cartId,
-        ', qty',
-        qty,
-        'cupType',
-        query.cupType,
-      );
       getMenuDetail(sizeId, 0).then(res => {
         let resData: IMenuList = res.data.data;
         setMenuList([

@@ -20,7 +20,6 @@ function categoryItem({
   const [isClick, setIsClick] = useRecoilState(categoryLState);
 
   const handleChoice = () => {
-    console.log('categoryItem', list.categorySName, list.categorySId);
     setIsClick(list.categorySName);
     setCategoryName(list.categorySName);
     setCategorySId(list.categorySId);

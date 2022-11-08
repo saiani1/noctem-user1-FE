@@ -6,7 +6,6 @@ const ORDER_SERVICE = '/purchase-service';
 const STORE_SERVICE = '/store-service';
 
 export const getMenuDetail = async (sizeId: number, cartId: number) => {
-  console.log(`${MENU_SERVICE}/size/menu/forPurchase/${sizeId}/${cartId}`);
   const res = await basicRequest.get(
     `${MENU_SERVICE}/size/menu/forPurchase/${sizeId}/${cartId}`,
   );

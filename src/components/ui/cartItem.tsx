@@ -75,9 +75,7 @@ function cartItem({
       getCartMenuData(sizeId, cartId).then(res => {
         const resData = res.data.data;
         setData(resData);
-        console.log('cartMenu', resData);
         handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
-        // setIsChange(!isChange);
       });
 
       getMenuDetail(sizeId, cartId).then(res => {
@@ -104,7 +102,6 @@ function cartItem({
     } else {
       getCartMenuData(sizeId, 0).then(res => {
         const resData = res.data.data;
-        console.log('res', resData);
         setData(resData);
         setIsChange(!isChange);
       });

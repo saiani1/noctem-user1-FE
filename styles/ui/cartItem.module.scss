@@ -26,7 +26,6 @@
 
   .first-wrap {
     display: flex;
-    // justify-content: space-between;
     justify-content: flex-end;
 
     .close-btn {
@@ -86,14 +85,6 @@
           font-weight: 500;
         }
       }
-
-      // .option-change-btn {
-      //   font-size: var(--FS-12);
-      //   font-weight: 300;
-      //   color: var(--POINT);
-      //   cursor: pointer;
-      //   text-decoration: underline;
-      // }
 
       .num-change-wrap {
         display: flex;

@@ -32,12 +32,10 @@ function userLevel() {
   useEffect(() => {
     if (isLogin) {
       getUserInfo(token).then(res => {
-        console.log('userInfo', res);
         setNickname(res.data.data.nickname);
       });
 
       getUserLevel(token).then(res => {
-        console.log('userLevel', res.data.data);
         setUserLevel(res.data.data);
       });
     } else {

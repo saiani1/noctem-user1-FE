@@ -101,8 +101,6 @@ function productContent() {
   };
 
   const onSelectStore = () => {
-    console.log('id', selectedSizeId);
-    console.log('qty', count);
     router.push(
       {
         pathname: '/selectStore',
@@ -129,9 +127,7 @@ function productContent() {
     setNutritionOpen(true);
   };
   const handleClose = () => {
-    console.log('click');
     setMyMenuAlert(!myMenuAlert);
-    console.log(myMenuAlert);
   };
 
   const handleAddCart = () => {
@@ -237,7 +233,6 @@ function productContent() {
 
   const handleAddMyMenuData = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
-    console.log('myMenuName:', mymenuNameValue);
     if (mymenuNameValue && mymenuNameValue.length !== 0) {
       setMyMenuData({
         ...myMenuData,
@@ -252,7 +247,6 @@ function productContent() {
         personalOptionList: myMenuData.personalOptionList,
       };
       addMyMenu(value, token).then(res => {
-        console.log(res);
         if (res.data.data) {
           toast.success('나만의 메뉴에 추가되었습니다');
           setMyMenuAlert(false);

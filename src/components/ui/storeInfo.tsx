@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/ui/storeInfo.module.scss';
@@ -14,8 +13,8 @@ function storeInfo({ setClickStoreId, setOpen, data }: IProps) {
     name,
     mainImg,
     address,
-    businessOpenHours,
-    businessCloseHours,
+    // businessOpenHours,
+    // businessCloseHours,
     isOpen,
     isParking,
     isEcoStore,
