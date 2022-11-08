@@ -12,22 +12,19 @@ import { IMenuData1, IMenuDetailData } from '../../../src/types/myMenu.d';
 import { addComma } from './../../store/utils/function';
 import { getSessionCartCount } from '../../store/utils/cart';
 import MyMenuRenamePopUp from '../content/myMenuRenamePopUp';
-// import { isExistToken } from '../../../store/utils/token';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { cartCntState, tokenState } from '../../store/atom/userStates';
 import { ICartData } from '../../types/productDetail';
 
 import { addCart } from '../../../src/store/api/cart';
 
-import { getMyMenuData, deleteMyMenu } from '../../../src/store/api/myMenu';
+import { deleteMyMenu } from '../../../src/store/api/myMenu';
 import {
   orderInfoState,
   selectedStoreState,
 } from '../../store/atom/orderState';
-import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from '../customAlert';
 import { useRouter } from 'next/router';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import { loginState } from './../../store/atom/userStates';
 import { CloseBtn } from '../../../public/assets/svg';
 
@@ -35,7 +32,6 @@ interface IProps {
   item: IMenuData1;
   isEmpty: boolean;
   isFetching: boolean;
-  // handleDeleteMenu: (e: React.MouseEvent<HTMLElement>) => void;
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleteMyMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsChangeMyMenuName: React.Dispatch<React.SetStateAction<boolean>>;
@@ -68,29 +64,20 @@ function myMenuItem({
   const cx = classNames.bind(styles);
 
   useEffect(() => {
-    console.log('isLogin:', isLogin);
-    console.log('itemInfo:', itemInfo);
     getMyMenuDetailData(item.sizeId, item.myMenuId, token).then(res => {
       setItemInfo(res.data.data);
-      console.log('item', item);
     });
-    console.log('info', info);
   }, [info]);
 
   const handleCustomAlert = () => {
-    confirmAlert({
-      customUI: ({ onClose }) => (
-        <CustomAlert
-          title='장바구니에 담겼습니다!'
-          desc='장바구니로 이동하시겠습니까?'
-          btnTitle='이동'
-          // id={}
-          onAction={() => {
-            router.push('/cart');
-          }}
-          onClose={onClose}
-        />
-      ),
+    CustomAlert({
+      title: '장바구니에 담겼습니다!',
+      desc: '장바구니로 이동하시겠습니까?',
+      btnTitle: '장바구니로 이동',
+      id: 0,
+      onAction: () => {
+        router.push('/cart');
+      },
     });
   };
 
@@ -98,7 +85,6 @@ function myMenuItem({
     const mymenuNameValue = myMenuNameRef.current?.value;
     if (mymenuNameValue && mymenuNameValue.length !== 0) {
       changeMyMenuNickName(item?.myMenuId, mymenuNameValue, token).then(res => {
-        console.log(res);
         setClickRenameBtn(prev => {
           return !prev;
         });
@@ -115,14 +101,12 @@ function myMenuItem({
   };
 
   const handleClose = () => {
-    console.log('click');
     setClickRenameBtn(prev => {
       return !prev;
     });
   };
 
   const handleAddCart = () => {
-    console.log('담기');
     const sum = cartCount + 1;
     if (sum > 20) {
       toast.error('총 20개까지 담을 수 있습니다.');
@@ -136,8 +120,6 @@ function myMenuItem({
       cupType: item.cupType,
       personalOptionList: [],
     };
-    console.log('cartData : ', cartData);
-    console.log('cartdata출력');
     if (!isLogin) {
       // 사진, 이름, 영문, 온도, 컵 사이즈, 컵 종류, 양, 가격
       sessionStorage.setItem(
@@ -168,19 +150,14 @@ function myMenuItem({
     }
 
     if (selectedStore.distance === '') {
-      confirmAlert({
-        customUI: ({ onClose }) => (
-          <>
-            <CustomAlert
-              title='주문할 매장을 선택해주세요.'
-              desc='매장을 선택하신 후 주문해주세요! 품절된 상품은 주문하실 수 없습니다.'
-              btnTitle='매장 선택하기'
-              // id={}
-              onAction={onSelectStore}
-              onClose={onClose}
-            />
-          </>
-        ),
+      CustomAlert({
+        title: '주문할 매장을 선택해주세요.',
+        desc: '매장을 선택하신 후 주문해주세요! 품절된 상품은 주문하실 수 없습니다.',
+        btnTitle: '주문 취소하기',
+        id: 0,
+        onAction: () => {
+          onSelectStore();
+        },
       });
     } else {
       router.push(
@@ -215,29 +192,10 @@ function myMenuItem({
       },
       '/selectStore',
     );
-    // const cartData = {
-    //   sizeId: item.sizeId,
-    //   quantity: 1,
-    //   personalOptionList: item?.myPersonalOptionList,
-    // };
-
-    // addCart(cartData, token).then(res => {
-    //   if (res.data.data) {
-    //     toast.success('상품이 장바구니에 담겼습니다!');
-    //   } else {
-    //     toast.error('실패하였습니다. 잠시 후 다시 시도해주세요.');
-    //   }
-    // });
-  };
-
-  const handleTest = (test: number) => {
-    console.log('Test', test);
   };
 
   const handleDeleteMenu = (): void => {
-    console.log('Delete ItemInfo', itemInfo);
     deleteMyMenu(item.myMenuId, token).then(res => {
-      console.log(res);
       setIsDeleteMyMenu(prev => !prev);
       toast.success('나만의 메뉴가 삭제되었습니다.');
     });

@@ -55,11 +55,7 @@ function cartContent() {
     contactNumber: '',
   });
   const selectedStore = useRecoilValue(selectedStoreState);
-  // const orderInfo = useRecoilValue(orderInfoState);
-  // const [, setOrderStatus] = useRecoilState(orderStatusState);
-  const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
-  const [isSoldOutCart, setIsSoldOutCart] = useState(false);
-  const [isSoldOutCartItem, setIsSoldOutCartItem] = useState(false);
+  const orderInfo = useRecoilValue(orderInfoState);
 
   const [total, setTotal] = useState(0);
   const [cartList, setCartList] = useState<ICart[]>();
@@ -104,7 +100,6 @@ function cartContent() {
     }
 
     if (isLogin) {
-      console.log('회원 주문');
       router.push(
         {
           pathname: '/order',
@@ -118,8 +113,6 @@ function cartContent() {
         },
         '/order',
       );
-    } else {
-      console.log('비회원 주문');
     }
   };
 
@@ -137,33 +130,21 @@ function cartContent() {
   };
 
   useEffect(() => {
-    setIsSoldOutCart(false);
-    if (isSoldOutCartItem) {
-      setIsSoldOutCart(true);
-      // setIsSoldOutCartItem(false);
-    } else {
-      setIsSoldOutCart(false);
-    }
-
     setSelectedStoreTemp(selectedStore);
 
     if (isLogin) {
       // 회원 조회
-      console.log('회원 조회');
       getCartList(token).then(res => {
         setCartList(res.data.data);
       });
       getCount(token).then(res => {
         const resData = res.data.data === null ? 0 : res.data.data;
         setCartCount(resData);
-        console.log('isChange useEffect', resData);
       });
     } else {
       // 비회원 조회
-      console.log('비회원 조회');
       [...Array(sessionStorage.length)].map((v, i) => {
         if (sessionStorage.getItem(i + '') !== null) {
-          console.log(JSON.parse(sessionStorage.getItem(i + '') + ''));
           setCartList(getSessionCartList());
         }
       });
@@ -172,7 +153,6 @@ function cartContent() {
   }, [isChange]);
 
   useEffect(() => {
-    console.log('cartList', cartList);
     if (cartList && cartList.length !== 0) {
       const qtyList = cartList.map(cart => {
         return {
@@ -205,12 +185,9 @@ function cartContent() {
       });
       setMenuList(totalMenuList);
     }
-    console.log('나는 품절인가요? cartList', isSoldOutCartItem, isSoldOutCart);
   }, [cartList]);
 
   useEffect(() => {
-    // console.log('priceList', priceList);
-    // console.log('qtyList', qtyList);
     if (
       priceList &&
       qtyList &&
@@ -228,7 +205,6 @@ function cartContent() {
         };
       });
 
-      // console.log('totalAmountList', totalAmountList);
       const total = totalAmountList.reduce(
         (acc: number, curr: ICartTotalPriceList) => {
           return acc + curr.qty * curr.amount;
@@ -313,8 +289,6 @@ function cartContent() {
                     setIsChange={setIsChange}
                     handleSetCartPrice={handleSetCartPrice}
                     setMenuList={setMenuList}
-                    isSoldOutCartItem={isSoldOutCartItem}
-                    setIsSoldOutCartItem={setIsSoldOutCartItem}
                   />
                 ))}
             </div>
@@ -327,13 +301,8 @@ function cartContent() {
                   {addComma(total)}원
                 </strong>
               </div>
-              <button
-                type='button'
-                className={cx('btn', isSoldOutCart ? 'disable' : '')}
-                onClick={handleOrder}
-                disabled={isSoldOutCart}
-              >
-                {isSoldOutCart ? '주문할 수 없는 메뉴가 있습니다.' : '주문하기'}
+              <button type='button' className={cx('btn')} onClick={handleOrder}>
+                주문하기
               </button>
             </div>
           </>

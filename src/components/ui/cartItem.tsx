@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import CustomAlert from '../../components/customAlert';
 
 import styles from '../../../styles/ui/cartItem.module.scss';
 import { ICart, IData } from '../../types/cart';
@@ -11,19 +10,11 @@ import {
 } from '../../../src/store/api/cart';
 import { addComma } from '../../store/utils/function';
 import { getMenuDetail } from '../../store/api/order';
-import { getSoldOutMenu } from '../../store/api/store';
 import { IMenuList } from './../../types/order.d';
 import { useRecoilValue } from 'recoil';
 import { tokenState } from '../../store/atom/userStates';
 import { loginState } from './../../store/atom/userStates';
-import {
-  CautionBtn,
-  CloseBtn,
-  MinusBtn,
-  PlusBtn,
-} from '../../../public/assets/svg';
-import { selectedStoreState } from '../../store/atom/orderState';
-import toast from 'react-hot-toast';
+import { CloseBtn, MinusBtn, PlusBtn } from '../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -34,8 +25,6 @@ function cartItem({
   setIsChange,
   handleSetCartPrice,
   setMenuList,
-  isSoldOutCartItem,
-  setIsSoldOutCartItem,
 }: {
   cart: ICart;
   cartCount: number;
@@ -43,15 +32,11 @@ function cartItem({
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>;
   handleSetCartPrice: (cartId: number, totalMenuPrice: number) => void;
   setMenuList: React.Dispatch<React.SetStateAction<IMenuList[]>>;
-  isSoldOutCartItem: boolean;
-  setIsSoldOutCartItem: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { index, cartId, sizeId, qty } = cart;
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const selectedStore = useRecoilValue(selectedStoreState);
   const [data, setData] = useState<IData>();
-  const [isSoldOut, setIsSoldOut] = useState(false);
 
   const handleCountChange = (type: string, id: number, qty: number) => {
     let isSuccess = false;
@@ -79,7 +64,6 @@ function cartItem({
       getCartMenuData(sizeId, cartId).then(menu => {
         const resData = menu.data.data;
         handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
-        toast.success('장바구니 아이템이 삭제되었습니다.');
         setIsChange(!isChange);
       });
     });
@@ -87,27 +71,9 @@ function cartItem({
 
   useEffect(() => {
     if (isLogin) {
-      setIsSoldOut(false);
       getCartMenuData(sizeId, cartId).then(res => {
         const resData = res.data.data;
-        const menuId = resData.menuId;
         setData(resData);
-        if (selectedStore.name !== '') {
-          getSoldOutMenu(selectedStore.storeId).then(res2 => {
-            const soldOut = res2.data.data.find(
-              (menu: any) => menu.soldOutMenuId === menuId,
-            );
-            if (soldOut !== undefined) {
-              setIsSoldOut(true);
-              setIsSoldOutCartItem(true);
-              console.log('나는 품절이라네', menuId);
-              setIsChange(!isChange);
-            } else {
-              setIsSoldOut(false);
-              setIsSoldOutCartItem(false);
-            }
-          });
-        }
         handleSetCartPrice(resData.cartId, resData.totalMenuPrice);
       });
 
@@ -130,17 +96,16 @@ function cartItem({
             },
           ];
         });
-        // setIsChange(!isChange);
+        setIsChange(!isChange);
       });
     } else {
       getCartMenuData(sizeId, 0).then(res => {
         const resData = res.data.data;
-        console.log('res', resData);
         setData(resData);
-        // setIsChange(!isChange);
+        setIsChange(!isChange);
       });
     }
-  }, [cartCount]);
+  }, []);
 
   return (
     <>
@@ -156,11 +121,11 @@ function cartItem({
               }}
             >
               <CloseBtn className={cx('icon')} />
+              {/* <Image src='/assets/svg/icon-x-mark.svg' width={8} height={8} /> */}
             </button>
           </div>
           <div className={cx('second-wrap')}>
             <span className={cx('img-wrap')}>
-              {isSoldOut && <span className={cx('sold-out-menu')} />}
               <img src={data.menuImg} width={100} height={100} />
             </span>
             <div className={cx('content-wrap')}>
@@ -175,14 +140,10 @@ function cartItem({
                   {addComma(data.totalMenuPrice)}원
                 </span>
               </div>
-              {isSoldOut && (
-                <div className={cx('sold-out-wrap')}>
-                  <CautionBtn className={cx('icon')} />
-                  <span>미판매</span>
-                </div>
-              )}
+              {/* <button type='button' className={cx('option-change-btn')}>
+              옵션변경
+            </button> */}
               <div className={cx('num-change-wrap')}>
-                {isSoldOut && <div className={cx('sold-out-menu')} />}
                 <div className={cx('left')}>
                   <div
                     className={cx('icon-btn')}

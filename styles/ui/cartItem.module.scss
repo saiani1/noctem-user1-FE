@@ -26,7 +26,6 @@
 
   .first-wrap {
     display: flex;
-    // justify-content: space-between;
     justify-content: flex-end;
     margin-bottom: 10px;
 
@@ -105,15 +104,6 @@
           color: var(--TXT-ERROR)
         }
       }
-
-
-      // .option-change-btn {
-      //   font-size: var(--FS-12);
-      //   font-weight: 300;
-      //   color: var(--POINT);
-      //   cursor: pointer;
-      //   text-decoration: underline;
-      // }
 
       .num-change-wrap {
         position: relative;

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import Image from 'next/image';
 import styles from '../../styles/pages/categoryPage.module.scss';
 import CategoryItem from './categoryItem';
-// import { categoryFoodList } from '../../public/assets/datas/categoryFoodList';
 import {
   getLargeCategory,
   getSmallCategory,
@@ -12,7 +10,6 @@ import { useRecoilState } from 'recoil';
 import {
   categoryLIdState,
   categoryLNameState,
-  categoryLState,
   categorySIdState,
 } from '../store/atom/categoryState';
 import Link from 'next/link';
@@ -48,10 +45,9 @@ function categoryContent({
     [],
   );
 
-  const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
+  const [, setCategorySId] = useRecoilState(categorySIdState);
   const handleChangeLCategory = (name: string, id: number) => {
     // 음료, 푸드 변경 시에만 작동
-    console.log('name', name, 'id', id);
     setCategoryLName(name);
     setCategoryLId(id);
     if (name === '음료') {

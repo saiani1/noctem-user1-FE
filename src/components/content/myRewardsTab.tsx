@@ -49,7 +49,6 @@ function myRewardTab() {
       });
     }
   }, []);
-  console.log('theBestMenu', theBestMenu);
 
   useEffect(() => {
     if (userLevel) {

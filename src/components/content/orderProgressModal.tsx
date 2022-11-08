@@ -5,10 +5,7 @@ import styles from '../../../styles/content/orderProgressModal.module.scss';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import SheetContent from '../common/sheetContent';
 import 'react-spring-bottom-sheet/dist/style.css';
-import {
-  orderInfoState,
-  orderProductDataState,
-} from '../../store/atom/orderState';
+import { orderProductDataState } from '../../store/atom/orderState';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { IOrderInfo } from '../../types/order';
 import { nicknameState } from '../../store/atom/userStates';
@@ -39,25 +36,9 @@ function orderProgressModal({
     state,
   } = orderInfoTemp;
   const nickname = useRecoilValue(nicknameState);
-  const [, setOrderInfo] = useRecoilState(orderInfoState);
   const [orderProductData, setOrderProductData] = useRecoilState(
     orderProductDataState,
   );
-
-  const handleOrderClear = () => {
-    console.log('수령 완료');
-    onDismiss();
-    setOrderInfo({
-      storeId: 0,
-      storeName: '',
-      purchaseId: 0,
-      orderNumber: '',
-      turnNumber: 0,
-      waitingTime: 0,
-      state: '',
-    });
-    setOrderProductData([]);
-  };
 
   return (
     <>
@@ -90,7 +71,7 @@ function orderProgressModal({
                   <>
                     <h2 className={cx('order-status')}>
                       {nickname} 님의 주문을 {turnNumber}번째 메뉴로 준비
-                      중입니다. (A-04) 🏃‍♀️
+                      중입니다. ({orderInfoTemp.orderNumber}) 🏃‍♀️
                     </h2>
                     <div className={cx('remain-time-wrap')}>
                       <p>
@@ -193,7 +174,10 @@ function orderProgressModal({
                   <button
                     type='button'
                     className={cx('btn', 'btn-confirm')}
-                    onClick={handleOrderClear}
+                    onClick={() => {
+                      handleClose();
+                      onDismiss();
+                    }}
                   >
                     수령 완료
                   </button>

@@ -45,22 +45,9 @@ function myMenuContent() {
 
   const handleShowMainMyMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeShowMainMyMenu(token).then(res => {
-      console.log('res : ', res);
       toast.success('정상적으로 변경되었습니다.');
     });
   };
-
-  // const handleDeleteMenu = (
-  //   e: React.MouseEvent<HTMLElement, MouseEvent>,
-  // ): void => {
-  //   const name = (e.target as HTMLInputElement).name;
-  //   console.log('ID', name);
-  //   deleteMyMenu(name, token).then(res => {
-  //     console.log(res);
-  //     setIsDeleteMyMenu(true);
-  //     toast.success('나만의 메뉴가 삭제되었습니다.');
-  //   });
-  // };
 
   const handleClickChangeOrderBtn = () => {
     setIsClickChangeOrderBtn(prev => {
@@ -89,19 +76,6 @@ function myMenuContent() {
               />
             </div>
           )}
-          {/* <button
-            type='button'
-            className={cx('sort-btn')}
-            onClick={handleClickChangeOrderBtn}
-            disabled={isEmpty || info?.length === 1}
-          >
-            <Image
-              src='/assets/svg/icon-sort-arrow.svg'
-              width={13}
-              height={13}
-            />
-            순서변경
-          </button> */}
         </div>
         {isEmpty && <EmptyMyMenu />}
         <ul>

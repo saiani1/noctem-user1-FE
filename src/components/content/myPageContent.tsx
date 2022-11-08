@@ -4,12 +4,10 @@ import classNames from 'classnames/bind';
 import toast from 'react-hot-toast';
 
 import styles from '../../../styles/content/myPageContent.module.scss';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { nicknameState, tokenState } from '../../store/atom/userStates';
 import { getUserInfo } from '../../../src/store/api/user';
-import { confirmAlert } from 'react-confirm-alert';
 import CustomAlert from './../customAlert';
 import { loginState } from './../../store/atom/userStates';
 import {
@@ -50,17 +48,14 @@ function myPageContent() {
 
   const handleMyPage = (link: string) => {
     if (!isLogin) {
-      confirmAlert({
-        customUI: ({ onClose }) => (
-          <CustomAlert
-            title='로그인'
-            desc='로그인이 필요한 서비스입니다. 로그인 하시겠습니까?'
-            btnTitle='로그인'
-            // id={}
-            onAction={onLogin}
-            onClose={onClose}
-          />
-        ),
+      CustomAlert({
+        title: '로그인',
+        desc: '로그인이 필요한 서비스입니다. 로그인 하시겠습니까?',
+        btnTitle: '로그인',
+        id: 0,
+        onAction: () => {
+          onLogin();
+        },
       });
     } else {
       router.push(link);

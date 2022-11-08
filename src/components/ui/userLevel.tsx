@@ -6,10 +6,11 @@ import { ILevel } from '../../types/user';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   loginState,
+  nicknameState,
   tokenState,
   userGradeState,
 } from '../../store/atom/userStates';
-import { getUserLevel } from '../../store/api/user';
+import { getUserInfo, getUserLevel } from '../../store/api/user';
 import {
   ElixirLevelBtn,
   PotionLevelBtn,
@@ -21,6 +22,7 @@ const cx = classNames.bind(styles);
 function userLevel() {
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
+  const [nickname, setNickname] = useRecoilState(nicknameState);
   const [userLevel, setUserLevel] = useState<ILevel | null>(null);
   const [progressState, setProgressState] = useRecoilState(userGradeState);
   const styles: { [key: string]: React.CSSProperties } = {
@@ -34,10 +36,15 @@ function userLevel() {
 
   useEffect(() => {
     if (isLogin) {
+      getUserInfo(token).then(res => {
+        setNickname(res.data.data.nickname);
+      });
+
       getUserLevel(token).then(res => {
-        console.log('userLevel', res.data.data);
         setUserLevel(res.data.data);
       });
+    } else {
+      setNickname('게스트');
     }
   }, []);
 
@@ -54,7 +61,10 @@ function userLevel() {
   }, [userLevel]);
 
   return (
-    <>
+    <div className={cx('point-box')}>
+      <div className={cx('title')}>
+        <span>{nickname}</span> 님, 반갑습니다.
+      </div>
       {userLevel !== null ? (
         <div className={cx('point-bar')}>
           <div className={cx('progress-bar-space')}>
@@ -139,7 +149,7 @@ function userLevel() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

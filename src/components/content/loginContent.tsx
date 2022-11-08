@@ -37,27 +37,15 @@ function loginContent() {
 
     login(emailValue, passwordValue)
       .then(res => {
-        console.log('res', res);
         toast(`환영합니다!`, {
           icon: '🙌',
         });
         setIsLogin(true);
         setToken(res.headers.authorization);
 
-        getProgressOrder(res.headers.authorization).then(res => {
-          console.log('progressOrder', res);
-
-          setOrderInfo({
-            // api 요청한 값으로 수정
-            storeId: 0,
-            storeName: '',
-            purchaseId: 0,
-            orderNumber: '',
-            turnNumber: 0,
-            waitingTime: 0,
-            state: '',
-          });
-          setOrderProductData([]);
+        getProgressOrder(res.headers.authorization).then(orderRes => {
+          const orderProductData = orderRes.data.data;
+          setOrderProductData(orderProductData);
         });
 
         router.back();

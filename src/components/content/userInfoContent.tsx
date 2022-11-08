@@ -43,7 +43,6 @@ function userInfoContent() {
 
   useEffect(() => {
     getUserInfo(token).then(res => {
-      console.log(res);
       setInfo(res.data.data);
     });
   }, []);
@@ -56,12 +55,8 @@ function userInfoContent() {
   const handleDuplChk = () => {
     const nickValue = nicknameInputRef.current?.value;
 
-    console.log(info?.nickname, nickValue);
     if (nickValue && info?.nickname !== nickValue && isNickName(nickValue)) {
-      console.log(1);
-
       getDuplicationCheck('nickname', nickValue).then(res => {
-        console.log(res);
         if (res.data.data) {
           setIsValid(false);
           setError('중복된 닉네임입니다.');

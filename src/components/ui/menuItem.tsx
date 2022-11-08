@@ -25,7 +25,6 @@ function menuItem({ listName, item }: IProps) {
   const [isSoldOut, setIsSoldOut] = useState(false);
 
   useEffect(() => {
-    console.log(item);
     setIsSoldOut(false);
 
     if (listName === 'popular') {
@@ -33,7 +32,6 @@ function menuItem({ listName, item }: IProps) {
         const resData = res.data.data;
         const selectMenuId = resData.menuId;
         setInfo(resData);
-        console.log('추천메뉴', resData);
 
         if (selectedStore.name !== '') {
           getSoldOutMenu(selectedStore.storeId).then(res => {
