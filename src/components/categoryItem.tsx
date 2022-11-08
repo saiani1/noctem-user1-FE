@@ -26,9 +26,9 @@ function categoryItem({
   };
 
   useEffect(() => {
-    if (categorySId === 1) {
+    if (categorySId === 2) {
       setIsClick('추천');
-    } else {
+    } else if (categorySId === 14) {
       setIsClick('브레드');
     }
   }, []);
