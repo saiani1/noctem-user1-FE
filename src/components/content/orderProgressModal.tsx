@@ -134,7 +134,10 @@ function orderProgressModal({
                 <ul className={cx('menu-list-wrap')}>
                   {orderProductData &&
                     orderProductData.map(data => (
-                      <OrderMenuItem key={data.cartId} data={data} />
+                      <OrderMenuItem
+                        key={data.menuShortName + data.cupType}
+                        data={data}
+                      />
                     ))}
                 </ul>
               </div>

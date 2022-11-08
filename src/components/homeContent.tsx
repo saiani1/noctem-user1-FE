@@ -62,6 +62,10 @@ function homeContent() {
     setOrderProgressModal(false);
   };
 
+  useEffect(() => {
+    console.log('대체 언제 변하는건데 ordeInfo', orderInfo);
+  }, [orderInfo]);
+
   const handleClose = () => {
     console.log('handleClose 주문 종료');
     console.log('orderInfo 초기화', orderInfo);
@@ -121,20 +125,23 @@ function homeContent() {
           const data = res.data;
 
           getWaitingInfo(token).then(timeRes => {
-            console.log('setorderInfoTemp', orderInfoTemp);
-            console.log('setorderInfo Before', orderInfo);
-            console.log('setorderInfo After', {
-              ...orderInfo,
-              state: data.data.orderStatus,
-              turnNumber: timeRes.data.data.turnNumber,
-              waitingTime: timeRes.data.data.waitingTime,
-            });
-            setOrderInfo({
-              ...orderInfo,
-              state: data.data.orderStatus,
-              turnNumber: timeRes.data.data.turnNumber,
-              waitingTime: timeRes.data.data.waitingTime,
-            });
+            console.log('timeRes', timeRes);
+
+            // console.log('setorderInfoTemp', orderInfoTemp);
+            // console.log('setorderInfo Before', orderInfo);
+            // console.log('setorderInfo After', {
+            //   ...orderInfo,
+            //   state: data.data.orderStatus,
+            //   turnNumber: timeRes.data.data.turnNumber,
+            //   waitingTime: timeRes.data.data.waitingTime,
+            // });
+
+            // setOrderInfo({
+            //   ...orderInfo,
+            //   state: data.data.orderStatus,
+            //   turnNumber: timeRes.data.data.turnNumber,
+            //   waitingTime: timeRes.data.data.waitingTime,
+            // });
           });
         });
         ssEvents = new EventSource(STREAM_URL, { withCredentials: true });
@@ -182,7 +189,11 @@ function homeContent() {
             return;
           }
 
-          if (data.alertCode === 6) {
+          if (
+            orderInfo.turnNumber !== null &&
+            orderInfo.orderNumber !== null &&
+            data.alertCode === 6
+          ) {
             console.log('순서에 변화가 있을 경우', data);
             getWaitingInfo(token).then(res => {
               console.log('ssEvents setorderInfo Before', orderInfo);

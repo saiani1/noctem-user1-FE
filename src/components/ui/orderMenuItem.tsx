@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 
 import styles from '../../../styles/ui/orderMenuItem.module.scss';
 import { IMenuList } from '../../types/order';
+import { getMenuDetail } from '../../store/api/order';
+import { useRecoilState } from 'recoil';
+import { orderProductDataState } from '../../store/atom/orderState';
 
 const cx = classNames.bind(styles);
 
@@ -35,10 +38,28 @@ function orderMenuItem({ data }: { data: IMenuList }) {
     cupType,
     optionList,
   } = data;
+  const [imgUrlTemp, setImgUrlTemp] = useState<string>();
+
+  useEffect(() => {
+    if (imgUrl === null) {
+      getMenuDetail(sizeId, 0)
+        .then(res => {
+          setImgUrlTemp(res.data.data.imgUrl);
+        })
+        .catch(err => {
+          new err();
+        });
+    } else {
+      setImgUrlTemp(imgUrl);
+    }
+  }, []);
+
   return (
     <li className={cx('menu-list')}>
       <span className={cx('img-wrap')}>
-        <Image src={imgUrl} alt={menuFullName} width={70} height={70} />
+        {imgUrlTemp && (
+          <Image src={imgUrlTemp} alt={menuFullName} width={70} height={70} />
+        )}
       </span>
       <div className={cx('order-contents-wrap')}>
         <p className={cx('order-tit')}>
