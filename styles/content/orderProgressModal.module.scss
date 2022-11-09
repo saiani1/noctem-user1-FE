@@ -30,13 +30,14 @@
       }
 
       .remain-time-wrap {
-        width: fit-content;
+        width: 100%;
         border-radius: 10px;
         background-color: var(--BG-004);
         padding: 0 10px;
         margin-bottom: 10px;
 
         p {
+          width: fit-content;
           line-height: 1.6;
           text-align: center;
           font-size: var(--FS-12);
