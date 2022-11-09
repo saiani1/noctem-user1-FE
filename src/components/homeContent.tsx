@@ -123,6 +123,7 @@ function homeContent() {
 
     return () => {
       if (ssEvents !== null) {
+        console.log('ssEvent 종료11111', ssEvents);
         ssEvents.close();
       }
     };
@@ -143,6 +144,7 @@ function homeContent() {
 
         if (SSEData.alertCode === 4 && ssEvents !== null) {
           // 제조 완료 되었을 경우
+          console.log('ssEvent 종료22222', ssEvents);
           ssEvents.close();
           return;
         }
@@ -155,6 +157,7 @@ function homeContent() {
           state: '거절됨',
         });
         if (ssEvents !== null) {
+          console.log('ssEvent 종료33333', ssEvents);
           ssEvents.close();
         }
         return;
