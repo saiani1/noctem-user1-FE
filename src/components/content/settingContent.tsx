@@ -5,9 +5,10 @@ import { useTheme } from 'next-themes';
 import styles from '../../../styles/content/settingContent.module.scss';
 import { getUserOptions, patchUserOptions } from '../../../src/store/api/user';
 import ToggleCheckbox from '../ui/toggleCheckbox';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { tokenState } from '../../store/atom/userStates';
 import { toast } from 'react-hot-toast';
+import { shakeToPayState } from '../../store/atom/optionState';
 
 interface IInfo {
   isDarkmode: boolean;
@@ -28,17 +29,15 @@ function settingContent() {
     shakeToPay: false,
   });
   const [isFetching, setIsFetching] = useState(false);
+  const [shakeState, setShakeState] = useRecoilState(shakeToPayState);
   const cx = classNames.bind(styles);
 
   useEffect(() => {
     getUserOptions(token).then(res => {
-      console.log('res : ', res);
       setInfo(res.data.data);
       setIsFetching(true);
     });
   }, []);
-
-  console.log(localStorage.getItem('theme'));
 
   const handleChangeOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -51,6 +50,8 @@ function settingContent() {
 
     if (value === 'darkmode') {
       setTheme(theme === 'dark' ? 'light' : 'dark');
+    } else if (value === 'shakeToPay') {
+      setShakeState(!shakeState);
     }
   };
 

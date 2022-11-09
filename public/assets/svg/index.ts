@@ -33,3 +33,4 @@ export { default as UserPlusBtn } from './icon-user-plus.svg';
 export { default as UserBtn } from './icon-user.svg';
 export { default as SoldOutBtn } from './icon-sold-out.svg';
 export { default as NoctemBtn } from './icon-noctem-no-back.svg';
+export { default as CautionBtn } from './icon-caution.svg';

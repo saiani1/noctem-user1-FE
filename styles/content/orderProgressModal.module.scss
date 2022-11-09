@@ -11,7 +11,7 @@
 
   .top-wrap {
     padding: 20px;
-    background-color: var(--BG-001);
+    background-color: var(--BG-002);
 
     .tit-wrap {
       position: relative;
@@ -30,13 +30,14 @@
       }
 
       .remain-time-wrap {
-        width: fit-content;
+        margin-bottom: 10px;
+        padding: 0 10px;
+        display: inline-block;
         border-radius: 10px;
         background-color: var(--BG-004);
-        padding: 0 10px;
-        margin-bottom: 10px;
 
         p {
+          width: fit-content;
           line-height: 1.6;
           text-align: center;
           font-size: var(--FS-12);

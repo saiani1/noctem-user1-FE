@@ -225,6 +225,10 @@
     color: var(--TXT-005);
     border-radius: 50px;
     width: 100%;
+
+    &.disable {
+      background-color: var(--BG-007);
+    }
   }
 }
 

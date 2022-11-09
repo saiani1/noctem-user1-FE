@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import classNames from 'classnames/bind';
 import useGeolocation from 'react-hook-geolocation';
+import { toast } from 'react-hot-toast';
 
 import styles from '../../../styles/content/selectStoreContent.module.scss';
 import StoreInfo from '../ui/storeInfo';
@@ -14,6 +14,7 @@ import { IStore } from '../../../src/types/store.d';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { selectedStoreState } from './../../store/atom/orderState';
+import LoadingSpinner from './../ui/loadingSpinner';
 
 const cx = classNames.bind(styles);
 
@@ -31,9 +32,14 @@ function selectStoreContent() {
     setOpen(false);
   }
 
+  const handleNotService = () => {
+    toast('준비 중인 서비스입니다!', {
+      icon: '📢',
+    });
+  };
+
   const handleSelect = () => {
     if (clickStoreInfo !== undefined) {
-      console.log('선택된 매장', clickStoreInfo);
       setSelectedStore({
         index: 0,
         storeId: clickStoreInfo.storeId,
@@ -92,14 +98,8 @@ function selectStoreContent() {
   };
 
   useEffect(() => {
-    console.log(router);
-    console.log(router.query);
-  }, [router]);
-
-  useEffect(() => {
     if (geolocation.latitude && geolocation.longitude) {
       getStoreList(geolocation.latitude, geolocation.longitude).then(res => {
-        console.log(res.data.data);
         setStoreList(res.data.data);
         setLoading(false);
       });
@@ -113,42 +113,25 @@ function selectStoreContent() {
       const clickStore = storeList.find(
         store => store.storeId === clickStoreId,
       );
-      console.log('selectStore', clickStore);
       setClickStoreInfo(clickStore);
     }
   }, [clickStoreId]);
 
   if (isLoading) {
-    return <div>로딩중...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
     <>
       <div className={cx('wrap')}>
         <h1 className={cx('title')}>매장 설정</h1>
-        <div className={cx('search-input-wrap')}>
-          <input type='text' placeholder='검색' />
-          <span className={cx('img-wrap')}>
-            <Image
-              src='/assets/svg/icon-search.svg'
-              alt='search'
-              width={14}
-              height={13}
-            />
-          </span>
-        </div>
-        <div className={cx('filter-wrap')}>
-          <button type='button'>DT</button>
-          <button type='button'>리저브</button>
-          <button type='button'>블론드</button>
-          <button type='button'>나이트로 콜드브루</button>
-          <button type='button'>주차가능</button>
-        </div>
         <div className={cx('tab-wrap')}>
           <button type='button' className={cx('active')}>
             가까운 매장
           </button>
-          <button type='button'>자주 가는 매장</button>
+          <button type='button' onClick={handleNotService}>
+            자주 가는 매장
+          </button>
         </div>
         <ul>
           {storeList &&

@@ -42,7 +42,6 @@ function orderItem({ menu }: { menu: IMenuList }) {
         ...resData,
         sizeId: sizeId,
       };
-      console.log('myMenuInfo', mymenuInfo);
       setMyMenuInfo(mymenuInfo);
     });
   }, []);

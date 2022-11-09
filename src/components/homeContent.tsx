@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'react-hot-toast';
@@ -17,31 +16,33 @@ import OrderStateInfo from './ui/orderStateInfo';
 import OrderProgressModal from './content/orderProgressModal';
 import ToolbarList from './ui/toolbarList';
 import RecommendedMenu from './recommendedMenu';
-import {
-  getLastSSEMessage,
-  getWaitingInfo,
-  patchOrderCancel,
-} from '../store/api/order';
-import { ISSEData } from '../types/order';
+import { getWaitingInfo, patchOrderCancel } from '../store/api/order';
 import UserLevel from './ui/userLevel';
 import CustomAlert from './customAlert';
 import UserMenu from './ui/userMenu';
 
 const cx = classNames.bind(styles);
 
-function shakeEventDidOccur() {
-  alert('흔들림 감지');
+interface ISSEData {
+  message: string;
+  alertCode: number;
+  data?: {
+    orderStatus?: string;
+    orderNumber?: number;
+    userAccountId?: number;
+    purchaseId?: number;
+  };
+  dateTime: Date;
+  errorCode: number;
 }
 
 function homeContent() {
-  const router = useRouter();
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
   const [orderInfo, setOrderInfo] = useRecoilState(orderInfoState);
   const [orderProductData, setOrderProductData] = useRecoilState(
     orderProductDataState,
   );
-  const [isLoginTemp, setIsLoginTemp] = useState(false);
   const [orderInfoTemp, setOrderInfoTemp] = useState({
     storeId: 0,
     storeName: '',
@@ -67,9 +68,6 @@ function homeContent() {
   }, [orderInfo]);
 
   const handleClose = () => {
-    console.log('handleClose 주문 종료');
-    console.log('orderInfo 초기화', orderInfo);
-    console.log('orderProductData 초기화', orderProductData);
     setOrderInfo({
       storeId: 0,
       storeName: '',
@@ -90,7 +88,6 @@ function homeContent() {
       btnTitle: '주문 취소하기',
       id: 0,
       onAction: () => {
-        console.log('주문 취소');
         patchOrderCancel(token, orderInfo.purchaseId);
         handleClose();
         toast.success(`(${orderInfo.orderNumber}) 주문이 취소되었습니다.`);
@@ -99,19 +96,12 @@ function homeContent() {
   };
 
   useEffect(() => {
-    console.log('orderInfo', orderInfo);
-    console.log('orderInfoTemp', orderInfoTemp);
-
     setOrderInfoTemp({
       ...orderInfo,
     });
-
-    setIsLoginTemp(isLogin);
   }, [orderInfo]);
 
   useEffect(() => {
-    window.addEventListener('shake', shakeEventDidOccur, false);
-
     getPopularMenu().then(res => setPopularMenuList(res.data.data));
 
     if (isLogin) {
@@ -120,120 +110,74 @@ function homeContent() {
       }/${orderInfo.storeId}`;
 
       if (orderInfo.purchaseId !== 0 || ssEvents === null) {
-        getLastSSEMessage(token).then(res => {
-          console.log('getLastSSEMessage res', res);
-          const data = res.data;
-
-          getWaitingInfo(token).then(timeRes => {
-            console.log('timeRes', timeRes);
-
-            // console.log('setorderInfoTemp', orderInfoTemp);
-            // console.log('setorderInfo Before', orderInfo);
-            // console.log('setorderInfo After', {
-            //   ...orderInfo,
-            //   state: data.data.orderStatus,
-            //   turnNumber: timeRes.data.data.turnNumber,
-            //   waitingTime: timeRes.data.data.waitingTime,
-            // });
-
-            // setOrderInfo({
-            //   ...orderInfo,
-            //   state: data.data.orderStatus,
-            //   turnNumber: timeRes.data.data.turnNumber,
-            //   waitingTime: timeRes.data.data.waitingTime,
-            // });
-          });
-        });
         ssEvents = new EventSource(STREAM_URL, { withCredentials: true });
       }
+    }
 
-      if (ssEvents !== null) {
-        ssEvents.addEventListener('open', event => {
-          console.log('SSE OPEN!!!', event);
-        });
+    if (isLogin && ssEvents !== null) {
+      ssEvents.addEventListener('message', event => {
+        const data = JSON.parse(event.data);
+        setSSEData(data);
+      });
 
-        ssEvents.addEventListener('message', event => {
-          const data = JSON.parse(event.data);
-          console.log('SSE MESSAGE DATA', data);
-
-          if (data.alertCode === 3 || data.alertCode === 4) {
-            console.log('제조중 OR 제조완료', data, data.data.orderStatus);
-            getWaitingInfo(token).then(timeRes => {
-              console.log('ssEvents setorderInfo Before', orderInfo);
-              console.log('ssEvents setorderInfo After', {
-                ...orderInfo,
-                state: data.data.orderStatus,
-                turnNumber: timeRes.data.data.turnNumber,
-                waitingTime: timeRes.data.data.waitingTime,
-              });
-              setOrderInfo({
-                ...orderInfo,
-                state: data.data.orderStatus,
-                turnNumber: timeRes.data.data.turnNumber,
-                waitingTime: timeRes.data.data.waitingTime,
-              });
-            });
-          }
-
-          if (data.alertCode === 5) {
-            console.log('거절당함', data);
-            console.log('ssEvents setorderInfo Before', orderInfo);
-            console.log('ssEvents setorderInfo After', {
-              ...orderInfo,
-              state: '거절됨',
-            });
-            setOrderInfo({
-              ...orderInfo,
-              state: '거절됨',
-            });
-            return;
-          }
-
-          if (
-            orderInfo.turnNumber !== null &&
-            orderInfo.orderNumber !== null &&
-            data.alertCode === 6
-          ) {
-            console.log('순서에 변화가 있을 경우', data);
-            getWaitingInfo(token).then(res => {
-              console.log('ssEvents setorderInfo Before', orderInfo);
-              console.log('ssEvents setorderInfo After', {
-                ...orderInfo,
-                turnNumber: res.data.data.turnNumber,
-                waitingTime: res.data.data.waitingTime,
-              });
-              setOrderInfo({
-                ...orderInfo,
-                turnNumber: res.data.data.turnNumber,
-                waitingTime: res.data.data.waitingTime,
-              });
-            });
-          }
-
-          if (
-            (data.alertCode === 4 || data.alertCode === 5) &&
-            ssEvents !== null
-          ) {
-            console.log('SSE 종료~~~~!');
-            setSSEData(null);
-            ssEvents.close();
-          }
-        });
-
-        ssEvents.addEventListener('error', err => {
-          console.log('ERR', err);
-        });
-      }
+      ssEvents.addEventListener('error', err => {
+        console.log(err);
+      });
     }
 
     return () => {
       if (ssEvents !== null) {
-        console.log('SSE 종료!!!');
-        setSSEData(null);
+        console.log('ssEvent 종료11111', ssEvents);
         ssEvents.close();
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (SSEData !== null) {
+      if (SSEData.alertCode === 3 || SSEData.alertCode === 4) {
+        // 제조 중 OR 제조 완료 되었을 경우
+        getWaitingInfo(token).then(timeRes => {
+          setOrderInfo({
+            ...orderInfo,
+            state: SSEData.data?.orderStatus || '',
+            turnNumber: timeRes.data.data.turnNumber,
+            waitingTime: timeRes.data.data.waitingTime,
+          });
+        });
+
+        if (SSEData.alertCode === 4 && ssEvents !== null) {
+          // 제조 완료 되었을 경우
+          console.log('ssEvent 종료22222', ssEvents);
+          ssEvents.close();
+          return;
+        }
+      }
+
+      if (SSEData.alertCode === 5) {
+        // 거절 당했을 경우
+        setOrderInfo({
+          ...orderInfo,
+          state: '거절됨',
+        });
+        if (ssEvents !== null) {
+          console.log('ssEvent 종료33333', ssEvents);
+          ssEvents.close();
+        }
+        return;
+      }
+
+      if (SSEData.alertCode === 6) {
+        getWaitingInfo(token).then(res => {
+          setOrderInfo({
+            ...orderInfo,
+            turnNumber: res.data.data.turnNumber,
+            waitingTime: res.data.data.waitingTime,
+          });
+        });
+      }
+    }
+  }, [SSEData]);
 
   return (
     <>

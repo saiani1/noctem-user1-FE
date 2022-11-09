@@ -19,3 +19,8 @@ export const categoryLNameState = atom({
   key: 'categoryLNameState',
   default: '음료',
 });
+
+export const categoryLIdState = atom({
+  key: 'categoryLIdState',
+  default: 1,
+});

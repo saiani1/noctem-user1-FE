@@ -44,6 +44,7 @@ const cx = classNames.bind(styles);
 
 function productContent() {
   const router = useRouter();
+  const isSoldOut = router.query.isSoldOut;
   const id = router.query.id ? +router.query.id : 1;
   const myMenuNameRef = useRef<HTMLInputElement>(null);
 
@@ -56,11 +57,13 @@ function productContent() {
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
 
   const [open, setOpen] = useState(false);
+  const [soldOutMenu, setSoldOutMenu] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [sizeOpt, setSizeOpt] = useState<ISize[]>();
   const [selectedSizeId, setSelectedSizeId] = useState(0);
   const [selectedSizeTxt, setSelectedSizeTxt] = useState('');
   const [cupChoice, setCupChoice] = useState('');
+  const [isClick, setIsClick] = useRecoilState(categoryLState);
   const [count, setCount] = useState(1);
   const [detailList, setdetailList] = useState<IDetail>();
   const [selectedTempId, setSelectedTempId] = useState<number>(0);
@@ -101,8 +104,6 @@ function productContent() {
   };
 
   const onSelectStore = () => {
-    console.log('id', selectedSizeId);
-    console.log('qty', count);
     router.push(
       {
         pathname: '/selectStore',
@@ -129,9 +130,7 @@ function productContent() {
     setNutritionOpen(true);
   };
   const handleClose = () => {
-    console.log('click');
     setMyMenuAlert(!myMenuAlert);
-    console.log(myMenuAlert);
   };
 
   const handleAddCart = () => {
@@ -237,7 +236,6 @@ function productContent() {
 
   const handleAddMyMenuData = () => {
     const mymenuNameValue = myMenuNameRef.current?.value;
-    console.log('myMenuName:', mymenuNameValue);
     if (mymenuNameValue && mymenuNameValue.length !== 0) {
       setMyMenuData({
         ...myMenuData,
@@ -252,7 +250,6 @@ function productContent() {
         personalOptionList: myMenuData.personalOptionList,
       };
       addMyMenu(value, token).then(res => {
-        console.log(res);
         if (res.data.data) {
           toast.success('나만의 메뉴에 추가되었습니다');
           setMyMenuAlert(false);
@@ -263,6 +260,13 @@ function productContent() {
       });
     }
   };
+
+  useEffect(() => {
+    setSoldOutMenu(false);
+    if (isSoldOut === 'true' && selectedStore.storeId !== 0)
+      setSoldOutMenu(true);
+    else setSoldOutMenu(false);
+  }, [soldOutMenu]);
 
   useEffect(() => {
     getProduct(id).then(res => {
@@ -286,16 +290,18 @@ function productContent() {
   useEffect(() => {
     if (detailList) {
       if (detailList.temperatureList.length === 1) {
-        setSelectedTempId(detailList.temperatureList[0].temperatureId);
-        getSize(detailList.temperatureList[0].temperatureId).then(res => {
-          setSizeOpt(res.data.data);
-          setSelectedSizeId(res.data.data[0].sizeId);
-          setSelectedSizeTxt(res.data.data[0].size);
-          setCartData({
-            ...cartData,
-            sizeId: res.data.data[0].sizeId,
+        if (detailList.temperatureList[0].temperatureId < 66) {
+          setSelectedTempId(detailList.temperatureList[0].temperatureId);
+          getSize(detailList.temperatureList[0].temperatureId).then(res => {
+            setSizeOpt(res.data.data);
+            setSelectedSizeId(res.data.data[0].sizeId);
+            setSelectedSizeTxt(res.data.data[0].size);
+            setCartData({
+              ...cartData,
+              sizeId: res.data.data[0].sizeId,
+            });
           });
-        });
+        }
       } else {
         let tempId = selectedTempId;
         if (tempId === 0) {
@@ -318,7 +324,6 @@ function productContent() {
     <>
       <CategoryContent
         setCategoryName={setCategoryName}
-        setCategorySId={setCategorySId}
         cartCount={cartCount}
       />
       {detailList && (
@@ -342,8 +347,7 @@ function productContent() {
             <div className={cx('product-price')}>
               {addComma(detailList.price)}원
             </div>
-
-            {
+            {detailList.temperatureList[0].temperatureId < 66 ? (
               <div className={cx('temp-button')}>
                 {detailList.temperatureList.length === 1 ? (
                   <div
@@ -402,7 +406,7 @@ function productContent() {
                   </>
                 )}
               </div>
-            }
+            ) : undefined}
           </div>
         </>
       )}
@@ -420,11 +424,24 @@ function productContent() {
       )}
       <div className={cx('button-box')}>
         <button
-          className={cx('order-button')}
+          className={cx(
+            'order-button',
+            soldOutMenu ? 'disable' : '',
+            detailList && detailList.temperatureList[0].temperatureId > 66
+              ? 'disable'
+              : '',
+          )}
           type='button'
           onClick={handleOptionOpen}
+          disabled={
+            soldOutMenu ||
+            (detailList && detailList.temperatureList[0].temperatureId > 66)
+          }
         >
-          주문하기
+          {soldOutMenu ||
+          (detailList && detailList.temperatureList[0].temperatureId > 66)
+            ? '주문 불가능한 상품입니다.'
+            : '주문하기'}
         </button>
       </div>
       {myMenuAlert && (

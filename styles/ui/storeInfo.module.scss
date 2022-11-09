@@ -30,6 +30,7 @@
       flex-direction: column;
       justify-content: space-between;
       text-align: left;
+      margin-bottom: 20px;
 
       .top-content-wrap {
         display: flex;
@@ -63,6 +64,7 @@
           .eco-icon {
             fill: var(--TXT-004);
           }
+
           .car-icon {
             margin-top: -2px;
             fill: var(--TXT-004);
@@ -87,11 +89,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         .waiting-time-wrap {
           span {
             font-size: var(--FS-11);
             font-weight: var(--FW-001);
             color: var(--TXT-002);
+
             strong {
               font-size: var(--FS-15);
               font-weight: var(--FW-003);
@@ -118,6 +122,5 @@
     bottom: 0;
     border-radius: 5px;
     z-index: 1;
-    // cursor: auto;
   }
 }

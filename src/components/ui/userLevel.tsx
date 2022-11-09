@@ -11,6 +11,11 @@ import {
   userGradeState,
 } from '../../store/atom/userStates';
 import { getUserInfo, getUserLevel } from '../../store/api/user';
+import {
+  ElixirLevelBtn,
+  PotionLevelBtn,
+  PowerElixirLevelBtn,
+} from '../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 
@@ -32,12 +37,10 @@ function userLevel() {
   useEffect(() => {
     if (isLogin) {
       getUserInfo(token).then(res => {
-        console.log('userInfo', res);
         setNickname(res.data.data.nickname);
       });
 
       getUserLevel(token).then(res => {
-        console.log('userLevel', res.data.data);
         setUserLevel(res.data.data);
       });
     } else {
@@ -103,26 +106,11 @@ function userLevel() {
                 : 'MAX'}
             </span>
             {userLevel.userGrade === 'Potion' ? (
-              <Image
-                src='/assets/svg/icon-potion-level.svg'
-                alt='potion-level'
-                width={24}
-                height={21}
-              />
+              <PotionLevelBtn />
             ) : userLevel.userGrade === 'Elixir' ? (
-              <Image
-                src='/assets/svg/icon-power-elixir-level.svg'
-                alt='elixir-level'
-                width={24}
-                height={21}
-              />
+              <ElixirLevelBtn />
             ) : (
-              <Image
-                src='/assets/svg/icon-elixir-level.svg'
-                alt='elixir-level'
-                width={24}
-                height={21}
-              />
+              <PowerElixirLevelBtn className={cx('power-elixir')} />
             )}
           </div>
         </div>

@@ -24,7 +24,6 @@ function cupSizeItem({
   setSelectedSizeId: ISizeProps['setSelectedSizeId'];
 }) {
   const handleChoice = () => {
-    console.log(list);
     setSelectedSizeTxt(list.size);
     setExtraCost(list.extraCost);
     setSelectedSizeId(list.sizeId);

@@ -21,7 +21,6 @@ export const getCartMenuData = async (sizeId: number, cartId: number) => {
 };
 
 export const getMyMenuData = async (sizeId: number, cartId: number) => {
-  console.log(`${MENU_SERVICE}/size/menu/forMyMenu/${sizeId}/${cartId}`);
   const res = await basicRequest.get(
     `${MENU_SERVICE}/size/menu/forMyMenu/${sizeId}/${cartId}`,
   );
@@ -60,7 +59,6 @@ export const changeItemCount = async (cartId: number, qty: number, token: string
 };
 
 export const deleteItem = async (cartId: number, token: string) => {
-  console.log(`${USER_SERVICE}/carts/${cartId}`);
   const res = await basicRequest.delete(
     `${USER_SERVICE}/carts/${cartId}`,
     {

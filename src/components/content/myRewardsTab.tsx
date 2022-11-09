@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
-import styles from '../../../styles/content/myRewardTab.module.scss';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { tokenState, userGradeState } from '../../store/atom/userStates';
+
+import styles from '../../../styles/content/myRewardTab.module.scss';
+import {
+  nicknameState,
+  tokenState,
+  userGradeState,
+} from '../../store/atom/userStates';
 import { loginState } from './../../store/atom/userStates';
 import { getUserLevel } from '../../store/api/user';
+import PreferChart from './preferChart';
+import {
+  ElixirLevelBtn,
+  PotionLevelBtn,
+  PowerElixirLevelBtn,
+} from '../../../public/assets/svg';
 
 const cx = classNames.bind(styles);
 interface ILevel {
@@ -14,11 +25,15 @@ interface ILevel {
   nextGrade: string;
   requiredExpToNextGrade: number;
 }
+
 function myRewardTab() {
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const [userLevel, setUserLevel] = useState<ILevel>();
+  const nickname = useRecoilValue(nicknameState);
   const [progressState, setProgressState] = useRecoilState(userGradeState);
+  const [userLevel, setUserLevel] = useState<ILevel>();
+  const [theBestMenu, setTheBestMenu] = useState('');
+
   const styles: { [key: string]: React.CSSProperties } = {
     container: {
       width: `${progressState}%`,
@@ -34,6 +49,7 @@ function myRewardTab() {
       });
     }
   }, []);
+
   useEffect(() => {
     if (userLevel) {
       let exp =
@@ -45,6 +61,7 @@ function myRewardTab() {
       setProgressState(0);
     }
   }, [userLevel]);
+
   return (
     <div className={cx('content-wrap')}>
       <div className={cx('level-wrap')}>
@@ -52,26 +69,11 @@ function myRewardTab() {
         <div className={cx('level-tit-wrap')}>
           <span className={cx('level-icon-wrap')}>
             {userLevel?.userGrade === 'Potion' ? (
-              <Image
-                src='/assets/svg/icon-potion-level.svg'
-                alt='potion-level'
-                width={24}
-                height={21}
-              />
+              <PotionLevelBtn />
             ) : userLevel?.userGrade === 'Elixir' ? (
-              <Image
-                src='/assets/svg/icon-elixir-level.svg'
-                alt='elixir-level'
-                width={24}
-                height={21}
-              />
+              <ElixirLevelBtn />
             ) : (
-              <Image
-                src='/assets/svg/icon-power-elixir-level.svg'
-                alt='potion-level'
-                width={24}
-                height={21}
-              />
+              <PowerElixirLevelBtn className={cx('power-elixir')} />
             )}
           </span>
           <h3
@@ -139,16 +141,16 @@ function myRewardTab() {
       </div>
       <div className={cx('favorite-wrap')}>
         <span>
-          <strong>녹템</strong>님의 취향파악
+          <strong>{nickname}</strong>님의 취향파악
         </span>
-        <h3>" 카페인 중독 "</h3>
-        <span className={cx('img-wrap')}>
-          <Image
-            src='/assets/images/png/favorite-graph.png'
-            width={261}
-            height={204}
-          />
-        </span>
+        <h3>
+          {theBestMenu === '카페인' && '" 커피 없인 못 살아 😍 "'}
+          {theBestMenu === '디카페인' && '" 커피는 좋아하지만...😥 "'}
+          {theBestMenu === '에이드' && '" 과즙미 뿜뿜 😊 "'}
+          {theBestMenu === '스무디' && '" 설탕인간 🍬 "'}
+          {theBestMenu === '티' && '" 힐링이 필요해 🍵 "'}
+        </h3>
+        <PreferChart setTheBestMenu={setTheBestMenu} />
       </div>
     </div>
   );

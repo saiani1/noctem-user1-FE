@@ -100,7 +100,6 @@ function cartContent() {
     }
 
     if (isLogin) {
-      console.log('회원 주문');
       router.push(
         {
           pathname: '/order',
@@ -114,8 +113,6 @@ function cartContent() {
         },
         '/order',
       );
-    } else {
-      console.log('비회원 주문');
     }
   };
 
@@ -137,7 +134,6 @@ function cartContent() {
 
     if (isLogin) {
       // 회원 조회
-      console.log('회원 조회');
       getCartList(token).then(res => {
         setCartList(res.data.data);
       });
@@ -147,10 +143,8 @@ function cartContent() {
       });
     } else {
       // 비회원 조회
-      console.log('비회원 조회');
       [...Array(sessionStorage.length)].map((v, i) => {
         if (sessionStorage.getItem(i + '') !== null) {
-          console.log(JSON.parse(sessionStorage.getItem(i + '') + ''));
           setCartList(getSessionCartList());
         }
       });
@@ -159,7 +153,6 @@ function cartContent() {
   }, [isChange]);
 
   useEffect(() => {
-    console.log('cartList', cartList);
     if (cartList && cartList.length !== 0) {
       const qtyList = cartList.map(cart => {
         return {
@@ -195,8 +188,6 @@ function cartContent() {
   }, [cartList]);
 
   useEffect(() => {
-    console.log('priceList', priceList);
-    console.log('qtyList', qtyList);
     if (
       priceList &&
       qtyList &&
@@ -214,7 +205,6 @@ function cartContent() {
         };
       });
 
-      console.log('totalAmountList', totalAmountList);
       const total = totalAmountList.reduce(
         (acc: number, curr: ICartTotalPriceList) => {
           return acc + curr.qty * curr.amount;

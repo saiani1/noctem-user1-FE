@@ -26,8 +26,8 @@
 
   .first-wrap {
     display: flex;
-    // justify-content: space-between;
     justify-content: flex-end;
+    margin-bottom: 10px;
 
     .close-btn {
       display: flex;
@@ -48,6 +48,7 @@
     display: flex;
 
     .img-wrap {
+      position: relative;
       display: inline-block;
       margin-right: 20px;
       width: 100px;
@@ -55,6 +56,11 @@
       border-radius: 5px;
       overflow: hidden;
       flex-shrink: 0;
+
+      .sold-out-menu {
+        @include position.absolute(0 0 0 0);
+        background-color: var(--BG-ALPA-003);
+      }
     }
 
     .content-wrap {
@@ -87,24 +93,34 @@
         }
       }
 
-      // .option-change-btn {
-      //   font-size: var(--FS-12);
-      //   font-weight: 300;
-      //   color: var(--POINT);
-      //   cursor: pointer;
-      //   text-decoration: underline;
-      // }
+      .sold-out-wrap {
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+
+        span {
+          margin-left: 5px;
+          font-size: var(--FS-13);
+          color: var(--TXT-ERROR)
+        }
+      }
 
       .num-change-wrap {
+        position: relative;
         display: flex;
         justify-content: space-between;
         margin-top: 20px;
+
+        .sold-out-menu {
+          @include position.absolute(0 0 0 0);
+          background-color: var(--BG-ALPA-003);
+        }
 
         .left {
           display: flex;
 
           strong {
-            margin: 0 20px;
+            margin: -3px 20px 0;
           }
 
           .icon-btn {
