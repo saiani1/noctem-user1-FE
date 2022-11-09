@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import classNames from 'classnames/bind';
 import useGeolocation from 'react-hook-geolocation';
 import { toast } from 'react-hot-toast';
@@ -15,12 +14,10 @@ import { IStore } from '../../../src/types/store.d';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { selectedStoreState } from './../../store/atom/orderState';
+import LoadingSpinner from './../ui/loadingSpinner';
 
 const cx = classNames.bind(styles);
-function shakeEventDidOccur() {
-  //put your own code here etc.
-  alert('shake!');
-}
+
 function selectStoreContent() {
   const geolocation = useGeolocation();
   const [open, setOpen] = useState(false);
@@ -30,7 +27,6 @@ function selectStoreContent() {
   const [, setSelectedStore] = useRecoilState(selectedStoreState);
   const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  var Shake = require('shake.js');
 
   function onDismiss() {
     setOpen(false);
@@ -122,7 +118,7 @@ function selectStoreContent() {
   }, [clickStoreId]);
 
   if (isLoading) {
-    return <div>로딩중...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
