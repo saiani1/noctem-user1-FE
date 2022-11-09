@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import styles from '../../../styles/content/userInfoContent.module.scss';
 import { getUserInfo } from '../../../src/store/api/user';
 import { tokenState } from '../../store/atom/userStates';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import {
   getDuplicationCheck,
   patchNickname,
@@ -24,7 +24,7 @@ interface IInfo {
 }
 
 function userInfoContent() {
-  const token = useRecoilValue(tokenState);
+  const [token, setToken] = useRecoilState(tokenState);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
   const [info, setInfo] = useState<IInfo>({
     email: '',
@@ -81,11 +81,13 @@ function userInfoContent() {
     const nickValue = nicknameInputRef.current?.value || '';
     if (isValid) {
       patchNickname(nickValue, token).then(res => {
-        if (res.data.data) {
+        if (res.data.errorCode !== 2004) {
           setInfo({
             ...info,
             nickname: nickValue,
           });
+          console.log('newJwt', res.data.data.newJwt);
+          setToken(res.data.data.newJwt);
           toast.success('닉네임이 변경되었습니다.');
         } else {
           toast.error('닉네임 변경에 실패하였습니다.');

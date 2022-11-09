@@ -59,7 +59,6 @@ function orderContent(props: IProps) {
     0;
   const discountPrice = 0;
   const finalPrice = totalPrice - discountPrice;
-  let orderCnt = 0;
 
   function onDismiss() {
     setIsClickPaymentBtn(false);
@@ -105,45 +104,41 @@ function orderContent(props: IProps) {
         menuList: menuList,
       };
 
-      if (orderCnt === 0) {
-        addOrder(orderProductData, token)
-          .then(res => {
-            toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
-            setOrderProductData(orderProductData.menuList);
-            const idData = res.data.data;
+      addOrder(orderProductData, token)
+        .then(res => {
+          const idData = res.data.data;
 
-            getWaitingInfo(token).then(getWaitingRes => {
-              const timeData = getWaitingRes.data.data;
-              setOrderInfo({
-                ...orderInfo,
-                storeId: idData.storeId,
-                storeName: selectedStore.name,
-                purchaseId: idData.purchaseId,
-                state: '주문확인중',
-                orderNumber: timeData.orderNumber,
-                turnNumber: timeData.turnNumber,
-                waitingTime: timeData.waitingTime,
-              });
-
-              router.push('/');
-              orderCnt++;
+          getWaitingInfo(token).then(getWaitingRes => {
+            const timeData = getWaitingRes.data.data;
+            setOrderInfo({
+              ...orderInfo,
+              storeId: idData.storeId,
+              storeName: selectedStore.name,
+              purchaseId: idData.purchaseId,
+              state: '주문확인중',
+              orderNumber: timeData.orderNumber,
+              turnNumber: timeData.turnNumber,
+              waitingTime: timeData.waitingTime,
             });
 
             if (router.query.menuList) {
               // 장바구니 주문일 경우
-              deleteCartAll(token);
-
-              router.push('/');
-              orderCnt++;
+              deleteCartAll(token).catch(err => {
+                console.log('장바구니 주문', err);
+              });
             }
-          })
-          .catch(err => {
-            console.log(err);
-            toast.error(
-              '비회원은 주문이 불가능합니다. 로그인 후 다시 시도해주세요.',
-            );
+
+            setOrderProductData(orderProductData.menuList);
+            router.push('/');
+            toast.success('주문이 완료되었습니다!'); // 대기 시간, 번호
           });
-      }
+        })
+        .catch(err => {
+          console.log(err);
+          toast.error(
+            '비회원은 주문이 불가능합니다. 로그인 후 다시 시도해주세요.',
+          );
+        });
     }
   };
 
