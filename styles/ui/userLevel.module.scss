@@ -9,10 +9,6 @@
       font-weight: bold;
       font-size: 22px;
     }
-
-    .power-elixir {
-      fill: var(--RANK-003);
-    }
   }
 
   .point-bar {
@@ -41,6 +37,10 @@
 
       .req-exp {
         margin: 0 2px;
+      }
+
+      .power-elixir {
+        fill: var(--RANK-003);
       }
     }
   }
