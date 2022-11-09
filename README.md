@@ -8,7 +8,7 @@
 
 ### Project Repositories
 
-- [프론트엔드 스마트오더 앱](https://github.com/saiani1/noctem-user1-FE)
+- [프론트엔드 사용자 앱](https://github.com/saiani1/noctem-user1-FE)
 - [프론트엔드 관리자 웹](https://github.com/saiani1/noctem-admin-FE)
 - [백엔드 eureka server](https://github.com/arotein/noctem-eureka-BE.git)
 - [백엔드 gateway server](https://github.com/arotein/noctem-gateway-BE.git)
