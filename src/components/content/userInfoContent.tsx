@@ -86,7 +86,6 @@ function userInfoContent() {
             ...info,
             nickname: nickValue,
           });
-          console.log('newJwt', res.data.data.newJwt);
           setToken(res.data.data.newJwt);
           toast.success('닉네임이 변경되었습니다.');
         } else {

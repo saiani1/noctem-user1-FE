@@ -16,11 +16,7 @@ import {
 } from '../../../../src/store/api/category';
 import { addCart, getCount } from '../../../../src/store/api/cart';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-  categoryLNameState,
-  categoryLState,
-  categorySIdState,
-} from '../../../store/atom/categoryState';
+import { categoryLState } from '../../../store/atom/categoryState';
 import {
   ICartData,
   ICartNonMemberData,
@@ -33,10 +29,7 @@ import { cartCntState, tokenState } from '../../../store/atom/userStates';
 import { addComma } from '../../../store/utils/function';
 import { getSessionCartCount } from '../../../store/utils/cart';
 import MyMenuRenamePopUp from '../myMenuRenamePopUp';
-import {
-  orderInfoState,
-  selectedStoreState,
-} from '../../../store/atom/orderState';
+import { selectedStoreState } from '../../../store/atom/orderState';
 import { loginState } from './../../../store/atom/userStates';
 import { RightArrowBtn } from '../../../../public/assets/svg';
 
@@ -50,10 +43,8 @@ function productContent() {
 
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const orderInfo = useRecoilValue(orderInfoState);
   const selectedStore = useRecoilValue(selectedStoreState);
   const [, setCategoryName] = useRecoilState(categoryLState);
-  const [, setCategorySId] = useRecoilState(categorySIdState);
   const [cartCount, setCartCount] = useRecoilState(cartCntState);
 
   const [open, setOpen] = useState(false);
@@ -63,7 +54,6 @@ function productContent() {
   const [selectedSizeId, setSelectedSizeId] = useState(0);
   const [selectedSizeTxt, setSelectedSizeTxt] = useState('');
   const [cupChoice, setCupChoice] = useState('');
-  const [isClick, setIsClick] = useRecoilState(categoryLState);
   const [count, setCount] = useState(1);
   const [detailList, setdetailList] = useState<IDetail>();
   const [selectedTempId, setSelectedTempId] = useState<number>(0);
@@ -228,10 +218,10 @@ function productContent() {
     if (selectedSizeTxt === '' || cupChoice === '') {
       toast.error('사이즈와 컵을 선택해주세요');
       return;
-    } else {
-      setOpen(false);
-      setMyMenuAlert(true);
     }
+
+    setOpen(false);
+    setMyMenuAlert(true);
   };
 
   const handleAddMyMenuData = () => {
@@ -261,11 +251,30 @@ function productContent() {
     }
   };
 
+  const getSizeFunc = (tempId: number) => {
+    getSize(tempId).then(res => {
+      setSizeOpt(res.data.data);
+      setCartData({
+        ...cartData,
+        sizeId: res.data.data[0].sizeId,
+      });
+      if (selectedSizeId === 0 && selectedSizeTxt === '') {
+        setSelectedSizeId(res.data.data[0].sizeId);
+        setSelectedSizeTxt(res.data.data[0].size);
+      } else {
+        setSelectedSizeId(selectedSizeId);
+        setSelectedSizeTxt(selectedSizeTxt);
+      }
+    });
+  };
+
   useEffect(() => {
     setSoldOutMenu(false);
-    if (isSoldOut === 'true' && selectedStore.storeId !== 0)
+    if (isSoldOut === 'true' && selectedStore.storeId !== 0) {
       setSoldOutMenu(true);
-    else setSoldOutMenu(false);
+    } else {
+      setSoldOutMenu(false);
+    }
   }, [soldOutMenu]);
 
   useEffect(() => {
@@ -292,30 +301,14 @@ function productContent() {
       if (detailList.temperatureList.length === 1) {
         if (detailList.temperatureList[0].temperatureId < 66) {
           setSelectedTempId(detailList.temperatureList[0].temperatureId);
-          getSize(detailList.temperatureList[0].temperatureId).then(res => {
-            setSizeOpt(res.data.data);
-            setSelectedSizeId(res.data.data[0].sizeId);
-            setSelectedSizeTxt(res.data.data[0].size);
-            setCartData({
-              ...cartData,
-              sizeId: res.data.data[0].sizeId,
-            });
-          });
+          getSizeFunc(detailList.temperatureList[0].temperatureId);
         }
       } else {
         let tempId = selectedTempId;
         if (tempId === 0) {
           tempId = detailList.temperatureList[0].temperatureId;
         }
-        getSize(tempId).then(res => {
-          setSizeOpt(res.data.data);
-          setSelectedSizeTxt(res.data.data[0].size);
-          setSelectedSizeId(res.data.data[0].sizeId);
-          setCartData({
-            ...cartData,
-            sizeId: res.data.data[0].sizeId,
-          });
-        });
+        getSizeFunc(tempId);
       }
     }
   }, [detailList, temperatureChoice]);

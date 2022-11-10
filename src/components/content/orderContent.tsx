@@ -124,7 +124,7 @@ function orderContent(props: IProps) {
             if (router.query.menuList) {
               // 장바구니 주문일 경우
               deleteCartAll(token).catch(err => {
-                console.log('장바구니 주문', err);
+                console.log(err);
               });
             }
 
