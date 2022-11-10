@@ -31,7 +31,7 @@ function productOrder({
   cartData,
 }: {
   open: boolean;
-  onDismiss: any;
+  onDismiss: () => void;
   detailList: IDetail | undefined;
   sizeOpt: ISize[] | undefined;
   setCupChoice: React.Dispatch<React.SetStateAction<string>>;

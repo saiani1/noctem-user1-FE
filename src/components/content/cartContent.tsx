@@ -267,16 +267,6 @@ function cartContent() {
                   총 주문 가능 수량 <strong>20</strong>개
                 </span>
               </div>
-              {/* <div className={cx('check-option-wrap')}>
-                  <div className={cx('all-check-wrap')}>
-                    <input type='checkbox' id='all' />
-                    <label htmlFor='all'>전체 선택</label>
-                  </div>
-                  <div className={cx('delete-btn-wrap')}>
-                    <button type='button'>선택삭제</button>
-                    <button type='button'>전체삭제</button>
-                  </div>
-                </div> */}
             </div>
             <div className={cx('item-wrap')}>
               {cartList &&

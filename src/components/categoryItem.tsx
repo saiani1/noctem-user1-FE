@@ -13,7 +13,7 @@ function categoryItem({
   setCategoryName,
 }: {
   list: IProps['list'];
-  setCategoryName: any;
+  setCategoryName: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const [isClick, setIsClick] = useRecoilState(categoryLState);
   const [categorySId, setCategorySId] = useRecoilState(categorySIdState);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from '../../../../styles/pages/productPage.module.scss';
+import { INutrition } from '../../../types/productDetail';
 
 const cx = classNames.bind(styles);
 
@@ -8,7 +9,7 @@ function productNurtitionInfo({
   nutritionInfo,
   nutritionSize,
 }: {
-  nutritionInfo: any;
+  nutritionInfo: INutrition;
   nutritionSize: string;
 }) {
   const [multiples, setMultiples] = useState(355);
@@ -38,7 +39,7 @@ function productNurtitionInfo({
         <hr />
         <li>
           <div>당류</div>
-          <div>{Math.floor(nutritionInfo.sugers * multiples)}g</div>
+          <div>{Math.floor(nutritionInfo.sugars * multiples)}g</div>
         </li>
         <hr />
         <li>
@@ -73,7 +74,7 @@ function productNurtitionInfo({
         <hr />
         <li>
           <div>포화지방</div>
-          <div>{Math.floor(nutritionInfo.saturateFat * multiples)}g</div>
+          <div>{Math.floor(nutritionInfo.saturatedFat * multiples)}g</div>
         </li>
         <hr />
       </ul>

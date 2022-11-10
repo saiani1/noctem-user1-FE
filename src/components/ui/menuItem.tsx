@@ -10,6 +10,7 @@ import { addComma } from '../../store/utils/function';
 import { IDetailMenuInfo } from '../../types/cart';
 import { selectedStoreState } from '../../store/atom/orderState';
 import { SoldOutBtn } from '../../../public/assets/svg';
+import { IPopularMenuList } from '../../types/popularMenu';
 
 const cx = classNames.bind(styles);
 
@@ -43,7 +44,9 @@ function menuItem({ listName, item }: IProps) {
         }
       });
     } else {
-      setInfo(item);
+      if (item !== undefined) {
+        setInfo(item);
+      }
       if (selectedStore.name !== '') {
         getSoldOutMenu(selectedStore.storeId).then(res => {
           const soldOut = res.data.data.find(
@@ -63,12 +66,15 @@ function menuItem({ listName, item }: IProps) {
             type='button'
             key={info.menuId}
             onClick={() =>
-              router.push({
-                pathname: `/product/${info.menuId}`,
-                query: {
-                  isSoldOut: isSoldOut,
+              router.push(
+                {
+                  pathname: `/product/${info.menuId}`,
+                  query: {
+                    isSoldOut: isSoldOut,
+                  },
                 },
-              })
+                `/product/${info.menuId}`,
+              )
             }
           >
             <div className={cx(isSoldOut ? 'close-item' : '')} />

@@ -468,11 +468,13 @@ function productContent() {
         setSelectedSizeId={setSelectedSizeId}
       />
       {!open && <ToolbarList />}
-      <ProductNutritionSheet
-        nutritionOpen={nutritionOpen}
-        onDismiss={onDismiss}
-        nutritionInfo={nutritionInfo}
-      />
+      {nutritionInfo && (
+        <ProductNutritionSheet
+          nutritionOpen={nutritionOpen}
+          onDismiss={onDismiss}
+          nutritionInfo={nutritionInfo}
+        />
+      )}
     </>
   );
 }

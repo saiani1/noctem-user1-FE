@@ -16,8 +16,8 @@ function productNutritionSheet({
   nutritionInfo,
 }: {
   nutritionOpen: boolean;
-  onDismiss: any;
-  nutritionInfo: any;
+  onDismiss: () => void;
+  nutritionInfo: INutrition;
 }) {
   const [nutritionSize, setNutritionSize] = useState('Tall');
   const handleNutritionSize = (name: string) => {

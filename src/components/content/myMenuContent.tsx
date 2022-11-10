@@ -49,12 +49,6 @@ function myMenuContent() {
     });
   };
 
-  const handleClickChangeOrderBtn = () => {
-    setIsClickChangeOrderBtn(prev => {
-      return !prev;
-    });
-  };
-
   return (
     <>
       {isClickChangeOrderBtn && (

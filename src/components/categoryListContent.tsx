@@ -23,22 +23,18 @@ import { IDetailMenuInfo } from '../types/cart';
 
 const cx = classNames.bind(styles);
 
-interface ITemp {
-  query: number;
-}
-
 function categoryListContent({
   categoryName,
   setCategoryName,
 }: {
   categoryName: string;
-  setCategoryName: any;
+  setCategoryName: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const router = useRouter();
   const isLogin = useRecoilValue(loginState);
   const token = useRecoilValue(tokenState);
-  const [categorySId, setCategorySId] = useRecoilState(categorySIdState);
-  const [categoryLName, setCategoryLName] = useRecoilState(categoryLNameState);
+  const categorySId = useRecoilValue(categorySIdState);
+  const categoryLName = useRecoilValue(categoryLNameState);
   const [selectedStoreTemp, setSelectedStoreTemp] = useState<IStore>({
     index: 0,
     storeId: 0,
@@ -68,6 +64,7 @@ function categoryListContent({
   useEffect(() => {
     if (categorySId === 2 && categoryLName === '음료') {
       getPopularMenu().then(res => {
+        console.log('res.data.data', res.data.data);
         setPopularMenuInfo(res.data.data);
       });
     } else {

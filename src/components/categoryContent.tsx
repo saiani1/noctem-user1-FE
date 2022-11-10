@@ -49,6 +49,7 @@ function categoryContent({
   const handleChangeLCategory = (name: string, id: number) => {
     // 음료, 푸드 변경 시에만 작동
     setCategoryLName(name);
+    setCategoryName(name);
     setCategoryLId(id);
     if (name === '음료') {
       setCategorySId(2);
