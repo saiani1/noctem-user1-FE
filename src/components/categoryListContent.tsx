@@ -64,7 +64,6 @@ function categoryListContent({
   useEffect(() => {
     if (categorySId === 2 && categoryLName === '음료') {
       getPopularMenu().then(res => {
-        console.log('res.data.data', res.data.data);
         setPopularMenuInfo(res.data.data);
       });
     } else {
