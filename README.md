@@ -1,17 +1,34 @@
 # Cafe Noctem Project
 
-## 📍 프로젝트 소개
+## ☕ 프로젝트 소개
 
 > 본 프로젝트는 스파로스 아카데미 1기에서 2차 프로젝트로 진행한 **카페 스마트 오더 서비스**입니다.
-
 - **Noctem조의 프론트엔드 사용자 앱 저장소**입니다.
-- [Demo: 스마트오더 앱](https://noctem-user1-fe.vercel.app/)
-- [Demo: 관리자 웹](https://noctem-admin-fe.vercel.app/)
+- 카페 모바일 애플리케이션 주제의 프로젝트
+- **프로젝트 기간 :** 2022.09.13 ~ 2022.11.11 (2개월)
+- **인원 :** FrontEnd 3명, BackEnd 2명
 
 ### Project Repositories
 
+#### FrontEnd
+
+<details>
+ <summary>
+   FrontEnd Repository 목록 상세보기
+ </summary>
+ 
 - [프론트엔드 사용자 앱](https://github.com/saiani1/noctem-user1-FE)
 - [프론트엔드 관리자 웹](https://github.com/saiani1/noctem-admin-FE)
+
+</details>  
+
+#### BackEnd
+
+<details>
+ <summary>
+   BackEnd Repository 목록 상세보기
+ </summary>
+ 
 - [백엔드 eureka server](https://github.com/arotein/noctem-eureka-BE.git)
 - [백엔드 gateway server](https://github.com/arotein/noctem-gateway-BE.git)
 - [백엔드 config server](https://github.com/arotein/noctem-config-server-BE.git)
@@ -23,14 +40,43 @@
 - [백엔드 purchase service](https://github.com/arotein/noctem-purchase-BE.git)
 - [백엔드 admin service](https://github.com/arotein/noctem-admin-BE.git)
 
+</details>  
+
+&nbsp;
+## ☕ Demo
+
+- User Service
+
+  > [User Demo](https://noctem-user1-fe.vercel.app/)
+  >
+  > User Service는 모바일로 접속하시는 것을 추천드립니다.
+  > 
+  > 위치 정보 이용에 동의해주시면 원활한 이용이 가능합니다.
+  >
+  > ※ User Service Test Account
+  > | ID | PW |
+  > |--- |--- |
+  > | test@test.com | test1234 |
+
+- Admin Service
+
+  > [Admin Demo](https://noctem-admin-fe.vercel.app/)
+  >
+  > Admin Service는 PC로 접속하시는 것을 추천드립니다.
+  >
+  > ※ Admin Service Test Account  
+  > | ID | PW |
+  > |--- |--- |
+  > | noctem1 | noctem |
+
 &nbsp;
 
-## 📍 시스템 아키텍처
+## ☕ 시스템 아키텍처
 ![시스템 아키텍처](https://user-images.githubusercontent.com/77854486/203241497-c05a637e-d10a-48af-919a-1e2b0e138a5d.png)
 
 &nbsp;
 
-## 📍 개발환경
+## ☕ 개발환경
 
 ```bash
 > npm (v8.15.0)
@@ -49,7 +95,7 @@
 
 &nbsp;
 
-## 📍 사용 기술
+## ☕ 사용 기술
 
 ### Frontend
 
