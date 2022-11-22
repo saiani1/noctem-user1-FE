@@ -14,11 +14,13 @@
 
 <details>
  <summary>
-   FrontEnd Repository 목록 상세보기
+  FrontEnd Repository 목록 상세보기
  </summary>
- 
-- [프론트엔드 사용자 앱](https://github.com/saiani1/noctem-user1-FE)
-- [프론트엔드 관리자 웹](https://github.com/saiani1/noctem-admin-FE)
+
+| Service | Github Repository | Description |
+|--- |--- |--- |
+| user | [user](https://github.com/saiani1/noctem-user1-FE) | 유저 페이지입니다. |
+| admin | [admin](https://github.com/saiani1/noctem-admin-FE) | 매장 페이지입니다. |
 
 </details>  
 
@@ -26,19 +28,21 @@
 
 <details>
  <summary>
-   BackEnd Repository 목록 상세보기
+  BackEnd Repository 목록 상세보기
  </summary>
- 
-- [백엔드 eureka server](https://github.com/arotein/noctem-eureka-BE.git)
-- [백엔드 gateway server](https://github.com/arotein/noctem-gateway-BE.git)
-- [백엔드 config server](https://github.com/arotein/noctem-config-server-BE.git)
-- [백엔드 alert server](https://github.com/arotein/noctem-alert-BE.git)
-- [백엔드 batch server](https://github.com/arotein/noctem-batch-BE.git)
-- [백엔드 user service](https://github.com/arotein/noctem-user-BE.git)
-- [백엔드 store service](https://github.com/arotein/noctem-store-BE.git)
-- [백엔드 menu service](https://github.com/arotein/noctem-menu-BE.git)
-- [백엔드 purchase service](https://github.com/arotein/noctem-purchase-BE.git)
-- [백엔드 admin service](https://github.com/arotein/noctem-admin-BE.git)
+
+| Server | Github Repository | Description | Spring Boot | 
+|--- |--- |--- |--- |
+| eureka | [eureka](https://github.com/arotein/noctem-eureka-BE.git) | 각 서버들에 대해 Discovery, Registry 역할을 수행해주는 서버 | 2.7.4 |
+| gateway | [gateway](https://github.com/arotein/noctem-gateway-BE.git) | 요청을 각 서버들로 라우팅시켜주는 게이트웨이 서버 | 2.7.4 |
+| config | [config](https://github.com/arotein/noctem-config-server-BE.git) | 각 서버들의 설정 파일을 관리하고 적용해주는 config 서버 | 2.7.4 |
+| batch | [batch](https://github.com/arotein/noctem-batch-BE.git) | 주기적으로 통계데이터를 처리하는 배치 서버 | 2.7.4 |
+| alert | [alert](https://github.com/arotein/noctem-alert-BE.git) | SSE 알림기능 구현을 위한 알림 서버 | 2.7.5 |
+| user | [user](https://github.com/arotein/noctem-user-BE.git) | 유저에 관한 서비스를 처리하는 서버 | 2.6.8 |
+| store | [store](https://github.com/arotein/noctem-store-BE.git) | 매장에 관한 서비스를 처리하는 서버 | 2.6.8 |
+| menu | [menu](https://github.com/arotein/noctem-menu-BE.git) | 메뉴에 관한 서비스를 처리하는 서버 | 2.7.4 |
+| purchase | [purchase](https://github.com/arotein/noctem-purchase-BE.git) | 결제에 관한 서비스를 처리하는 서버 | 2.6.8 |
+| admin | [admin](https://github.com/arotein/noctem-admin-BE.git) | 관리자에 관한 서비스를 처리하는 서버 | 2.6.8 |
 
 </details>  
 
