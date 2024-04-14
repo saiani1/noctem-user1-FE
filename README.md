@@ -49,29 +49,7 @@
 &nbsp;
 ## ☕ Demo
 
-- User Service
-
-  > [User Demo](https://noctem-user1-fe.vercel.app/)
-  >
-  > User Service는 모바일로 접속하시는 것을 추천드립니다.
-  > 
-  > 위치 정보 이용에 동의해주시면 원활한 이용이 가능합니다.
-  >
-  > ※ User Service Test Account
-  > | ID | PW |
-  > |--- |--- |
-  > | test@test.com | test1234 |
-
-- Admin Service
-
-  > [Admin Demo](https://noctem-admin-fe.vercel.app/)
-  >
-  > Admin Service는 PC로 접속하시는 것을 추천드립니다.
-  >
-  > ※ Admin Service Test Account  
-  > | ID | PW |
-  > |--- |--- |
-  > | noctem1 | noctem |
+https://www.youtube.com/watch?v=7qt26Y83_nU
 
 &nbsp;
 
